@@ -1,0 +1,382 @@
+/***************************************************************************
+ *   Copyright by Johannes Herwig (NanoFocus AG) 2007                      *
+ *   Copyright by Georg Wiora (NanoFocus AG) 2007                          *
+ *                                                                         *
+ *   This file is part of the openGPS (R)[TM] software library.            *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+ *   as published by the Free Software Foundation; either version 3 of     *
+ *   the License, or (at your option) any later version.                   *
+ *   for detail see the files "licence_LGPL-3.0.txt" and                   *
+ *   "licence_GPL-3.0.txt".                                                *
+ *                                                                         *
+ *   openGPS is distributed in the hope that it will be useful,            *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Lesser General Public License for more details.                   *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ *   The name "openGPS" and the logo are registered as                     *
+ *   European trade mark No. 006178354 for                                 *
+ *   Physikalisch Technische Bundesanstalt (PTB)                           *
+ *   http://www.ptb.de/                                                    *
+ *                                                                         *
+ *   More information about openGPS can be found at                        *
+ *   http://www.opengps.eu/                                                *
+ ***************************************************************************/
+
+#include "point_iterator_impl.hxx"
+#include <opengps/point_vector.hxx>
+
+#include "stdafx.hxx"
+
+// TODO: Punkte entfernen ermöglichen?
+
+PointIterator::PointIterator()
+{
+}
+
+PointIterator::~PointIterator()
+{
+}
+
+PointIteratorImpl::PointIteratorImpl(
+   ISO5436_2Container * const handle,
+   const OGPS_Boolean isForward,
+   const OGPS_Boolean isMatrix) : PointIterator(), m_Handle(handle)
+{
+   _ASSERT(handle);
+
+   m_IsForward = isForward;
+   m_IsMatrix = isMatrix;
+   m_Buffer = NULL;
+
+   m_U = m_V = m_W = 0;
+   m_IsReset = TRUE;
+}
+
+PointIteratorImpl::~PointIteratorImpl()
+{
+   if(m_Buffer)
+   {
+      delete m_Buffer;
+   }
+}
+
+OGPS_Boolean PointIteratorImpl::HasNext() const
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   if(m_IsForward && !m_Buffer)
+   {
+      if(m_IsMatrix)
+      {
+         return ((m_W + 1) < m_Handle->GetMaxW() ||
+            (m_V + 1) < m_Handle->GetMaxV() ||
+            (m_U + 1) < m_Handle->GetMaxU());
+      }
+      else
+      {
+         _ASSERT(m_V == 0 && m_W == 0);
+
+         return ((m_U + 1) < m_Handle->GetMaxU());
+      }
+   }
+
+   return FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::HasPrev() const
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   if(!m_IsForward && !m_Buffer)
+   {
+      if(m_IsMatrix)
+      {
+         if(m_IsReset)
+         {
+            _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+            return m_Handle->GetMaxU() > 0 && m_Handle->GetMaxV() > 0 && m_Handle->GetMaxW() > 0;
+         }
+         else
+         {
+            return m_W > 0 && m_Handle->GetMaxW() > 0;
+         }
+      }
+      else
+      {
+         _ASSERT(m_V == 0 && m_W == 0);
+
+         if(m_IsReset)
+         {
+            _ASSERT(m_U == 0);
+
+            return m_Handle->GetMaxU() > 0;
+         }
+         else
+         {
+            return m_U > 0 && m_Handle->GetMaxU() > 0;
+         }
+      }
+   }
+
+   return FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::MoveNext()
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+   
+   if(HasNext())
+   {
+      if(m_IsMatrix)
+      {
+         if(m_W + 1 < m_Handle->GetMaxW())
+         {
+            ++m_W;
+
+            return TRUE;
+         }
+
+         if(m_V + 1 < m_Handle->GetMaxV())
+         {
+            m_W = 0;
+            ++m_V;
+
+            return TRUE;
+         }
+
+         if(m_U + 1 < m_Handle->GetMaxU())
+         {
+            m_W = 0;
+            m_V = 0;
+            ++m_U;
+
+            return TRUE;
+         }
+      }
+      else
+      {
+         ++m_U;
+
+         return TRUE;
+      }
+   }
+
+   return FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::MovePrev()
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   if(HasPrev())
+   {
+      if(m_IsMatrix)
+      {
+         if(m_W > 0)
+         {
+            --m_W;
+
+            return TRUE;
+         }
+
+         if(m_V > 0)
+         {
+            _ASSERT(m_Handle->GetMaxW() > 0);
+
+            m_W = m_Handle->GetMaxW() - 1;
+            --m_V;
+
+            return TRUE;
+         }
+
+         if(m_U > 0)
+         {
+            _ASSERT(m_Handle->GetMaxW() > 0);
+            _ASSERT(m_Handle->GetMaxV() > 0);
+
+            m_W = m_Handle->GetMaxW() - 1;
+            m_V = m_Handle->GetMaxV() - 1;
+            --m_U;
+
+            return TRUE;
+         }
+
+         if(m_IsReset)
+         {
+            _ASSERT(m_Handle->GetMaxW() > 0);
+            _ASSERT(m_Handle->GetMaxV() > 0);
+            _ASSERT(m_Handle->GetMaxU() > 0);
+
+            m_W = m_Handle->GetMaxW() - 1;
+            m_V = m_Handle->GetMaxV() - 1;
+            m_U = m_Handle->GetMaxU() - 1;
+
+            return TRUE;
+         }
+      }
+      else
+      {
+         if(m_U > 0)
+         {
+            --m_U;
+
+            return TRUE;
+         }
+
+         if(m_IsReset)
+         {
+            m_U = m_Handle->GetMaxU();
+            m_IsReset = FALSE;
+
+            return TRUE;
+         }
+      }
+   }
+
+   return FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::CreateNext()
+{
+   if(m_IsForward)
+   {
+      _ASSERT(!HasNext());
+
+         if(m_IsMatrix)
+         {
+         if((m_W + 1) == m_Handle->GetMaxW() &&
+            (m_V + 1) == m_Handle->GetMaxV() &&
+            (m_U + 1) == m_Handle->GetMaxU())
+         {
+            if(!m_Buffer)
+            {
+               // TODO: neue "range" als missing vorbelegt
+            }
+         }
+         }
+         else
+         {
+         _ASSERT(m_V == 0 && m_W == 0);
+
+         if((m_U + 1) == m_Handle->GetMaxU())
+         {
+            if(!m_Buffer)
+            {
+               m_Buffer = new PointVector();
+               ++m_U;
+
+               return TRUE;
+            }
+         }
+      }
+   }
+
+   return FALSE;
+}
+
+void PointIteratorImpl::ResetNext()
+{
+   if(m_Buffer)
+   {
+      delete m_Buffer;
+      m_Buffer = NULL;
+   }
+
+   m_U = m_V = m_W = 0;
+   m_IsReset = TRUE;
+   m_IsForward = TRUE;
+}
+
+void PointIteratorImpl::ResetPrev()
+{
+   if(m_Buffer)
+   {
+      delete m_Buffer;
+      m_Buffer = NULL;
+   }
+
+   m_U = m_V = m_W = 0;
+   m_IsReset = TRUE;
+   m_IsForward = FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::GetCurrent(PointVector& vector)
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   if(m_IsMatrix)
+   {
+   return m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
+   }
+
+   return m_Handle->GetListPoint(m_U, vector);
+}
+
+OGPS_Boolean PointIteratorImpl::SetCurrent(const PointVector* vector)
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   if(m_IsMatrix)
+   {
+   return m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
+   }
+
+   // NULL vector (invalid point) makes no sense in list type
+   _ASSERT(vector);
+
+   return m_Handle->SetListPoint(m_U, *vector);
+}
+
+OGPS_Boolean PointIteratorImpl::GetPosition(unsigned long* const index) const
+{
+   _ASSERT(index);
+
+   if(!m_IsMatrix)
+   {
+      *index = m_U;
+      return TRUE;
+   }
+
+   return FALSE;
+}
+
+OGPS_Boolean PointIteratorImpl::GetPosition(
+   unsigned long* const u,
+   unsigned long* const v,
+   unsigned long* const w) const
+{
+   if(m_IsMatrix)
+   {
+   if(u)
+   {
+      *u = m_U;
+   }
+
+   if(v)
+   {
+      *v = m_V;
+   }
+
+   if(w)
+   {
+      *w = m_W;
+   }
+
+   return TRUE;
+   }
+
+   return FALSE;
+}
+
+PointIteratorImpl& PointIteratorImpl::operator=(const PointIteratorImpl& src)
+{
+   // TODO
+   return *this;
+}
