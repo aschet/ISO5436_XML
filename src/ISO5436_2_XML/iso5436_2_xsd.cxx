@@ -223,6 +223,24 @@ namespace xsd
     this->Record4_.set (Record4);
   }
 
+  const ISO5436_2Type::VendorSpecific_sequence& ISO5436_2Type::
+  VendorSpecific () const
+  {
+    return this->VendorSpecific_;
+  }
+
+  ISO5436_2Type::VendorSpecific_sequence& ISO5436_2Type::
+  VendorSpecific ()
+  {
+    return this->VendorSpecific_;
+  }
+
+  void ISO5436_2Type::
+  VendorSpecific (const VendorSpecific_sequence& VendorSpecific)
+  {
+    this->VendorSpecific_ = VendorSpecific;
+  }
+
 
   // Record2Type
   // 
@@ -1571,7 +1589,8 @@ namespace xsd
     Record1_ (Record1, ::xml_schema::flags (), this),
     Record2_ (::xml_schema::flags (), this),
     Record3_ (Record3, ::xml_schema::flags (), this),
-    Record4_ (Record4, ::xml_schema::flags (), this)
+    Record4_ (Record4, ::xml_schema::flags (), this),
+    VendorSpecific_ (::xml_schema::flags (), this)
   {
   }
 
@@ -1583,7 +1602,8 @@ namespace xsd
     Record1_ (x.Record1_, f, this),
     Record2_ (x.Record2_, f, this),
     Record3_ (x.Record3_, f, this),
-    Record4_ (x.Record4_, f, this)
+    Record4_ (x.Record4_, f, this),
+    VendorSpecific_ (x.VendorSpecific_, f, this)
   {
   }
 
@@ -1595,7 +1615,8 @@ namespace xsd
     Record1_ (f, this),
     Record2_ (f, this),
     Record3_ (f, this),
-    Record4_ (f, this)
+    Record4_ (f, this),
+    VendorSpecific_ (f, this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -1670,6 +1691,17 @@ namespace xsd
         }
       }
 
+      // VendorSpecific
+      //
+      if (n.name () == L"VendorSpecific" && n.namespace_ ().empty ())
+      {
+        ::std::auto_ptr< VendorSpecific_type > r (
+          VendorSpecific_traits::create (i, f, this));
+
+        this->VendorSpecific ().push_back (r);
+        continue;
+      }
+
       break;
     }
 
@@ -1708,7 +1740,8 @@ namespace xsd
     return x.Record1 () == y.Record1 () &&
     x.Record2 () == y.Record2 () &&
     x.Record3 () == y.Record3 () &&
-    x.Record4 () == y.Record4 ();
+    x.Record4 () == y.Record4 () &&
+    x.VendorSpecific () == y.VendorSpecific ();
   }
 
   bool
@@ -3755,6 +3788,13 @@ namespace xsd
 
     o << ::std::endl << L"Record3: " << i.Record3 ();
     o << ::std::endl << L"Record4: " << i.Record4 ();
+    for (ISO5436_2Type::VendorSpecific_const_iterator
+         b (i.VendorSpecific ().begin ()), e (i.VendorSpecific ().end ());
+         b != e; ++b)
+    {
+      o << ::std::endl << L"VendorSpecific: " << *b;
+    }
+
     return o;
   }
 
@@ -4534,6 +4574,20 @@ namespace xsd
           e));
 
       s << i.Record4 ();
+    }
+
+    // VendorSpecific
+    //
+    for (ISO5436_2Type::VendorSpecific_const_iterator
+         b (i.VendorSpecific ().begin ()), n (i.VendorSpecific ().end ());
+         b != n; ++b)
+    {
+      ::xercesc::DOMElement& s (
+        ::xsd::cxx::xml::dom::create_element (
+          L"VendorSpecific",
+          e));
+
+      s << *b;
     }
   }
 

@@ -787,6 +787,73 @@ namespace xsd
     //@}
 
     /**
+     * @name VendorSpecific
+     *
+     * @brief Accessor and modifier functions for the %VendorSpecific
+     * sequence element.
+     *
+     * This is an extension hook for vendor specific
+     * tags.
+     */
+    //@{
+
+    /**
+     * @brief Element type.
+     */
+    typedef ::xml_schema::string VendorSpecific_type;
+
+    /**
+     * @brief Element sequence container type.
+     */
+    typedef ::xsd::cxx::tree::sequence< VendorSpecific_type > VendorSpecific_sequence;
+
+    /**
+     * @brief Element iterator type.
+     */
+    typedef VendorSpecific_sequence::iterator VendorSpecific_iterator;
+
+    /**
+     * @brief Element constant iterator type.
+     */
+    typedef VendorSpecific_sequence::const_iterator VendorSpecific_const_iterator;
+
+    /**
+     * @brief Element traits type.
+     */
+    typedef ::xsd::cxx::tree::traits< VendorSpecific_type, wchar_t > VendorSpecific_traits;
+
+    /**
+     * @brief Return a read-only (constant) reference to the element
+     * sequence.
+     *
+     * @return A constant reference to the sequence container.
+     */
+    const VendorSpecific_sequence&
+    VendorSpecific () const;
+
+    /**
+     * @brief Return a read-write reference to the element sequence.
+     *
+     * @return A reference to the sequence container.
+     */
+    VendorSpecific_sequence&
+    VendorSpecific ();
+
+    /**
+     * @brief Copy elements from a given sequence.
+     *
+     * @param s A sequence to copy elements from.
+     *
+     * For each element in @a s this function makes a copy and adds it 
+     * to the sequence. Note that this operation completely changes the 
+     * sequence and all old elements will be lost.
+     */
+    void
+    VendorSpecific (const VendorSpecific_sequence& s);
+
+    //@}
+
+    /**
      * @name Constructors
      */
     //@{
@@ -853,6 +920,7 @@ namespace xsd
     Record2_optional Record2_;
     ::xsd::cxx::tree::one< Record3_type > Record3_;
     ::xsd::cxx::tree::one< Record4_type > Record4_;
+    VendorSpecific_sequence VendorSpecific_;
   };
 
   bool

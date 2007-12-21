@@ -351,17 +351,10 @@
 			</File>
 			<Filter
 				Name="cxx"
+				Filter="*.cxx"
 				>
 				<File
-					RelativePath=".\cxx\auto_ptr_types.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\binary_lsb_point_vector_reader_context.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\binary_lsb_point_vector_reader_context.hxx"
 					>
 				</File>
 				<File
@@ -369,15 +362,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\binary_lsb_point_vector_writer_context.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\binary_msb_point_vector_reader_context.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\binary_msb_point_vector_reader_context.hxx"
 					>
 				</File>
 				<File
@@ -385,19 +370,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\binary_msb_point_vector_writer_context.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\binary_point_vector_reader_context.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\binary_point_vector_writer_context.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\binary_point_vector_writer_context.hxx"
 					>
 				</File>
 				<File
@@ -405,19 +378,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\data_point_impl.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\data_point_parser.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\double_data_point_parser.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\double_data_point_parser.hxx"
 					>
 				</File>
 				<File
@@ -425,15 +386,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\double_point_buffer.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\environment.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\environment.hxx"
 					>
 				</File>
 				<File
@@ -441,15 +394,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\float_data_point_parser.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\float_point_buffer.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\float_point_buffer.hxx"
 					>
 				</File>
 				<File
@@ -457,15 +402,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\int16_data_point_parser.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\int16_point_buffer.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\int16_point_buffer.hxx"
 					>
 				</File>
 				<File
@@ -473,15 +410,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\int32_data_point_parser.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\int32_point_buffer.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\int32_point_buffer.hxx"
 					>
 				</File>
 				<File
@@ -493,15 +422,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\iso5436_2_container.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\missing_data_point_parser.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\missing_data_point_parser.hxx"
 					>
 				</File>
 				<File
@@ -509,15 +430,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\point_buffer.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\point_iterator_impl.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\point_iterator_impl.hxx"
 					>
 				</File>
 				<File
@@ -556,15 +469,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\point_vector_iostream.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\point_vector_parser.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\point_vector_parser.hxx"
 					>
 				</File>
 				<File
@@ -572,39 +477,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\point_vector_parser_builder.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\point_vector_proxy.cxx"
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\point_vector_proxy.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\point_vector_proxy_context.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\point_vector_proxy_context.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\point_vector_reader_context.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\point_vector_writer_context.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\stdafx.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\stream_types.hxx"
 					>
 				</File>
 				<File
@@ -616,15 +493,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\valid_buffer.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\vector_buffer.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\vector_buffer.hxx"
 					>
 				</File>
 				<File
@@ -632,15 +501,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\vector_buffer_builder.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\win32_environment.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\win32_environment.hxx"
 					>
 				</File>
 				<File
@@ -648,28 +509,17 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\xml_point_vector_reader_context.hxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\xml_point_vector_writer_context.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\cxx\xml_point_vector_writer_context.hxx"
 					>
 				</File>
 				<File
 					RelativePath=".\cxx\zip_stream_buffer.cxx"
 					>
 				</File>
-				<File
-					RelativePath=".\cxx\zip_stream_buffer.hxx"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="c"
+				Filter="*.c;*.h"
 				>
 				<File
 					RelativePath=".\c\data_point.cxx"
@@ -701,6 +551,163 @@
 				</File>
 				<File
 					RelativePath=".\c\point_vector.hxx"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hxx"
+				Filter="*.hxx"
+				>
+				<File
+					RelativePath=".\cxx\auto_ptr_types.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_lsb_point_vector_reader_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_lsb_point_vector_writer_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_msb_point_vector_reader_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_msb_point_vector_writer_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_point_vector_reader_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\binary_point_vector_writer_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\data_point_impl.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\double_data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\double_point_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\environment.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\float_data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\float_point_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\int16_data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\int16_point_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\int32_data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\int32_point_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\iso5436_2_container.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\missing_data_point_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_iterator_impl.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_iostream.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_parser.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_parser_builder.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_proxy.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_proxy_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_reader_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\point_vector_writer_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\stdafx.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\stream_types.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\valid_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\vector_buffer.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\vector_buffer_builder.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\win32_environment.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\xml_point_vector_reader_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\xml_point_vector_writer_context.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\zip_stream_buffer.hxx"
 					>
 				</File>
 			</Filter>
