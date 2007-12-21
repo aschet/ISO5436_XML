@@ -1,0 +1,1 @@
+ "C:\Programme\CodeSynthesis XSD 3.0\bin\xsd.exe" cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor ISO5436_2.xsd
