@@ -334,26 +334,29 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="Publishing iso5436_2.hxx"
+						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="Publishing iso5436_2.hxx"
+						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug Demo|Win32"
-					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
+						Description="Publishing iso5436_2.hxx"
+						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
 					/>
 				</FileConfiguration>
 			</File>
