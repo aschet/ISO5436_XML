@@ -297,8 +297,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
-						AdditionalDependencies=""
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
+						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
 				</FileConfiguration>
@@ -308,8 +308,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
-						AdditionalDependencies=""
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
+						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
 				</FileConfiguration>
@@ -319,8 +319,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
-						AdditionalDependencies=""
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
+						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
 				</FileConfiguration>
