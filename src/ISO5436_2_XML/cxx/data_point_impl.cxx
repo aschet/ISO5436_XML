@@ -54,7 +54,7 @@ OGPS_DataPointType DataPointImpl::GetType() const
    return m_Type;
 }
 
-OGPS_Boolean DataPointImpl::Get(short* const value) const
+OGPS_Boolean DataPointImpl::Get(OGPS_Int16* const value) const
 {
    _ASSERT(value);
 
@@ -67,7 +67,7 @@ OGPS_Boolean DataPointImpl::Get(short* const value) const
    return FALSE;
 }
 
-OGPS_Boolean DataPointImpl::Get(int* const value) const
+OGPS_Boolean DataPointImpl::Get(OGPS_Int32* const value) const
 {
    _ASSERT(value);
 
@@ -80,7 +80,7 @@ OGPS_Boolean DataPointImpl::Get(int* const value) const
    return FALSE;
 }
 
-OGPS_Boolean DataPointImpl::Get(float* const value) const
+OGPS_Boolean DataPointImpl::Get(OGPS_Float* const value) const
 {
    _ASSERT(value);
 
@@ -93,7 +93,7 @@ OGPS_Boolean DataPointImpl::Get(float* const value) const
    return FALSE;
 }
 
-OGPS_Boolean DataPointImpl::Get(double* const value) const
+OGPS_Boolean DataPointImpl::Get(OGPS_Double* const value) const
 {
    _ASSERT(value);
 
@@ -106,7 +106,7 @@ OGPS_Boolean DataPointImpl::Get(double* const value) const
    return FALSE;
 }
 
-double DataPointImpl::Get() const
+OGPS_Double DataPointImpl::Get() const
 {
    switch(m_Type)
    {
@@ -134,25 +134,25 @@ double DataPointImpl::Get() const
    return 0.0;
 }
 
-OGPS_Boolean DataPointImpl::Set(const short value)
+OGPS_Boolean DataPointImpl::Set(const OGPS_Int16 value)
 {
    m_Type = Int16PointType;
    m_Value.int16Value = value;
    return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const int value)
+OGPS_Boolean DataPointImpl::Set(const OGPS_Int32 value)
 {
    m_Type = Int32PointType;
    m_Value.int32Value = value;
    return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const float value)
+OGPS_Boolean DataPointImpl::Set(const OGPS_Float value)
 {
    m_Type = FloatPointType;
    m_Value.floatValue = value;
    return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const double value)
+OGPS_Boolean DataPointImpl::Set(const OGPS_Double value)
 {
    m_Type = DoublePointType;
    m_Value.doubleValue = value;
@@ -199,25 +199,25 @@ OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
    switch(src.GetType())
    {
    case Int16PointType:
-      short vs;
+      OGPS_Int16 vs;
       _VERIFY(src.Get(&vs));
       _VERIFY(Set(vs));
       break;
 
    case Int32PointType:
-      int vl;
+      OGPS_Int32 vl;
       _VERIFY(src.Get(&vl));
       _VERIFY(Set(vl));
       break;
 
    case FloatPointType:
-      float vf;
+      OGPS_Float vf;
       _VERIFY(src.Get(&vf));
       _VERIFY(Set(vf));
       break;
 
    case DoublePointType:
-      double vd;
+      OGPS_Double vd;
       _VERIFY(src.Get(&vd));
       _VERIFY(Set(vd));
       break;

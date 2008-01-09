@@ -45,7 +45,7 @@ BinaryMSBPointVectorWriterContext::~BinaryMSBPointVectorWriterContext()
    Environment::Reset();
 }
 
-OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const short* value)
+OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -63,7 +63,7 @@ OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const short* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const int* value)
+OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -81,7 +81,7 @@ OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const int* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const float* value)
+OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -100,7 +100,7 @@ OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const float* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const double* value)
+OGPS_Boolean BinaryMSBPointVectorWriterContext::Write(const OGPS_Double* const value)
 {
    _ASSERT(value);
 

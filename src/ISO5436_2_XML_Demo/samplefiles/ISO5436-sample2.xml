@@ -76,8 +76,7 @@
       <Datum>8.57622027393310E-0001</Datum>
       <Datum>1.04759602566142E+0000</Datum>
       <Datum>1.01879225277798E+0000</Datum>
-      <!-- missing data points are represented by an empty tag -->
-      <Datum/>
+      <Datum>3.46341436648013E-0003</Datum>
       <Datum>8.23683772970184E-0001</Datum>
       <Datum>7.97872489327661E-0001</Datum>
       <Datum>-5.57459388341694E-0001</Datum>

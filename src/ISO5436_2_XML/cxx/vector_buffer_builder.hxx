@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_VECTOR_BUFFER_BUILDER_HXX
 #define _OPENGPS_VECTOR_BUFFER_BUILDER_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #ifndef _OPENGPS_DATA_POINT_TYPE_H
@@ -58,7 +58,7 @@ public:
 
    virtual OGPS_Boolean BuildValid(const unsigned long size);
 
-   virtual VectorBuffer* const GetBuffer() const;
+   virtual VectorBuffer* GetBuffer();
 
 private:
    PointBuffer* CreatePointBuffer(const OGPS_DataPointType dataType, const unsigned long size, OGPS_Boolean* const retval) const;

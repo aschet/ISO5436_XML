@@ -31,24 +31,56 @@
 #include "zip_stream_buffer.hxx"
 #include "stdafx.hxx"
 
-ZipStreamBuffer::ZipStreamBuffer(zipFile handle)
+ZipStreamBuffer::ZipStreamBuffer(zipFile handle, const OGPS_Boolean enable_md5)
 : BaseType()
 {
    m_Handle = handle;
+
+   if(enable_md5)
+   {
+      m_Md5Context = new md5_context;
+      md5_starts(m_Md5Context);
+   }
+   else
+   {
+      m_Md5Context = NULL;
+   }
 }
 
 ZipStreamBuffer::~ZipStreamBuffer()
 {
+   if(m_Md5Context)
+   {
+      delete m_Md5Context;
+   }
 }
 
-std::streamsize ZipStreamBuffer::xsputn( const char * s, std::streamsize n )
+std::streamsize ZipStreamBuffer::xsputn(const char * const s, std::streamsize n )
 {
+   if(m_Md5Context)
+   {
+      md5_update(m_Md5Context, (const unsigned char*)s, n);
+   }
+
    if(zipWriteInFileInZip(m_Handle, s, n) == ZIP_OK)
    {
       return n;
    }
 
    return 0;
+}
+
+OGPS_Boolean ZipStreamBuffer::GetMd5(OpenGPS::UnsignedByte md5[16])
+{
+   if(m_Md5Context)
+   {
+      md5_finish(m_Md5Context, md5);
+      md5_starts(m_Md5Context);
+
+      return TRUE;
+   }
+
+   return FALSE;
 }
 
 ZipOutputStream::ZipOutputStream(ZipStreamBuffer& buffer)

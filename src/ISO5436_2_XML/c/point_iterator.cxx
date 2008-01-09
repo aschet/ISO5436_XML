@@ -37,69 +37,71 @@
 
 OGPS_Boolean ogps_HasNextPoint(const OGPS_PointIteratorPtr iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->HasNext();
+   return iterator->instance->HasNext();
 }
 
 OGPS_Boolean ogps_HasPrevPoint(const OGPS_PointIteratorPtr iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->HasPrev();
+   return iterator->instance->HasPrev();
 }
 
 OGPS_Boolean ogps_MoveNextPoint(OGPS_PointIteratorPtr const iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->MoveNext();
+   return iterator->instance->MoveNext();
 }
 
 OGPS_Boolean ogps_MovePrevPoint(OGPS_PointIteratorPtr const iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->MovePrev();
+   return iterator->instance->MovePrev();
 }
 
+/* TODO:
 OGPS_Boolean ogps_CreateNextPoint(OGPS_PointIteratorPtr const iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->CreateNext();
+   return iterator->instance->CreateNext();
 }
+*/
 
 void ogps_ResetNextPointIterator(OGPS_PointIteratorPtr const iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   iterator->instance->get()->ResetNext();
+   iterator->instance->ResetNext();
 }
 
 void ogps_ResetPrevPointIterator(OGPS_PointIteratorPtr const iterator)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   iterator->instance->get()->ResetPrev();
+   iterator->instance->ResetPrev();
 }
 
 OGPS_Boolean ogps_GetCurrentPoint(
         const OGPS_PointIteratorPtr iterator,
         OGPS_PointVectorPtr const vector)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get() && vector);
+   _ASSERT(iterator && iterator->instance && vector);
 
-   return iterator->instance->get()->GetCurrent(vector->instance);
+   return iterator->instance->GetCurrent(vector->instance);
 }
 
 OGPS_Boolean ogps_SetCurrentPoint(
         const OGPS_PointIteratorPtr iterator,
         const OGPS_PointVectorPtr vector)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->SetCurrent(vector ? &vector->instance : NULL);
+   return iterator->instance->SetCurrent(vector ? &vector->instance : NULL);
 }
 
 OGPS_Boolean ogps_GetMatrixPosition(
@@ -108,27 +110,27 @@ OGPS_Boolean ogps_GetMatrixPosition(
         unsigned long* v,
         unsigned long* w)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->GetPosition(u, v, w);
+   return iterator->instance->GetPosition(u, v, w);
 }
 
 OGPS_Boolean ogps_GetListPosition(
         const OGPS_PointIteratorPtr iterator,
         unsigned long* index)
 {
-   _ASSERT(iterator && iterator->instance && iterator->instance->get());
+   _ASSERT(iterator && iterator->instance);
 
-   return iterator->instance->get()->GetPosition(index);
+   return iterator->instance->GetPosition(index);
 }
 
-void ogps_FreePointIterator(OGPS_PointIteratorPtr * iterator)
+void ogps_FreePointIterator(OGPS_PointIteratorPtr * const iterator)
 {
    OGPS_PointIteratorPtr iter = *iterator;
 
    if(iter)
    {
-      _ASSERT(iter->instance && iter->instance->get());
+      _ASSERT(iter->instance);
 
       delete iter->instance;
 

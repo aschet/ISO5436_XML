@@ -32,7 +32,7 @@
 
 #include "stdafx.hxx"
 
-PointVectorWhitespaceFacet::PointVectorWhitespaceFacet(size_t refs)
+PointVectorWhitespaceFacet::PointVectorWhitespaceFacet(const size_t refs)
 : BaseType(refs)
 {
 }
@@ -94,12 +94,12 @@ PointVectorOutputStringStream::~PointVectorOutputStringStream()
 {
 }
 
-PointVectorInputBinaryFileStream::PointVectorInputBinaryFileStream(const String& filePath)
+PointVectorInputBinaryFileStream::PointVectorInputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
    imbue(PointVectorInvariantLocale::GetInstance());
 
-   String buf(filePath);
+   OpenGPS::String buf(filePath);
    open(buf.ToChar(), std::ios_base::in | std::ios_base::binary);
 }
 
@@ -107,12 +107,12 @@ PointVectorInputBinaryFileStream::~PointVectorInputBinaryFileStream()
 {
 }
 
-PointVectorOutputBinaryFileStream::PointVectorOutputBinaryFileStream(const String& filePath)
+PointVectorOutputBinaryFileStream::PointVectorOutputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
    imbue(PointVectorInvariantLocale::GetInstance());
 
-   String buf(filePath);
+   OpenGPS::String buf(filePath);
    open(buf.ToChar(), std::ios_base::out | std::ios_base::binary);
 }
 

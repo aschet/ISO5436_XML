@@ -108,3 +108,18 @@ void PointBuffer::Free(OpenGPS::UnsignedBytePtr* value)
       *value = NULL;
    }
 }
+
+OGPS_Boolean PointBuffer::SetNull(const unsigned long index)
+{
+   return FALSE;
+}
+
+OGPS_Boolean PointBuffer::Allocate(const unsigned long size)
+{
+   return FALSE;
+}
+
+OGPS_DataPointType PointBuffer::GetType() const
+{
+   return MissingPointType;
+}

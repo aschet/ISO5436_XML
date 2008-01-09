@@ -32,7 +32,7 @@
 #include "point_vector_reader_context.hxx"
 #include "point_vector_writer_context.hxx"
 
-#include <opengps/data_point.hxx>
+#include <opengps/cxx/data_point.hxx>
 
 #include "stdafx.hxx"
 
@@ -63,7 +63,7 @@ OGPS_Boolean MissingDataPointParser::Write(PointVectorWriterContext& context, co
 {
    if(!value.IsValid())
    {
-   return context.Skip();
+      return context.Skip();
    }
 
    return FALSE;

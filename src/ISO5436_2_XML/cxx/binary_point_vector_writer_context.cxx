@@ -34,7 +34,7 @@
 BinaryPointVectorWriterContext::BinaryPointVectorWriterContext(zipFile handle)
 : PointVectorWriterContext()
 {
-   m_Buffer = new ZipStreamBuffer(handle);
+   m_Buffer = new ZipStreamBuffer(handle, TRUE);
    m_Stream = new ZipOutputStream(*m_Buffer);
 }
 
@@ -43,7 +43,7 @@ BinaryPointVectorWriterContext::~BinaryPointVectorWriterContext()
    Close();
 }
 
-std::ostream* BinaryPointVectorWriterContext::GetStream() const
+std::ostream* BinaryPointVectorWriterContext::GetStream()
 {
    _ASSERT(m_Stream && m_Buffer);
 
@@ -102,4 +102,10 @@ OGPS_Boolean BinaryPointVectorWriterContext::Skip()
 OGPS_Boolean BinaryPointVectorWriterContext::MoveNext()
 {
    return TRUE;
+}
+
+void BinaryPointVectorWriterContext::GetMd5(OpenGPS::UnsignedByte md5[16])
+{
+   _ASSERT(HasStream());
+   m_Buffer->GetMd5(md5);
 }

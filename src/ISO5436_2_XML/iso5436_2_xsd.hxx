@@ -33,7 +33,7 @@
 
 /**
  * @file
- * @brief Generated from iso5436_2.xsd.
+ * @brief Generated from ISO5436_2.xsd.
  */
 
 #ifndef ISO5436_2_XSD_HXX

@@ -29,10 +29,12 @@
  ***************************************************************************/
 
 #include <opengps/point_vector.h>
-#include <opengps/point_vector.hxx>
+#include <opengps/cxx/point_vector.hxx>
 
 #include "data_point.hxx"
 #include "point_vector.hxx"
+
+#include "../cxx/stdafx.hxx"
 
 OGPS_PointVectorPtr ogps_CreatePointVector(void)
 {
@@ -73,7 +75,7 @@ void ogps_FreePointVector(OGPS_PointVectorPtr * vector)
 
 void ogps_SetInt16X(
 	OGPS_PointVectorPtr const vector,
-	const short value)
+	const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -82,7 +84,7 @@ void ogps_SetInt16X(
 
 void ogps_SetInt32X(
 	OGPS_PointVectorPtr const vector,
-	const int value)
+	const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -91,7 +93,7 @@ void ogps_SetInt32X(
 
 void ogps_SetFloatX(
 	OGPS_PointVectorPtr const vector,
-	const float value)
+	const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -100,7 +102,7 @@ void ogps_SetFloatX(
 
 void ogps_SetDoubleX(
 	OGPS_PointVectorPtr const vector,
-	const double value)
+	const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -110,7 +112,7 @@ void ogps_SetDoubleX(
 
 void ogps_SetInt16Y(
 	OGPS_PointVectorPtr const vector,
-	const short value)
+	const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -119,7 +121,7 @@ void ogps_SetInt16Y(
 
 void ogps_SetInt32Y(
 	OGPS_PointVectorPtr const vector,
-	const int value)
+	const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -128,7 +130,7 @@ void ogps_SetInt32Y(
 
 void ogps_SetFloatY(
 	OGPS_PointVectorPtr const vector,
-	const float value)
+	const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -137,7 +139,7 @@ void ogps_SetFloatY(
 
 void ogps_SetDoubleY(
 	OGPS_PointVectorPtr const vector,
-	const double value)
+	const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -147,7 +149,7 @@ void ogps_SetDoubleY(
 
 void ogps_SetInt16Z(
 	OGPS_PointVectorPtr const vector,
-	const short value)
+	const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -156,7 +158,7 @@ void ogps_SetInt16Z(
 
 void ogps_SetInt32Z(
 	OGPS_PointVectorPtr const vector,
-	const int value)
+	const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -165,7 +167,7 @@ void ogps_SetInt32Z(
 
 void ogps_SetFloatZ(
 	OGPS_PointVectorPtr const vector,
-	const float value)
+	const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -174,7 +176,7 @@ void ogps_SetFloatZ(
 
 void ogps_SetDoubleZ(
 	OGPS_PointVectorPtr const vector,
-	const double value)
+	const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -184,9 +186,9 @@ void ogps_SetDoubleZ(
 
 void ogps_GetXYZ(
         const OGPS_PointVectorPtr vector,
-        double* x,
-        double* y,
-        double* z)
+        OGPS_Double* const x,
+        OGPS_Double* const y,
+        OGPS_Double* const z)
 {
    _ASSERT(vector);
 
@@ -244,7 +246,7 @@ short ogps_GetInt16X(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   short value;
+   OGPS_Int16 value;
    _VERIFY(vector->instance.GetX(&value));
    return value;
 }
@@ -253,7 +255,7 @@ int ogps_GetInt32X(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   int value;
+   OGPS_Int32 value;
    _VERIFY(vector->instance.GetX(&value));
    return value;
 }
@@ -262,7 +264,7 @@ float ogps_GetFloatX(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   float value;
+   OGPS_Float value;
    _VERIFY(vector->instance.GetX(&value));
    return value;
 }
@@ -271,7 +273,7 @@ double ogps_GetDoubleX(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   double value;
+   OGPS_Double value;
    _VERIFY(vector->instance.GetX(&value));
    return value;
 }
@@ -281,7 +283,7 @@ short ogps_GetInt16Y(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   short value;
+   OGPS_Int16 value;
    _VERIFY(vector->instance.GetY(&value));
    return value;
 }
@@ -290,7 +292,7 @@ int ogps_GetInt32Y(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   int value;
+   OGPS_Int32 value;
    _VERIFY(vector->instance.GetY(&value));
    return value;
 }
@@ -299,7 +301,7 @@ float ogps_GetFloatY(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   float value;
+   OGPS_Float value;
    _VERIFY(vector->instance.GetY(&value));
    return value;
 }
@@ -308,7 +310,7 @@ double ogps_GetDoubleY(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   double value;
+   OGPS_Double value;
    _VERIFY(vector->instance.GetY(&value));
    return value;
 }
@@ -318,7 +320,7 @@ short ogps_GetInt16Z(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   short value;
+   OGPS_Int16 value;
    _VERIFY(vector->instance.GetZ(&value));
    return value;
 }
@@ -327,7 +329,7 @@ int ogps_GetInt32Z(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   int value;
+   OGPS_Int32 value;
    _VERIFY(vector->instance.GetZ(&value));
    return value;
 }
@@ -336,7 +338,7 @@ float ogps_GetFloatZ(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   float value;
+   OGPS_Float value;
    _VERIFY(vector->instance.GetZ(&value));
    return value;
 }
@@ -345,7 +347,7 @@ double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
-   double value;
+   OGPS_Double value;
    _VERIFY(vector->instance.GetZ(&value));
    return value;
 }

@@ -35,40 +35,41 @@
 #  include "point_vector_reader_context.hxx"
 #endif
 
-#include <opengps/iso5436_2_xsd.hxx>
+#include <opengps/cxx/iso5436_2_xsd.hxx>
 
 namespace OpenGPS
 {
    class PointVectorInputStringStream;
 
-   class XmlPointVectorReaderContext : public PointVectorReaderContext {
-  public:
-     typedef xsd::DataListType::Datum_sequence StringList;
+   class XmlPointVectorReaderContext : public PointVectorReaderContext
+   {
+   public:
+      typedef xsd::DataListType::Datum_sequence StringList;
 
-     XmlPointVectorReaderContext(const StringList* pointVectorList);
-    virtual ~XmlPointVectorReaderContext();
+      XmlPointVectorReaderContext(const StringList* const pointVectorList);
+      virtual ~XmlPointVectorReaderContext();
 
-    virtual OGPS_Boolean Read(short* value);
-    virtual OGPS_Boolean Read(int* value);
-    virtual OGPS_Boolean Read(float* value);
-    virtual OGPS_Boolean Read(double* value);
+      virtual OGPS_Boolean Read(OGPS_Int16* const value);
+      virtual OGPS_Boolean Read(OGPS_Int32* const value);
+      virtual OGPS_Boolean Read(OGPS_Float* const value);
+      virtual OGPS_Boolean Read(OGPS_Double* const value);
 
-    virtual OGPS_Boolean Skip();
+      virtual OGPS_Boolean Skip();
 
-    virtual OGPS_Boolean MoveNext();
-    virtual OGPS_Boolean IsValid() const;
+      virtual OGPS_Boolean MoveNext();
+      virtual OGPS_Boolean IsValid() const;
 
    protected:
       virtual OGPS_Boolean IsGood() const;
 
    private:
-      void Set(const String& buf);
+      void Set(const OpenGPS::String& buf);
       void Reset();
 
       const StringList* m_PointVectorList;
       unsigned long m_Next;
       PointVectorInputStringStream* m_Stream;            
-  };
+   };
 }
 
 #endif /* _OPENGPS_XML_POINT_VECTOR_READER_CONTEXT_HXX */

@@ -31,12 +31,12 @@
 #ifndef _OPENGPS_POINT_VECTOR_PROXY_HXX
 #define _OPENGPS_POINT_VECTOR_PROXY_HXX
 
-#ifndef _OPENGPS_POINT_VECTOR_BASE_HXX
-#  include <opengps/point_vector_base.hxx>
+#ifndef _OPENGPS_CXX_POINT_VECTOR_BASE_HXX
+#  include <opengps/cxx/point_vector_base.hxx>
 #endif
 
-#ifndef _OPENGPS_DATA_POINT_HXX
-#  include <opengps/data_point.hxx>
+#ifndef _OPENGPS_CXX_DATA_POINT_HXX
+#  include <opengps/cxx/data_point.hxx>
 #endif
 
 namespace OpenGPS
@@ -49,17 +49,17 @@ namespace OpenGPS
    {
    public:
       PointVectorProxy(
-         const PointVectorProxyContext* context,
-         const VectorBuffer* buffer);
+         const PointVectorProxyContext* const context,
+         VectorBuffer* const buffer);
       virtual ~PointVectorProxy();
 
       virtual const DataPoint* GetX() const;
       virtual const DataPoint* GetY() const;
       virtual const DataPoint* GetZ() const;
 
-      virtual DataPoint* const GetX();
-      virtual DataPoint* const GetY();
-      virtual DataPoint* const GetZ();
+      virtual DataPoint* GetX();
+      virtual DataPoint* GetY();
+      virtual DataPoint* GetZ();
 
       virtual OGPS_Boolean Set(const PointVectorBase& value);
       virtual OGPS_Boolean Get(PointVectorBase& value) const;
@@ -68,8 +68,8 @@ namespace OpenGPS
 
    private:
       const PointVectorProxyContext* m_Context;
-      const VectorBuffer *m_Buffer;
-      
+      VectorBuffer* m_Buffer;
+
       DataPoint* m_X;
       DataPoint* m_Y;
       DataPoint* m_Z;
@@ -81,82 +81,86 @@ namespace OpenGPS
       DataPointProxyContext* m_W;
 
       class DataPointProxyContext
-   {
-   public:      
-      virtual ~DataPointProxyContext();
+      {
+      public:      
+         virtual ~DataPointProxyContext();
 
-      virtual unsigned long GetIndex() const = 0;
-      virtual PointBuffer* const GetBuffer() const = 0;
-      virtual OGPS_Boolean IsValid() const;
+         virtual unsigned long GetIndex() const = 0;
+         virtual PointBuffer* GetBuffer() = 0;
+         virtual const PointBuffer* GetBuffer() const = 0;
+         virtual OGPS_Boolean IsValid() const;
 
-   protected:
-      DataPointProxyContext(PointVectorProxy* vector);
+      protected:
+         DataPointProxyContext(PointVectorProxy* const vector);
 
-      PointVectorProxy* m_Vector;
-   };
+         PointVectorProxy* m_Vector;
+      };
 
       class UDataPointProxyContext : public DataPointProxyContext
-   {
-   public:
-      UDataPointProxyContext(PointVectorProxy* vector);
-      virtual ~UDataPointProxyContext();
+      {
+      public:
+         UDataPointProxyContext(PointVectorProxy* const vector);
+         virtual ~UDataPointProxyContext();
 
-      virtual unsigned long GetIndex() const;
-      virtual PointBuffer* const GetBuffer() const;
-   };
+         virtual unsigned long GetIndex() const;
+         virtual PointBuffer* GetBuffer();
+         virtual const PointBuffer* GetBuffer() const;
+      };
 
-   class VDataPointProxyContext : public DataPointProxyContext
-   {
-   public:
-      VDataPointProxyContext(PointVectorProxy* vector);
-      virtual ~VDataPointProxyContext();
+      class VDataPointProxyContext : public DataPointProxyContext
+      {
+      public:
+         VDataPointProxyContext(PointVectorProxy* const vector);
+         virtual ~VDataPointProxyContext();
 
-      virtual unsigned long GetIndex() const;
-      virtual PointBuffer* const GetBuffer() const;
-   };
+         virtual unsigned long GetIndex() const;
+         virtual PointBuffer* GetBuffer();
+         virtual const PointBuffer* GetBuffer() const;
+      };
 
-   class WDataPointProxyContext : public DataPointProxyContext
-   {
-   public:
-      WDataPointProxyContext(PointVectorProxy* vector);
-      virtual ~WDataPointProxyContext();
+      class WDataPointProxyContext : public DataPointProxyContext
+      {
+      public:
+         WDataPointProxyContext(PointVectorProxy* const vector);
+         virtual ~WDataPointProxyContext();
 
-      virtual unsigned long GetIndex() const;
-      virtual PointBuffer* const GetBuffer() const;
-   };
+         virtual unsigned long GetIndex() const;
+         virtual PointBuffer* GetBuffer();
+         virtual const PointBuffer* GetBuffer() const;
+      };
 
-   class DataPointProxy : public DataPoint
-   {
-   public:
-      DataPointProxy(const DataPointProxyContext* context);
-      virtual ~DataPointProxy();
+      class DataPointProxy : public DataPoint
+      {
+      public:
+         DataPointProxy(DataPointProxyContext* const context);
+         virtual ~DataPointProxy();
 
-      virtual OGPS_DataPointType GetType() const;
+         virtual OGPS_DataPointType GetType() const;
 
-    virtual OGPS_Boolean Get(short* const value) const;
-    virtual OGPS_Boolean Get(int* const value) const;
-    virtual OGPS_Boolean Get(float* const value) const;
-    virtual OGPS_Boolean Get(double* const value) const;
-    
-    virtual double Get() const;
+         virtual OGPS_Boolean Get(OGPS_Int16* const value) const;
+         virtual OGPS_Boolean Get(OGPS_Int32* const value) const;
+         virtual OGPS_Boolean Get(OGPS_Float* const value) const;
+         virtual OGPS_Boolean Get(OGPS_Double* const value) const;
 
-    virtual OGPS_Boolean IsValid() const;
+         virtual OGPS_Double Get() const;
 
-    virtual OGPS_Boolean Set(const short value);
-    virtual OGPS_Boolean Set(const int value);
-    virtual OGPS_Boolean Set(const float value);
-    virtual OGPS_Boolean Set(const double value);
+         virtual OGPS_Boolean IsValid() const;
 
-    virtual OGPS_Boolean SetNull();
+         virtual OGPS_Boolean Set(const OGPS_Int16 value);
+         virtual OGPS_Boolean Set(const OGPS_Int32 value);
+         virtual OGPS_Boolean Set(const OGPS_Float value);
+         virtual OGPS_Boolean Set(const OGPS_Double value);
 
-    virtual OGPS_Boolean Set(const DataPoint& src);
+         virtual OGPS_Boolean SetNull();
 
-   protected:
-      virtual void Reset();
+         virtual OGPS_Boolean Set(const DataPoint& src);
 
-   private:
-      const DataPointProxyContext* m_Context;
-   };
+      protected:
+         virtual void Reset();
+
+      private:
+         DataPointProxyContext* m_Context;
+      };
    };
 }
 

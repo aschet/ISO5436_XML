@@ -37,7 +37,7 @@
 
 typedef struct _OGPS_POINT_ITERATOR
 {
-   const OpenGPS::PointIteratorAutoPtr* instance;
+   OpenGPS::PointIterator* instance;
 } OGPS_PointIterator, *OGPS_PointIteratorPtr;
 
 #endif /* _C_POINT_ITERATOR_HXX */

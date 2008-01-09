@@ -39,7 +39,7 @@
 #include "point_vector_reader_context.hxx"
 #include "point_vector_writer_context.hxx"
 
-#include <opengps/point_vector_base.hxx>
+#include <opengps/cxx/point_vector_base.hxx>
 
 #include "stdafx.hxx"
 
@@ -68,7 +68,7 @@ PointVectorParser::~PointVectorParser()
    }
 }
 
-void PointVectorParser::SetX(DataPointParser* value)
+void PointVectorParser::SetX(DataPointParser* const value)
 {
    _ASSERT(value);
 
@@ -80,7 +80,7 @@ void PointVectorParser::SetX(DataPointParser* value)
    m_X = value;
 }
 
-void PointVectorParser::SetY(DataPointParser* value)
+void PointVectorParser::SetY(DataPointParser* const value)
 {
    _ASSERT(value);
 
@@ -92,7 +92,7 @@ void PointVectorParser::SetY(DataPointParser* value)
    m_Y = value;
 }
 
-void PointVectorParser::SetZ(DataPointParser* value)
+void PointVectorParser::SetZ(DataPointParser* const value)
 {
    _ASSERT(value);
 

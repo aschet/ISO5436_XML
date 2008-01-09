@@ -31,8 +31,8 @@
 #ifndef _C_POINT_VECTOR_HXX
 #define _C_POINT_VECTOR_HXX
 
-#ifndef _OPENGPS_POINT_VECTOR_HXX
-#  include <opengps/point_vector.hxx>
+#ifndef _OPENGPS_CXX_POINT_VECTOR_HXX
+#  include <opengps/cxx/point_vector.hxx>
 #endif
 
 typedef struct _OGPS_POINT_VECTOR

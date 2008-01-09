@@ -67,55 +67,75 @@ VectorBuffer::~VectorBuffer()
    }
 }
 
-void VectorBuffer::SetX(PointBuffer* value)
+void VectorBuffer::SetX(PointBuffer* const value)
 {
    _ASSERT(!m_X);
 
    m_X = value;
 }
 
-void VectorBuffer::SetY(PointBuffer* value)
+void VectorBuffer::SetY(PointBuffer* const value)
 {
    _ASSERT(!m_Y);
 
    m_Y = value;
 }
 
-void VectorBuffer::SetZ(PointBuffer* value)
+void VectorBuffer::SetZ(PointBuffer* const value)
 {
    _ASSERT(!m_Z);
 
    m_Z = value;
 }
 
-void VectorBuffer::SetValid(ValidBuffer* value)
+void VectorBuffer::SetValid(ValidBuffer* const value)
 {
    _ASSERT(!m_Valid);
 
    m_Valid = value;
 }
 
-PointBuffer* const VectorBuffer::GetX() const
+PointBuffer* VectorBuffer::GetX()
 {
    return m_X;
 }
 
-PointBuffer* const VectorBuffer::GetY() const
+PointBuffer* VectorBuffer::GetY()
 {
    return m_Y;
 }
 
-PointBuffer* const VectorBuffer::GetZ() const
+PointBuffer* VectorBuffer::GetZ()
 {
    return m_Z;
 }
 
-ValidBuffer* const VectorBuffer::GetValid() const
+ValidBuffer* VectorBuffer::GetValid()
 {
    return m_Valid;
 }
 
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context) const
+const PointBuffer* VectorBuffer::GetX() const
+{
+   return m_X;
+}
+
+const PointBuffer* VectorBuffer::GetY() const
+{
+   return m_Y;
+}
+
+const PointBuffer* VectorBuffer::GetZ() const
+{
+   return m_Z;
+}
+
+const ValidBuffer* VectorBuffer::GetValid() const
+{
+   return m_Valid;
+}
+
+PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
 {
    return PointVectorAutoPtr(new PointVectorProxy(&context, this));
 }

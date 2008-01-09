@@ -53,12 +53,12 @@ OGPS_Boolean ValidBuffer::Allocate(const unsigned int size)
    }
 
    unsigned int rawSize = size / 8;
-   
+
    if(rawSize * 8 < size)
    {
       ++rawSize;
    }
-  
+
    if(AllocateRaw(rawSize))
    {
       m_Size = size;
@@ -74,7 +74,7 @@ OGPS_Boolean ValidBuffer::AllocateRaw(const unsigned int rawSize)
    _ASSERT(!m_Valid);
 
    m_Valid = (OpenGPS::UnsignedBytePtr)malloc(rawSize);
-   
+
    if(m_Valid)
    {
       _VERIFY(memset(m_Valid, 255, rawSize));
@@ -108,25 +108,25 @@ OGPS_Boolean ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean 
 {
    if(m_Valid)
    {
-   _ASSERT(index < m_Size);
+      _ASSERT(index < m_Size);
 
-   unsigned int bytePosition = index / 8;
-   unsigned int bitPosition = index % 8;
+      unsigned int bytePosition = index / 8;
+      unsigned int bitPosition = index % 8;
 
-   OpenGPS::UnsignedByte bitValue = (1) << bitPosition;
+      OpenGPS::UnsignedByte bitValue = (OpenGPS::UnsignedByte)(((OpenGPS::UnsignedByte)1) << bitPosition);
 
-   OpenGPS::UnsignedBytePtr rawByte = &m_Valid[bytePosition];
+      OpenGPS::UnsignedBytePtr rawByte = &m_Valid[bytePosition];
 
-   if(value)
-   {
-      *rawByte |= bitValue;
-   }
-   else
-   {
-      *rawByte &= ~bitValue;
-   }
+      if(value)
+      {
+         *rawByte |= bitValue;
+      }
+      else
+      {
+         *rawByte &= ~bitValue;
+      }
 
-   return TRUE;
+      return TRUE;
    }
 
    return FALSE;
@@ -144,7 +144,7 @@ OGPS_Boolean ValidBuffer::IsValid(const unsigned int index) const
    unsigned int bytePosition = index / 8;
    unsigned int bitPosition = index % 8;
 
-   OpenGPS::UnsignedByte bitValue = (1) << bitPosition;
+   OpenGPS::UnsignedByte bitValue = (OpenGPS::UnsignedByte)(((OpenGPS::UnsignedByte)1) << bitPosition);
 
    OpenGPS::UnsignedBytePtr rawByte = &m_Valid[bytePosition];
 
@@ -157,25 +157,25 @@ OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream
    stream.seekg (0, std::ios::end);
    if(!stream.fail())
    {
-  const unsigned int length = stream.tellg();
-  if(!stream.fail())
-  {
-  stream.seekg (0, std::ios::beg);
-   if(!stream.fail())
-   {
-  if(AllocateRaw(length))
-  {
-  // read data as a block:
-     stream.read ((OpenGPS::UnsignedBytePtr)m_Valid,length);
-if(!stream.fail())
-{
-   // set logical size
-   m_Size = pointCount;
-      return TRUE;
-}
-  }
-   }
-  }
+      const unsigned int length = stream.tellg();
+      if(!stream.fail())
+      {
+         stream.seekg (0, std::ios::beg);
+         if(!stream.fail())
+         {
+            if(AllocateRaw(length))
+            {
+               // read data as a block:
+               stream.read ((OpenGPS::UnsignedBytePtr)m_Valid,length);
+               if(!stream.fail())
+               {
+                  // set logical size
+                  m_Size = pointCount;
+                  return TRUE;
+               }
+            }
+         }
+      }
    }
 
    Reset();
@@ -185,9 +185,6 @@ if(!stream.fail())
 
 OGPS_Boolean ValidBuffer::Write(std::ostream& stream)
 {
-   // TODO: LSB only!
    stream.write((const char*)m_Valid, m_RawSize);
-      return !stream.fail();
-
-   return FALSE;
+   return !stream.fail();
 }

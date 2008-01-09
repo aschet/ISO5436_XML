@@ -101,7 +101,7 @@ OGPS_Boolean VectorBufferBuilder::BuildValid(const unsigned long size)
    return FALSE;
 }
 
-VectorBuffer* const VectorBufferBuilder::GetBuffer() const
+VectorBuffer* VectorBufferBuilder::GetBuffer()
 {
    return m_Buffer;
 }

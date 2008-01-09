@@ -96,6 +96,8 @@
       <DataLink>
         <PointDataLink>bindata/data.bin</PointDataLink>
         <MD5ChecksumPointData>2e7c6f94ec07e3ef0cd43c0844b31253</MD5ChecksumPointData>
+        <ValidPointsLink>bindata/valid.bin</ValidPointsLink>
+        <MD5ChecksumValidPoints>b8114a9c9a26c5680be3c4d89073bde1</MD5ChecksumValidPoints>
       </DataLink>
   </Record3>
   <Record4>

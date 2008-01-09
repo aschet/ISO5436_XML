@@ -29,11 +29,9 @@
  ***************************************************************************/
 
 #include "point_iterator_impl.hxx"
-#include <opengps/point_vector.hxx>
+#include <opengps/cxx/point_vector.hxx>
 
 #include "stdafx.hxx"
-
-// TODO: Punkte entfernen ermöglichen?
 
 PointIterator::PointIterator()
 {
@@ -44,9 +42,9 @@ PointIterator::~PointIterator()
 }
 
 PointIteratorImpl::PointIteratorImpl(
-   ISO5436_2Container * const handle,
-   const OGPS_Boolean isForward,
-   const OGPS_Boolean isMatrix) : PointIterator(), m_Handle(handle)
+                                     ISO5436_2Container * const handle,
+                                     const OGPS_Boolean isForward,
+                                     const OGPS_Boolean isMatrix) : PointIterator(), m_Handle(handle)
 {
    _ASSERT(handle);
 
@@ -72,11 +70,16 @@ OGPS_Boolean PointIteratorImpl::HasNext() const
 
    if(m_IsForward && !m_Buffer)
    {
+      if(m_IsReset)
+      {
+         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+         return m_Handle->GetMaxU() > 0;
+      }
+
       if(m_IsMatrix)
       {
-         return ((m_W + 1) < m_Handle->GetMaxW() ||
-            (m_V + 1) < m_Handle->GetMaxV() ||
-            (m_U + 1) < m_Handle->GetMaxU());
+         return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_Handle->GetMaxU() * m_Handle->GetMaxV() * m_Handle->GetMaxW());
       }
       else
       {
@@ -95,33 +98,22 @@ OGPS_Boolean PointIteratorImpl::HasPrev() const
 
    if(!m_IsForward && !m_Buffer)
    {
+      if(m_IsReset)
+      {
+         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+         return m_Handle->GetMaxU() > 0;
+      }
+
       if(m_IsMatrix)
       {
-         if(m_IsReset)
-         {
-            _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
-
-            return m_Handle->GetMaxU() > 0 && m_Handle->GetMaxV() > 0 && m_Handle->GetMaxW() > 0;
-         }
-         else
-         {
-            return m_W > 0 && m_Handle->GetMaxW() > 0;
-         }
+         return (m_W > 0 && m_Handle->GetMaxW() > 0 || m_V > 0 && m_Handle->GetMaxV() > 0 || m_U > 0 && m_Handle->GetMaxU() > 0);
       }
       else
       {
          _ASSERT(m_V == 0 && m_W == 0);
 
-         if(m_IsReset)
-         {
-            _ASSERT(m_U == 0);
-
-            return m_Handle->GetMaxU() > 0;
-         }
-         else
-         {
-            return m_U > 0 && m_Handle->GetMaxU() > 0;
-         }
+         return m_U > 0 && m_Handle->GetMaxU() > 0;
       }
    }
 
@@ -131,31 +123,40 @@ OGPS_Boolean PointIteratorImpl::HasPrev() const
 OGPS_Boolean PointIteratorImpl::MoveNext()
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
-   
+
    if(HasNext())
    {
+      if(m_IsReset)
+      {
+         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+         m_IsReset = FALSE;
+
+         return TRUE;
+      }
+
       if(m_IsMatrix)
       {
-         if(m_W + 1 < m_Handle->GetMaxW())
+         if(m_U + 1 < m_Handle->GetMaxU())
          {
-            ++m_W;
+            ++m_U;
 
             return TRUE;
          }
 
          if(m_V + 1 < m_Handle->GetMaxV())
          {
-            m_W = 0;
             ++m_V;
+            m_U = 0;
 
             return TRUE;
          }
 
-         if(m_U + 1 < m_Handle->GetMaxU())
+         if(m_W + 1 < m_Handle->GetMaxW())
          {
-            m_W = 0;
+            ++m_W;
+            m_U = 0;
             m_V = 0;
-            ++m_U;
 
             return TRUE;
          }
@@ -179,6 +180,20 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
    {
       if(m_IsMatrix)
       {
+         if(m_IsReset)
+         {
+            _ASSERT(m_W == 0 && m_V == 0 && m_U == 0);
+            _ASSERT(m_Handle->GetMaxW() > 0 && m_Handle->GetMaxV() > 0 && m_Handle->GetMaxU() > 0);
+
+            m_W = m_Handle->GetMaxW() - 1;
+            m_V = m_Handle->GetMaxV() - 1;
+            m_U = m_Handle->GetMaxU() - 1;
+
+            m_IsReset = FALSE;
+
+            return TRUE;
+         }
+
          if(m_W > 0)
          {
             --m_W;
@@ -207,19 +222,6 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
 
             return TRUE;
          }
-
-         if(m_IsReset)
-         {
-            _ASSERT(m_Handle->GetMaxW() > 0);
-            _ASSERT(m_Handle->GetMaxV() > 0);
-            _ASSERT(m_Handle->GetMaxU() > 0);
-
-            m_W = m_Handle->GetMaxW() - 1;
-            m_V = m_Handle->GetMaxV() - 1;
-            m_U = m_Handle->GetMaxU() - 1;
-
-            return TRUE;
-         }
       }
       else
       {
@@ -232,7 +234,10 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
 
          if(m_IsReset)
          {
-            m_U = m_Handle->GetMaxU();
+            _ASSERT(m_U == 0);
+            _ASSERT(m_Handle->GetMaxU() > 0);
+
+            m_U = m_Handle->GetMaxU() - 1;
             m_IsReset = FALSE;
 
             return TRUE;
@@ -242,15 +247,15 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
 
    return FALSE;
 }
-
+/* TODO:
 OGPS_Boolean PointIteratorImpl::CreateNext()
 {
    if(m_IsForward)
    {
       _ASSERT(!HasNext());
 
-         if(m_IsMatrix)
-         {
+      if(m_IsMatrix)
+      {
          if((m_W + 1) == m_Handle->GetMaxW() &&
             (m_V + 1) == m_Handle->GetMaxV() &&
             (m_U + 1) == m_Handle->GetMaxU())
@@ -260,9 +265,9 @@ OGPS_Boolean PointIteratorImpl::CreateNext()
                // TODO: neue "range" als missing vorbelegt
             }
          }
-         }
-         else
-         {
+      }
+      else
+      {
          _ASSERT(m_V == 0 && m_W == 0);
 
          if((m_U + 1) == m_Handle->GetMaxU())
@@ -280,7 +285,7 @@ OGPS_Boolean PointIteratorImpl::CreateNext()
 
    return FALSE;
 }
-
+*/
 void PointIteratorImpl::ResetNext()
 {
    if(m_Buffer)
@@ -313,19 +318,19 @@ OGPS_Boolean PointIteratorImpl::GetCurrent(PointVector& vector)
 
    if(m_IsMatrix)
    {
-   return m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
+      return m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
    }
 
    return m_Handle->GetListPoint(m_U, vector);
 }
 
-OGPS_Boolean PointIteratorImpl::SetCurrent(const PointVector* vector)
+OGPS_Boolean PointIteratorImpl::SetCurrent(const PointVector* const vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
    if(m_IsMatrix)
    {
-   return m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
+      return m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
    }
 
    // NULL vector (invalid point) makes no sense in list type
@@ -354,22 +359,22 @@ OGPS_Boolean PointIteratorImpl::GetPosition(
 {
    if(m_IsMatrix)
    {
-   if(u)
-   {
-      *u = m_U;
-   }
+      if(u)
+      {
+         *u = m_U;
+      }
 
-   if(v)
-   {
-      *v = m_V;
-   }
+      if(v)
+      {
+         *v = m_V;
+      }
 
-   if(w)
-   {
-      *w = m_W;
-   }
+      if(w)
+      {
+         *w = m_W;
+      }
 
-   return TRUE;
+      return TRUE;
    }
 
    return FALSE;

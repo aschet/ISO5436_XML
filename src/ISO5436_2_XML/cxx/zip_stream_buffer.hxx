@@ -36,6 +36,12 @@
 /* zlib/minizip */
 #include <zip.h>
 
+#include "../xyssl/md5.h"
+
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
+
 namespace OpenGPS
 {
    class ZipStreamBuffer : public std::streambuf
@@ -43,14 +49,17 @@ namespace OpenGPS
       typedef std::streambuf BaseType;
 
    public:
-      ZipStreamBuffer(zipFile handle);
+      ZipStreamBuffer(zipFile handle, const OGPS_Boolean enable_md5);
       ~ZipStreamBuffer();
+
+      OGPS_Boolean GetMd5(OpenGPS::UnsignedByte md5[16]);
 
    protected:
       virtual std::streamsize xsputn( const char * s, std::streamsize n );
 
    private:
       zipFile m_Handle;
+      md5_context *m_Md5Context;
    };
 
    class ZipOutputStream : public std::ostream

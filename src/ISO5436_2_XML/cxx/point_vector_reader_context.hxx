@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_VECTOR_READER_CONTEXT_HXX
 #define _OPENGPS_POINT_VECTOR_READER_CONTEXT_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 namespace OpenGPS
@@ -43,10 +43,10 @@ namespace OpenGPS
   public:
     virtual ~PointVectorReaderContext();
 
-    virtual OGPS_Boolean Read(short* value) = 0;
-    virtual OGPS_Boolean Read(int* value) = 0;
-    virtual OGPS_Boolean Read(float* value) = 0;
-    virtual OGPS_Boolean Read(double* value) = 0;
+    virtual OGPS_Boolean Read(OGPS_Int16* const value) = 0;
+    virtual OGPS_Boolean Read(OGPS_Int32* const value) = 0;
+    virtual OGPS_Boolean Read(OGPS_Float* const value) = 0;
+    virtual OGPS_Boolean Read(OGPS_Double* const value) = 0;
 
     virtual OGPS_Boolean Skip() = 0;
 

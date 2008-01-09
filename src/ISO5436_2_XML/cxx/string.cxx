@@ -28,50 +28,110 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <opengps/opengps.hxx>
+#include <opengps/cxx/opengps.hxx>
+#include <sstream>
+#include <iomanip>
 #include "stdafx.hxx"
 
 String::String() :
-   BaseType()
-   {
-      m_Chars = NULL;
-   }
-
-   String::String(const BaseType& s) : BaseType(s)
-{
-   m_Chars = NULL;
-}
-     String::String(const OGPS_Character* s) : BaseType(s)
+BaseType()
 {
    m_Chars = NULL;
 }
 
-   String::~String()
-   {
+String::String(const BaseType& s) : BaseType(s)
+{
+   m_Chars = NULL;
+}
+
+String::String(const OGPS_Character* const s) : BaseType(s)
+{
+   m_Chars = NULL;
+}
+
+String::~String()
+{
 #ifdef _UNICODE
-      if(m_Chars)
-      {
-         delete[] m_Chars;
-      }
-#endif
-   }
-
-   const char* String::ToChar()
+   if(m_Chars)
    {
-
-   #ifdef _UNICODE
-      if(m_Chars)
-      {
-         delete[] m_Chars;
-      }
-
-      const size_t len = length();
-      m_Chars = new char[len + 1];
-      wcstombs(m_Chars, c_str(), len);
-      m_Chars[len] = 0;
-
-      return m_Chars;
-#else
-      return c_str();
-   #endif
+      delete[] m_Chars;
    }
+#endif
+}
+
+const char* String::ToChar()
+{
+
+#ifdef _UNICODE
+   if(m_Chars)
+   {
+      delete[] m_Chars;
+   }
+
+   const size_t len = length();
+   m_Chars = new char[len + 1];
+   wcstombs(m_Chars, c_str(), len);
+   m_Chars[len] = 0;
+
+   return m_Chars;
+#else
+   return c_str();
+#endif
+}
+
+OGPS_Boolean String::ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const
+{
+   if(size() != 32)
+   {
+      return FALSE;
+   }
+
+   String str(*this);
+
+   for(size_t n = 30; n > 0; n-=2)
+   {
+      str.insert(n, 1, _T(' '));
+   }
+
+#ifdef _UNICODE
+   std::wistringstream buffer(str);
+#else
+   std::istringstream buffer(str);
+#endif /* _UNICODE */
+
+   int md5n[16];
+   for(size_t k = 0; k < 16; ++k)
+   {
+      buffer >> std::hex >> md5n[k];
+   
+      _ASSERT(md5n[k] >= 0 && md5n[k] < 256);
+
+      md5[k] = (OpenGPS::UnsignedByte)md5n[k];
+   }
+
+   return buffer.eof() && !buffer.fail();
+}
+
+OGPS_Boolean String::ConvertFromMd5(const OpenGPS::UnsignedByte md5[16])
+{
+#ifdef _UNICODE
+   std::wostringstream buffer;
+#else
+   std::ostringstream buffer;
+#endif /* _UNICODE */
+
+   buffer.fill('0');
+
+   for(size_t k = 0; k < 16; ++k)
+   {
+      buffer << std::hex << std::setw(2) << md5[k];
+   }
+
+   if(buffer.good())
+   {
+      assign(buffer.str());
+      return TRUE;
+   }
+
+   return FALSE;
+}

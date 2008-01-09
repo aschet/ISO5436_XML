@@ -36,7 +36,7 @@
 
 #include "stdafx.hxx"
 
-PointVectorProxy::PointVectorProxy(const PointVectorProxyContext* context, const VectorBuffer* buffer)
+PointVectorProxy::PointVectorProxy(const PointVectorProxyContext* const context, VectorBuffer* const buffer)
 : PointVectorBase(), m_Context(context), m_Buffer(buffer)
 {
    _ASSERT(context && buffer);
@@ -52,13 +52,13 @@ PointVectorProxy::PointVectorProxy(const PointVectorProxyContext* context, const
 
 PointVectorProxy::~PointVectorProxy()
 {
-      delete m_X;
-      delete m_Y;
-      delete m_Z;
+   delete m_X;
+   delete m_Y;
+   delete m_Z;
 
-      delete m_U;
-      delete m_V;
-      delete m_W;
+   delete m_U;
+   delete m_V;
+   delete m_W;
 }
 
 const DataPoint* PointVectorProxy::GetX() const
@@ -82,21 +82,21 @@ const DataPoint* PointVectorProxy::GetZ() const
    return m_Z;
 }
 
-DataPoint* const PointVectorProxy::GetX()
+DataPoint* PointVectorProxy::GetX()
 {
    _ASSERT(m_X);
 
    return m_X;
 }
 
-DataPoint* const PointVectorProxy::GetY()
+DataPoint* PointVectorProxy::GetY()
 {
    _ASSERT(m_Y);
 
    return m_Y;
 }
 
-DataPoint* const PointVectorProxy::GetZ()
+DataPoint* PointVectorProxy::GetZ()
 {
    _ASSERT(m_Z);
 
@@ -134,7 +134,7 @@ OGPS_Boolean PointVectorProxy::SetNull()
    return TRUE;
 }
 
-PointVectorProxy::DataPointProxyContext::DataPointProxyContext(PointVectorProxy* vector)
+PointVectorProxy::DataPointProxyContext::DataPointProxyContext(PointVectorProxy* const vector)
 : m_Vector(vector)
 {
    _ASSERT(vector);
@@ -149,11 +149,11 @@ OGPS_Boolean PointVectorProxy::DataPointProxyContext::IsValid() const
    return GetBuffer() != NULL;
 }
 
-PointVectorProxy::UDataPointProxyContext::UDataPointProxyContext(PointVectorProxy* vector)
+PointVectorProxy::UDataPointProxyContext::UDataPointProxyContext(PointVectorProxy* const vector)
 : PointVectorProxy::DataPointProxyContext(vector)
 {
 }
-      
+
 PointVectorProxy::UDataPointProxyContext::~UDataPointProxyContext()
 {
 }
@@ -165,18 +165,25 @@ unsigned long PointVectorProxy::UDataPointProxyContext::GetIndex() const
    return m_Vector->m_Context->GetU();
 }
 
-PointBuffer* const PointVectorProxy::UDataPointProxyContext::GetBuffer() const
+PointBuffer* PointVectorProxy::UDataPointProxyContext::GetBuffer()
 {
    _ASSERT(m_Vector && m_Vector->m_Buffer);
 
    return m_Vector->m_Buffer->GetX();
 }
 
-PointVectorProxy::VDataPointProxyContext::VDataPointProxyContext(PointVectorProxy* vector)
-   : PointVectorProxy::DataPointProxyContext(vector)
+const PointBuffer* PointVectorProxy::UDataPointProxyContext::GetBuffer() const
+{
+   _ASSERT(m_Vector && m_Vector->m_Buffer);
+
+   return m_Vector->m_Buffer->GetX();
+}
+
+PointVectorProxy::VDataPointProxyContext::VDataPointProxyContext(PointVectorProxy* const vector)
+: PointVectorProxy::DataPointProxyContext(vector)
 {
 }
-      
+
 PointVectorProxy::VDataPointProxyContext::~VDataPointProxyContext()
 {
 }
@@ -188,18 +195,25 @@ unsigned long PointVectorProxy::VDataPointProxyContext::GetIndex() const
    return m_Vector->m_Context->GetV();
 }
 
-PointBuffer* const PointVectorProxy::VDataPointProxyContext::GetBuffer() const
+PointBuffer* PointVectorProxy::VDataPointProxyContext::GetBuffer()
 {
    _ASSERT(m_Vector && m_Vector->m_Buffer);
 
    return m_Vector->m_Buffer->GetY();
 }
 
-PointVectorProxy::WDataPointProxyContext::WDataPointProxyContext(PointVectorProxy* vector)
-   : PointVectorProxy::DataPointProxyContext(vector)
+const PointBuffer* PointVectorProxy::VDataPointProxyContext::GetBuffer() const
+{
+   _ASSERT(m_Vector && m_Vector->m_Buffer);
+
+   return m_Vector->m_Buffer->GetY();
+}
+
+PointVectorProxy::WDataPointProxyContext::WDataPointProxyContext(PointVectorProxy* const vector)
+: PointVectorProxy::DataPointProxyContext(vector)
 {
 }
-      
+
 PointVectorProxy::WDataPointProxyContext::~WDataPointProxyContext()
 {
 }
@@ -211,7 +225,14 @@ unsigned long PointVectorProxy::WDataPointProxyContext::GetIndex() const
    return m_Vector->m_Context->GetW();
 }
 
-PointBuffer* const PointVectorProxy::WDataPointProxyContext::GetBuffer() const
+PointBuffer* PointVectorProxy::WDataPointProxyContext::GetBuffer()
+{
+   _ASSERT(m_Vector && m_Vector->m_Buffer);
+
+   return m_Vector->m_Buffer->GetZ();
+}
+
+const PointBuffer* PointVectorProxy::WDataPointProxyContext::GetBuffer() const
 {
    _ASSERT(m_Vector && m_Vector->m_Buffer);
 
@@ -221,9 +242,7 @@ PointBuffer* const PointVectorProxy::WDataPointProxyContext::GetBuffer() const
 
 
 
-
-
-PointVectorProxy::DataPointProxy::DataPointProxy(const DataPointProxyContext* context)
+PointVectorProxy::DataPointProxy::DataPointProxy(DataPointProxyContext* const context)
 : DataPoint(), m_Context(context)
 {
    _ASSERT(context);
@@ -239,8 +258,8 @@ OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const
 
    if(m_Context->IsValid())
    {
-      PointBuffer* buffer = m_Context->GetBuffer();
-   
+      const PointBuffer* const buffer = m_Context->GetBuffer();
+
       if(buffer)
       {
          return buffer->GetType();
@@ -250,11 +269,11 @@ OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const
    return MissingPointType;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(short* const value) const
+OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const
 {
    _ASSERT(m_Context && value);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   const PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       return buffer->Get(m_Context->GetIndex(), *value);
@@ -263,11 +282,11 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Get(short* const value) const
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(int* const value) const
+OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const
 {
    _ASSERT(m_Context && value);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   const PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       return buffer->Get(m_Context->GetIndex(), *value);
@@ -276,11 +295,11 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Get(int* const value) const
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(float* const value) const
+OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const
 {
    _ASSERT(m_Context && value);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   const PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       return buffer->Get(m_Context->GetIndex(), *value);
@@ -289,11 +308,11 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Get(float* const value) const
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(double* const value) const
+OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const
 {
    _ASSERT(m_Context && value);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   const PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       return buffer->Get(m_Context->GetIndex(), *value);
@@ -301,8 +320,8 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Get(double* const value) const
 
    return FALSE;
 }
-    
-double PointVectorProxy::DataPointProxy::Get() const
+
+OGPS_Double PointVectorProxy::DataPointProxy::Get() const
 {
    _ASSERT(FALSE);
 
@@ -317,65 +336,65 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::IsValid() const
    return m_Context->IsValid();
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const short value)
+OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value)
 {
    _ASSERT(m_Context);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       if(buffer->Set(m_Context->GetIndex(), value))
       {
          return TRUE;
-     }
+      }
    }
 
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const int value)
+OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value)
 {
    _ASSERT(m_Context);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       if(buffer->Set(m_Context->GetIndex(), value))
       {
          return TRUE;
-     }
+      }
    }
 
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const float value)
+OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Float value)
 {
    _ASSERT(m_Context);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       if(buffer->Set(m_Context->GetIndex(), value))
       {
          return TRUE;
-     }
+      }
    }
 
    return FALSE;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const double value)
+OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Double value)
 {
    _ASSERT(m_Context);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       if(buffer->Set(m_Context->GetIndex(), value))
       {
          return TRUE;
-     }
+      }
    }
 
    return FALSE;
@@ -385,13 +404,13 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::SetNull()
 {
    _ASSERT(m_Context);
 
-   PointBuffer* buffer = m_Context->GetBuffer();
+   PointBuffer* const buffer = m_Context->GetBuffer();
    if(buffer)
    {
       if(buffer->SetNull(m_Context->GetIndex()))
       {
          return TRUE;
-     }
+      }
    }
 
    return FALSE;
@@ -418,38 +437,39 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const DataPoint& src)
       switch(srcType)
       {
       case Int16PointType:
-         short vs;
+         OGPS_Int16 vs;
          if(src.Get(&vs))
          {
             success = Set(vs);
          }
          break;
-         case Int32PointType:
-         int vl;
+      case Int32PointType:
+         OGPS_Int32 vl;
          if(src.Get(&vl))
          {
             success = Set(vl);
          }
          break;
-         case FloatPointType:
-         short vf;
+      case FloatPointType:
+         OGPS_Float vf;
          if(src.Get(&vf))
          {
             success = Set(vf);
          }
          break;
-         case DoublePointType:
-         short vd;
+      case DoublePointType:
+         OGPS_Double vd;
          if(src.Get(&vd))
          {
             success = Set(vd);
          }
          break;
-         case MissingPointType:
-            break;
-         default:
-            _ASSERT(FALSE);
-            break;
+      case MissingPointType:
+         success = TRUE;
+         break;
+      default:
+         _ASSERT(FALSE);
+         break;
       }
    }
 

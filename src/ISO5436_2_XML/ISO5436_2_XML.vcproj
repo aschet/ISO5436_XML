@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -168,7 +168,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -216,65 +216,69 @@
 			Name="include"
 			>
 			<File
-				RelativePath="..\..\..\include\opengps\data_point.h"
+				RelativePath="..\..\include\opengps\data_point.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\data_point.hxx"
+				RelativePath="..\..\include\opengps\data_point_type.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\data_point_type.h"
+				RelativePath="..\..\include\opengps\iso5436_2.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\iso5436_2.h"
+				RelativePath="..\..\include\opengps\iso5436_2_handle.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\iso5436_2.hxx"
+				RelativePath="..\..\include\opengps\opengps.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\iso5436_2_handle.h"
+				RelativePath="..\..\include\opengps\point_iterator.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\include\opengps\iso5436_2_handle.hxx"
+				RelativePath="..\..\include\opengps\point_vector.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\iso5436_2_xsd.hxx"
+			<Filter
+				Name="cxx"
 				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\opengps.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\opengps.hxx"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\point_iterator.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\point_iterator.hxx"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\point_vector.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\point_vector.hxx"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\opengps\point_vector_base.hxx"
-				>
-			</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\data_point.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\iso5436_2.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\iso5436_2_handle.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\iso5436_2_xsd.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\opengps.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\point_iterator.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\point_vector.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\opengps\cxx\point_vector_base.hxx"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="src"
@@ -314,6 +318,10 @@
 				</FileConfiguration>
 				<File
 					RelativePath=".\iso5436_2.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ISO5436_2.xsx"
 					>
 				</File>
 			</File>
@@ -708,6 +716,18 @@
 				</File>
 				<File
 					RelativePath=".\cxx\zip_stream_buffer.hxx"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="xyssl"
+				>
+				<File
+					RelativePath=".\xyssl\md5.c"
+					>
+				</File>
+				<File
+					RelativePath=".\xyssl\md5.h"
 					>
 				</File>
 			</Filter>

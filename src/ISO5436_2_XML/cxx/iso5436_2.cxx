@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <opengps/iso5436_2.hxx>
+#include <opengps/cxx/iso5436_2.hxx>
 
 #ifndef _OPENGPS_ISO5436_2_CONTAINER_HXX
 #  include "iso5436_2_container.hxx"
@@ -44,17 +44,17 @@ ISO5436_2::ISO5436_2(ISO5436_2 * instance)
 
 /* Open. */
 ISO5436_2::ISO5436_2(
-                     const String& file,
-                     const String& temp)
+                     const OpenGPS::String& file,
+                     const OpenGPS::String& temp)
                      : m_IsProtected(FALSE)
 {
    m_Instance = new ISO5436_2Container(file, temp);
 }
 
-ISO5436_2::ISO5436_2(const String& file)
+ISO5436_2::ISO5436_2(const OpenGPS::String& file)
                      : m_IsProtected(FALSE)
 {
-   m_Instance = new ISO5436_2Container(file, _T("")); /* TODO: empty String? */
+   m_Instance = new ISO5436_2Container(file, _T("")); /* TODO: emptyOpenGPS::String? */
 }
 
 ISO5436_2::~ISO5436_2()
@@ -86,23 +86,24 @@ OGPS_Boolean ISO5436_2::Open(const OGPS_Boolean readOnly)
 OGPS_Boolean ISO5436_2::Create(
             const xsd::Record1Type& record1,
             const xsd::Record2Type& record2,
-            const xsd::MatrixDimensionType& matrix,
+            const xsd::MatrixDimensionType& matrixDimension,
             const OGPS_Boolean useBinaryData)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Create(record1, record2, matrix, useBinaryData);
+   return m_Instance->Create(record1, record2, matrixDimension, useBinaryData);
 }
 
     /* Create list. */
 OGPS_Boolean ISO5436_2::Create(
             const xsd::Record1Type& record1,
             const xsd::Record2Type& record2,
+            const unsigned long listDimension,
             const OGPS_Boolean useBinaryData)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Create(record1, record2, useBinaryData);
+   return m_Instance->Create(record1, record2, listDimension, useBinaryData);
 }
 
 PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator()
@@ -123,7 +124,7 @@ OGPS_Boolean ISO5436_2::SetMatrixPoint(
                                  const unsigned long u,
                                  const unsigned long v,
                                  const unsigned long w,
-                                 const PointVector* vector)
+                                 const PointVector* const vector)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -163,9 +164,9 @@ OGPS_Boolean ISO5436_2::GetMatrixCoord(
                                  const unsigned long u,
                                  const unsigned long v,
                                  const unsigned long w,
-                                 double* x,
-                                 double* y,
-                                 double* z)
+                                 OGPS_Double* const x,
+                                 OGPS_Double* const y,
+                                 OGPS_Double* const z)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -184,9 +185,9 @@ OGPS_Boolean ISO5436_2::IsMatrixCoordValid(
 
 OGPS_Boolean ISO5436_2::GetListCoord(
                                const unsigned long index,
-                               double* x,
-                               double* y,
-                               double* z)
+                               OGPS_Double* const x,
+                               OGPS_Double* const y,
+                               OGPS_Double* const z)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -200,11 +201,11 @@ const ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()
    return m_Instance->GetDocument();
 }
 
-OGPS_Boolean ISO5436_2::Write()
+OGPS_Boolean ISO5436_2::Write(const int compressionLevel)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Write();
+   return m_Instance->Write(compressionLevel);
 }
 
 OGPS_Boolean ISO5436_2::Close()

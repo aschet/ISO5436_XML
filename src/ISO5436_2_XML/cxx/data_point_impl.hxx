@@ -31,7 +31,7 @@
 #ifndef _OPENGPS_DATA_POINT_IMPL_HXX
 #define _OPENGPS_DATA_POINT_IMPL_HXX
 
-#include <opengps/data_point.hxx>
+#include <opengps/cxx/data_point.hxx>
 
 namespace OpenGPS
 {
@@ -43,19 +43,19 @@ namespace OpenGPS
 
       virtual OGPS_DataPointType GetType() const;
 
-      virtual OGPS_Boolean Get(short* const value) const;
-    virtual OGPS_Boolean Get(int* const value) const;
-    virtual OGPS_Boolean Get(float* const value) const;
-    virtual OGPS_Boolean Get(double* const value) const;
+      virtual OGPS_Boolean Get(OGPS_Int16* const value) const;
+    virtual OGPS_Boolean Get(OGPS_Int32* const value) const;
+    virtual OGPS_Boolean Get(OGPS_Float* const value) const;
+    virtual OGPS_Boolean Get(OGPS_Double* const value) const;
 
-      virtual double Get() const;
+      virtual OGPS_Double Get() const;
 
       virtual OGPS_Boolean IsValid() const;
 
-      virtual OGPS_Boolean Set(const short value);
-      virtual OGPS_Boolean Set(const int value);
-      virtual OGPS_Boolean Set(const float value);
-      virtual OGPS_Boolean Set(const double value);
+      virtual OGPS_Boolean Set(const OGPS_Int16 value);
+      virtual OGPS_Boolean Set(const OGPS_Int32 value);
+      virtual OGPS_Boolean Set(const OGPS_Float value);
+      virtual OGPS_Boolean Set(const OGPS_Double value);
 
       virtual OGPS_Boolean SetNull();
 
@@ -71,10 +71,10 @@ namespace OpenGPS
       /* Possible values by data type. */
       typedef union _OGPS_DATA_POINT_VALUE
       {
-         short int16Value;
-         int int32Value;
-         float floatValue;
-         double doubleValue;
+         OGPS_Int16 int16Value;
+         OGPS_Int32 int32Value;
+         OGPS_Float floatValue;
+         OGPS_Double doubleValue;
       } OGPS_DataPointValue;
 
       OGPS_DataPointValue m_Value;

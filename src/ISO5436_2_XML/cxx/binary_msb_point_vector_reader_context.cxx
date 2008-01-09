@@ -36,7 +36,7 @@
 
 #include "stdafx.hxx"
 
-BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const String& filePath)
+BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const OpenGPS::String& filePath)
    : BinaryPointVectorReaderContext()
      {
         m_Stream = new PointVectorInputBinaryFileStream(filePath);
@@ -49,7 +49,7 @@ BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const Strin
         Environment::Reset();
      }
 
-OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(short* value)
+OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -69,7 +69,7 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(short* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(int* value)
+OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -89,7 +89,7 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(int* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(float* value)
+OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -109,7 +109,7 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(float* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(double* value)
+OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 

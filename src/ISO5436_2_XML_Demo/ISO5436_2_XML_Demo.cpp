@@ -31,12 +31,12 @@
 //
 
 #include <opengps/iso5436_2.h>
-#include <opengps/iso5436_2_handle.hxx>
-#include <opengps/iso5436_2.hxx>
-#include <opengps/iso5436_2_xsd.hxx>
-#include <opengps/point_iterator.hxx>
-#include <opengps/point_vector.hxx>
-#include <opengps/data_point.hxx>
+#include <opengps/cxx/iso5436_2_handle.hxx>
+#include <opengps/cxx/iso5436_2.hxx>
+#include <opengps/cxx/iso5436_2_xsd.hxx>
+#include <opengps/cxx/point_iterator.hxx>
+#include <opengps/cxx/point_vector.hxx>
+#include <opengps/cxx/data_point.hxx>
 
 #include <string>
 #include <iostream>
@@ -105,7 +105,7 @@ void simpleExample(OpenGPS::String fileName) {
   MatrixDimensionType matrix(4, 4, 1);
   
   /* Create ISO5436_2 container */
-  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str()/*_T("ISO5436_2sample1.x3p")*/, NULL, record1, record2, matrix, FALSE);
+  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample1.x3p")*/, NULL, record1, record2, matrix, FALSE);
   
   /* Add data points */
   /* 1. Create point vector buffer for three points. */
@@ -200,7 +200,7 @@ void mediumComplexExample(OpenGPS::String fileName) {
   MatrixDimensionType matrix(4, 2, 2);
   
   /* Create ISO5436_2 container */
-  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str()/*_T("ISO5436_2sample5_bin.x3p")*/, NULL, record1, record2, matrix, TRUE);
+  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample5_bin.x3p")*/, NULL, record1, record2, matrix, TRUE);
   
   /* Add data points */
   /* 1. Create point vector buffer for three points. */
@@ -215,7 +215,8 @@ void mediumComplexExample(OpenGPS::String fileName) {
   
   /* Create new points (current point set should be empty - of course) */
   /* Loop all 16 data points we want to add... */
-  while(ogps_CreateNextPoint(iterator))
+  // TODO: while(ogps_CreateNextPoint(iterator))
+  while(ogps_MoveNextPoint(iterator))
   {
     /* Int not short! Although this wouldn't mess up
      * if we had forgotten "L": both data types are compatible,
@@ -253,71 +254,68 @@ void mediumComplexExample(OpenGPS::String fileName) {
   ogps_CloseISO5436_2(&handle);
 }
 
-void readonlyExample(OpenGPS::String fileName) {
-  /* We want to read in some file and read its point data. */
-  
-  /* Open the file, hopefully everything went well... */
-  OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2sample1.x3p")*/, NULL, TRUE);
+void readonlyExample(OpenGPS::String fileName)
+{
+   /* We want to read in some file and read its point data. */
 
-  ogps_WriteISO5436_2(handle);
-  ogps_CloseISO5436_2(&handle);
-  return;
-  
-  /* Obtain handle to xml document. */
-  ISO5436_2Type * document = ogps_GetDocument(handle);
-  
-  /* Is data list? / Is matrix? - uniterestig; we use point iterator. */
+   /* Open the file, hopefully everything went well... */
+   OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample1.x3p")*/, NULL, TRUE);
 
-  /* Create point buffer. */
-  OGPS_PointVectorPtr vector = ogps_CreatePointVector();
-    
-  /* Use iterator to create points in this example. */
-  OGPS_PointIteratorPtr iterator = ogps_CreateNextPointIterator(handle);
-    
-  /* Iterate point data (ignoring if they were stored
+   /* Obtain handle to xml document. */
+   ISO5436_2Type * document = ogps_GetDocument(handle);
+
+   /* Is data list? / Is matrix? - don't care; we use point iterator. */
+
+   /* Create point buffer. */
+   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+   /* Use iterator to create points in this example. */
+   OGPS_PointIteratorPtr iterator = ogps_CreateNextPointIterator(handle);
+
+   /* Matrix indices. */
+   unsigned long u = 0;
+   unsigned long v = 0;
+   unsigned long w = 0;
+
+   /* Iterate point data (ignoring if they were stored
    * in xml directly or in external binary file). */
-  while(ogps_MoveNextPoint(iterator))
-  {
-    /* Matrix indices. */
-    unsigned long u = 0;
-    unsigned long v = 0;
-    unsigned long w = 0;
-  
-    // Get coordinates of this point in the matrix
-    ogps_GetMatrixPosition(iterator, &u, &v, &w);
-    
-    /* Get points at current position. */
-    if(!ogps_GetCurrentPoint(iterator, vector))
-    {
-      // Error!
-      break;
-    }
-      
-    /* Valid data point (not missing)?  */
-    if(ogps_IsValidPoint(vector))
-    {
-      double x, y, z;
-      ogps_GetXYZ(vector, &x, &y, &z);
-        
-      // Write point to console
-      std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << _T("X: ") << x << _T("; Y: ") << y << _T("; Z: ") << z <<std::endl;
-    }    
-    else
-    {
-      std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << ": Invalid point" <<std::endl;
-    }
+   while(ogps_MoveNextPoint(iterator))
+   {
+      // Get coordinates of this point in the matrix
+      ogps_GetMatrixPosition(iterator, &u, &v, &w);
 
-  }
-    
-  // Failed?
-  assert(!ogps_HasNextPoint(iterator));
-    
-  /* Free iterator/buffer */
-  ogps_FreePointIterator(&iterator);
-  ogps_FreePointVector(&vector);
+      /* Get points at current position. */
+      if(!ogps_GetCurrentPoint(iterator, vector))
+      {
+         // Error!
+         break;
+      }
 
-  /* Close file */
-  ogps_CloseISO5436_2(&handle);
+      /* Valid data point (not missing)?  */
+      if(ogps_IsValidPoint(vector))
+      {
+         double x, y, z;
+         ogps_GetXYZ(vector, &x, &y, &z);
+
+         // Write point to console
+         std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << _T("X: ") << x << _T("; Y: ") << y << _T("; Z: ") << z <<std::endl;
+      }    
+      else
+      {
+         std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << ": Invalid point" <<std::endl;
+      }
+
+   }
+
+   // Failed?
+   assert(!ogps_HasNextPoint(iterator));
+
+   /* Free iterator/buffer */
+   ogps_FreePointIterator(&iterator);
+   ogps_FreePointVector(&vector);
+
+   /* Close file */
+   ogps_CloseISO5436_2(&handle);
 }
 
 void readonlyExample2(OpenGPS::String fileName) {
@@ -326,7 +324,7 @@ void readonlyExample2(OpenGPS::String fileName) {
   /* With type information obtained from xml document. */
   
   /* Open the file, hopefully everything went well... */
-  OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2sample4_bin.x3p")*/, NULL, TRUE);
+  OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample4_bin.x3p")*/, NULL, TRUE);
   
   /* Obtain handle to xml document. */
   ISO5436_2Type * document = ogps_GetDocument(handle);
@@ -334,7 +332,7 @@ void readonlyExample2(OpenGPS::String fileName) {
   /* Z axis data type must be present (even if it is an incremental axis). */
   _ASSERT(document->Record1().Axes().CZ().DataType().present());
 
-  /* Is data list? / Is matrix? - uniterestig; we use point iterator. */
+  /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
   /* Create point buffer. */
   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
@@ -429,9 +427,9 @@ void readonlyExample3(OpenGPS::String fileName) {
    iso5436_2.Open(TRUE);
 
   /* Obtain handle to xml document. */
-   const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument(); // TODO: where's const???
+   const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();
   
-  /* Is data list? / Is matrix? - uniterestig; we use point iterator. */
+  /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
   /* Use iterator to create points in this example. */
   OpenGPS::PointIteratorAutoPtr iterator = iso5436_2.CreateNextPointIterator();
@@ -522,13 +520,60 @@ void readonlyExample3(OpenGPS::String fileName) {
   iso5436_2.Close();
 }
 
+void readonlyExample4(OpenGPS::String fileName) {
+   /* We want to read in some file and read its point data. */
+    
+   /* Open the file, hopefully everything went well... */
+   OpenGPS::ISO5436_2 iso5436_2(fileName);
+   if(iso5436_2.Open(TRUE))
+   {
+      /* Obtain handle to xml document. */
+      const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();
+      if(document.get())
+      {
+         /* Is data list? / Is matrix? */
+         if(document->Record3().ListDimension().present())
+         {
+            _ASSERT(!document->Record3().MatrixDimension().present());
+
+            OpenGPS::PointVector vector;
+
+            const unsigned long maxIndex = document->Record3().ListDimension().get();
+            for(unsigned long index = 0; index < maxIndex; ++index)
+            {
+               if(!iso5436_2.GetListPoint(index, vector))
+               {
+                  // Error!
+                  break;
+               }
+
+               if(!iso5436_2.SetListPoint(index, vector))
+               {
+                  break;
+               }
+
+               if(vector.IsValid())
+               {
+                  double x, y, z;
+                  vector.GetXYZ(&x, &y, &z);
+
+                  std::cout << _T("N: ") << index << _T("X: ") << x << _T("; Y: ") << y << _T("; Z: ") << z << std::endl;
+               }
+            }
+         }
+      }
+      iso5436_2.Close();
+   }
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
    //simpleExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1.x3p"));
-   //mediumComplexExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample5_bin.x3p"));
+   //mediumComplexExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample5_bin.x3p"));   
    readonlyExample(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample1_bin.x3p"));
    readonlyExample2(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample3.x3p"));
    readonlyExample3(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample3.x3p"));
+   readonlyExample4(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample2.x3p"));
 
 	return 0;
 }

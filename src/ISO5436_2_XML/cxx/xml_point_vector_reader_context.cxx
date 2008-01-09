@@ -42,7 +42,7 @@ PointVectorReaderContext::~PointVectorReaderContext()
 {
 }
 
-XmlPointVectorReaderContext::XmlPointVectorReaderContext(const StringList* pointVectorList)
+XmlPointVectorReaderContext::XmlPointVectorReaderContext(const StringList* const pointVectorList)
 : PointVectorReaderContext(), m_PointVectorList(pointVectorList)
 {
    _ASSERT(pointVectorList);
@@ -56,7 +56,7 @@ XmlPointVectorReaderContext::~XmlPointVectorReaderContext()
    Reset();
 }
 
-void XmlPointVectorReaderContext::Set(const String& buf)
+void XmlPointVectorReaderContext::Set(const OpenGPS::String& buf)
 {
    _ASSERT(m_Stream);
 
@@ -75,7 +75,7 @@ void XmlPointVectorReaderContext::Reset()
    m_Next = 0;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(short* value)
+OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -88,7 +88,7 @@ OGPS_Boolean XmlPointVectorReaderContext::Read(short* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(int* value)
+OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -101,7 +101,7 @@ OGPS_Boolean XmlPointVectorReaderContext::Read(int* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(float* value)
+OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -114,7 +114,7 @@ OGPS_Boolean XmlPointVectorReaderContext::Read(float* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(double* value)
+OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 

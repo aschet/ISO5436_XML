@@ -44,10 +44,10 @@ namespace OpenGPS
      BinaryMSBPointVectorWriterContext(zipFile handle);
     virtual ~BinaryMSBPointVectorWriterContext();
 
-    virtual OGPS_Boolean Write(const short* value);
-    virtual OGPS_Boolean Write(const int* value);
-    virtual OGPS_Boolean Write(const float* value);
-    virtual OGPS_Boolean Write(const double* value);
+    virtual OGPS_Boolean Write(const OGPS_Int16* const value);
+    virtual OGPS_Boolean Write(const OGPS_Int32* const value);
+    virtual OGPS_Boolean Write(const OGPS_Float* const value);
+    virtual OGPS_Boolean Write(const OGPS_Double* const value);
   };
 }
 

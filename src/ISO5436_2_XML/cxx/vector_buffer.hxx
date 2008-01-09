@@ -35,8 +35,8 @@
 #  include <opengps/data_point_type.h>
 #endif
 
-#ifndef _OPENGPS_POINT_VECTOR_BASE_HXX
-#  include <opengps/point_vector_base.hxx>
+#ifndef _OPENGPS_CXX_POINT_VECTOR_BASE_HXX
+#  include <opengps/cxx/point_vector_base.hxx>
 #endif
 
 #ifndef _OPENGPS_AUTO_PTR_TYPES_HXX
@@ -58,19 +58,25 @@ namespace OpenGPS
       VectorBuffer();
       ~VectorBuffer();
 
-      virtual void SetX(PointBuffer* value);
-      virtual void SetY(PointBuffer* value);
-      virtual void SetZ(PointBuffer* value);
+      virtual void SetX(PointBuffer* const value);
+      virtual void SetY(PointBuffer* const value);
+      virtual void SetZ(PointBuffer* const value);
 
-      virtual void SetValid(ValidBuffer* value);
+      virtual void SetValid(ValidBuffer* const value);
 
-      virtual PointBuffer* const GetX() const;
-      virtual PointBuffer* const GetY() const;
-      virtual PointBuffer* const GetZ() const;
+      virtual PointBuffer* GetX();
+      virtual PointBuffer* GetY();
+      virtual PointBuffer* GetZ();
 
-      virtual ValidBuffer* const GetValid() const;
+      virtual ValidBuffer* GetValid();
 
-      virtual PointVectorAutoPtr GetPointVectorProxy(const PointVectorProxyContext& context) const;
+      virtual const PointBuffer* GetX() const;
+      virtual const PointBuffer* GetY() const;
+      virtual const PointBuffer* GetZ() const;
+
+      virtual const ValidBuffer* GetValid() const;
+
+      virtual PointVectorAutoPtr GetPointVectorProxy(const PointVectorProxyContext& context);
 
    private:
       PointBuffer* m_X;

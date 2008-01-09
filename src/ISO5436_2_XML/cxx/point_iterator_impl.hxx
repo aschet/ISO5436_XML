@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_ITERATOR_IMPL_HXX
 #define _OPENGPS_POINT_ITERATOR_IMPL_HXX
 
-#ifndef _OPENGPS_POINT_ITERATOR_HXX
-#  include <opengps/point_iterator.hxx>
+#ifndef _OPENGPS_CXX_POINT_ITERATOR_HXX
+#  include <opengps/cxx/point_iterator.hxx>
 #endif
 
 #ifndef _OPENGPS_ISO5436_2_CONTAINER_HXX
@@ -55,14 +55,14 @@ namespace OpenGPS
     virtual OGPS_Boolean MoveNext();
     virtual OGPS_Boolean MovePrev();
 
-    virtual OGPS_Boolean CreateNext();
+    // TODO: virtual OGPS_Boolean CreateNext();
 
     virtual void ResetNext();
     virtual void ResetPrev();
 
     virtual OGPS_Boolean GetCurrent(PointVector& vector);
 
-    virtual OGPS_Boolean SetCurrent(const PointVector* vector);
+    virtual OGPS_Boolean SetCurrent(const PointVector* const vector);
     
     virtual OGPS_Boolean GetPosition(unsigned long* const index) const;
     virtual OGPS_Boolean GetPosition(

@@ -60,12 +60,90 @@ OGPS_Character Win32Environment::GetAltDirectorySeparator() const
    return _T('/');
 }
 
-OpenGPS::String Win32Environment::GetPathName(const OpenGPS::String& path) const
+OGPS_Boolean Win32Environment::GetPathName(const OpenGPS::String& path, OpenGPS::String& clean_path) const
 {
    _ASSERT(path.length() > 0);
+   _ASSERT(path.c_str() != clean_path.c_str());
 
-   // TODO: see .NET implementation
-   return path;
+   /* See for reference: http://msdn2.microsoft.com/en-us/library/aa365247(VS.85).aspx */
+
+   /* TODO: This is currently not verified:
+    * Do not use the following reserved device names for the name of a file: CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9. Also avoid these names followed by an extension, for example, NUL.tx7.
+    */
+
+   const int length = path.size();
+
+   clean_path.resize(length);
+   clean_path.erase();   
+
+   const OGPS_Character separator = GetDirectorySeparator();
+
+   OGPS_Boolean hasDroppedChars = FALSE;
+   OGPS_Boolean hasPathSeparator = FALSE;
+   
+   /* Use any character in the current code page for a name, including Unicode characters, except characters in the range of zero (0) through 31, or any character that the file system does not allow. A name can contain characters in the extended character set (128–255). However, it cannot contain the following reserved characters: < > : " / \ | ? *
+   */
+   for(int index = 0; index < length; ++index)
+   {
+      const OGPS_Character c = path.c_str()[index];
+      
+      if(c > 31 &&
+         c != _T('<') &&
+         c != _T('>') &&
+         /* c != _T(':') && TODO: This check is currently omitted, because ':' is allowed in volume names... */
+         c != _T('\"') &&
+         c != _T('|') &&
+         /* c != _T('?') &&  && TODO: This check is currently omitted, because '?' is allowed in UNC names... */
+         c != _T('*'))
+      {
+         if(c == separator || c == GetAltDirectorySeparator())
+         {
+            if(hasPathSeparator)
+            {
+               /* Support UNC names, namely: \\<server>\<share> */
+               if(clean_path.size() == 0)
+               {
+                  clean_path.append(&separator, 1);
+               }
+
+               continue;
+            }
+
+            hasPathSeparator = TRUE;
+            continue;
+         }
+
+         if(hasPathSeparator)
+         {
+            clean_path.append(&separator, 1);
+            hasPathSeparator = FALSE;
+         }
+
+         clean_path.append(&c, 1);
+         continue;
+      }
+
+      hasDroppedChars = TRUE;
+   }
+
+   /* Do not end a file or directory name with a trailing space or a period. Although the underlying file system may support such names, the operating system does not. You can start a name with a period (.).
+    */
+   const int length2 = clean_path.size();
+   for(int index2 = length2 - 1; index2 > 0; --index2)
+   {
+      const OGPS_Character c2 = clean_path.c_str()[index2];
+      
+      if(c2 == _T(' ') || c2 == _T('.'))
+      {         
+         clean_path.resize(index2);
+         hasDroppedChars = TRUE;
+         continue;
+      }
+
+      break;
+   }
+
+   return !hasDroppedChars;
 }
 
 OpenGPS::String Win32Environment::ConcatPathes(const OpenGPS::String& path1, const OpenGPS::String& path2) const
@@ -86,7 +164,7 @@ OpenGPS::String Win32Environment::ConcatPathes(const OpenGPS::String& path1, con
 
    OGPS_Boolean path2StartsWithSeparator = (path2[0] == GetDirectorySeparator() || path2[0] == GetAltDirectorySeparator());
 
-   String path = path1;
+   OpenGPS::String path = path1;
 
    if(path1[path1.length() - 1] != GetDirectorySeparator() && path1[path1.length() - 1] != GetAltDirectorySeparator())
    {
@@ -196,7 +274,7 @@ OGPS_Boolean Win32Environment::RemoveDir(const OpenGPS::String& path) const
 {
    _ASSERT(path.length() > 0);
 
-   const String pattern = ConcatPathes(path, _T("*"));
+   const OpenGPS::String pattern = ConcatPathes(path, _T("*"));
 
    WIN32_FIND_DATA found;
    HANDLE handle = FindFirstFile(pattern.c_str(), &found);
@@ -204,10 +282,10 @@ OGPS_Boolean Win32Environment::RemoveDir(const OpenGPS::String& path) const
    {
       do
       {
-         const String fname = found.cFileName;
+         const OpenGPS::String fname = found.cFileName;
          if(fname != _T(".") && fname != _T(".."))
          {
-            const String fpath = ConcatPathes(path, fname);
+            const OpenGPS::String fpath = ConcatPathes(path, fname);
             DeleteFile(fpath.c_str());
          }
       } while(FindNextFile(handle, &found));
@@ -225,7 +303,7 @@ OpenGPS::String Win32Environment::GetTempDir() const
    OGPS_Character* buffer = new OGPS_Character[size];
    if(GetTempPath(size, buffer) + 1 == size)
    {
-      String path(buffer);
+      OpenGPS::String path(buffer);
       delete buffer;
       return path;
    }
@@ -236,13 +314,63 @@ OpenGPS::String Win32Environment::GetTempDir() const
    return _T("");
 }
 
-OGPS_Boolean Win32Environment::RenameFile(const String& src, const String& dst) const
+OGPS_Boolean Win32Environment::RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const
 {
 #ifdef MOVEFILE_FAIL_IF_NOT_TRACKABLE
    return (MoveFileEx(src.c_str(), dst.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_FAIL_IF_NOT_TRACKABLE | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0);
 #else
    return (MoveFileEx(src.c_str(), dst.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0);
 #endif
+}
+
+OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const
+{
+   const int bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0) - 1;
+   
+   if(bufferLength < 0)
+   {
+      _ASSERT(GetLastError() == ERROR_ENVVAR_NOT_FOUND);
+
+      return FALSE;
+   }
+
+   value.resize(bufferLength);
+   _ASSERT(value.size() == bufferLength);
+
+   /* This readonly->read/write cast should be safe here. GetEnvironmentVariable is not supposed
+   to vary buffer size nor its location. Just new content should be copied in. */
+   if(GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), bufferLength + 1) != bufferLength)
+   {
+      value.erase();
+      return FALSE;
+   }
+   else
+   {
+       OpenGPS::String unescaped;
+      unescaped.assign(value);
+      
+      const int bufferLength2 = ExpandEnvironmentStrings(unescaped.c_str(), NULL, 0) - 1;
+
+      if(bufferLength2 < 0)
+      {
+         _ASSERT(GetLastError() == ERROR_ENVVAR_NOT_FOUND);
+
+         return FALSE;
+      }
+
+      value.resize(bufferLength2);
+      _ASSERT(value.size() == bufferLength2);
+
+      /* Wired cast should be safe here. Same as above. */
+      /* This assumes we use Unicode here. See API for ExpandEnvironmentStrings. */
+      if(ExpandEnvironmentStrings(unescaped.c_str(), (LPTSTR)value.c_str(), bufferLength2 + 1) - 1 != bufferLength2)
+      {
+         value.erase();
+         return FALSE;
+      }
+   }
+
+   return TRUE;
 }
 
 Environment* Environment::CreateInstance()

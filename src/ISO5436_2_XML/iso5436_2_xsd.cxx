@@ -38,7 +38,7 @@
 
 #include <xsd/cxx/pre.hxx>
 
-#include "iso5436_2_xsd.hxx"
+#include "ISO5436_2_xsd.hxx"
 
 namespace xsd
 {

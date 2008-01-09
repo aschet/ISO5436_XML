@@ -41,7 +41,7 @@ PointVectorWriterContext::~PointVectorWriterContext()
 {
 }
 
-XmlPointVectorWriterContext::XmlPointVectorWriterContext(StringList* pointVectorList)
+XmlPointVectorWriterContext::XmlPointVectorWriterContext(StringList* const pointVectorList)
 : PointVectorWriterContext()
 {
    _ASSERT(pointVectorList);
@@ -81,7 +81,7 @@ void XmlPointVectorWriterContext::Reset()
    m_NeedsSeparator = FALSE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const short* value)
+OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -96,7 +96,7 @@ OGPS_Boolean XmlPointVectorWriterContext::Write(const short* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const int* value)
+OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -111,7 +111,7 @@ OGPS_Boolean XmlPointVectorWriterContext::Write(const int* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const float* value)
+OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -126,7 +126,7 @@ OGPS_Boolean XmlPointVectorWriterContext::Write(const float* value)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const double* value)
+OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Double* const value)
 {
    _ASSERT(value);
 
@@ -175,7 +175,7 @@ OGPS_Boolean XmlPointVectorWriterContext::MoveNext()
 {
    if(m_Stream && m_PointVectorList)
    {
-      const String vector = Get();
+      const OpenGPS::String vector = Get();
       xsd::DataListType::Datum_type datum(vector);
       m_PointVectorList->push_back(datum);
 

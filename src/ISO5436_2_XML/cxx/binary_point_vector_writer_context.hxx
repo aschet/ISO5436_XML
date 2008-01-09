@@ -51,10 +51,12 @@ namespace OpenGPS
 
       virtual OGPS_Boolean MoveNext();
 
+      void GetMd5(OpenGPS::UnsignedByte md5[16]);
+
    protected:
       virtual ~BinaryPointVectorWriterContext();
 
-      std::ostream* GetStream() const;
+      std::ostream* GetStream();
       
       OGPS_Boolean HasStream() const;
 

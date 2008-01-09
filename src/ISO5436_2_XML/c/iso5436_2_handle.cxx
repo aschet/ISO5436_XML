@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 #include <opengps/iso5436_2_handle.h>
-#include <opengps/iso5436_2_handle.hxx>
+#include <opengps/cxx/iso5436_2_handle.hxx>
 
 #include "iso5436_2_handle.hxx"
 #include "point_iterator.hxx"
@@ -39,8 +39,8 @@
 #include "../cxx/stdafx.hxx"
 
 OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
-        const OGPS_Character* file,
-        const OGPS_Character* temp,
+        const OGPS_Character* const file,
+        const OGPS_Character* const temp,
         const OGPS_Boolean readOnly)
 {
    _ASSERT(file);
@@ -50,17 +50,22 @@ OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
    h->instance = new OpenGPS::ISO5436_2Container(
       file,
       temp ? temp : _T(""));
-   _VERIFY(h->instance->Open(readOnly));
+
+   if(!h->instance->Open(readOnly))
+   {
+      delete h;
+      return NULL;
+   }
 
    return h;
 }
 
 OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
-        const OGPS_Character* file,
-        const OGPS_Character* temp,
+        const OGPS_Character* const file,
+        const OGPS_Character* const temp,
         const xsd::Record1Type& record1,
         const xsd::Record2Type& record2,
-        const xsd::MatrixDimensionType& matrix,
+        const xsd::MatrixDimensionType& matrixDimension,
         const OGPS_Boolean useBinaryData)
 {
    _ASSERT(file);
@@ -70,11 +75,16 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    h->instance = new OpenGPS::ISO5436_2Container(
       file,
       temp ? temp : _T(""));
-   _VERIFY(h->instance->Create(
+
+   if(!h->instance->Create(
       record1,
       record2,
-      matrix,
-      useBinaryData));
+      matrixDimension,
+      useBinaryData))
+   {
+      delete h;
+      return NULL;
+   }
 
    return h;
 }
@@ -84,6 +94,7 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
         const OGPS_Character* temp,
         const xsd::Record1Type& record1,
         const xsd::Record2Type& record2,
+        const unsigned long listDimension,
         const OGPS_Boolean useBinaryData)
 {
    _ASSERT(file);
@@ -93,10 +104,16 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    h->instance = new OpenGPS::ISO5436_2Container(
       file,
       temp ? temp : _T(""));
-   _VERIFY(h->instance->Create(
+
+   if(!h->instance->Create(
       record1,
       record2,
-      useBinaryData));
+      listDimension,
+      useBinaryData))
+   {
+      delete h;
+      return NULL;
+   }
 
    return h;
 }
@@ -108,15 +125,17 @@ xsd::ISO5436_2Type * ogps_GetDocument(const OGPS_ISO5436_2Handle handle)
    return handle->instance->GetDocument().get();
 }
 
-OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle)
+OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel)
 {
    _ASSERT(handle && handle->instance);
 
-   return handle->instance->Write();
+   return handle->instance->Write(compressionLevel);
 }
 
 OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle)
 {
+   _ASSERT(handle);
+
    OGPS_ISO5436_2Handle h = *handle;
 
    if(h)
@@ -141,7 +160,7 @@ OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle ha
    _ASSERT(handle && handle->instance);
 
    OGPS_PointIteratorPtr iter = new OGPS_PointIterator();
-   iter->instance = &handle->instance->CreateNextPointIterator();
+   iter->instance = handle->instance->CreateNextPointIterator().release();
 
    return iter;
 }
@@ -151,7 +170,7 @@ OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle ha
    _ASSERT(handle && handle->instance);
 
    OGPS_PointIteratorPtr iter = new OGPS_PointIterator;
-   iter->instance = &handle->instance->CreatePrevPointIterator();
+   iter->instance = handle->instance->CreatePrevPointIterator().release();
 
    return iter;
 }
@@ -205,9 +224,9 @@ OGPS_Boolean ogps_GetMatrixCoord(
         const unsigned long u,
         const unsigned long v,
         const unsigned long w,
-        double* x,
-        double* y,
-        double* z)
+        OGPS_Double* const x,
+        OGPS_Double* const y,
+        OGPS_Double* const z)
 {
    _ASSERT(handle && handle->instance);
 
@@ -228,9 +247,9 @@ OGPS_Boolean ogps_IsMatrixCoordValid(
 OGPS_Boolean ogps_GetListCoord(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long index,
-        double* x,
-        double* y,
-        double* z)
+        OGPS_Double* const x,
+        OGPS_Double* const y,
+        OGPS_Double* const z)
 {
    _ASSERT(handle && handle->instance);
 

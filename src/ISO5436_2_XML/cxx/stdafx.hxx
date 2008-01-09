@@ -40,4 +40,40 @@ using namespace OpenGPS;
 #define _OPENGPS_BINFORMAT_FLOAT_SIZE 4
 #define _OPENGPS_BINFORMAT_DOUBLE_SIZE 8
 
+#define _OPENGPS_XSD_ISO5436_NAMESPACE _T("http://www.opengps.eu/xsd/")
+#define _OPENGPS_XSD_ISO5436_LOCATION _T("http://www.opengps.eu/xsd/ISO5436_2.xsd")
+
+#define _OPENGPS_XSD_ISO5436_MAIN_PATH _T("main.xml")
+#define _OPENGPS_XSD_ISO5436_MAIN_CHECKSUM_PATH _T("md5checksum.hex")
+
+#define _OPENGPS_XSD_ISO5436_DATALINK_PATH _T("bindata/data.bin")
+#define _OPENGPS_XSD_ISO5436_VALIDPOINTSLINK_PATH _T("bindata/valid.bin")
+
+// TODO: Unix? / Mac?
+#define _OPENGPS_ENV_ISO5436_LOCATION _T("OPENGPS_XSD_ISO5436_LOCATION")
+
+#ifdef _DEBUG
+
+#include <assert.h>
+
+#ifndef _ASSERT
+#  define _ASSERT(x) assert(x)
+#endif
+
+#ifndef _VERIFY
+#  define _VERIFY(x) _ASSERT(x)
+#endif
+
+#else /* _DEBUG */
+
+#ifndef _ASSERT
+#  define _ASSERT(x) ((void)0)
+#endif
+
+#ifndef _VERIFY
+#  define _VERIFY(x) x
+#endif
+
+#endif /* _DEBUG */
+
 #endif /* _OPENGPS_STDAFX_HXX */

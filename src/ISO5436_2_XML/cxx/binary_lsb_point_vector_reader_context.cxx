@@ -43,7 +43,7 @@ BinaryPointVectorReaderContext::~BinaryPointVectorReaderContext()
 {
 }
 
-BinaryLSBPointVectorReaderContext::BinaryLSBPointVectorReaderContext(const String& filePath)
+BinaryLSBPointVectorReaderContext::BinaryLSBPointVectorReaderContext(const OpenGPS::String& filePath)
 : BinaryPointVectorReaderContext()
 {
    m_Stream = new PointVectorInputBinaryFileStream(filePath);
@@ -54,7 +54,7 @@ BinaryLSBPointVectorReaderContext::~BinaryLSBPointVectorReaderContext()
    Close();
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(short* value)
+OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -69,7 +69,7 @@ OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(short* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(int* value)
+OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -84,7 +84,7 @@ OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(int* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(float* value)
+OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -99,7 +99,7 @@ OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(float* value)
    return FALSE;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(double* value)
+OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 

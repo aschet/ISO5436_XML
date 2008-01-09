@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_ENVIRONMENT_HXX
 #define _OPENGPS_ENVIRONMENT_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 namespace OpenGPS
@@ -40,12 +40,12 @@ namespace OpenGPS
    class Environment
    {
    public:
-      static const Environment* GetInstance();
+      static const Environment* const GetInstance();
       static void Reset();
 
       virtual OGPS_Character GetDirectorySeparator() const = 0;
       virtual OGPS_Character GetAltDirectorySeparator() const = 0;
-      virtual OpenGPS::String GetPathName(const OpenGPS::String& path) const = 0;
+      virtual OGPS_Boolean GetPathName(const OpenGPS::String& path, OpenGPS::String& clean_path) const = 0;
       virtual OpenGPS::String ConcatPathes(const OpenGPS::String& path1, const OpenGPS::String& path2) const = 0;
       virtual OGPS_Boolean PathExists(const OpenGPS::String& file) const = 0;
       virtual OGPS_Boolean RemoveFile(const OpenGPS::String& file) const = 0;
@@ -53,33 +53,37 @@ namespace OpenGPS
       virtual OGPS_Boolean CreateDir(const OpenGPS::String& path) const = 0;
       virtual OGPS_Boolean RemoveDir(const OpenGPS::String& path) const = 0;
       virtual OpenGPS::String GetTempDir() const = 0;
-      virtual OGPS_Boolean RenameFile(const String& src, const String& dst) const = 0;
+      virtual OGPS_Boolean RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const = 0;
+      virtual OGPS_Boolean GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const = 0;
 
       virtual OGPS_Boolean IsLittleEndian() const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap(const short* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap(const short* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap(const OpenGPS::UnsignedBytePtr src, short* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap16(const short* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap16(const short* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap16(const OpenGPS::UnsignedBytePtr src, short* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap(const int* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap(const int* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap(const OpenGPS::UnsignedBytePtr src, int* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap32(const int* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap32(const int* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap32(const OpenGPS::UnsignedBytePtr src, int* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap(const float* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap(const float* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap(const OpenGPS::UnsignedBytePtr src, float* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap32(const float* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap32(const float* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap32(const OpenGPS::UnsignedBytePtr src, float* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap(const double* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap(const double* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap(const OpenGPS::UnsignedBytePtr src, double* const value) const;
 
-      OpenGPS::UnsignedBytePtr ByteSwap64(const double* value, OpenGPS::UnsignedBytePtr dst) const;
+      OpenGPS::UnsignedBytePtr ByteSwap64(const double* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap64(const OpenGPS::UnsignedBytePtr src, double* const value) const;
+
+      // TODO: Statt #define _OPENGPS_ENV_ISO5436_LOCATION _T("OPENGPS_ISO5436_XSD_PATH")
+      //class EnvironmentVariables;
 
    protected:
       Environment();

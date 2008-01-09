@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_VALID_BUFFER_HXX
 #define _OPENGPS_VALID_BUFFER_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #include <iostream>

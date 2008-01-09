@@ -32,7 +32,7 @@
 #include "point_vector_reader_context.hxx"
 #include "point_vector_writer_context.hxx"
 
-#include <opengps/data_point.hxx>
+#include <opengps/cxx/data_point.hxx>
 
 #include "stdafx.hxx"
 
@@ -46,7 +46,7 @@ Int32DataPointParser::~Int32DataPointParser()
     
 OGPS_Boolean Int32DataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
-   int v;
+   OGPS_Int32 v;
    if(context.Read(&v))
    {
       return value.Set(v);
@@ -57,7 +57,7 @@ OGPS_Boolean Int32DataPointParser::Read(PointVectorReaderContext& context, DataP
 
 OGPS_Boolean Int32DataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
 {
-   int v;
+   OGPS_Int32 v;
    if(value.Get(&v))
    {
       return context.Write(&v);

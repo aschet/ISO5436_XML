@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_VECTOR_WRITER_CONTEXT_HXX
 #define _OPENGPS_POINT_VECTOR_WRITER_CONTEXT_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 namespace OpenGPS
@@ -43,10 +43,10 @@ namespace OpenGPS
   public:
     virtual ~PointVectorWriterContext();
 
-    virtual OGPS_Boolean Write(const short* value) = 0;
-    virtual OGPS_Boolean Write(const int* value) = 0;
-    virtual OGPS_Boolean Write(const float* value) = 0;
-    virtual OGPS_Boolean Write(const double* value) = 0;
+    virtual OGPS_Boolean Write(const OGPS_Int16* const value) = 0;
+    virtual OGPS_Boolean Write(const OGPS_Int32* const value) = 0;
+    virtual OGPS_Boolean Write(const OGPS_Float* const value) = 0;
+    virtual OGPS_Boolean Write(const OGPS_Double* const value) = 0;
 
     virtual OGPS_Boolean Skip() = 0;
 

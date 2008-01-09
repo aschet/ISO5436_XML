@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_BUFFER_HXX
 #define _OPENGPS_POINT_BUFFER_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #ifndef _OPENGPS_DATA_POINT_TYPE_H
@@ -59,12 +59,12 @@ namespace OpenGPS
       virtual OGPS_Boolean Get(const unsigned long index, float& value) const;
       virtual OGPS_Boolean Get(const unsigned long index, double& value) const;
 
-      virtual OGPS_Boolean SetNull(const unsigned long index) = 0;
+      virtual OGPS_Boolean SetNull(const unsigned long index);
 
-      virtual OGPS_Boolean Allocate(const unsigned long size) = 0;
+      virtual OGPS_Boolean Allocate(const unsigned long size);
       virtual unsigned long GetSize() const;
 
-      virtual OGPS_DataPointType GetType() const = 0;
+      virtual OGPS_DataPointType GetType() const;
 
    protected:
       OpenGPS::UnsignedBytePtr Allocate(const unsigned long size, const size_t typeSize);

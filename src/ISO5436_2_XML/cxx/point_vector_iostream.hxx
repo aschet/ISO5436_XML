@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_VECTOR_IOSTREAM_HXX
 #define _OPENGPS_POINT_VECTOR_IOSTREAM_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #include <xlocale>
@@ -48,7 +48,7 @@ namespace OpenGPS
       typedef std::ctype<OGPS_Character> BaseType;
 
       public:
-         PointVectorWhitespaceFacet(size_t refs = 0);
+         PointVectorWhitespaceFacet(const size_t refs = 0);
          ~PointVectorWhitespaceFacet();
 
    protected:
@@ -93,7 +93,7 @@ namespace OpenGPS
       typedef std::basic_ifstream<OpenGPS::UnsignedByte> BaseType;
 
    public:
-      PointVectorInputBinaryFileStream(const String& filePath);
+      PointVectorInputBinaryFileStream(const OpenGPS::String& filePath);
       ~PointVectorInputBinaryFileStream();
    };
 
@@ -102,7 +102,7 @@ namespace OpenGPS
       typedef std::basic_ofstream<OpenGPS::UnsignedByte> BaseType;
 
    public:
-      PointVectorOutputBinaryFileStream(const String& filePath);
+      PointVectorOutputBinaryFileStream(const OpenGPS::String& filePath);
       ~PointVectorOutputBinaryFileStream();
    };
 }

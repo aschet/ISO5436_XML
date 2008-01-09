@@ -41,13 +41,13 @@ namespace OpenGPS
 
    class BinaryMSBPointVectorReaderContext : public BinaryPointVectorReaderContext {
   public:
-     BinaryMSBPointVectorReaderContext(const String& filePath);
+     BinaryMSBPointVectorReaderContext(const OpenGPS::String& filePath);
     virtual ~BinaryMSBPointVectorReaderContext();
 
-    virtual OGPS_Boolean Read(short* value);
-    virtual OGPS_Boolean Read(int* value);
-    virtual OGPS_Boolean Read(float* value);
-    virtual OGPS_Boolean Read(double* value);
+    virtual OGPS_Boolean Read(OGPS_Int16* const value);
+    virtual OGPS_Boolean Read(OGPS_Int32* const value);
+    virtual OGPS_Boolean Read(OGPS_Float* const value);
+    virtual OGPS_Boolean Read(OGPS_Double* const value);
 
     virtual OGPS_Boolean Skip();
 

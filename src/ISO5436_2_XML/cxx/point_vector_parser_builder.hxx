@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_VECTOR_PARSER_BUILDER_HXX
 #define _OPENGPS_POINT_VECTOR_PARSER_BUILDER_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #ifndef _OPENGPS_DATA_POINT_TYPE_H
@@ -43,28 +43,28 @@ namespace OpenGPS
 {
    class PointVectorParser;
 
-/* Interface which handles the building process of a specialized parser
+   /* Interface which handles the building process of a specialized parser
    * object for reading and writing typed point data of three axis. */
-  class PointVectorParserBuilder {
-  public:
-     PointVectorParserBuilder();
-    virtual ~PointVectorParserBuilder();
-    
-    /* Build the main parser object itself. */
-    virtual OGPS_Boolean BuildParser();
-    
-    /* Build objects to parse one single data point. Take into account the
-     * axis data type. Connect point parsers with the main parser object. */
-    virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType);
-    virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType);
-    virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType);
-    
-    /* Gets the assembled point vector parser (for three axis). */
-    virtual PointVectorParser* GetParser();
+   class PointVectorParserBuilder {
+   public:
+      PointVectorParserBuilder();
+      virtual ~PointVectorParserBuilder();
 
-  private:
+      /* Build the main parser object itself. */
+      virtual OGPS_Boolean BuildParser();
+
+      /* Build objects to parse one single data point. Take into account the
+      * axis data type. Connect point parsers with the main parser object. */
+      virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType);
+      virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType);
+      virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType);
+
+      /* Gets the assembled point vector parser (for three axis). */
+      virtual PointVectorParser* GetParser();
+
+   private:
       PointVectorParser* m_Parser;
-  };
+   };
 }
 
 #endif /* _OPENGPS_POINT_VECTOR_PARSER_BUILDER_HXX */

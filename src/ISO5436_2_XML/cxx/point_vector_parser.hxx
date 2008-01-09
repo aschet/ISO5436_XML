@@ -31,8 +31,8 @@
 #ifndef _OPENGPS_POINT_VECTOR_PARSER_HXX
 #define _OPENGPS_POINT_VECTOR_PARSER_HXX
 
-#ifndef _OPENGPS_HXX
-#  include <opengps/opengps.hxx>
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
 #ifndef _OPENGPS_DATA_POINT_TYPE_H
@@ -52,9 +52,9 @@ namespace OpenGPS
      PointVectorParser();
     virtual ~PointVectorParser();
 
-    void SetX(DataPointParser* value);
-    void SetY(DataPointParser* value);
-    void SetZ(DataPointParser* value);
+    void SetX(DataPointParser* const value);
+    void SetY(DataPointParser* const value);
+    void SetZ(DataPointParser* const value);
 
     virtual OGPS_Boolean Read(PointVectorReaderContext& context, PointVectorBase& value);
     virtual OGPS_Boolean Write(PointVectorWriterContext& context, const PointVectorBase& value);

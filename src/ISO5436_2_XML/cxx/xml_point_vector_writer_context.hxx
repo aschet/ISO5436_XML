@@ -35,40 +35,40 @@
 #  include "point_vector_writer_context.hxx"
 #endif
 
-#include <opengps/iso5436_2_xsd.hxx>
+#include <opengps/cxx/iso5436_2_xsd.hxx>
 
 namespace OpenGPS
 {
    class PointVectorOutputStringStream;
 
    class XmlPointVectorWriterContext : public PointVectorWriterContext {
-  public:
-     typedef xsd::DataListType::Datum_sequence StringList;
+   public:
+      typedef xsd::DataListType::Datum_sequence StringList;
 
-     XmlPointVectorWriterContext(StringList* pointVectorList);
-    virtual ~XmlPointVectorWriterContext();
+      XmlPointVectorWriterContext(StringList* const pointVectorList);
+      virtual ~XmlPointVectorWriterContext();
 
-    virtual OGPS_Boolean Write(const short* value);
-    virtual OGPS_Boolean Write(const int* value);
-    virtual OGPS_Boolean Write(const float* value);
-    virtual OGPS_Boolean Write(const double* value);
+      virtual OGPS_Boolean Write(const OGPS_Int16* const value);
+      virtual OGPS_Boolean Write(const OGPS_Int32* const value);
+      virtual OGPS_Boolean Write(const OGPS_Float* const value);
+      virtual OGPS_Boolean Write(const OGPS_Double* const value);
 
-    virtual OGPS_Boolean Skip();
+      virtual OGPS_Boolean Skip();
 
-    virtual OGPS_Boolean MoveNext();
+      virtual OGPS_Boolean MoveNext();
 
    protected:
       virtual OGPS_Boolean IsGood() const;
       virtual void AppendSeparator();
 
    private:
-      String Get() const;
+      OpenGPS::String Get() const;
       void Reset();
 
       PointVectorOutputStringStream* m_Stream;
       OGPS_Boolean m_NeedsSeparator;
       StringList* m_PointVectorList;
-  };
+   };
 }
 
 #endif /* _OPENGPS_XML_POINT_VECTOR_WRITER_CONTEXT_HXX */

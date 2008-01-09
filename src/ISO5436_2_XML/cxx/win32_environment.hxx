@@ -47,7 +47,7 @@ namespace OpenGPS
 
       virtual OGPS_Character GetDirectorySeparator() const;
       virtual OGPS_Character GetAltDirectorySeparator() const;
-      virtual OpenGPS::String GetPathName(const OpenGPS::String& path) const;
+      virtual OGPS_Boolean GetPathName(const OpenGPS::String& path, OpenGPS::String& clean_path) const;
       virtual OpenGPS::String ConcatPathes(const OpenGPS::String& path1, const OpenGPS::String& path2) const;
       virtual OGPS_Boolean PathExists(const OpenGPS::String& file) const;
       virtual OGPS_Boolean RemoveFile(const OpenGPS::String& file) const;
@@ -55,7 +55,8 @@ namespace OpenGPS
       virtual OGPS_Boolean CreateDir(const OpenGPS::String& path) const;
       virtual OGPS_Boolean RemoveDir(const OpenGPS::String& path) const;
       virtual OpenGPS::String GetTempDir() const;
-      virtual OGPS_Boolean RenameFile(const String& src, const String& dst) const;
+      virtual OGPS_Boolean RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const;
+      virtual OGPS_Boolean GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const;
 
    private: 
       // TODO: make this work! static Win32Environment m_Instance;
