@@ -1,6 +1,33 @@
 /**
  * \file md5.h
  */
+
+/*
+ *  RFC 1321 compliant MD5 implementation
+ *
+ *  Copyright (C) 2006-2007  Christophe Devine
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License, version 2.1 as published by the Free Software Foundation.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ *  MA  02110-1301  USA
+ */
+/*
+ *  The MD5 algorithm was designed by Ron Rivest in 1991.
+ *
+ *  http://www.ietf.org/rfc/rfc1321.txt
+ */
+
+
 #ifndef XYSSL_MD5_H
 #define XYSSL_MD5_H
 

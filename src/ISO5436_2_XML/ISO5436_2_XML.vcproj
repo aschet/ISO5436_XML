@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
@@ -40,11 +40,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
@@ -58,11 +58,13 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
+				CommandLine=""
+				ExcludedFromBuild="true"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="zlibwapi.lib xerces-c_2D.lib"
-				AdditionalLibraryDirectories="$(SolutionDir)/../zlib/contrib/vstudio/vc8/x86/ZlibDllDebug"
+				AdditionalDependencies="xerces-c_2D.lib"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -82,7 +84,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
@@ -105,9 +107,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
@@ -121,11 +123,13 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
+				CommandLine=""
+				ExcludedFromBuild="true"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="zlibwapi.lib"
-				AdditionalLibraryDirectories="$(SolutionDir)/../zlib/contrib/vstudio/vc8/x86/ZlibDllRelease"
+				AdditionalDependencies="xerces-c_2.lib"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -145,7 +149,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug Demo|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
@@ -168,7 +172,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;;&quot;$(SolutionDir)/../zlib/&quot;;&quot;$(SolutionDir)/../zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -186,11 +190,12 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
+				CommandLine=""
+				ExcludedFromBuild="true"
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="zlibwapi.lib"
-				AdditionalLibraryDirectories="$(SolutionDir)/../zlib/contrib/vstudio/vc8/x86/ZlibDllDebug"
+				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -291,7 +296,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
+						Description="Generate tree parser from XSD"
+						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
 						AdditionalDependencies=""
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -301,7 +307,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
+						Description="Generate tree parser from XSD"
+						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
 						AdditionalDependencies=""
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -311,19 +318,12 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;"
+						Description="Generate tree parser from XSD"
+						CommandLine="xsd.exe cxx-tree --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;"
 						AdditionalDependencies=""
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
 				</FileConfiguration>
-				<File
-					RelativePath=".\iso5436_2.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ISO5436_2.xsx"
-					>
-				</File>
 			</File>
 			<File
 				RelativePath=".\iso5436_2_xsd.cxx"
@@ -337,8 +337,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Publishing iso5436_2.hxx"
-						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -346,8 +348,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Publishing iso5436_2.hxx"
-						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -355,8 +359,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Publishing iso5436_2.hxx"
-						CommandLine="copy &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx/&quot;"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 			</File>
