@@ -28,135 +28,43 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#include <opengps/cxx/exceptions.hxx>
 
 #include "stdafx.hxx"
 
-VectorBuffer::VectorBuffer()
+Exception::Exception(const OGPS_ExceptionChar *text, const OGPS_ExceptionId id) throw()
+   : std::exception(text)
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
-
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
+   m_Id = id;
 }
 
-VectorBuffer::~VectorBuffer()
+Exception::Exception(const Exception& rhs) throw()
+   : std::exception(rhs)
 {
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
-   {
-      delete m_X;
-   }
-
-   if(m_Y)
-   {
-      delete m_Y;
-   }
-
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
+   m_Id = rhs.m_Id;
 }
 
-void VectorBuffer::SetX(PointBuffer* const value)
+Exception::~Exception() throw()
 {
-   _ASSERT(!m_X);
-
-   m_X = value;
 }
 
-void VectorBuffer::SetY(PointBuffer* const value)
+OGPS_ExceptionId Exception::id() const throw()
 {
-   _ASSERT(!m_Y);
-
-   m_Y = value;
+   return m_Id;
 }
 
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
+const OGPS_ExceptionChar * OverflowException::m_Message = _OPENGPS_EXCEPTION_MESG("overflow occured");
 
-   m_Z = value;
+OverflowException::OverflowException() throw()
+   : Exception(OverflowException::m_Message, OGPS_ExOverflow)
+{
 }
 
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
+OverflowException::OverflowException(const OverflowException& rhs) throw()
+   : Exception(rhs)
+{   
 }
 
-PointBuffer* VectorBuffer::GetX()
+OverflowException::~OverflowException() throw()
 {
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
 }

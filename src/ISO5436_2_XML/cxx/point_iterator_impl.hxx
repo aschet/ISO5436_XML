@@ -55,8 +55,6 @@ namespace OpenGPS
     virtual OGPS_Boolean MoveNext();
     virtual OGPS_Boolean MovePrev();
 
-    // TODO: virtual OGPS_Boolean CreateNext();
-
     virtual void ResetNext();
     virtual void ResetPrev();
 
@@ -69,8 +67,6 @@ namespace OpenGPS
             unsigned long* const u,
             unsigned long* const v,
             unsigned long* const w) const;
-
-    PointIteratorImpl& operator=(const PointIteratorImpl& src);
     
   private:
     ISO5436_2Container * const m_Handle;

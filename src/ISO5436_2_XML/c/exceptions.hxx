@@ -28,135 +28,86 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#ifndef _OPENGPS_EXCEPTIONS_HXX
+#define _OPENGPS_EXCEPTIONS_HXX
 
-#include "stdafx.hxx"
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
 
-VectorBuffer::VectorBuffer()
+#ifndef _OPENGPS_CXX_EXCEPTIONS_HXX
+#  include <opengps/cxx/exceptions.hxx>
+#endif
+
+namespace OpenGPS
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
+   class ExceptionHistory
+   {
+   public:
+      static void SetLastException(const Exception& ex);
+      static void SetLastException();
 
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
+      static void Reset();
+
+      static const OGPS_Character* GetLastErrorMessage();
+      static OGPS_ExceptionId GetLastExceptionId();
+
+   private:
+      ExceptionHistory();
+      ~ExceptionHistory();
+
+      static OpenGPS::String m_LastErrorMessage;
+      static OGPS_ExceptionId m_LastExceptionId;
+   };
 }
 
-VectorBuffer::~VectorBuffer()
-{
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
-   {
-      delete m_X;
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      return (STATEMENT); \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(); \
+   } \
+   return FALSE;
+
+
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT, CLEANUP_STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      STATEMENT; \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      CLEANUP_STATEMENT; \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      CLEANUP_STATEMENT; \
+      OpenGPS::ExceptionHistory::SetLastException(); \
    }
 
-   if(m_Y)
-   {
-      delete m_Y;
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_TRYONLY(STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      STATEMENT; \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(); \
    }
 
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
-}
-
-void VectorBuffer::SetX(PointBuffer* const value)
-{
-   _ASSERT(!m_X);
-
-   m_X = value;
-}
-
-void VectorBuffer::SetY(PointBuffer* const value)
-{
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
-}
+#endif /* _OPENGPS_EXCEPTIONS_HXX */

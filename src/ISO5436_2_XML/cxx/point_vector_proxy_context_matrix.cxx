@@ -28,135 +28,106 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#include "point_vector_proxy_context_matrix.hxx"
 
 #include "stdafx.hxx"
 
-VectorBuffer::VectorBuffer()
+PointVectorProxyContextMatrix::PointVectorProxyContextMatrix(
+         const unsigned long maxU,
+         const unsigned long maxV,
+         const unsigned long maxW)
+         : PointVectorProxyContext()
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
+   m_MaxU = maxU;
+   m_MaxV = maxV;
+   m_MaxW = maxW;
 
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
+   m_U = 0;
+   m_V = 0;
+   m_W = 0;
 }
 
-VectorBuffer::~VectorBuffer()
+PointVectorProxyContextMatrix::~PointVectorProxyContextMatrix()
 {
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
+}
+
+OGPS_Boolean PointVectorProxyContextMatrix::SetIndex(
+         const unsigned long u,
+         const unsigned long v,
+         const unsigned long w)
+{
+   if(u < m_MaxU && v < m_MaxV && w < m_MaxW)
    {
-      delete m_X;
+      m_U = u;
+      m_V = v;
+      m_W = w;
+
+      return TRUE;
    }
 
-   if(m_Y)
+   return FALSE;
+}
+
+unsigned long PointVectorProxyContextMatrix::GetIndex() const
+{
+   return ((m_U * m_MaxV * (m_W + 1)) + m_V);
+}
+
+OGPS_Boolean PointVectorProxyContextMatrix::IncrementIndex()
+{
+   if(HasNext())
    {
-      delete m_Y;
+      /*if(m_IsReset)
+      {
+         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+         m_IsReset = FALSE;
+
+         return TRUE;
+      }*/
+
+      if(m_U + 1 < m_MaxU)
+      {
+         ++m_U;
+
+         return TRUE;
+      }
+
+      if(m_V + 1 < m_MaxV)
+      {
+         ++m_V;
+         m_U = 0;
+
+         return TRUE;
+      }
+
+      if(m_W + 1 < m_MaxW)
+      {
+         ++m_W;
+         m_U = 0;
+         m_V = 0;
+
+         return TRUE;
+      }
    }
 
-   if(m_Z)
+   return FALSE;
+}
+
+OGPS_Boolean PointVectorProxyContextMatrix::HasNext() const
+{
+
+   //if(m_IsForward)
    {
-      delete m_Z;
+      /*if(m_IsReset)
+      {
+         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
+
+         return m_Handle->GetMaxU() > 0;
+      }*/
+
+      return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
    }
 
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
-}
-
-void VectorBuffer::SetX(PointBuffer* const value)
-{
-   _ASSERT(!m_X);
-
-   m_X = value;
-}
-
-void VectorBuffer::SetY(PointBuffer* const value)
-{
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
+   return FALSE;
 }

@@ -28,135 +28,48 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_MATRIX_HXX
+#define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_MATRIX_HXX
 
-#include "stdafx.hxx"
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
 
-VectorBuffer::VectorBuffer()
+#ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
+#  include "point_vector_proxy_context.hxx"
+#endif
+
+namespace OpenGPS
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
-
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
-}
-
-VectorBuffer::~VectorBuffer()
-{
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
+   class PointVectorProxyContextMatrix : public PointVectorProxyContext
    {
-      delete m_X;
-   }
+   public:      
+      PointVectorProxyContextMatrix(
+         const unsigned long maxU,
+         const unsigned long maxV,
+         const unsigned long maxW);
+      virtual ~PointVectorProxyContextMatrix();
 
-   if(m_Y)
-   {
-      delete m_Y;
-   }
+      OGPS_Boolean SetIndex(
+         const unsigned long u,
+         const unsigned long v,
+         const unsigned long w);
 
-   if(m_Z)
-   {
-      delete m_Z;
-   }
+      virtual unsigned long GetIndex() const;
 
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
+      virtual OGPS_Boolean IncrementIndex();
+
+   private:
+      OGPS_Boolean HasNext() const;
+
+      unsigned long m_U;
+      unsigned long m_V;
+      unsigned long m_W;
+
+      unsigned long m_MaxU;
+      unsigned long m_MaxV;
+      unsigned long m_MaxW;
+   };
 }
 
-void VectorBuffer::SetX(PointBuffer* const value)
-{
-   _ASSERT(!m_X);
-
-   m_X = value;
-}
-
-void VectorBuffer::SetY(PointBuffer* const value)
-{
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
-}
+#endif /* _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_MATRIX_HXX */

@@ -39,7 +39,7 @@ namespace OpenGPS
 {
    class DataPoint;
 
-   class PointVectorBase
+   class _OPENGPS_EXPORT PointVectorBase
    {
    public:      
       virtual ~PointVectorBase();
@@ -51,9 +51,6 @@ namespace OpenGPS
       virtual DataPoint* GetX() = 0;
       virtual DataPoint* GetY() = 0;
       virtual DataPoint* GetZ() = 0;
-
-      // TODO: aus Interface entfernen!
-      virtual OGPS_Boolean SetNull() = 0;
 
       virtual OGPS_Boolean Set(const PointVectorBase& value) = 0;
       virtual OGPS_Boolean Get(PointVectorBase& value) const = 0;

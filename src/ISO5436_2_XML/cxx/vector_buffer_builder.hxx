@@ -56,7 +56,7 @@ public:
    virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType, const unsigned long size);
    virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType, const unsigned long size);
 
-   virtual OGPS_Boolean BuildValid(const unsigned long size);
+   virtual OGPS_Boolean BuildValidityProvider();
 
    virtual VectorBuffer* GetBuffer();
 

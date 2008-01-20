@@ -28,9 +28,13 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <opengps/cxx/opengps.hxx>
+#include <stdlib.h>
+
 #include <sstream>
 #include <iomanip>
+
+#include <opengps/cxx/opengps.hxx>
+
 #include "stdafx.hxx"
 
 String::String() :
@@ -68,15 +72,68 @@ const char* String::ToChar()
       delete[] m_Chars;
    }
 
+   size_t retval = 0;
    const size_t len = length();
    m_Chars = new char[len + 1];
-   wcstombs(m_Chars, c_str(), len);
-   m_Chars[len] = 0;
+   wcstombs_s(&retval, m_Chars, (len + 1)*sizeof(char), c_str(), len);
+   m_Chars[retval] = 0;
 
    return m_Chars;
 #else
    return c_str();
 #endif
+
+}
+
+void String::FromChar(const char* const s)
+{
+   if(s)
+   {
+#ifdef _UNICODE
+      size_t retval = 0;
+      const size_t len = strlen(s);
+      wchar_t* chars = new wchar_t[len + 1];
+      mbstowcs_s(&retval, chars, (len + 1)*sizeof(wchar_t), s, len);
+      chars[retval] = 0;
+
+      *this = chars;
+
+      delete[] chars;
+#else
+      *this = s;
+#endif
+   }
+   else
+   {
+      clear();
+   }
+}
+
+size_t String::CopyTo(OGPS_Character *const target, const size_t size) const
+{
+   const size_t len = length();
+
+   if(size < len + 1)
+   {
+      return (len + 1);
+   }
+
+   _ASSERT(target);
+
+   if(len > 0)
+   {
+#ifdef _UNICODE
+   wcscpy_s(target, size, c_str());
+#else
+   strcpy_s(target, size, c_str());
+#endif
+   }
+   else
+   {
+      target[len] = 0;
+   }
+
+   return len;
 }
 
 OGPS_Boolean String::ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const

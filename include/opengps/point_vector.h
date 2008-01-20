@@ -52,81 +52,81 @@ extern "C" {
    /* If instance points to NULL new pre-initalized memory will be allocated
    * and true is returned. Otherwise nothing will happen and false is returned.
    Must be freed with ogps_FreePointVector. */
-   OGPS_PointVectorPtr ogps_CreatePointVector(void);
+   _OPENGPS_EXPORT OGPS_PointVectorPtr ogps_CreatePointVector(void);
 
    /* Frees allocated memory and ogps_Sets given pointer to NULL to be on the safe side.
    * Also it is safe to pass an unallocated null-pointer here. This function will
    * perform an noop then. */
-   void ogps_FreePointVector(OGPS_PointVectorPtr * const vector);
+   _OPENGPS_EXPORT void ogps_FreePointVector(OGPS_PointVectorPtr * const vector);
 
    /* Access functions to PointVector properties. */
    /* Returns the DataPoint stored in PointVector or NULL on failure. */
-   void ogps_SetInt16X(
+   _OPENGPS_EXPORT void ogps_SetInt16X(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
-   void ogps_SetInt32X(
+   _OPENGPS_EXPORT void ogps_SetInt32X(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
-   void ogps_SetFloatX(
+   _OPENGPS_EXPORT void ogps_SetFloatX(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
-   void ogps_SetDoubleX(
+   _OPENGPS_EXPORT void ogps_SetDoubleX(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
-   void ogps_SetInt16Y(
+   _OPENGPS_EXPORT void ogps_SetInt16Y(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
-   void ogps_SetInt32Y(
+   _OPENGPS_EXPORT void ogps_SetInt32Y(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
-   void ogps_SetFloatY(
+   _OPENGPS_EXPORT void ogps_SetFloatY(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
-   void ogps_SetDoubleY(
+   _OPENGPS_EXPORT void ogps_SetDoubleY(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
-   void ogps_SetInt16Z(
+   _OPENGPS_EXPORT void ogps_SetInt16Z(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
-   void ogps_SetInt32Z(
+   _OPENGPS_EXPORT void ogps_SetInt32Z(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
-   void ogps_SetFloatZ(
+   _OPENGPS_EXPORT void ogps_SetFloatZ(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
-   void ogps_SetDoubleZ(
+   _OPENGPS_EXPORT void ogps_SetDoubleZ(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
-   void ogps_GetXYZ(
+   _OPENGPS_EXPORT void ogps_GetXYZ(
       const OGPS_PointVectorPtr vector,
       OGPS_Double* const x,
       OGPS_Double* const y,
       OGPS_Double* const z);
 
-   OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector);
-   OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector);
-   OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector);
+   _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector);
+   _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector);
+   _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector);
 
-   OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector);
-   OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector);
-   OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector);
-   OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector);
 
-   OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector);
-   OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector);
-   OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector);
-   OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector);
 
-   OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector);
-   OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector);
-   OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector);
-   OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector);
 
    /* Returns true for valid data point, false otherwise. */
-   OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector);
+   _OPENGPS_EXPORT OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector);
 
 #ifdef __cplusplus
 }

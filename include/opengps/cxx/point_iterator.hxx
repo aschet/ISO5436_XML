@@ -40,7 +40,7 @@ namespace OpenGPS
    class ISO5436_2;
    class PointVector;
 
-   class PointIterator
+   class _OPENGPS_EXPORT PointIterator
    {
    protected:
       PointIterator();
@@ -53,8 +53,6 @@ namespace OpenGPS
 
       virtual OGPS_Boolean MoveNext() = 0;
       virtual OGPS_Boolean MovePrev() = 0;
-
-      // TODO: virtual OGPS_Boolean CreateNext() = 0;
 
       virtual void ResetNext() = 0;
       virtual void ResetPrev() = 0;

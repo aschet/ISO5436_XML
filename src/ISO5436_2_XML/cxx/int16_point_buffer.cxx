@@ -74,12 +74,6 @@ OGPS_Boolean Int16PointBuffer::Get(const unsigned long index, short& value) cons
    return TRUE;
 }
 
-OGPS_Boolean Int16PointBuffer::SetNull(const unsigned long index)
-{
-   short n = 0;
-   return Set(index, n);
-}
-
 OGPS_DataPointType Int16PointBuffer::GetType() const
 {
    return Int16PointType;

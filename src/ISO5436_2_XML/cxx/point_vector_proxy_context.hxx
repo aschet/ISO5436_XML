@@ -31,29 +31,22 @@
 #ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
 #define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
 
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
+
 namespace OpenGPS
 {
-   // TODO: context für matrix und list, builder bauen
-   // bei List muss U=V=W sein
-   // Rename: VectorBufferContext
    class PointVectorProxyContext
    {
-   public:
-      PointVectorProxyContext();
+   public:      
       virtual ~PointVectorProxyContext();
 
-      virtual void SetU(const unsigned long value);
-      virtual void SetV(const unsigned long value);
-      virtual void SetW(const unsigned long value);
+      virtual unsigned long GetIndex() const;
+      virtual OGPS_Boolean IncrementIndex();
 
-      virtual unsigned long GetU() const;
-      virtual unsigned long GetV() const;
-      virtual unsigned long GetW() const;
-
-   private:
-      unsigned long m_U;
-      unsigned long m_V;
-      unsigned long m_W;
+   protected:
+      PointVectorProxyContext();
    };
 }
 

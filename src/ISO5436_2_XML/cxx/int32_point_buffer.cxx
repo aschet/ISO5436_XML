@@ -74,12 +74,6 @@ OGPS_Boolean Int32PointBuffer::Get(const unsigned long index, int& value) const
    return TRUE;
 }
 
-OGPS_Boolean Int32PointBuffer::SetNull(const unsigned long index)
-{
-   int n = 0;
-   return Set(index, n);
-}
-
 OGPS_DataPointType Int32PointBuffer::GetType() const
 {
    return Int32PointType;

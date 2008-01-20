@@ -41,15 +41,22 @@
 
 .... */
 
-#include <memory>
+#ifndef _OPENGPS_CXX_EXCEPTIONS_HXX
+#  include <opengps/cxx/exceptions.hxx>
+#endif
 
-namespace xsd
-{
-   class ISO5436_2Type;
-}
+#include <memory>
 
 namespace OpenGPS
 {
+   namespace Schemas
+   {
+      namespace ISO5436_2
+      {
+         class ISO5436_2Type;
+      }
+   }
+
    class PointBuffer;
    class PointVectorBase;
    class PointIterator;
@@ -61,26 +68,29 @@ namespace OpenGPS
    typedef std::auto_ptr<PointVectorBase> PointVectorAutoPtr;
 
    typedef std::auto_ptr<PointIterator> PointIteratorAutoPtr;
-   typedef std::auto_ptr<xsd::ISO5436_2Type> ISO5436_2TypeAutoPtr;
+   typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
 
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
    typedef std::auto_ptr<VectorBufferBuilder> VectorBufferBuilderAutoPtr;
    typedef std::auto_ptr<PointVectorParserBuilder> PointVectorParserBuilderAutoPtr;
 }
 
-namespace xsd
-{
-   class Record1Type;
-   class Record2Type;
-   class MatrixDimensionType;
-   class ISO5436_2Type;
-}
-
 namespace OpenGPS
 {
+   namespace Schemas
+   {
+      namespace ISO5436_2
+      {
+         class Record1Type;
+         class Record2Type;
+         class MatrixDimensionType;
+         class ISO5436_2Type;
+      }
+   }
+
    class PointVector;
 
-   class ISO5436_2
+   class _OPENGPS_EXPORT ISO5436_2
    {
    protected:
       ISO5436_2(ISO5436_2* instance = NULL);
@@ -98,15 +108,15 @@ namespace OpenGPS
 
       /* Create matrix. */
       virtual OGPS_Boolean Create(
-         const xsd::Record1Type& record1,
-         const xsd::Record2Type& record2,
-         const xsd::MatrixDimensionType& matrixDimension,
+         const Schemas::ISO5436_2::Record1Type& record1,
+         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
          const OGPS_Boolean useBinaryData = TRUE);
 
       /* Create list. */
       virtual OGPS_Boolean Create(
-         const xsd::Record1Type& record1,
-         const xsd::Record2Type& record2,
+         const Schemas::ISO5436_2::Record1Type& record1,
+         const Schemas::ISO5436_2::Record2Type& record2,
          const unsigned long listDimension,
          const OGPS_Boolean useBinaryData = TRUE);
 
@@ -161,8 +171,6 @@ namespace OpenGPS
       /* This is implicitly called on delete, but may savely be called
       from your code explicitly. */
       virtual OGPS_Boolean Close();
-
-      ISO5436_2& operator=(const ISO5436_2& src);
 
    private:
       const OGPS_Boolean m_IsProtected;

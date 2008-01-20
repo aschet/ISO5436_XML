@@ -82,9 +82,6 @@ namespace OpenGPS
       OpenGPS::UnsignedBytePtr ByteSwap64(const double* const value, OpenGPS::UnsignedBytePtr dst) const;
       void ByteSwap64(const OpenGPS::UnsignedBytePtr src, double* const value) const;
 
-      // TODO: Statt #define _OPENGPS_ENV_ISO5436_LOCATION _T("OPENGPS_ISO5436_XSD_PATH")
-      //class EnvironmentVariables;
-
    protected:
       Environment();
       virtual ~Environment();

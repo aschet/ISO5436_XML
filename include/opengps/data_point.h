@@ -52,29 +52,29 @@ extern "C" {
    /* if(ogps_GetType(dataPoint)) { ... } checks if dataPoint has a valid
    * data point value, since MissingPointType == 0. */
    /* Returns MissingPointType if a null-pointer is passed. */
-   OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint);
 
    /* Typesafe access functions to DataPoint properties. */
    /* If you access a missing data point or have anticipated the wrong data type
    * (even if types may be compatible) these functions return null (0/0.0). */
-   OGPS_Int16 ogps_GetInt16(const OGPS_DataPointPtr dataPoint);
-   OGPS_Int32 ogps_GetInt32(const OGPS_DataPointPtr dataPoint);
-   OGPS_Float ogps_GetFloat(const OGPS_DataPointPtr dataPoint);
-   OGPS_Double ogps_GetDouble(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_Float ogps_GetFloat(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_Double ogps_GetDouble(const OGPS_DataPointPtr dataPoint);
 
    /* Typesafe write access to DataPoint properties. */
    /* This functions return false if anything went wrong. This should in fact
    * never ever be the case - except when passing a null-pointer. */
-   void ogps_SetInt16(
+   _OPENGPS_EXPORT void ogps_SetInt16(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Int16 value);
-   void ogps_SetInt32(
+   _OPENGPS_EXPORT void ogps_SetInt32(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Int32 value);
-   void ogps_SetFloat(
+   _OPENGPS_EXPORT void ogps_SetFloat(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Float value);
-   void ogps_SetDouble(
+   _OPENGPS_EXPORT void ogps_SetDouble(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Double value);
 

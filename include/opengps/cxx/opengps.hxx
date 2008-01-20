@@ -45,7 +45,9 @@ namespace OpenGPS
    typedef unsigned char UnsignedByte;
    typedef UnsignedByte* UnsignedBytePtr;
 
-   class String : public
+   typedef char OGPS_ExceptionChar;
+
+   class _OPENGPS_EXPORT String : public
 
 #ifdef _UNICODE
       std::wstring
@@ -71,9 +73,12 @@ namespace OpenGPS
       ~String();
 
       const char* ToChar();
+      void FromChar(const char* const s);
 
       OGPS_Boolean ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const;
       OGPS_Boolean ConvertFromMd5(const OpenGPS::UnsignedByte md5[16]);
+
+      size_t CopyTo(OGPS_Character* const target, const size_t size) const;
 
 #ifdef _UNICODE
    private:
@@ -81,6 +86,26 @@ namespace OpenGPS
 #endif /* _UNICODE */
 
    }; /* classOpenGPS::String */
+
+   class _OPENGPS_EXPORT Info
+   {
+   public:
+      static void GetName(OpenGPS::String* const text);
+      static void GetDescription(OpenGPS::String* const text);
+      static void GetVersion(OpenGPS::String* const text);
+
+      static void PrintVersion();
+
+      static void GetCopyright(OpenGPS::String* const text);
+      static void GetLicense(OpenGPS::String* const text);
+
+      static void PrintCopyright();
+      static void PrintLicense();
+
+   private:
+      Info();
+      ~Info();
+   };
 
 } /* namespace OpenGPS */
 

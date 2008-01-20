@@ -51,27 +51,27 @@ extern "C" {
 
    /* Open an existing ISO5436-2 file. Optionally specify temporary path, where
    unpacked data ogps_Gets stored. Must use ogps_CloseISO5436_2 on this handle. */
-   OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
+   _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
       const OGPS_Character* const file,
       const OGPS_Character* const temp,
       const OGPS_Boolean readOnly);
 
    /* Call before ogps_CloseISO5436_2 to write content. */
-   OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel = -1);
+   _OPENGPS_EXPORT OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel = -1);
 
    /* Close an ISO5436-2 file handle, either opened by openISO5436_2 or
    * createISO5436_2. This does not write any changed content to disk. */
-   OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
+   _OPENGPS_EXPORT OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
 
    /* Returns an iterator or NULL for point sequences of the given handle.
    Must be freed with ogps_FreePointIterator. */
-   OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle);
-   OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle handle);
+   _OPENGPS_EXPORT OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle);
+   _OPENGPS_EXPORT OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle handle);
 
    /* Sets data points at position (x_pos, y_pos, z_pos)^T to given values. */
    /* To be used for topologically accessable data only (matrix type). */
    /* Returns Success on success otherwise indicates what went wrong. */
-   OGPS_Boolean ogps_SetMatrixPoint(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_SetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -81,7 +81,7 @@ extern "C" {
    /* Gets current values of data points at position (x_pos, y_pos, z_pos)^T. */
    /* To be used for topologically accessable data only (matrix type). */
    /* Returns Success on success otherwise indicates what went wrong. */
-   OGPS_Boolean ogps_GetMatrixPoint(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -90,19 +90,19 @@ extern "C" {
 
    /* Sets data points at position index. To be used for one-dimensional data. */
    /* Returns Success on success otherwise indicates what went wrong. */
-   OGPS_Boolean ogps_SetListPoint(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_SetListPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       const OGPS_PointVectorPtr vector);
 
    /* Gets data points at position index. To be used for one-dimensional data. */
    /* Returns Success on success otherwise indicates what went wrong. */
-   OGPS_Boolean ogps_GetListPoint(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       OGPS_PointVectorPtr const vector);
 
-   OGPS_Boolean ogps_GetMatrixCoord(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixCoord(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -111,13 +111,13 @@ extern "C" {
       OGPS_Double* const y,
       OGPS_Double* const z);
 
-   OGPS_Boolean ogps_IsMatrixCoordValid(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrixCoordValid(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
       const unsigned long w);
 
-   OGPS_Boolean ogps_GetListCoord(
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListCoord(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       OGPS_Double* const x,

@@ -84,9 +84,9 @@ OGPS_Boolean ISO5436_2::Open(const OGPS_Boolean readOnly)
 
     /* Create matrix. */
 OGPS_Boolean ISO5436_2::Create(
-            const xsd::Record1Type& record1,
-            const xsd::Record2Type& record2,
-            const xsd::MatrixDimensionType& matrixDimension,
+            const Schemas::ISO5436_2::Record1Type& record1,
+            const Schemas::ISO5436_2::Record2Type& record2,
+            const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
             const OGPS_Boolean useBinaryData)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -96,8 +96,8 @@ OGPS_Boolean ISO5436_2::Create(
 
     /* Create list. */
 OGPS_Boolean ISO5436_2::Create(
-            const xsd::Record1Type& record1,
-            const xsd::Record2Type& record2,
+            const Schemas::ISO5436_2::Record1Type& record1,
+            const Schemas::ISO5436_2::Record2Type& record2,
             const unsigned long listDimension,
             const OGPS_Boolean useBinaryData)
 {
@@ -213,10 +213,4 @@ OGPS_Boolean ISO5436_2::Close()
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->Close();
-}
-
-ISO5436_2& ISO5436_2::operator=(const ISO5436_2& src)
-{
-   // TODO
-   return *this;
 }

@@ -41,17 +41,16 @@ namespace OpenGPS
    class PointVectorWriterContext;
    class DataPoint;
 
-   // TODO: create a template, instantiate int16*,int32*,float*,double* and remove current implementations?
    class DataPointParser {
-  public:    
-    virtual ~DataPointParser();
-    
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value) = 0;
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value) = 0;
+   public:    
+      virtual ~DataPointParser();
+
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value) = 0;
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value) = 0;
 
    protected:
       DataPointParser();
-  };
+   };
 }
 
 #endif /* _OPENGPS_DATA_POINT_PARSER_HXX */

@@ -275,13 +275,6 @@ PointVector& PointVector::operator=(const PointVector& src)
    return *this;
 }
 
-OGPS_Boolean PointVector::SetNull()
-{
-   _ASSERT(m_X && m_Y && m_Z);
-
-   return m_X->SetNull() & m_Y->SetNull() & m_Z->SetNull();
-}
-
 OGPS_Boolean PointVector::Set(const PointVectorBase& value)
 {
    _ASSERT(m_X && m_Y && m_Z);

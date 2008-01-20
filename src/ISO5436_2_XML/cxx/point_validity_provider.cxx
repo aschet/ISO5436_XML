@@ -28,135 +28,27 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
-
+#include "point_validity_provider.hxx"
+#include "point_buffer.hxx"
 #include "stdafx.hxx"
 
-VectorBuffer::VectorBuffer()
+PointValidityProvider::PointValidityProvider(PointBuffer* const value)
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
+   _ASSERT(value);
 
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
+   m_PointBuffer = value;
 }
 
-VectorBuffer::~VectorBuffer()
+PointValidityProvider::~PointValidityProvider()
 {
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
-   {
-      delete m_X;
-   }
-
-   if(m_Y)
-   {
-      delete m_Y;
-   }
-
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
 }
 
-void VectorBuffer::SetX(PointBuffer* const value)
+const PointBuffer* PointValidityProvider::GetPointBuffer() const
 {
-   _ASSERT(!m_X);
-
-   m_X = value;
+   return m_PointBuffer;
 }
 
-void VectorBuffer::SetY(PointBuffer* const value)
+PointBuffer* PointValidityProvider::GetPointBuffer()
 {
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
+   return m_PointBuffer;
 }

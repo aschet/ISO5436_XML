@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="ISO5436_2_XML"
-	ProjectGUID="{745F0451-47F7-400E-BD04-A1741E01A158}"
-	RootNamespace="ISO5436_2_XML"
-	Keyword="Win32Proj"
+	Name="ISO5436_2_XML_DLL"
+	ProjectGUID="{EBBD2F46-1010-49EB-ABAC-C556A8853D8C}"
+	RootNamespace="ISO5436_2_XML_DLL"
 	>
 	<Platforms>
 		<Platform
@@ -17,9 +16,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)-Shared"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
+			UseOfMFC="0"
 			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="1"
@@ -43,11 +43,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -60,17 +59,19 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine=""
-				ExcludedFromBuild="false"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
-				AdditionalLibraryDirectories=""
+				OutputFile="$(OutDir)\$(ProjectName)_D.dll"
+				GenerateDebugInformation="true"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -82,14 +83,21 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)-Shared"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
+			UseOfMFC="0"
 			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="1"
@@ -118,9 +126,8 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				RuntimeLibrary="0"
-				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="0"
@@ -133,17 +140,22 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine=""
-				ExcludedFromBuild="false"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2.lib"
-				OutputFile="$(SolutionDir)\..\..\install\lib\$(ProjectName).lib"
-				AdditionalLibraryDirectories=""
+				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName).dll"
+				LinkIncremental="1"
+				GenerateDebugInformation="false"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -153,80 +165,17 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Publishing include directory."
 				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug Demo|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
-			UseOfATL="1"
-			ATLMinimizesCRunTimeLibraryUsage="true"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-				CommandLine=""
-				ExcludedFromBuild="false"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
-				AdditionalLibraryDirectories=""
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 	</Configurations>
@@ -317,7 +266,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -328,18 +277,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="xsd_Licence_Header.c"
-						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Demo|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -352,43 +290,57 @@
 			<File
 				RelativePath=".\iso5436_2_xsd.hxx"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Demo|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
-					/>
-				</FileConfiguration>
 			</File>
 			<Filter
+				Name="c"
+				>
+				<File
+					RelativePath=".\c\data_point.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\data_point.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\exceptions.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\exceptions.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\info.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\iso5436_2_handle.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\iso5436_2_handle.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\point_iterator.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\point_iterator.hxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\point_vector.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\point_vector.hxx"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="cxx"
-				Filter="*.cxx"
 				>
 				<File
 					RelativePath=".\cxx\binary_lsb_point_vector_reader_context.cxx"
@@ -429,6 +381,24 @@
 				<File
 					RelativePath=".\cxx\exceptions.cxx"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\cxx\float_data_point_parser.cxx"
@@ -441,6 +411,24 @@
 				<File
 					RelativePath=".\cxx\info.cxx"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\cxx\inline_validity.cxx"
@@ -500,15 +488,6 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Demo|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -579,111 +558,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="c"
-				Filter="*.c;*.h"
-				>
-				<File
-					RelativePath=".\c\data_point.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\data_point.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\exceptions.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Demo|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\c\exceptions.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\info.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Demo|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\c\iso5436_2_handle.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\iso5436_2_handle.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\point_iterator.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\point_iterator.hxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\point_vector.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\point_vector.hxx"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="hxx"
-				Filter="*.hxx"
 				>
 				<File
 					RelativePath=".\cxx\auto_ptr_types.hxx"

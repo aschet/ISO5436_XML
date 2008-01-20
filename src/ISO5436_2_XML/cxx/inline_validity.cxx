@@ -28,135 +28,78 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#include <limits>
 
+#include "inline_validity.hxx"
+#include "point_buffer.hxx"
 #include "stdafx.hxx"
 
-VectorBuffer::VectorBuffer()
+FloatInlineValidity::FloatInlineValidity(PointBuffer* const value)
+: PointValidityProvider(value)
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
-
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
+   _ASSERT(value && value->GetType() == FloatPointType);
 }
 
-VectorBuffer::~VectorBuffer()
+FloatInlineValidity::~FloatInlineValidity()
 {
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
+}
+
+OGPS_Boolean FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
+{
+   _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
+
+   if(!value)
    {
-      delete m_X;
+      return GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Float>::infinity());
    }
 
-   if(m_Y)
+   return value;
+}
+
+OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const
+{
+   _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
+
+   OGPS_Float value;
+   if(GetPointBuffer()->Get(index, value))
    {
-      delete m_Y;
+      return value != std::numeric_limits<OGPS_Float>::infinity();
    }
 
-   if(m_Z)
+   return FALSE;
+}
+
+DoubleInlineValidity::DoubleInlineValidity(PointBuffer* const value)
+: PointValidityProvider(value)
+{
+   _ASSERT(value && value->GetType() == DoublePointType);
+}
+
+DoubleInlineValidity::~DoubleInlineValidity()
+{
+}
+
+OGPS_Boolean DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
+{
+   _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
+
+   if(!value)
    {
-      delete m_Z;
+      return GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Double>::infinity());
    }
 
-   if(m_ValidityProvider)
+   return value;
+}
+
+OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const
+{
+   _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
+
+   OGPS_Double value;
+   if(GetPointBuffer()->Get(index, value))
    {
-      delete m_ValidityProvider;
+      return value != std::numeric_limits<OGPS_Double>::infinity();
    }
-}
 
-void VectorBuffer::SetX(PointBuffer* const value)
-{
-   _ASSERT(!m_X);
-
-   m_X = value;
-}
-
-void VectorBuffer::SetY(PointBuffer* const value)
-{
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
+   return FALSE;
 }

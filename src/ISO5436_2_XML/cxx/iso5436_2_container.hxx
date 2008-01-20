@@ -35,6 +35,10 @@
 #  include <opengps/cxx/iso5436_2.hxx>
 #endif
 
+#ifndef _OPENGPS_CXX_EXCEPTIONS_HXX
+#  include <opengps/cxx/exceptions.hxx>
+#endif
+
 #ifndef _OPENGPS_DATA_POINT_TYPE_H
 #  include <opengps/data_point_type.h>
 #endif
@@ -73,15 +77,15 @@ namespace OpenGPS
 
       /* Create matrix. */
       virtual OGPS_Boolean Create(
-         const xsd::Record1Type& record1,
-         const xsd::Record2Type& record2,
-         const xsd::MatrixDimensionType& matrixDimension,
+         const Schemas::ISO5436_2::Record1Type& record1,
+         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
          const OGPS_Boolean useBinaryData = TRUE);
 
       /* Create list. */
       virtual OGPS_Boolean Create(
-         const xsd::Record1Type& record1,
-         const xsd::Record2Type& record2,
+         const Schemas::ISO5436_2::Record1Type& record1,
+         const Schemas::ISO5436_2::Record2Type& record2,
          const unsigned long listDimension,
          const OGPS_Boolean useBinaryData = TRUE);
 
@@ -139,8 +143,6 @@ namespace OpenGPS
       //// NON-ISO5436_2 interface starts here.
       /////////////////////////
 
-      ISO5436_2Container& operator=(const ISO5436_2Container& src);
-
       /* Says whether points are stored in a matrix or list. */
       OGPS_Boolean IsMatrix() const;
 
@@ -180,9 +182,9 @@ namespace OpenGPS
       OGPS_Boolean Compress();
 
       OGPS_Boolean CreateDocument(
-         const xsd::Record1Type* const record1,
-         const xsd::Record2Type* const record2,
-         const xsd::MatrixDimensionType* const matrixDimension,
+         const Schemas::ISO5436_2::Record1Type* const record1,
+         const Schemas::ISO5436_2::Record2Type* const record2,
+         const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
          const unsigned long listDimension,
          const OGPS_Boolean useBinaryData);
 
@@ -196,7 +198,7 @@ namespace OpenGPS
       OGPS_DataPointType GetXaxisDataType() const;
       OGPS_DataPointType GetYaxisDataType() const;
       OGPS_DataPointType GetZaxisDataType() const;
-      OGPS_DataPointType GetAxisDataType(const xsd::AxisDescriptionType& axis, const OGPS_Boolean incremental) const;
+      OGPS_DataPointType GetAxisDataType(const Schemas::ISO5436_2::AxisDescriptionType& axis, const OGPS_Boolean incremental) const;
 
       /* Buffer builder/setup */
       virtual VectorBufferBuilder* CreateVectorBufferBuilder() const;
@@ -205,13 +207,14 @@ namespace OpenGPS
       OGPS_Boolean CreatePointBuffer();
       OGPS_Boolean SavePointBuffer(zipFile handle);
       void ResetXmlPointList();
+      void ResetValidPointsLink();
       OGPS_Boolean SaveValidPointsLink(zipFile handle);
       OGPS_Boolean SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]);
 
       virtual PointVectorReaderContext* CreatePointVectorReaderContext();
       virtual PointVectorWriterContext* CreatePointVectorWriterContext(zipFile handle) const;
 
-      unsigned long GetPointCount() const;
+      unsigned long GetPointCount() const throw(...);
 
       void Reset();
 
@@ -221,6 +224,8 @@ namespace OpenGPS
 
       OGPS_Boolean ReadXmlDocument();
       OGPS_Boolean SaveXmlDocument(zipFile handle);
+
+      virtual PointVectorProxyContextAutoPtr CreatePointVectorProxyContext() const;
 
 
    private:
@@ -235,7 +240,7 @@ namespace OpenGPS
       ISO5436_2TypeAutoPtr m_Document;
       VectorBufferBuilderAutoPtr m_VectorBufferBuilder;
 
-      PointVectorProxyContext m_ProxyContext;
+      PointVectorProxyContextAutoPtr m_ProxyContext;
       PointVectorAutoPtr m_PointVector;
 
       OGPS_Boolean CreateTempDir();
@@ -271,10 +276,8 @@ namespace OpenGPS
       double GetOffsetY() const;
       double GetOffsetZ() const;
 
-      unsigned long GetMatrixColumnCount() const;
-      unsigned long GetMatrixIndex(const unsigned long u,
-         const unsigned long v,
-         const unsigned long w) const;
+      OGPS_Int32 ConvertULongToInt32(const unsigned long value) const throw(...);
+      unsigned long SafeMultipilcation(const unsigned long value1, const unsigned long value2) const throw(...);
    };
 }
 

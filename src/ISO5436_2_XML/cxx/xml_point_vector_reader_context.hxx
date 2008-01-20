@@ -44,7 +44,7 @@ namespace OpenGPS
    class XmlPointVectorReaderContext : public PointVectorReaderContext
    {
    public:
-      typedef xsd::DataListType::Datum_sequence StringList;
+      typedef Schemas::ISO5436_2::DataListType::Datum_sequence StringList;
 
       XmlPointVectorReaderContext(const StringList* const pointVectorList);
       virtual ~XmlPointVectorReaderContext();

@@ -41,7 +41,7 @@
 
 namespace OpenGPS
 {
-   class DataPoint
+   class _OPENGPS_EXPORT DataPoint
    {
    protected:
       DataPoint() = 0;
@@ -64,8 +64,6 @@ namespace OpenGPS
       virtual OGPS_Boolean Set(const OGPS_Int32 value) = 0;
       virtual OGPS_Boolean Set(const OGPS_Float value) = 0;
       virtual OGPS_Boolean Set(const OGPS_Double value) = 0;
-
-      virtual OGPS_Boolean SetNull() = 0;
 
       virtual OGPS_Boolean Set(const DataPoint& src) = 0;
 

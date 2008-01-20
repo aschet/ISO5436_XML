@@ -176,7 +176,7 @@ OGPS_Boolean XmlPointVectorWriterContext::MoveNext()
    if(m_Stream && m_PointVectorList)
    {
       const OpenGPS::String vector = Get();
-      xsd::DataListType::Datum_type datum(vector);
+      Schemas::ISO5436_2::DataListType::Datum_type datum(vector);
       m_PointVectorList->push_back(datum);
 
       Reset();

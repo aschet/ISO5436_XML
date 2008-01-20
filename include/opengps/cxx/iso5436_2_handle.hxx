@@ -39,33 +39,39 @@
 #  include <opengps/iso5436_2_handle.h>
 #endif
 
-namespace xsd
+namespace OpenGPS
 {
-   class ISO5436_2Type;
-   class Record1Type;
-   class Record2Type;
-   class MatrixDimensionType;
+   namespace Schemas
+   {
+      namespace ISO5436_2
+      {
+         class ISO5436_2Type;
+         class Record1Type;
+         class Record2Type;
+         class MatrixDimensionType;
+      }
+   }
 }
 
 /* Create a new ISO5436-2 file. Optionally specify temporary path, where
 unpacked data ogps_Gets stored. Must use ogps_CloseISO5436_2 on this handle. */
-OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
+_OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    const OGPS_Character* const file,
    const OGPS_Character* const temp,
-   const xsd::Record1Type& record1,
-   const xsd::Record2Type& record2,
-   const xsd::MatrixDimensionType& matrixDimension,
+   const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
+   const OpenGPS::Schemas::ISO5436_2::Record2Type& record2,
+   const OpenGPS::Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
    const OGPS_Boolean useBinaryData = TRUE);
 
-OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
+_OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    const OGPS_Character* const file,
    const OGPS_Character* const temp,
-   const xsd::Record1Type& record1,
-   const xsd::Record2Type& record2,
+   const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
+   const OpenGPS::Schemas::ISO5436_2::Record2Type& record2,
    const unsigned long listDimension,
    const OGPS_Boolean useBinaryData = TRUE);
 
 /* Gets pointer to XML-document with read/write access. Returns NULL on error. */
-xsd::ISO5436_2Type * ogps_GetDocument(const OGPS_ISO5436_2Handle handle);
+_OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type * ogps_GetDocument(const OGPS_ISO5436_2Handle handle);
 
 #endif /* _OPENGPS_CXX_ISO5436_2_HANDLE_HXX */

@@ -34,41 +34,18 @@
 
 PointVectorProxyContext::PointVectorProxyContext()
 {
-   m_U = 0;
-   m_V = 0;
-   m_W = 0;
 }
 
 PointVectorProxyContext::~PointVectorProxyContext()
 {
 }
 
-void PointVectorProxyContext::SetU(const unsigned long value)
+unsigned long PointVectorProxyContext::GetIndex() const
 {
-   m_U = value;
+   return 0;
 }
 
-void PointVectorProxyContext::SetV(const unsigned long value)
+OGPS_Boolean PointVectorProxyContext::IncrementIndex()
 {
-   m_V = value;
-}
-
-void PointVectorProxyContext::SetW(const unsigned long value)
-{
-   m_W = value;
-}
-
-unsigned long PointVectorProxyContext::GetU() const
-{
-   return m_U;
-}
-
-unsigned long PointVectorProxyContext::GetV() const
-{
-   return m_V;
-}
-
-unsigned long PointVectorProxyContext::GetW() const
-{
-   return m_W;
+   return FALSE;
 }

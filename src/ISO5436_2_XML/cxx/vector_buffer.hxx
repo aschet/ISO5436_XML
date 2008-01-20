@@ -62,19 +62,23 @@ namespace OpenGPS
       virtual void SetY(PointBuffer* const value);
       virtual void SetZ(PointBuffer* const value);
 
-      virtual void SetValid(ValidBuffer* const value);
+      virtual void SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer);
 
       virtual PointBuffer* GetX();
       virtual PointBuffer* GetY();
       virtual PointBuffer* GetZ();
 
-      virtual ValidBuffer* GetValid();
+      virtual PointValidityProvider* GetValidityProvider();
+      virtual ValidBuffer* GetValidityBuffer();
 
       virtual const PointBuffer* GetX() const;
       virtual const PointBuffer* GetY() const;
       virtual const PointBuffer* GetZ() const;
 
-      virtual const ValidBuffer* GetValid() const;
+      virtual const PointValidityProvider* GetValidityProvider() const;
+      virtual const ValidBuffer* GetValidityBuffer() const;
+
+      OGPS_Boolean HasValidityBuffer() const;
 
       virtual PointVectorAutoPtr GetPointVectorProxy(const PointVectorProxyContext& context);
 
@@ -82,7 +86,9 @@ namespace OpenGPS
       PointBuffer* m_X;
       PointBuffer* m_Y;
       PointBuffer* m_Z;
-      ValidBuffer* m_Valid;
+
+      PointValidityProvider* m_ValidityProvider;
+      ValidBuffer* m_ValidBuffer;
    };
 }
 

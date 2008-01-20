@@ -35,33 +35,55 @@
 #  include <opengps/cxx/opengps.hxx>
 #endif
 
+#ifndef _OPENGPS_POINT_VALIDITY_PROVIDER_HXX
+#  include "point_validity_provider.hxx"
+#endif
+
 #include <iostream>
 
 namespace OpenGPS
 {
-   class ValidBuffer
+   class ValidBuffer : public PointValidityProvider
    {
-   public:
-      ValidBuffer();
+   public:      
       ~ValidBuffer();
 
-      virtual OGPS_Boolean Allocate(const unsigned int size);
+      virtual OGPS_Boolean Allocate();
       virtual OGPS_Boolean IsAllocated() const;
 
-      virtual OGPS_Boolean Read(std::basic_istream<OpenGPS::UnsignedByte>& stream, const unsigned int pointCount);
+      virtual OGPS_Boolean Read(std::basic_istream<OpenGPS::UnsignedByte>& stream);
       virtual OGPS_Boolean Write(std::ostream& stream);
 
       virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
       virtual OGPS_Boolean IsValid(const unsigned int index) const;
 
    protected:
+      ValidBuffer(PointBuffer* const value);
+
       virtual OGPS_Boolean AllocateRaw(const unsigned int rawSize);
       virtual void Reset();
 
    private:
-      OpenGPS::UnsignedBytePtr m_Valid;
-      unsigned long m_Size; /* logically */
+      OpenGPS::UnsignedBytePtr m_ValidityBuffer;
       unsigned long m_RawSize; /* real buffer size in bytes */
+   };
+
+   class Int16ValidBuffer : public ValidBuffer
+   {
+   public:
+      Int16ValidBuffer(PointBuffer* const value);
+      ~Int16ValidBuffer();
+
+      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
+   };
+
+   class Int32ValidBuffer : public ValidBuffer
+   {
+   public:
+      Int32ValidBuffer(PointBuffer* const value);
+      ~Int32ValidBuffer();
+
+      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
    };
 }
 

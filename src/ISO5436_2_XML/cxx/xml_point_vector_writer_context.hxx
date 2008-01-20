@@ -43,7 +43,7 @@ namespace OpenGPS
 
    class XmlPointVectorWriterContext : public PointVectorWriterContext {
    public:
-      typedef xsd::DataListType::Datum_sequence StringList;
+      typedef Schemas::ISO5436_2::DataListType::Datum_sequence StringList;
 
       XmlPointVectorWriterContext(StringList* const pointVectorList);
       virtual ~XmlPointVectorWriterContext();

@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright by Johannes Herwig (NanoFocus AG) 2007                      *
  *   Copyright by Georg Wiora (NanoFocus AG) 2007                          *
  *                                                                         *
  *   This file is part of the openGPS (R)[TM] software library.            *
@@ -11,14 +12,15 @@
  *   "licence_GPL-3.0.txt".                                                *
  *                                                                         *
  *   openGPS is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Lesser General Public License for more details.                   *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  *                                                                         *
- *   openGPS and the openGPS logo is a registered trademark of             *
+ *   The name "openGPS" and the logo are registered as                     *
+ *   European trade mark No. 006178354 for                                 *
  *   Physikalisch Technische Bundesanstalt (PTB)                           *
  *   http://www.ptb.de/                                                    *
  *                                                                         *
@@ -26,35 +28,35 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/// Version definition for the openGPS library
-// TODO: extracted the build number and version from the SVN repository automatically
-//
-// (C) by Georg Wiora, NanoFocus AG
-// 27-Mar-2007
+#ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_LIST_HXX
+#define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_LIST_HXX
 
-/// Name of the program
-#define OPENGPS_NAME "openGPS ISO 5436-2 XML"
-/// Short description of the library
-#define OPENGPS_DESCRIPTION "openGPS class library implementing an xml-version of ISO 5436-2 file format."
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
 
+#ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
+#  include "point_vector_proxy_context.hxx"
+#endif
 
-/// Major program version. This is increased manually in the release process
-#define OPENGPS_VERSION 0
-/// Minor program revision. This is increased manually in the release process
-#define OPENGPS_MINVERSION 1
-/// Build number, automatically extracted from SVN repository
-#define OPENGPS_BUILD 1
-/// openGPS revision (currently unused)
-#define OPENGPS_REVISION 0
+namespace OpenGPS
+{
+   class PointVectorProxyContextList : public PointVectorProxyContext
+   {
+   public:      
+      PointVectorProxyContextList(const unsigned long maxIndex);
+      virtual ~PointVectorProxyContextList();
 
+      virtual OGPS_Boolean SetIndex(const unsigned long index);
 
-/// Build a version string from version numbers
-// This macro is necessary to make a number to string conversion
-#define MSTR(x) #x
-#define OPENGPS_VERSIONSTRING_M(ver,mver,build,rev) MSTR(ver) "." MSTR(mver) "." MSTR(build) "." MSTR(rev)
+      virtual unsigned long GetIndex() const;
 
-/// Build a version string
-#define OPENGPS_VERSIONSTRING OPENGPS_VERSIONSTRING_M(OPENGPS_VERSION, OPENGPS_MINVERSION, OPENGPS_BUILD, OPENGPS_REVISION)
+      virtual OGPS_Boolean IncrementIndex();
 
-/// Define ID string with programm name and Version
-#define OPENGPS_ID OPENGPS_NAME " (V" OPENGPS_VERSIONSTRING ")"
+   private:
+      unsigned long m_Index;
+      unsigned long m_MaxIndex;
+   };
+}
+
+#endif /* _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_LIST_HXX */

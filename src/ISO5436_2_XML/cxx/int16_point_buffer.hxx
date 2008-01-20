@@ -46,10 +46,7 @@ namespace OpenGPS
       virtual OGPS_Boolean Allocate(const unsigned long size);
 
       virtual OGPS_Boolean Set(const unsigned long index, const short value);
-
       virtual OGPS_Boolean Get(const unsigned long index, short& value) const;
-
-      virtual OGPS_Boolean SetNull(const unsigned long index);
 
       virtual OGPS_DataPointType GetType() const;
 

@@ -43,7 +43,7 @@ namespace OpenGPS
 {
    class DataPoint;
 
-   class PointVector : public PointVectorBase
+   class _OPENGPS_EXPORT PointVector : public PointVectorBase
    {
    public:
       PointVector();
@@ -97,9 +97,6 @@ namespace OpenGPS
          OGPS_Double* const z) const;
 
       virtual OGPS_Boolean IsValid() const;
-
-      // TODO: muss hier raus (aus dem Interface!)
-      virtual OGPS_Boolean SetNull();
 
       PointVector& operator=(const PointVector& src);
 

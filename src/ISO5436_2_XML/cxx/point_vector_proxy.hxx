@@ -64,8 +64,6 @@ namespace OpenGPS
       virtual OGPS_Boolean Set(const PointVectorBase& value);
       virtual OGPS_Boolean Get(PointVectorBase& value) const;
 
-      virtual OGPS_Boolean SetNull();
-
    private:
       const PointVectorProxyContext* m_Context;
       VectorBuffer* m_Buffer;
@@ -150,8 +148,6 @@ namespace OpenGPS
          virtual OGPS_Boolean Set(const OGPS_Int32 value);
          virtual OGPS_Boolean Set(const OGPS_Float value);
          virtual OGPS_Boolean Set(const OGPS_Double value);
-
-         virtual OGPS_Boolean SetNull();
 
          virtual OGPS_Boolean Set(const DataPoint& src);
 

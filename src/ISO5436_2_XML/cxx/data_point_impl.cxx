@@ -159,32 +159,6 @@ OGPS_Boolean DataPointImpl::Set(const OGPS_Double value)
    return TRUE;
 }
 
-OGPS_Boolean DataPointImpl::SetNull()
-{
-   switch(m_Type)
-   {
-   case Int16PointType:
-      m_Value.int16Value = 0;
-      break;
-   case Int32PointType:
-      m_Value.int32Value = 0;
-      break;
-   case FloatPointType:
-      m_Value.floatValue = 0.0F;
-      break;
-   case DoublePointType:
-      m_Value.doubleValue = 0.0;
-      break;
-   case MissingPointType:
-      return FALSE;
-
-   default:
-      return FALSE;
-   }
-
-   return TRUE;
-}
-
 OGPS_Boolean DataPointImpl::IsValid() const
 {
    return m_Type != MissingPointType;
@@ -238,4 +212,5 @@ OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
 void DataPointImpl::Reset()
 {
    m_Type = MissingPointType;
+   m_Value.doubleValue = 0.0;
 }

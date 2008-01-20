@@ -59,8 +59,6 @@ namespace OpenGPS
       virtual OGPS_Boolean Get(const unsigned long index, float& value) const;
       virtual OGPS_Boolean Get(const unsigned long index, double& value) const;
 
-      virtual OGPS_Boolean SetNull(const unsigned long index);
-
       virtual OGPS_Boolean Allocate(const unsigned long size);
       virtual unsigned long GetSize() const;
 

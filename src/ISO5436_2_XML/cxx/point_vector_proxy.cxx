@@ -123,17 +123,6 @@ OGPS_Boolean PointVectorProxy::Get(PointVectorBase& value) const
    return (x->Set(*m_X) && y->Set(*m_Y) && z->Set(*m_Z));
 }
 
-OGPS_Boolean PointVectorProxy::SetNull()
-{
-   _ASSERT(m_X && m_Y && m_Z);
-
-   m_X->SetNull();
-   m_Y->SetNull();
-   m_Z->SetNull();
-
-   return TRUE;
-}
-
 PointVectorProxy::DataPointProxyContext::DataPointProxyContext(PointVectorProxy* const vector)
 : m_Vector(vector)
 {
@@ -162,7 +151,7 @@ unsigned long PointVectorProxy::UDataPointProxyContext::GetIndex() const
 {
    _ASSERT(m_Vector && m_Vector->m_Context);
 
-   return m_Vector->m_Context->GetU();
+   return m_Vector->m_Context->GetIndex();
 }
 
 PointBuffer* PointVectorProxy::UDataPointProxyContext::GetBuffer()
@@ -192,7 +181,7 @@ unsigned long PointVectorProxy::VDataPointProxyContext::GetIndex() const
 {
    _ASSERT(m_Vector && m_Vector->m_Context);
 
-   return m_Vector->m_Context->GetV();
+   return m_Vector->m_Context->GetIndex();
 }
 
 PointBuffer* PointVectorProxy::VDataPointProxyContext::GetBuffer()
@@ -222,7 +211,7 @@ unsigned long PointVectorProxy::WDataPointProxyContext::GetIndex() const
 {
    _ASSERT(m_Vector && m_Vector->m_Context);
 
-   return m_Vector->m_Context->GetW();
+   return m_Vector->m_Context->GetIndex();
 }
 
 PointBuffer* PointVectorProxy::WDataPointProxyContext::GetBuffer()
@@ -392,22 +381,6 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Double value)
    if(buffer)
    {
       if(buffer->Set(m_Context->GetIndex(), value))
-      {
-         return TRUE;
-      }
-   }
-
-   return FALSE;
-}
-
-OGPS_Boolean PointVectorProxy::DataPointProxy::SetNull()
-{
-   _ASSERT(m_Context);
-
-   PointBuffer* const buffer = m_Context->GetBuffer();
-   if(buffer)
-   {
-      if(buffer->SetNull(m_Context->GetIndex()))
       {
          return TRUE;
       }

@@ -28,135 +28,42 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "vector_buffer.hxx"
-#include "point_vector_proxy.hxx"
+#ifndef _OPENGPS_CXX_EXCPTIONS_HXX
+#define _OPENGPS_CXX_EXCPTIONS_HXX
 
-#include "stdafx.hxx"
+#include <exception>
 
-VectorBuffer::VectorBuffer()
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
+#endif
+
+namespace OpenGPS
 {
-   m_X = NULL;
-   m_Y = NULL;
-   m_Z = NULL;
-
-   m_ValidityProvider = NULL;
-   m_ValidBuffer = NULL;
-}
-
-VectorBuffer::~VectorBuffer()
-{
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
-   if(m_X)
+   class _OPENGPS_EXPORT Exception : public std::exception
    {
-      delete m_X;
-   }
+   public:      
+      Exception(const Exception& rhs) throw();
+      virtual ~Exception() throw();
 
-   if(m_Y)
+      OGPS_ExceptionId id() const throw();
+
+   protected:
+      Exception(const OGPS_ExceptionChar *text, const OGPS_ExceptionId id) throw();
+
+   private:
+      OGPS_ExceptionId m_Id;
+   };
+
+   class _OPENGPS_EXPORT OverflowException : public Exception
    {
-      delete m_Y;
-   }
+   private:
+      static const OGPS_ExceptionChar * m_Message;
 
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
+   public:
+      OverflowException() throw();
+      OverflowException(const OverflowException& rhs) throw();
+      virtual ~OverflowException() throw();
+   };
 }
 
-void VectorBuffer::SetX(PointBuffer* const value)
-{
-   _ASSERT(!m_X);
-
-   m_X = value;
-}
-
-void VectorBuffer::SetY(PointBuffer* const value)
-{
-   _ASSERT(!m_Y);
-
-   m_Y = value;
-}
-
-void VectorBuffer::SetZ(PointBuffer* const value)
-{
-   _ASSERT(!m_Z);
-
-   m_Z = value;
-}
-
-void VectorBuffer::SetValidityProvider(PointValidityProvider* const value, ValidBuffer* const buffer)
-{
-   _ASSERT(!m_ValidityProvider);
-   _ASSERT(!m_ValidBuffer);
-
-   _ASSERT(buffer == NULL || buffer == value);
-
-   m_ValidityProvider = value;
-   m_ValidBuffer = buffer;
-}
-
-PointBuffer* VectorBuffer::GetX()
-{
-   return m_X;
-}
-
-PointBuffer* VectorBuffer::GetY()
-{
-   return m_Y;
-}
-
-PointBuffer* VectorBuffer::GetZ()
-{
-   return m_Z;
-}
-
-PointValidityProvider* VectorBuffer::GetValidityProvider()
-{
-   return m_ValidityProvider;
-}
-
-ValidBuffer* VectorBuffer::GetValidityBuffer()
-{
-   return m_ValidBuffer;
-}
-
-const PointBuffer* VectorBuffer::GetX() const
-{
-   return m_X;
-}
-
-const PointBuffer* VectorBuffer::GetY() const
-{
-   return m_Y;
-}
-
-const PointBuffer* VectorBuffer::GetZ() const
-{
-   return m_Z;
-}
-
-const PointValidityProvider* VectorBuffer::GetValidityProvider() const
-{
-   return m_ValidityProvider;
-}
-
-const ValidBuffer* VectorBuffer::GetValidityBuffer() const
-{
-   return m_ValidBuffer;
-}
-
-OGPS_Boolean VectorBuffer::HasValidityBuffer() const
-{
-   return m_ValidBuffer != NULL;
-}
-
-PointVectorAutoPtr VectorBuffer::GetPointVectorProxy(const PointVectorProxyContext& context)
-{
-   return PointVectorAutoPtr(new PointVectorProxy(&context, this));
-}
+#endif /* _OPENGPS_CXX_EXCPTIONS_HXX */

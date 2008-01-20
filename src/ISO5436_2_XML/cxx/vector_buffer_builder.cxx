@@ -31,6 +31,8 @@
 #include "vector_buffer_builder.hxx"
 #include "vector_buffer.hxx"
 
+#include "inline_validity.hxx"
+
 #include "int16_point_buffer.hxx"
 #include "int32_point_buffer.hxx"
 #include "float_point_buffer.hxx"
@@ -87,15 +89,43 @@ OGPS_Boolean VectorBufferBuilder::BuildZ(const OGPS_DataPointType dataType, cons
    return success;
 }
 
-OGPS_Boolean VectorBufferBuilder::BuildValid(const unsigned long size)
+OGPS_Boolean VectorBufferBuilder::BuildValidityProvider()
 {
    _ASSERT(m_Buffer);
+   _ASSERT(m_Buffer->GetZ());
 
-   ValidBuffer* valid = new ValidBuffer();
-   if(valid->Allocate(size))
+   PointValidityProvider* provider = NULL;
+   ValidBuffer* validBuffer = NULL;
+
+   PointBuffer * const zBuffer = m_Buffer->GetZ();
+   const OGPS_DataPointType dataType = zBuffer->GetType();
+
+   switch(dataType)
    {
-   m_Buffer->SetValid(valid);
-   return TRUE;
+   case Int16PointType:
+      provider = validBuffer = new Int16ValidBuffer(zBuffer);
+      break;
+   case Int32PointType:
+      provider = validBuffer = new Int32ValidBuffer(zBuffer);
+      break;
+   case FloatPointType:
+      provider = new FloatInlineValidity(zBuffer);
+      break;
+   case DoublePointType:
+      provider = new DoubleInlineValidity(zBuffer);
+      break;
+   case MissingPointType:
+      _ASSERT(FALSE);
+      break;
+   default:
+      _ASSERT(FALSE);
+      break;
+   }
+
+   if(provider)
+   {
+      m_Buffer->SetValidityProvider(provider, validBuffer);
+      return TRUE;
    }
 
    return FALSE;

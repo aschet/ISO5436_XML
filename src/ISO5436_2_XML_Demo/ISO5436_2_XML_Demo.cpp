@@ -45,7 +45,7 @@
 #include <tchar.h>
 
 using namespace std;
-using namespace xsd;
+using namespace OpenGPS::Schemas::ISO5436_2;
 
 void simpleExample(OpenGPS::String fileName) {
   /* Simple example where we have two incremental and one absolute axis (the z-axis). */
@@ -357,16 +357,16 @@ void readonlyExample2(OpenGPS::String fileName) {
        if(document->Record1().Axes().CX().DataType().present())
        {
       switch(document->Record1().Axes().CX().DataType().get()) {
-        case xsd::DataType::I : {
+        case DataType::I : {
             short xs = ogps_GetInt16X(vector);
           } break;
-          case xsd::DataType::L : {
+          case DataType::L : {
             int xi = ogps_GetInt32X(vector);
           } break;
-          case xsd::DataType::F : {
+          case DataType::F : {
             float xf = ogps_GetFloatX(vector);
           } break;
-          case xsd::DataType::D : {
+          case DataType::D : {
             double xd = ogps_GetDoubleX(vector);
           } break;
         }
@@ -375,32 +375,32 @@ void readonlyExample2(OpenGPS::String fileName) {
        if(document->Record1().Axes().CY().DataType().present())
        {
       switch(document->Record1().Axes().CY().DataType().get()) {
-        case xsd::DataType::I : {
+        case DataType::I : {
             short ys = ogps_GetInt16Y(vector);
           } break;
-          case xsd::DataType::L : {
+          case DataType::L : {
             int yi = ogps_GetInt32Y(vector);
           } break;
-          case xsd::DataType::F : {
+          case DataType::F : {
             float yf = ogps_GetFloatY(vector);
           } break;
-          case xsd::DataType::D : {
+          case DataType::D : {
             double yd = ogps_GetDoubleY(vector);
           } break;
         }
        }
 
       switch(document->Record1().Axes().CZ().DataType().get()) {
-        case xsd::DataType::I : {
+        case DataType::I : {
             short zs = ogps_GetInt16Z(vector);
           } break;
-          case xsd::DataType::L : {
+          case DataType::L : {
             int zi = ogps_GetInt32Z(vector);
           } break;
-          case xsd::DataType::F : {
+          case DataType::F : {
             float zf = ogps_GetFloatZ(vector);
           } break;
-          case xsd::DataType::D : {
+          case DataType::D : {
             double zd = ogps_GetDoubleZ(vector);
           } break;
         }

@@ -57,15 +57,13 @@ namespace OpenGPS
       virtual OGPS_Boolean Set(const OGPS_Float value);
       virtual OGPS_Boolean Set(const OGPS_Double value);
 
-      virtual OGPS_Boolean SetNull();
-
       virtual OGPS_Boolean Set(const DataPoint& src);
 
    protected:
       virtual void Reset();
 
    private:
-      /* Tag: defines which value type is valid. */
+      /* Tag. Defines which value type is valid. */
       OGPS_DataPointType m_Type;
 
       /* Possible values by data type. */

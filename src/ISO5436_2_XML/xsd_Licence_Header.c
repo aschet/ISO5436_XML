@@ -4,7 +4,8 @@
  *   Jörg Seewig (Uni Hannover),                                           *
  *   Andreas Walther (NanoFocus AG),                                       *
  *   Mark A. Weber (NanoFocus AG) 2007                                     *
- *   Johannes Herwig (Uni-Duisburg-Essen) 2007                             *
+ *   Johannes Herwig (Uni Duisburg-Essen) 2007                             *
+ *                                                                         *
  *   This file is part of the openGPS (R)[TM] software library.            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,3 +32,4 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+#include <opengps/opengps.h>

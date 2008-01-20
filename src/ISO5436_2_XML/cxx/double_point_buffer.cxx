@@ -74,12 +74,6 @@ OGPS_Boolean DoublePointBuffer::Get(const unsigned long index, double& value) co
    return TRUE;
 }
 
-OGPS_Boolean DoublePointBuffer::SetNull(const unsigned long index)
-{
-   double n = 0.0;
-   return Set(index, n);
-}
-
 OGPS_DataPointType DoublePointBuffer::GetType() const
 {
    return DoublePointType;

@@ -247,45 +247,7 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
 
    return FALSE;
 }
-/* TODO:
-OGPS_Boolean PointIteratorImpl::CreateNext()
-{
-   if(m_IsForward)
-   {
-      _ASSERT(!HasNext());
 
-      if(m_IsMatrix)
-      {
-         if((m_W + 1) == m_Handle->GetMaxW() &&
-            (m_V + 1) == m_Handle->GetMaxV() &&
-            (m_U + 1) == m_Handle->GetMaxU())
-         {
-            if(!m_Buffer)
-            {
-               // TODO: neue "range" als missing vorbelegt
-            }
-         }
-      }
-      else
-      {
-         _ASSERT(m_V == 0 && m_W == 0);
-
-         if((m_U + 1) == m_Handle->GetMaxU())
-         {
-            if(!m_Buffer)
-            {
-               m_Buffer = new PointVector();
-               ++m_U;
-
-               return TRUE;
-            }
-         }
-      }
-   }
-
-   return FALSE;
-}
-*/
 void PointIteratorImpl::ResetNext()
 {
    if(m_Buffer)
@@ -378,10 +340,4 @@ OGPS_Boolean PointIteratorImpl::GetPosition(
    }
 
    return FALSE;
-}
-
-PointIteratorImpl& PointIteratorImpl::operator=(const PointIteratorImpl& src)
-{
-   // TODO
-   return *this;
 }

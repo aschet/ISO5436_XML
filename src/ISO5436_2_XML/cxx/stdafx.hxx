@@ -40,8 +40,8 @@ using namespace OpenGPS;
 #define _OPENGPS_BINFORMAT_FLOAT_SIZE 4
 #define _OPENGPS_BINFORMAT_DOUBLE_SIZE 8
 
-#define _OPENGPS_XSD_ISO5436_NAMESPACE _T("http://www.opengps.eu/xsd/")
-#define _OPENGPS_XSD_ISO5436_LOCATION _T("http://www.opengps.eu/xsd/ISO5436_2.xsd")
+#define _OPENGPS_XSD_ISO5436_NAMESPACE _T("http://www.opengps.eu/2008/ISO5436_2")
+#define _OPENGPS_XSD_ISO5436_LOCATION _T("http://www.opengps.eu/2008/ISO5436_2/ISO5436_2.xsd")
 
 #define _OPENGPS_XSD_ISO5436_MAIN_PATH _T("main.xml")
 #define _OPENGPS_XSD_ISO5436_MAIN_CHECKSUM_PATH _T("md5checksum.hex")
@@ -50,7 +50,8 @@ using namespace OpenGPS;
 #define _OPENGPS_XSD_ISO5436_VALIDPOINTSLINK_PATH _T("bindata/valid.bin")
 
 // TODO: Unix? / Mac?
-#define _OPENGPS_ENV_ISO5436_LOCATION _T("OPENGPS_LOCATION")
+#define _OPENGPS_ENV_OPENGPS_LOCATION _T("OPENGPS_LOCATION")
+#define _OPENGPS_ISO5436_LOCATION _T("ISO5436_2_XML/iso5436_2.xsd")
 
 #ifdef _DEBUG
 
@@ -75,5 +76,42 @@ using namespace OpenGPS;
 #endif
 
 #endif /* _DEBUG */
+
+#define _OPENGPS_EXCEPTION_MESG(x) x
+
+/// Version definition for the openGPS library
+// TODO: extracted the build number and version from the SVN repository automatically
+
+/// Name of the program
+#define _OPENGPS_NAME _T("openGPS ISO 5436-2 XML")
+/// Short description of the library
+#define _OPENGPS_DESCRIPTION _T("openGPS class library implementing an xml-version of ISO 5436-2 file format.")
+
+
+/// Major program version. This is increased manually in the release process
+#define _OPENGPS_VERSION 0
+/// Minor program revision. This is increased manually in the release process
+#define _OPENGPS_MINVERSION 1
+/// Build number, automatically extracted from SVN repository
+#define _OPENGPS_BUILD 1
+/// openGPS revision (currently unused)
+#define _OPENGPS_REVISION 0
+
+
+/// Build a version string from version numbers
+// This macro is necessary to make a number to string conversion
+#ifdef _UNICODE
+#  define _OPENGPS_MSTR(x) L#x
+#else
+#  define _OPENGPS_MSTR(x) #x
+#endif /* _UNICODE */
+
+#define _OPENGPS_VERSIONSTRING_M(ver,mver,build,rev) _OPENGPS_MSTR(ver) _T(".") _OPENGPS_MSTR(mver) _T(".") _OPENGPS_MSTR(build) _T(".") _OPENGPS_MSTR(rev)
+
+/// Build a version string
+#define _OPENGPS_VERSIONSTRING _OPENGPS_VERSIONSTRING_M(_OPENGPS_VERSION, _OPENGPS_MINVERSION, _OPENGPS_BUILD, _OPENGPS_REVISION)
+
+/// Define ID string with programm name and Version
+#define _OPENGPS_ID _OPENGPS_NAME _T(" (V") _OPENGPS_VERSIONSTRING _T(")")
 
 #endif /* _OPENGPS_STDAFX_HXX */

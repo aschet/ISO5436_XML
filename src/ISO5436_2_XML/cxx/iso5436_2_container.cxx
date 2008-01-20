@@ -52,7 +52,8 @@
 #include "vector_buffer_builder.hxx"
 #include "vector_buffer.hxx"
 
-#include "point_vector_proxy_context.hxx"
+#include "point_vector_proxy_context_matrix.hxx"
+#include "point_vector_proxy_context_list.hxx"
 
 #include "environment.hxx"
 
@@ -60,8 +61,11 @@
 
 #include "zip_stream_buffer.hxx"
 
+#include <limits>
 #include <iostream>
 #include <fstream>
+#include <memory>
+#include <iomanip>
 
 /* zlib/minizip header files */
 #include <unzip.h>
@@ -74,6 +78,13 @@
 
 #define _OPENGPS_ZIP_CHUNK_MAX (256*1024)
 #define _OPENGPS_FILE_URI_PREF _T("file:///")
+
+#ifdef max
+#  undef max
+#endif
+
+typedef std::auto_ptr<PointVectorReaderContext> PointVectorReaderContextAutoPtr;
+typedef std::auto_ptr<PointVectorWriterContext> PointVectorWriterContextAutoPtr;
 
 ISO5436_2Container::ISO5436_2Container(
                                        const OpenGPS::String& file,
@@ -175,7 +186,7 @@ OGPS_Boolean ISO5436_2Container::VerifyDataBinChecksum()
 
    if(m_Document->Record3().DataLink().present())
    {
-      const xsd::DataLinkType::MD5ChecksumPointData_type& md5 = m_Document->Record3().DataLink()->MD5ChecksumPointData();
+      const Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type& md5 = m_Document->Record3().DataLink()->MD5ChecksumPointData();
       return VerifyChecksum(file, (const OpenGPS::UnsignedBytePtr)md5.data(), md5.size());
    }
 
@@ -190,7 +201,7 @@ OGPS_Boolean ISO5436_2Container::VerifyValidBinChecksum()
 
    if(m_Document->Record3().DataLink().present())
    {
-      const xsd::DataLinkType::MD5ChecksumValidPoints_optional& md5 = m_Document->Record3().DataLink()->MD5ChecksumValidPoints();
+      const Schemas::ISO5436_2::DataLinkType::MD5ChecksumValidPoints_optional& md5 = m_Document->Record3().DataLink()->MD5ChecksumValidPoints();
       if(md5.present())
       {
          return VerifyChecksum(file, (const OpenGPS::UnsignedBytePtr)md5.get().data(), md5.get().size());
@@ -199,9 +210,6 @@ OGPS_Boolean ISO5436_2Container::VerifyValidBinChecksum()
 
    return FALSE;
 }
-
-
-#include <iomanip>
 
 OGPS_Boolean ISO5436_2Container::ReadMd5FromFile(const OpenGPS::String& fileName, OpenGPS::UnsignedByte checksum[16]) const
 {
@@ -219,9 +227,9 @@ OGPS_Boolean ISO5436_2Container::ReadMd5FromFile(const OpenGPS::String& fileName
 }
 
 OGPS_Boolean ISO5436_2Container::Create(
-                                        const xsd::Record1Type& record1,
-                                        const xsd::Record2Type& record2,
-                                        const xsd::MatrixDimensionType& matrixDimension,
+                                        const Schemas::ISO5436_2::Record1Type& record1,
+                                        const Schemas::ISO5436_2::Record2Type& record2,
+                                        const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
                                         const OGPS_Boolean useBinaryData)
 {
    if(!HasDocument())
@@ -232,8 +240,8 @@ OGPS_Boolean ISO5436_2Container::Create(
 }
 
 OGPS_Boolean ISO5436_2Container::Create(
-                                        const xsd::Record1Type& record1,
-                                        const xsd::Record2Type& record2,
+                                        const Schemas::ISO5436_2::Record1Type& record1,
+                                        const Schemas::ISO5436_2::Record2Type& record2,
                                         const unsigned long listDimension,
                                         const OGPS_Boolean useBinaryData)
 {
@@ -262,21 +270,24 @@ OGPS_Boolean ISO5436_2Container::SetMatrixPoint(
 {
    _ASSERT(HasDocument());
    _ASSERT(m_PointVector.get());
+   _ASSERT(m_ProxyContext.get());
 
    _ASSERT(!vector || (IsIncrementalX() && vector->GetX()->GetType() == MissingPointType) || (!IsIncrementalX() && vector->GetX()->GetType() != MissingPointType));
    _ASSERT(!vector || (IsIncrementalY() && vector->GetY()->GetType() == MissingPointType) || (!IsIncrementalY() && vector->GetY()->GetType() != MissingPointType));
    _ASSERT(!vector || vector->GetZ()->GetType() != MissingPointType);
 
-   m_ProxyContext.SetU(u);
-   m_ProxyContext.SetV(v);
-   m_ProxyContext.SetW(w);
+   // TODO: cast entfernen?
+   ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
 
    if(vector)
    {
-      return (m_PointVector->Set(*vector) && GetVectorBuffer()->GetValid()->SetValid(GetMatrixIndex(u, v, w), TRUE));
+      if(!m_PointVector->Set(*vector))
+      {
+         return FALSE;
+      }
    }
 
-   return (m_PointVector->SetNull() && GetVectorBuffer()->GetValid()->SetValid(GetMatrixIndex(u, v, w), FALSE));
+   return GetVectorBuffer()->GetValidityProvider()->SetValid(m_ProxyContext->GetIndex(), vector != NULL);
 }
 
 OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
@@ -287,10 +298,10 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
 {
    _ASSERT(HasDocument());
    _ASSERT(m_PointVector.get());
+   _ASSERT(m_ProxyContext.get());
 
-   m_ProxyContext.SetU(u);
-   m_ProxyContext.SetV(v);
-   m_ProxyContext.SetW(w);
+   // TODO: cast entfernen?
+   ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
 
    const OGPS_Boolean retval = m_PointVector->Get(vector);
 
@@ -298,16 +309,28 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
    {
       _ASSERT(vector.GetX()->GetType() == MissingPointType);
 
-      // TODO: Typeclash
-      vector.SetX((OGPS_Int32)u);
+      try
+      {
+         vector.SetX(ConvertULongToInt32(u));
+      }
+      catch(const OverflowException&)
+      {
+         return FALSE;
+      }
    }
 
    if(IsIncrementalY())
    {
       _ASSERT(vector.GetY()->GetType() == MissingPointType);
 
-      // TODO: Typeclash
-      vector.SetY((OGPS_Int32)v);
+      try
+      {
+         vector.SetY(ConvertULongToInt32(v));
+      }
+      catch(const OverflowException&)
+      {
+         return FALSE;
+      }
    }
 
    return retval;
@@ -319,12 +342,14 @@ OGPS_Boolean ISO5436_2Container::SetListPoint(
 {
    _ASSERT(HasDocument());
    _ASSERT(m_PointVector.get());
+   _ASSERT(m_ProxyContext.get());
 
    _ASSERT((IsIncrementalX() && vector.GetX()->GetType() == MissingPointType) || (!IsIncrementalX() && vector.GetX()->GetType() != MissingPointType));
    _ASSERT((IsIncrementalY() && vector.GetY()->GetType() == MissingPointType) || (!IsIncrementalY() && vector.GetY()->GetType() != MissingPointType));
    _ASSERT(vector.GetZ()->GetType() != MissingPointType);
 
-   m_ProxyContext.SetU(index);
+   // TODO: cast entfernen?
+   ((PointVectorProxyContextList*)m_ProxyContext.get())->SetIndex(index);
 
    return m_PointVector->Set(vector);
 }
@@ -335,8 +360,10 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
 {
    _ASSERT(HasDocument());
    _ASSERT(m_PointVector.get());
+   _ASSERT(m_ProxyContext.get());
 
-   m_ProxyContext.SetU(index);
+   // TODO: cast entfernen?
+   ((PointVectorProxyContextList*)m_ProxyContext.get())->SetIndex(index);
 
    const OGPS_Boolean retval = m_PointVector->Get(vector);
 
@@ -344,16 +371,28 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
    {
       _ASSERT(vector.GetX()->GetType() == MissingPointType);
 
-      // TODO: Typeclash
-      vector.SetX((OGPS_Int32)index);
+      try
+      {
+         vector.SetX(ConvertULongToInt32(index));
+      }
+      catch(const OverflowException&)
+      {
+         return FALSE;
+      }
    }
 
    if(IsIncrementalY())
    {
       _ASSERT(vector.GetY()->GetType() == MissingPointType);
 
-      // TODO: Typeclash
-      vector.SetY((OGPS_Int32)index);
+      try
+      {
+         vector.SetY(ConvertULongToInt32(index));
+      }
+      catch(const OverflowException&)
+      {
+         return FALSE;
+      }
    }
 
    return retval;
@@ -380,7 +419,10 @@ OGPS_Boolean ISO5436_2Container::IsMatrixCoordValid(
 {
    _ASSERT(HasDocument());
 
-   return GetVectorBuffer()->GetValid()->IsValid(GetMatrixIndex(u, v, w));
+   // TODO: cast entfernen?
+   ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
+
+   return GetVectorBuffer()->GetValidityProvider()->IsValid(m_ProxyContext->GetIndex());
 }
 
 OGPS_Boolean ISO5436_2Container::GetListCoord(
@@ -443,12 +485,6 @@ OGPS_Boolean ISO5436_2Container::Close()
    RemoveTempDir();
 
    return TRUE;
-}
-
-ISO5436_2Container& ISO5436_2Container::operator=(const ISO5436_2Container& src)
-{
-   // TODO
-   return *this;
 }
 
 OGPS_Boolean ISO5436_2Container::IsMatrix() const
@@ -734,9 +770,9 @@ OGPS_Boolean ISO5436_2Container::Compress()
 }
 
 OGPS_Boolean ISO5436_2Container::CreateDocument(
-   const xsd::Record1Type* const record1,
-   const xsd::Record2Type* const record2,
-   const xsd::MatrixDimensionType* const matrixDimension,
+   const Schemas::ISO5436_2::Record1Type* const record1,
+   const Schemas::ISO5436_2::Record2Type* const record2,
+   const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
    const unsigned long listDimension,
    const OGPS_Boolean useBinaryData)
 {
@@ -744,7 +780,7 @@ OGPS_Boolean ISO5436_2Container::CreateDocument(
    _ASSERT(record1 && record2);
    _ASSERT(matrixDimension != NULL && listDimension == 0 || matrixDimension == NULL && listDimension > 0);
 
-   xsd::Record3Type record3;
+   Schemas::ISO5436_2::Record3Type record3;
 
    if(matrixDimension)
    {
@@ -757,17 +793,17 @@ OGPS_Boolean ISO5436_2Container::CreateDocument(
 
    if(useBinaryData)
    {
-      xsd::DataLinkType dataLink(_OPENGPS_XSD_ISO5436_DATALINK_PATH, NULL);
+      Schemas::ISO5436_2::DataLinkType dataLink(_OPENGPS_XSD_ISO5436_DATALINK_PATH, NULL);
       record3.DataLink(dataLink);
    }
    else
    {
-      xsd::DataListType dataList;
+      Schemas::ISO5436_2::DataListType dataList;
       record3.DataList(dataList);
    }
 
-   xsd::Record4Type record4(_OPENGPS_XSD_ISO5436_MAIN_CHECKSUM_PATH);
-   m_Document = new xsd::ISO5436_2Type(*record1, record3, record4);
+   Schemas::ISO5436_2::Record4Type record4(_OPENGPS_XSD_ISO5436_MAIN_CHECKSUM_PATH);
+   m_Document = new Schemas::ISO5436_2::ISO5436_2Type(*record1, record3, record4);
 
    if(record2)
    {
@@ -804,10 +840,10 @@ OGPS_Boolean ISO5436_2Container::ReadXmlDocument()
       /* We'll hope the best ;) */
       success = TRUE;
 
-      // TODO: throws exception when file not found, wrong file type, xsd not found
+      // TODO: throw(...)
       try
       {
-         m_Document = xsd::ISO5436_2(xmlFilePath, 0, props);
+         m_Document = Schemas::ISO5436_2::ISO5436_2(xmlFilePath, 0, props);
       }
       catch(const xml_schema::exception& ex)
       {
@@ -851,7 +887,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
       if(HasValidPointsLink())
       {
          PointVectorInputBinaryFileStream vstream(GetValidPointsFileName());
-         if(!vectorBuffer->GetValid()->Read(vstream, GetPointCount()))
+         if(!vectorBuffer->HasValidityBuffer() || !vectorBuffer->GetValidityBuffer()->Read(vstream))
          {
             return FALSE;
          }
@@ -864,62 +900,73 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
          if(CreatePointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
-            PointVectorReaderContext* context = CreatePointVectorReaderContext();
+            PointVectorReaderContextAutoPtr context = CreatePointVectorReaderContext();
 
-            if(context)
+            if(context.get())
             {
                OGPS_Boolean success = TRUE;
 
-               PointVectorProxyContext proxy_context;
-               PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(proxy_context));
+               PointVectorProxyContextAutoPtr proxy_context = CreatePointVectorProxyContext();
 
-               unsigned long index = 0;
-
-               while(context->MoveNext())
+               if(!proxy_context.get())
                {
-                  if(context->IsValid())
+                  success = FALSE;
+               }
+               else
+               {
+                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context));
+
+                  unsigned long index = 0;
+
+                  while(context->MoveNext())
                   {
-                     if(!parser->Read(*context, *vector))
+                     if(context->IsValid())
                      {
-                        success = FALSE;
-                        break;
+                        if(!parser->Read(*context, *vector))
+                        {
+                           success = FALSE;
+                           break;
+                        }
                      }
-                  }
-                  else
-                  {
-                     if(!vectorBuffer->GetValid()->IsAllocated())
+                     else
                      {
-                        if(!vectorBuffer->GetValid()->Allocate(GetPointCount()))
+                        if(vectorBuffer->HasValidityBuffer())
+                        {
+                           if(!vectorBuffer->GetValidityBuffer()->IsAllocated())
+                           {
+                              if(!vectorBuffer->GetValidityBuffer()->Allocate())
+                              {
+                                 success = FALSE;
+                                 break;
+                              }
+                           }
+                        }
+
+                        if(!vectorBuffer->GetValidityProvider()->SetValid(index, FALSE))
                         {
                            success = FALSE;
                            break;
                         }
                      }
 
-                     if(!vector->SetNull() || !vectorBuffer->GetValid()->SetValid(index, FALSE))
+                     ++index;
+
+                     if(!proxy_context->IncrementIndex())
                      {
-                        success = FALSE;
+                        // TODO: error
                         break;
                      }
                   }
 
-                  ++index;
+                  // When the point buffer has been created,
+                  // we can savely drop the original xml content
+                  ResetXmlPointList();
 
-                  proxy_context.SetU(index);
-                  proxy_context.SetV(index);
-                  proxy_context.SetW(index);
-
+                  // initialize global vector proxy
+                  m_ProxyContext = CreatePointVectorProxyContext();
+                  _ASSERT(m_ProxyContext.get());
+                  m_PointVector = vectorBuffer->GetPointVectorProxy(*m_ProxyContext.get());
                }
-
-               // TODO: besser auto_ptr
-               delete context;
-
-               // When the point buffer has been created,
-               // we can savely drop the original xml content
-               ResetXmlPointList();
-
-               // initialize global vector proxy
-               m_PointVector = vectorBuffer->GetPointVectorProxy(m_ProxyContext);
 
                return success;
             }
@@ -932,10 +979,34 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
 
 void ISO5436_2Container::ResetXmlPointList()
 {
+   _ASSERT(HasDocument());
+
    if(m_Document->Record3().DataList().present())
    {
       m_Document->Record3().DataList()->Datum().clear();
    }
+}
+
+void ISO5436_2Container::ResetValidPointsLink()
+{
+   _ASSERT(HasDocument());
+
+   if(!IsBinary() || !GetVectorBuffer()->HasValidityBuffer() || !GetVectorBuffer()->GetValidityBuffer()->IsAllocated())
+   {
+      // no, we do not need an external validity file
+      m_Document->Record3().DataLink()->ValidPointsLink().reset();
+   }
+   else
+   {
+      // yes, we do need an external validity file, so set default pathes if nothing has been set up yet
+      if(!m_Document->Record3().DataLink()->ValidPointsLink().present())
+      {
+         m_Document->Record3().DataLink()->ValidPointsLink(_OPENGPS_XSD_ISO5436_VALIDPOINTSLINK_PATH);
+      }
+   }
+
+   // reset any checksum data
+   m_Document->Record3().DataLink()->MD5ChecksumValidPoints().reset();
 }
 
 OGPS_Boolean ISO5436_2Container::SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16])
@@ -1012,10 +1083,10 @@ OGPS_Boolean ISO5436_2Container::SaveXmlDocument(zipFile handle)
 
          if (!zipOut.fail ())
          {
-            // TODO: throws exception when file not found, wrong file type, xsd not found
+            // TODO: throw(...)
             try
             {
-               xsd::ISO5436_2(zipOut, *m_Document, map);
+               Schemas::ISO5436_2::ISO5436_2(zipOut, *m_Document, map);
                retval = TRUE;
             }
             catch(const xml_schema::exception& ex)
@@ -1057,8 +1128,10 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::namespace_inf
 OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& props) const
 {
    OpenGPS::String xsdPathBuf;
-   if(Environment::GetInstance()->GetVariable(_OPENGPS_ENV_ISO5436_LOCATION, xsdPathBuf))
+   if(Environment::GetInstance()->GetVariable(_OPENGPS_ENV_OPENGPS_LOCATION, xsdPathBuf))
    {
+      xsdPathBuf = Environment::GetInstance()->ConcatPathes(xsdPathBuf, _OPENGPS_ISO5436_LOCATION);
+
       OpenGPS::String xsdPath;
       Environment::GetInstance()->GetPathName(xsdPathBuf, xsdPath);
       if(xsdPath.size() > 0)
@@ -1098,7 +1171,7 @@ OGPS_Boolean ISO5436_2Container::SaveValidPointsLink(zipFile handle)
 
       if(!vstream.fail())
       {
-         retval = vectorBuffer->GetValid()->Write(vstream);
+         retval = vectorBuffer->HasValidityBuffer() && vectorBuffer->GetValidityBuffer()->Write(vstream);
       }
 
       if(zipCloseFileInZip(handle) == ZIP_OK)
@@ -1109,7 +1182,7 @@ OGPS_Boolean ISO5436_2Container::SaveValidPointsLink(zipFile handle)
       OpenGPS::UnsignedByte md5[16];
       if(vbuffer.GetMd5(md5))
       {
-         const xsd::DataLinkType::MD5ChecksumValidPoints_type checksum(md5, 16);
+         const Schemas::ISO5436_2::DataLinkType::MD5ChecksumValidPoints_type checksum(md5, 16);
          m_Document->Record3().DataLink()->MD5ChecksumValidPoints(checksum);
       }
       else
@@ -1149,13 +1222,14 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
       }
    }
 
-   // Before we start: reset changes made to the
-   // point list xml tag. Points will be replaced
-   // with those vlaues in the current vector buffer.
-   ResetXmlPointList();
-
    if(HasDocument() && HasVectorBuffer())
    {
+      // Before we start: reset changes made to the
+      // point list xml tag. Points will be replaced
+      // with those vlaues in the current vector buffer.
+      ResetXmlPointList();
+      ResetValidPointsLink();
+
       // Create point parser for this document
       PointVectorParserBuilderAutoPtr p_builder(CreatePointVectorParserBuilder());
       if(p_builder.get())
@@ -1163,58 +1237,77 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
          if(CreatePointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
-            PointVectorWriterContext* context = CreatePointVectorWriterContext(handle);
+            PointVectorWriterContextAutoPtr context = CreatePointVectorWriterContext(handle);
 
-            if(context)
+            if(context.get())
             {
                OGPS_Boolean success = TRUE;
 
                VectorBuffer* const vectorBuffer = GetVectorBuffer();
 
-               PointVectorProxyContext proxy_context;
-               PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(proxy_context));
+               PointVectorProxyContextAutoPtr proxy_context = CreatePointVectorProxyContext();
 
-               unsigned long index = 0;
-               const unsigned long count = GetPointCount(); // TODO: besser irgendetwas mit buffer->Size - oder doch so ausreichend?
-
-               while(index < count)
+               if(!proxy_context.get())
                {
-                  if(isBinary || vectorBuffer->GetValid()->IsValid(index))
+                  success = FALSE;
+               }
+               else
+               {
+                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context));
+
+                  unsigned long index = 0;
+                  unsigned long count = 0;
+
+                  try
                   {
-                     if(!parser->Write(*context, *vector))
-                     {
-                        success = FALSE;
-                        break;
-                     }
+                     count = GetPointCount();
+                  }
+                  catch(const OverflowException&)
+                  {
+                     success = FALSE;
                   }
 
-                  if(!context->MoveNext())
+                  if(success)
                   {
-                     if(index + 1 != count)
+                     while(index < count)
                      {
-                        success = FALSE;
-                        break;
+                        if(isBinary || vectorBuffer->GetValidityProvider()->IsValid(index))
+                        {
+                           if(!parser->Write(*context, *vector))
+                           {
+                              success = FALSE;
+                              break;
+                           }
+                        }
+
+                        if(!context->MoveNext())
+                        {
+                           if(index + 1 != count)
+                           {
+                              success = FALSE;
+                              break;
+                           }
+                        }                     
+
+                        ++index;
+
+                        if(!proxy_context->IncrementIndex())
+                        {
+                           // TODO: error
+                           break;
+                        }
                      }
-                  }                     
 
-                  ++index;
-
-                  proxy_context.SetU(index);
-                  proxy_context.SetV(index);
-                  proxy_context.SetW(index);
+                     if(isBinary)
+                     {
+                        /* MD5 checksum */
+                        OpenGPS::UnsignedByte md5[16];
+                        ((BinaryPointVectorWriterContext*)context.get())->GetMd5(md5);
+                        const Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type checksum(md5, 16);
+                        m_Document->Record3().DataLink()->MD5ChecksumPointData(checksum);
+                     }
+                  }
                }
-
-               if(isBinary)
-               {
-                  /* MD5 checksum */
-                  OpenGPS::UnsignedByte md5[16];
-                  ((BinaryPointVectorWriterContext*)context)->GetMd5(md5);
-                  const xsd::DataLinkType::MD5ChecksumPointData_type checksum(md5, 16);
-                  m_Document->Record3().DataLink()->MD5ChecksumPointData(checksum);
-               }
-
-               // TODO: besser auto_ptr
-               delete context;
 
                retval = success;
             }
@@ -1263,13 +1356,22 @@ OGPS_Boolean ISO5436_2Container::CreateVectorBuffer(VectorBufferBuilder& builder
    OGPS_DataPointType yType = GetYaxisDataType();
    OGPS_DataPointType zType = GetZaxisDataType();
 
-   const unsigned long size = GetPointCount();
+   unsigned long size = 0;
+
+   try
+   {
+       size = GetPointCount();
+   }
+   catch(const OverflowException&)
+   {
+      return FALSE;
+   }
 
    return (builder.BuildBuffer() &&
       builder.BuildX(xType, size) &&
       builder.BuildY(yType, size) &&
       builder.BuildZ(zType, size) &&
-      builder.BuildValid(HasValidPointsLink() && !IsBinary() ? size : 0));
+      builder.BuildValidityProvider());
 }
 
 PointVectorReaderContext* ISO5436_2Container::CreatePointVectorReaderContext()
@@ -1282,7 +1384,7 @@ PointVectorReaderContext* ISO5436_2Container::CreatePointVectorReaderContext()
       if(binaryFilePath.length() > 0)
       {
          // find out if we are on lsb or msb
-         // hardware and create appropiate context
+         // hardware and create appropriate context
          if(Environment::GetInstance()->IsLittleEndian())
          {
             return new BinaryLSBPointVectorReaderContext(binaryFilePath);
@@ -1294,12 +1396,12 @@ PointVectorReaderContext* ISO5436_2Container::CreatePointVectorReaderContext()
       return NULL;
    }
 
-   // instantiate xmlOpenGPS::String reader context...
+   // instantiate xml string reader context...
    // find list tag in xml document and check whether it is present
-   const xsd::Record3Type::DataList_optional& dataList = m_Document->Record3().DataList();
+   const Schemas::ISO5436_2::Record3Type::DataList_optional& dataList = m_Document->Record3().DataList();
    if(dataList.present())
    {
-      const xsd::DataListType::Datum_sequence& datum = dataList->Datum();
+      const Schemas::ISO5436_2::DataListType::Datum_sequence& datum = dataList->Datum();
       return new XmlPointVectorReaderContext(&datum);
    }
 
@@ -1314,7 +1416,7 @@ PointVectorWriterContext* ISO5436_2Container::CreatePointVectorWriterContext(zip
    if(IsBinary())
    {
       // find out if we are on lsb or msb
-      // hardware and create appropiate context
+      // hardware and create appropriate context
       if(Environment::GetInstance()->IsLittleEndian())
       {
          return new BinaryLSBPointVectorWriterContext(handle);
@@ -1323,14 +1425,14 @@ PointVectorWriterContext* ISO5436_2Container::CreatePointVectorWriterContext(zip
       return new BinaryMSBPointVectorWriterContext(handle);
    }
 
-   // instantiate xmlOpenGPS::String reader context...
+   // instantiate xml string reader context...
    // find list tag in xml document and check whether it is present
-   xsd::Record3Type::DataList_optional& dataList = m_Document->Record3().DataList();
+   Schemas::ISO5436_2::Record3Type::DataList_optional& dataList = m_Document->Record3().DataList();
    if(dataList.present())
    {
-      xsd::DataListType::Datum_sequence& datum = dataList->Datum();
+      Schemas::ISO5436_2::DataListType::Datum_sequence& datum = dataList->Datum();
 
-      // should be empty at this point (and filled by the writer)
+      // should be empty for now (and later filled by the writer)
       if(datum.size() == 0)
       {
          return new XmlPointVectorWriterContext(&datum);
@@ -1361,23 +1463,23 @@ OGPS_DataPointType ISO5436_2Container::GetZaxisDataType() const
    return GetAxisDataType(m_Document->Record1().Axes().CZ(), FALSE);
 }
 
-OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const xsd::AxisDescriptionType& axis, const OGPS_Boolean incremental) const
+OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const Schemas::ISO5436_2::AxisDescriptionType& axis, const OGPS_Boolean incremental) const
 {
    // TODO: für sowas einen builder bauen?
 
    if(axis.DataType().present())
    {
-      if(!incremental || axis.AxisType() != xsd::AxisType::I)
+      if(!incremental || axis.AxisType() != Schemas::ISO5436_2::AxisType::I)
       {
          switch(axis.DataType().get())
          {
-         case xsd::DataType::I:
+         case Schemas::ISO5436_2::DataType::I:
             return Int16PointType;
-         case xsd::DataType::L:
+         case Schemas::ISO5436_2::DataType::L:
             return Int32PointType;
-         case xsd::DataType::F:
+         case Schemas::ISO5436_2::DataType::F:
             return FloatPointType;
-         case xsd::DataType::D:
+         case Schemas::ISO5436_2::DataType::D:
             return DoublePointType;
          default:
             _ASSERT(FALSE);
@@ -1389,7 +1491,7 @@ OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const xsd::AxisDescriptio
    return MissingPointType;
 }
 
-unsigned long ISO5436_2Container::GetPointCount() const
+unsigned long ISO5436_2Container::GetPointCount() const throw(...)
 {
    _ASSERT(HasDocument());
 
@@ -1402,8 +1504,7 @@ unsigned long ISO5436_2Container::GetPointCount() const
 
       _ASSERT(xSize > 0 && ySize > 0 && zSize > 0);
 
-      // BUG: buffer overflow
-      return (xSize * ySize * zSize);
+      return SafeMultipilcation(SafeMultipilcation(xSize, ySize), zSize);
    }
 
    // calculate point count of list type
@@ -1452,7 +1553,7 @@ OGPS_Boolean ISO5436_2Container::IsBinary() const
 
    const OGPS_Boolean hasDataLink = m_Document->Record3().DataLink().present();
 
-   // ensure data ist available in binary or text format either
+   // ensure data ist available in either binary or text format
    _ASSERT((hasDataLink && !m_Document->Record3().DataList().present()) || (!hasDataLink && m_Document->Record3().DataList().present()));
 
    return hasDataLink;
@@ -1470,6 +1571,7 @@ void ISO5436_2Container::Reset()
    m_Document.release();
    m_VectorBufferBuilder.release();
    m_PointVector.release();
+   m_ProxyContext.release();
    m_PointDataFileName.clear();
    m_ValidPointsFileName.clear();
 }
@@ -1571,8 +1673,8 @@ OGPS_Boolean ISO5436_2Container::IsIncrementalX() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
-   if(cx.AxisType() == xsd::Record1Type::Axes_type::CX_type::AxisType_type::I)
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
+   if(cx.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CX_type::AxisType_type::I)
    {
       return (cx.Increment().present());
    }
@@ -1584,8 +1686,8 @@ OGPS_Boolean ISO5436_2Container::IsIncrementalY() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
-   if(cy.AxisType() == xsd::Record1Type::Axes_type::CY_type::AxisType_type::I)
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
+   if(cy.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CY_type::AxisType_type::I)
    {
       return (cy.Increment().present());
    }
@@ -1597,8 +1699,8 @@ double ISO5436_2Container::GetIncrementX() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
-   if(cx.AxisType() == xsd::Record1Type::Axes_type::CX_type::AxisType_type::I)
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
+   if(cx.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CX_type::AxisType_type::I)
    {
       if(cx.Increment().present())
       {
@@ -1613,8 +1715,8 @@ double ISO5436_2Container::GetIncrementY() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
-   if(cy.AxisType() == xsd::Record1Type::Axes_type::CY_type::AxisType_type::I)
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
+   if(cy.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CY_type::AxisType_type::I)
    {
       if(cy.Increment().present())
       {
@@ -1629,7 +1731,7 @@ double ISO5436_2Container::GetOffsetX() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
    if(cx.Offset().present())
    {
       return cx.Offset().get();
@@ -1642,7 +1744,7 @@ double ISO5436_2Container::GetOffsetY() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
    if(cy.Offset().present())
    {
       return cy.Offset().get();
@@ -1655,7 +1757,7 @@ double ISO5436_2Container::GetOffsetZ() const
 {
    _ASSERT(HasDocument());
 
-   const xsd::Record1Type::Axes_type::CZ_type& cz = m_Document->Record1().Axes().CZ();
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CZ_type& cz = m_Document->Record1().Axes().CZ();
    if(cz.Offset().present())
    {
       return cz.Offset().get();
@@ -1664,17 +1766,54 @@ double ISO5436_2Container::GetOffsetZ() const
    return (0.0);
 }
 
-unsigned long ISO5436_2Container::GetMatrixColumnCount() const
+PointVectorProxyContextAutoPtr ISO5436_2Container::CreatePointVectorProxyContext() const
 {
    _ASSERT(HasDocument());
-   _ASSERT(IsMatrix());
 
-   return m_Document->Record3().MatrixDimension()->SizeY();
+   if(IsMatrix())
+   {
+      const Schemas::ISO5436_2::MatrixDimensionType& mtype = m_Document->Record3().MatrixDimension().get();
+
+      OGPS_Boolean overflow = FALSE;
+
+      try
+      {
+         SafeMultipilcation(SafeMultipilcation(mtype.SizeX(), mtype.SizeY()), mtype.SizeZ());
+      }
+      catch(const OverflowException)
+      {
+         overflow = TRUE;
+      }
+
+      if(overflow)
+      {
+         return NULL;
+      }
+
+      return new PointVectorProxyContextMatrix(mtype.SizeX(), mtype.SizeY(), mtype.SizeZ());
+   }
+
+   _ASSERT(m_Document->Record3().ListDimension().present());
+
+   return new PointVectorProxyContextList(m_Document->Record3().ListDimension().get());
 }
 
-unsigned long ISO5436_2Container::GetMatrixIndex(const unsigned long u,
-                                                 const unsigned long v,
-                                                 const unsigned long w) const
+OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long value) const throw(...)
 {
-   return ((u * GetMatrixColumnCount() * (w + 1)) + v);
+   if((unsigned long)std::numeric_limits<OGPS_Int32>::max() < value)
+   {
+      throw OverflowException();
+   }
+
+   return (OGPS_Int32)value;
+}
+
+unsigned long ISO5436_2Container::SafeMultipilcation(const unsigned long value1, const unsigned long value2) const throw(...)
+{
+   if(value1 > (std::numeric_limits<unsigned long>::max() / value2))
+   {
+      throw OverflowException();
+   }
+
+   return (value1 * value2);
 }

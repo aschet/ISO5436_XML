@@ -33,26 +33,30 @@
 
 #include <memory>
 
-namespace xsd
- {
-  class ISO5436_2Type;
- }
-
 namespace OpenGPS
 {
+   namespace Schemas
+   {
+      namespace ISO5436_2
+      {
+         class ISO5436_2Type;
+      }
+   }
+
    class VectorBuffer;
    class VectorBufferBuilder;
    class PointVectorParserBuilder;
    class PointVectorBase;
    class PointIterator;
+   class PointVectorProxyContext;
 
-   typedef std::auto_ptr<xsd::ISO5436_2Type> ISO5436_2TypeAutoPtr;
-
+   typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
    typedef std::auto_ptr<VectorBufferBuilder> VectorBufferBuilderAutoPtr;
    typedef std::auto_ptr<PointVectorParserBuilder> PointVectorParserBuilderAutoPtr;
    typedef std::auto_ptr<PointVectorBase> PointVectorAutoPtr;
    typedef std::auto_ptr<PointIterator> PointIteratorAutoPtr;
+   typedef std::auto_ptr<PointVectorProxyContext> PointVectorProxyContextAutoPtr;
 }
 
 #endif /* _OPENGPS_AUTO_PTR_TYPES_HXX */
