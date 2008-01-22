@@ -85,7 +85,7 @@ extern "C" {
    /*!
     * Moves the iterator forward.
     *
-    * @remaks Use this function directly after initialising the iterator object with
+    * @remarks Use this function directly after initialising the iterator object with
     * ::ogps_CreateNextPointIterator to move to the first point.
     *
     * @see ::ogps_HasNextPoint
@@ -98,7 +98,7 @@ extern "C" {
    /*!
     * Moves the iterator backward.
     *
-    * @remaks Use this function directly after initialising the iterator object with
+    * @remarks Use this function directly after initialising the iterator object with
     * ::ogps_CreatePrevPointIterator to move to the first point.
     *
     * @see ::ogps_HasPrevPoint
@@ -109,18 +109,14 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Boolean ogps_MovePrevPoint(OGPS_PointIteratorPtr const iterator);
 
    /*!
-    * Resets the iterator to the beginning.
-    *
-    * @remarks Use this function with an iterator handle obtained from ::ogps_CreateNextPointIterator.
-    *
+    * Resets the iterator to the beginning and turns this iterator instance into a forward iterator.
+    *   
     * @param iterator Operate on this iterator handle.
     */
    _OPENGPS_EXPORT void ogps_ResetNextPointIterator(OGPS_PointIteratorPtr const iterator);
 
    /*!
-    * Resets the iterator to the beginning.
-    *
-    * @remarks Use this function with an iterator handle obtained from ::ogps_CreatePrevPointIterator.
+    * Resets the iterator to the beginning and turns this iterator instance into a backward iterator.
     *
     * @param iterator Operate on this iterator handle.
     */
@@ -132,7 +128,7 @@ extern "C" {
     * @see ::ogps_MoveNext
     *
     * @param iterator Operate on this iterator handle.
-    * @param vector Holds a copy of the vector at the current iterator position.
+    * @param vector Gets a copy of the vector at the current iterator position.
     * @returns Returns TRUE on success, FALSE otherwise.
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetCurrentPoint(

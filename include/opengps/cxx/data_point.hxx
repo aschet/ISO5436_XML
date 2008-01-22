@@ -176,6 +176,9 @@ namespace OpenGPS
       virtual OGPS_Boolean Set(const DataPoint& src) = 0;
 
    protected:
+      /*!
+       * Resets this instance to its initial state.
+       */
       virtual void Reset() = 0;
    };
 }

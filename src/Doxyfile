@@ -4,16 +4,16 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "openGPS ISO 5436-2 XML  "
+PROJECT_NAME           = "openGPS ISO 5436-2 XML   "
 PROJECT_NUMBER         = 0.01
 OUTPUT_DIRECTORY       = S:/openGPS/ISO5436_XML/trunk/doc/SDK
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
-ABBREVIATE_BRIEF       = "The $name class  " \
-                         "The $name widget  " \
-                         "The $name file  " \
+ABBREVIATE_BRIEF       = "The $name class   " \
+                         "The $name widget   " \
+                         "The $name file   " \
                          is \
                          provides \
                          specifies \
@@ -27,7 +27,8 @@ INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
 STRIP_FROM_PATH        = C:/Programme/doxygen/bin/ \
                          S:/openGPS/trunk/src \
-                         S:\openGPS\ISO5436_XML\trunk\src
+                         S:\openGPS\ISO5436_XML\trunk\src \
+                         S:\openGPS\ISO5436_XML\trunk\include
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
@@ -82,12 +83,13 @@ WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = YES
-WARN_FORMAT            = "$file:$line: $text  "
+WARN_FORMAT            = "$file:$line: $text   "
 WARN_LOGFILE           = DoxygenWarnings.log
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = S:\openGPS\ISO5436_XML\trunk\include
+INPUT                  = S:\openGPS\ISO5436_XML\trunk\include \
+                         S:\openGPS\ISO5436_XML\trunk\src
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -116,7 +118,9 @@ FILE_PATTERNS          = *.c \
                          *.mm \
                          *.dox
 RECURSIVE              = YES
-EXCLUDE                = S:\openGPS\ISO5436_XML\trunk\src\zlib
+EXCLUDE                = S:\openGPS\ISO5436_XML\trunk\src\zlib \
+                         S:\openGPS\ISO5436_XML\trunk\src\ISO5436_2_XML \
+                         S:\openGPS\ISO5436_XML\trunk\src\ISO5436_2_XML_Demo
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 
@@ -171,7 +175,7 @@ TREEVIEW_WIDTH         = 250
 #---------------------------------------------------------------------------
 GENERATE_LATEX         = YES
 LATEX_OUTPUT           = latex
-LATEX_CMD_NAME         = "C:/Programme/MiKTeX 2.5/miktex/bin/latex.exe  "
+LATEX_CMD_NAME         = "C:/Programme/MiKTeX 2.5/miktex/bin/latex.exe   "
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = YES
 PAPER_TYPE             = a4

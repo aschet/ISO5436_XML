@@ -184,7 +184,7 @@ extern "C" {
       OGPS_PointVectorPtr const vector);
 
    /*!
-    * Sets the value of a three-dimensional data point vector at a given surface position.
+    * Sets the value of a three-dimensional data point vector at a given index position.
     *
     * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
     *
@@ -210,7 +210,7 @@ extern "C" {
       const OGPS_PointVectorPtr vector);
 
    /*!
-    * Gets the raw value of a data point vector at a given surface position.
+    * Gets the raw value of a data point vector at a given index position.
     *
     *
     * @remarks ::ogps_GetListPoint is the valid access method only if point vectors are stored in
@@ -266,7 +266,7 @@ extern "C" {
       OGPS_Double* const z);
 
    /*!
-    * Finds out if there is point vector data stored at the given matrix position.
+    * Asks if there is point vector data stored at the given matrix position.
     *
     * Since the matrix storage format encodes topology information there may not exist valid point
     * vector data for every u,v,w position because there was no measurement data available.
@@ -286,7 +286,7 @@ extern "C" {
       const unsigned long w);
 
    /*!
-    * Gets the fully transformed value of a data point vector at a given surface position.
+    * Gets the fully transformed value of a data point vector at a given index position.
     *
     * Other than with ::ogps_GetListPoint this function also applies the axes transformation
     * specified in the axes definition area of the ISO 5436-2 XML document.
@@ -302,9 +302,9 @@ extern "C" {
     *
     * @param handle Operate on this handle object.
     * @param index The index of the surface position.
-    * @param x Returns the fully transformed x component of the point value at the given u,v,w position. If this parameter is set to NULL, the x axis component will be safely ignored.
-    * @param y Returns the fully transformed y component of the point value at the given u,v,w position. If this parameter is set to NULL, the y axis component will be safely ignored.
-    * @param z Returns the fully transformed z component of the point value at the given u,v,w position. If this parameter is set to NULL, the z axis component will be safely ignored.
+    * @param x Returns the fully transformed x component of the point value at the given index position. If this parameter is set to NULL, the x axis component will be safely ignored.
+    * @param y Returns the fully transformed y component of the point value at the given index position. If this parameter is set to NULL, the y axis component will be safely ignored.
+    * @param z Returns the fully transformed z component of the point value at the given index position. If this parameter is set to NULL, the z axis component will be safely ignored.
     * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetListCoord(

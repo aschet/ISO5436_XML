@@ -40,32 +40,129 @@ namespace OpenGPS
    class ISO5436_2;
    class PointVector;
 
+   /*!
+    * Interface to a point iterator.
+    *
+    * The point iterator may be used to traverse all point vectors contained in
+    * an ISO5436-2 XML X3P file format container.
+    *
+    * @remarks An instance of OpenGPS::PointIterator can be obtained from
+    * OpenGPS::ISO5436_2::CreateNextPointIterator or OpenGPS::ISO5436_2::CreatePrevPointIterator.
+    */
    class _OPENGPS_EXPORT PointIterator
    {
    protected:
+      /*!
+       * Creates a new instance.
+       */
       PointIterator();
 
    public:
+      /*!
+       * Destructs this instance.
+       */
       virtual ~PointIterator();
 
+      /*!
+       * Asks if there is another point available to iterate.
+       *
+       * @remarks Use this function with an iterator handle obtained from OpenGPS::ISO5436_2::CreateNextPointIterator.
+       *
+       * @see PointIterator::MoveNext, PointIterator::HasPrev
+       *
+       * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
+       */
       virtual OGPS_Boolean HasNext() const = 0;
+      
+      /*!
+       * Asks if there is another point available to iterate.
+       *
+       * @remarks Use this function with an iterator handle obtained from OpenGPS::ISO5436_2::CreatePrevPointIterator.
+       *
+       * @see PointIterator::MovePrev, PointIterator::HasNext
+       *
+       * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
+       */
       virtual OGPS_Boolean HasPrev() const = 0;
 
+      /*!
+       * Moves the iterator forward.
+       *
+       * @remarks Use this function directly after initialising the iterator object with
+       * OpenGPS::ISO5436_2::CreateNextPointIterator to move to the first point.
+       *
+       * @see PointIterator::HasNext
+       *
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean MoveNext() = 0;
+      
+      /*!
+       * Moves the iterator backward.
+       *
+       * @remarks Use this function directly after initialising the iterator object with
+       * OpenGPS::ISO5436_2::CreatePrevPointIterator to move to the first point.
+       *
+       * @see PointIterator::HasPrev
+       *
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean MovePrev() = 0;
 
+      /*!
+       * Resets the iterator to the beginning and turns this iterator instance into a forward iterator.
+       */
       virtual void ResetNext() = 0;
+
+      /*!
+       * Resets the iterator to the beginning and turns this iterator instance into a backward iterator.
+       */
       virtual void ResetPrev() = 0;
 
+      /*!
+       * Gets the value of the current point vector.
+       *
+       * @see PointIterator::MoveNext
+       *
+       * @param vector Gets a copy of the vector at the current iterator position.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean GetCurrent(PointVector& vector) = 0;
 
+      /*!
+       * Sets the value of the current point vector.
+       *
+       * @see PointIterator::MoveNext
+       *
+       * @param vector New value of the current point vector. May be NULL to indicate an invalid point.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean SetCurrent(const PointVector* const vector) = 0;
 
-      virtual OGPS_Boolean GetPosition(unsigned long* const index) const = 0;
+      /*!
+       * Gets the current position of the iterator in topology coordinates.
+       *
+       * @see PointIterator::MoveNext
+       *
+       * @param u Gets the position index of the u component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+       * @param v Gets the position index of the v component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+       * @param w Gets the position index of the w component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean GetPosition(
          unsigned long* const u,
          unsigned long* const v,
          unsigned long* const w) const = 0;    
+
+      /*!
+       * Gets the current position of the iterator.
+       *
+       * @see PointIterator::MoveNext
+       *
+       * @param index Gets the position index.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean GetPosition(unsigned long* const index) const = 0;
    };
 }
 

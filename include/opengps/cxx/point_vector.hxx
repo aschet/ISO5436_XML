@@ -43,59 +43,324 @@ namespace OpenGPS
 {
    class DataPoint;
 
+   /*!
+    * Typesafe representation of three-dimensional point measurement data.
+    */
    class _OPENGPS_EXPORT PointVector : public PointVectorBase
    {
    public:
+      /*! Creates a new instance. */
       PointVector();
+
+      /*! Destructs this object. */
       ~PointVector();
 
+      /*!
+       * Gets typesafe direct read-only access to the x component.
+       */
       virtual const DataPoint* GetX() const;
+      
+      /*!
+       * Gets typesafe direct read-only access to the y component.
+       */
       virtual const DataPoint* GetY() const;
+
+      /*!
+       * Gets typesafe direct read-only access to the z component.
+       */
       virtual const DataPoint* GetZ() const;
 
+      /*!
+       * Gets typesafe direct access to the x component.
+       */
       virtual DataPoint* GetX();
+      
+      /*!
+       * Gets typesafe direct access to the y component.
+       */
       virtual DataPoint* GetY();
+
+      /*!
+       * Gets typesafe direct access to the z component.
+       */
       virtual DataPoint* GetZ();
 
+      /*!
+       * Copies values from another OpenGPS::PointVector instance.
+       *
+       * @param value OpenGPS::PointVectorBase object to copy from.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean Set(const PointVectorBase& value);
+
+      /*!
+       * Copies values from another OpenGPS::PointVectorBase instance.
+       *
+       * @param value Gets values from the current instance as a copy.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean Get(PointVectorBase& value) const;
 
-      // TODO: really need return value here?
+      /*!
+       * Gets the value of the x component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int16.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetX(OGPS_Int16* const value) const;
+      
+      /*!
+       * Gets the value of the x component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int32.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetX(OGPS_Int32* const value) const;
+
+      /*!
+       * Gets the value of the x component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Float.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetX(OGPS_Float* const value) const;
+
+      /*!
+       * Gets the value of the x component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Double.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetX(OGPS_Double* const value) const;
 
+      /*!
+       * Gets the value of the y component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int16.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetY(OGPS_Int16* const value) const;
+
+      /*!
+       * Gets the value of the y component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int32.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetY(OGPS_Int32* const value) const;
+
+      /*!
+       * Gets the value of the y component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Float.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetY(OGPS_Float* const value) const;
+
+      /*!
+       * Gets the value of the y component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Double.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetY(OGPS_Double* const value) const;
 
+      /*!
+       * Gets the value of the z component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int16.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetZ(OGPS_Int16* const value) const;
+
+      /*!
+       * Gets the value of the z component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Int32.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetZ(OGPS_Int32* const value) const;
+
+      /*!
+       * Gets the value of the z component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Float.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetZ(OGPS_Float* const value) const;
+
+      /*!
+       * Gets the value of the z component of the given vector.
+       *
+       * @remarks Returns FALSE if there is a type mismatch and the value of the component is stored as a
+       * data type other than ::OGPS_Double.
+       *
+       * @see ::OGPS_DataPointType
+       *
+       * @param value Stores the current value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetZ(OGPS_Double* const value) const;
 
+      /*!
+       * Sets the new value for the x component.
+       *
+       * @param value The new value.
+       */
       void SetX(const OGPS_Int16 value);
+
+      /*!
+       * Sets the new value for the x component.
+       *
+       * @param value The new value.
+       */
       void SetX(const OGPS_Int32 value);
+
+      /*!
+       * Sets the new value for the x component.
+       *
+       * @param value The new value.
+       */
       void SetX(const OGPS_Float value);
+
+      /*!
+       * Sets the new value for the x component.
+       *
+       * @param value The new value.
+       */
       void SetX(const OGPS_Double value);
 
+      /*!
+       * Sets the new value for the y component.
+       *
+       * @param value The new value.
+       */
       void SetY(const OGPS_Int16 value);
+
+      /*!
+       * Sets the new value for the y component.
+       *
+       * @param value The new value.
+       */
       void SetY(const OGPS_Int32 value);
+
+      /*!
+       * Sets the new value for the y component.
+       *
+       * @param value The new value.
+       */
       void SetY(const OGPS_Float value);
+
+      /*!
+       * Sets the new value for the y component.
+       *
+       * @param value The new value.
+       */
       void SetY(const OGPS_Double value);
 
+      /*!
+       * Sets the new value for the z component.
+       *
+       * @param value The new value.
+       */
       void SetZ(const OGPS_Int16 value);
+
+      /*!
+       * Sets the new value for the z component.
+       *
+       * @param value The new value.
+       */
       void SetZ(const OGPS_Int32 value);
+
+      /*!
+       * Sets the new value for the z component.
+       *
+       * @param value The new value.
+       */
       void SetZ(const OGPS_Float value);
+
+      /*!
+       * Sets the new value for the z component.
+       *
+       * @param value The new value.
+       */
       void SetZ(const OGPS_Double value);
 
+      /*!
+       * Gets the values of each component.
+       *
+       * @param x Gets the value of the x component. If this parameter is set to NULL, this does nothing.
+       * @param y Gets the value of the y component. If this parameter is set to NULL, this does nothing.
+       * @param z Gets the value of the z component. If this parameter is set to NULL, this does nothing.
+       */
       void GetXYZ(
          OGPS_Double* const x,
          OGPS_Double* const y,
          OGPS_Double* const z) const;
 
+      /*!
+       * Asks if this point vector stores a valid data point.
+       *
+       * A valid point vector does not have components where some or all of its values are missing.
+       * Missing or invalid points are indicated by ::OGPS_MissingPointType.
+       *
+       * @returns Returns TRUE if this point vector contains valid point components only, FALSE otherwise.
+       */
       virtual OGPS_Boolean IsValid() const;
 
       PointVector& operator=(const PointVector& src);

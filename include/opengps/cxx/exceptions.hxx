@@ -39,12 +39,16 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Describes a gerenal exception.
+    */
    class _OPENGPS_EXPORT Exception : public std::exception
    {
    public:      
       Exception(const Exception& rhs) throw();
       virtual ~Exception() throw();
 
+      /*! Gets an identifier for the current type of excpetion. */
       OGPS_ExceptionId id() const throw();
 
    protected:
@@ -54,6 +58,9 @@ namespace OpenGPS
       OGPS_ExceptionId m_Id;
    };
 
+   /*!
+    * Describes a overflow exception.
+    */
    class _OPENGPS_EXPORT OverflowException : public Exception
    {
    private:

@@ -47,6 +47,9 @@ namespace OpenGPS
 
    typedef char OGPS_ExceptionChar;
 
+   /*!
+    * Stores an ::OGPS_Character sequence.
+    */
    class _OPENGPS_EXPORT String : public
 
 #ifdef _UNICODE
@@ -67,17 +70,65 @@ namespace OpenGPS
          BaseType;
 
    public:
+      /*! Creates a new instance. */
       String();
+      
+      /*!
+       * Creates a new instance.
+       *
+       * @param s Initialize the newly created object with the given character sequence.
+       */
       String(const BaseType& s);
+      
+      /*!
+       * Creates a new instance.
+       *
+       * @param s Initialize the newly created object with the given character sequence.
+       */
       String(const OGPS_Character* const s);
+
+      /*! Destructs an object. */
       ~String();
 
+      /*!
+       * Converts the unicode character sequence to ANSI char.
+       * @returns An ANSI char pointer or NULL.
+       */
       const char* ToChar();
+      
+      /*!
+       * Stores an ANSI char squence.
+       * @param s An ANSI char squence to store as unicode internally.
+       */
       void FromChar(const char* const s);
 
-      OGPS_Boolean ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const;
+      /*!
+       * Store an MD5 sum as a character sequence in hexadecimal format.
+       *
+       * @param md5 The 128-Bit MD5 value to be storedin hexadecimal format.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean ConvertFromMd5(const OpenGPS::UnsignedByte md5[16]);
 
+      /*!
+       * Converts the current character squence representing a 128-Bit MD5 sum
+       * in hexadecimal format to the binary representation of that MD5 sum.
+       *
+       * @param md5 Gets the converted MD5 binary values.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      OGPS_Boolean ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const;
+      
+
+      /*!
+       * Copies the current character sequence to an external buffer.
+       *
+       * @param target The external buffer.
+       * @param size The size of the external buffer in characters.
+       * @returns On success returns the number of chracters copied to the
+       * target buffer without the terminating null character. On failure
+       * returns the number of characters the target buffer must be able to store.
+       */
       size_t CopyTo(OGPS_Character* const target, const size_t size) const;
 
 #ifdef _UNICODE
@@ -87,19 +138,60 @@ namespace OpenGPS
 
    }; /* classOpenGPS::String */
 
+   /*!
+    * Publishes license text, ownership and similar information.
+    */
    class _OPENGPS_EXPORT Info
    {
    public:
+      /*!
+       * Gets a short name identifying this software library.
+       *
+       * @param text Contains the resulting message.
+       */
       static void GetName(OpenGPS::String* const text);
-      static void GetDescription(OpenGPS::String* const text);
+
+      /*!
+       * Gets a short message describing the purpose of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetAbout(OpenGPS::String* const text);
+
+      /*!
+       * Gets the version identifier of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
       static void GetVersion(OpenGPS::String* const text);
 
-      static void PrintVersion();
-
+      /*!
+       * Gets the copyright information of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
       static void GetCopyright(OpenGPS::String* const text);
+
+      /*!
+       * Gets the license information of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
       static void GetLicense(OpenGPS::String* const text);
 
+      /*!
+       * Prints the version identifier of this software library to standard output.
+       */
+      static void PrintVersion();
+
+      /*!
+       * Prints the copyright information of this software library to standard output.
+       */
       static void PrintCopyright();
+      
+      /*!
+       * Prints the license information of this software library to standard output.
+       */
       static void PrintLicense();
 
    private:

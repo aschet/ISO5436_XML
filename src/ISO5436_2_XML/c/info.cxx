@@ -10,7 +10,7 @@ size_t ogps_GetNameInfo(OGPS_Character* const text, const size_t size)
 size_t ogps_GetAboutInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
-   OpenGPS::Info::GetDescription(&src);
+   OpenGPS::Info::GetAbout(&src);
    return src.CopyTo(text, size);
 }
 

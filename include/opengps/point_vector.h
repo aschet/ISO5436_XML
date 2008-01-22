@@ -237,7 +237,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int16.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -249,7 +249,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int32.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -261,7 +261,7 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Float.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -273,7 +273,7 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Double.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -285,7 +285,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int16.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -297,7 +297,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int32.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -309,7 +309,7 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Float.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -321,7 +321,7 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Double.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -333,7 +333,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int16.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -345,7 +345,7 @@ extern "C" {
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Int32.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -357,7 +357,7 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Float.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
@@ -369,14 +369,14 @@ extern "C" {
     * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
     * data type other than ::OGPS_Double.
     *
-    * @see OGPS_DataPointType
+    * @see ::OGPS_DataPointType
     *
     * @param vector Operate on this point vector instance.
     */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector);
 
    /*!
-    * Asks if the given point vector stores a valid point.
+    * Asks if the given point vector stores a valid data point.
     *
     * A valid point vector does not have components where some or all of its values are missing.
     * Missing or invalid points are indicated by ::OGPS_MissingPointType.

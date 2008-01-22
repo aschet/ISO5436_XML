@@ -131,7 +131,7 @@ namespace OpenGPS
          OGPS_Double* const y,
          OGPS_Double* const z);
 
-      virtual const ISO5436_2TypeAutoPtr& GetDocument();
+      virtual ISO5436_2TypeAutoPtr& GetDocument();
 
       virtual OGPS_Boolean Write(const int compressionLevel = -1);
 

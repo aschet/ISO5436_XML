@@ -147,7 +147,7 @@ void Info::GetName(OpenGPS::String* const text)
    *text = _OPENGPS_NAME;
 }
 
-void Info::GetDescription(OpenGPS::String* const text)
+void Info::GetAbout(OpenGPS::String* const text)
 {
    _ASSERT(text);
 

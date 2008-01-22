@@ -39,23 +39,65 @@ namespace OpenGPS
 {
    class DataPoint;
 
+   /*!
+    * Typesafe and very fundamental representation of three-dimensional point measurement data.
+    *
+    * @see OpenGPS::PointVector
+    */
    class _OPENGPS_EXPORT PointVectorBase
    {
-   public:      
+   public:
+      /*! Destructs this object. */
       virtual ~PointVectorBase();
 
+      /*!
+       * Gets typesafe direct read-only access to the x component.
+       */
       virtual const DataPoint* GetX() const = 0;
+
+      /*!
+       * Gets typesafe direct read-only access to the y component.
+       */
       virtual const DataPoint* GetY() const = 0;
+
+      /*!
+       * Gets typesafe direct read-only access to the z component.
+       */
       virtual const DataPoint* GetZ() const = 0;
 
+      /*!
+       * Gets typesafe direct access to the x component.
+       */
       virtual DataPoint* GetX() = 0;
+
+      /*!
+       * Gets typesafe direct access to the y component.
+       */
       virtual DataPoint* GetY() = 0;
+
+      /*!
+       * Gets typesafe direct access to the z component.
+       */
       virtual DataPoint* GetZ() = 0;
 
+      /*!
+       * Copies values from another OpenGPS::PointVector instance.
+       *
+       * @param value OpenGPS::PointVectorBase object to copy from.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean Set(const PointVectorBase& value) = 0;
+
+      /*!
+       * Copies values from another OpenGPS::PointVectorBase instance.
+       *
+       * @param value Gets values from the current instance as a copy.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean Get(PointVectorBase& value) const = 0;
 
    protected:
+      /*! Creates a new instance. */
       PointVectorBase();
    };
 }
