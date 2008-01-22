@@ -28,10 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+#include "iso5436_2_handle.hxx"
+
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>
 
-#include "iso5436_2.hxx"
 #include "point_iterator.hxx"
 #include "point_vector.hxx"
 

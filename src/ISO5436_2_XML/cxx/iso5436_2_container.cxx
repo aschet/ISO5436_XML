@@ -269,6 +269,7 @@ OGPS_Boolean ISO5436_2Container::SetMatrixPoint(
    const PointVector* const vector)
 {
    _ASSERT(HasDocument());
+   _ASSERT(IsMatrix());
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
@@ -297,6 +298,7 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
    PointVector& vector)
 {
    _ASSERT(HasDocument());
+   _ASSERT(IsMatrix());
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
@@ -339,13 +341,14 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
 OGPS_Boolean ISO5436_2Container::SetListPoint(
    const unsigned long index,
    const PointVector& vector)
-{
+{   
    _ASSERT(HasDocument());
+   _ASSERT(!IsMatrix());
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
-   _ASSERT((IsIncrementalX() && vector.GetX()->GetType() == OGPS_MissingPointType) || (!IsIncrementalX() && vector.GetX()->GetType() != OGPS_MissingPointType));
-   _ASSERT((IsIncrementalY() && vector.GetY()->GetType() == OGPS_MissingPointType) || (!IsIncrementalY() && vector.GetY()->GetType() != OGPS_MissingPointType));
+   _ASSERT((IsIncrementalX() && vector.GetX()->GetType() == OGPS_MissingPointType) || (!IsIncrementalX() && vector.GetX()->GetType() != OGPS_MissingPointType) || (IsIncrementalX() && vector.GetX()->GetType() == OGPS_Int32PointType));
+   _ASSERT((IsIncrementalY() && vector.GetY()->GetType() == OGPS_MissingPointType) || (!IsIncrementalY() && vector.GetY()->GetType() != OGPS_MissingPointType) || (IsIncrementalY() && vector.GetY()->GetType() == OGPS_Int32PointType));
    _ASSERT(vector.GetZ()->GetType() != OGPS_MissingPointType);
 
    // TODO: cast entfernen?
@@ -359,6 +362,7 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
    PointVector& vector)
 {
    _ASSERT(HasDocument());
+   _ASSERT(!IsMatrix());
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
@@ -407,6 +411,7 @@ OGPS_Boolean ISO5436_2Container::GetMatrixCoord(
    OGPS_Double* const z)
 {
    _ASSERT(HasDocument());
+   _ASSERT(IsMatrix());
 
    PointVector vector;
    return (GetMatrixPoint(u, v, w, vector) && ConvertPointToCoord(vector, x, y, z));
@@ -418,6 +423,7 @@ OGPS_Boolean ISO5436_2Container::IsMatrixCoordValid(
    unsigned long w)
 {
    _ASSERT(HasDocument());
+   _ASSERT(IsMatrix());
 
    // TODO: cast entfernen?
    ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
@@ -432,6 +438,7 @@ OGPS_Boolean ISO5436_2Container::GetListCoord(
    OGPS_Double* const z)
 {
    _ASSERT(HasDocument());
+   _ASSERT(!IsMatrix());
 
    PointVector vector;
    return (GetListPoint(index, vector) && ConvertPointToCoord(vector, x, y, z));
@@ -445,6 +452,7 @@ OGPS_Boolean ISO5436_2Container::ConvertPointToCoord(
 {
    vector.GetXYZ(x, y, z);
 
+   // TODO: Overflow
    if(x)
    {
       *x *= GetIncrementX();
@@ -465,7 +473,7 @@ OGPS_Boolean ISO5436_2Container::ConvertPointToCoord(
    return TRUE;
 }
 
-const ISO5436_2TypeAutoPtr& ISO5436_2Container::GetDocument()
+ISO5436_2TypeAutoPtr& ISO5436_2Container::GetDocument()
 {
    return m_Document;
 }
@@ -900,13 +908,13 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
          if(CreatePointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
-            PointVectorReaderContextAutoPtr context = CreatePointVectorReaderContext();
+            PointVectorReaderContextAutoPtr context(CreatePointVectorReaderContext());
 
             if(context.get())
             {
                OGPS_Boolean success = TRUE;
 
-               PointVectorProxyContextAutoPtr proxy_context = CreatePointVectorProxyContext();
+               PointVectorProxyContextAutoPtr proxy_context(CreatePointVectorProxyContext());
 
                if(!proxy_context.get())
                {
@@ -914,7 +922,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
                }
                else
                {
-                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context));
+                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context.get()));
 
                   unsigned long index = 0;
 
@@ -922,7 +930,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
                   {
                      if(context->IsValid())
                      {
-                        if(!parser->Read(*context, *vector))
+                        if(!parser->Read(*context.get(), *vector))
                         {
                            success = FALSE;
                            break;
@@ -963,7 +971,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
                   ResetXmlPointList();
 
                   // initialize global vector proxy
-                  m_ProxyContext = CreatePointVectorProxyContext();
+                  m_ProxyContext.reset(CreatePointVectorProxyContext());
                   _ASSERT(m_ProxyContext.get());
                   m_PointVector = vectorBuffer->GetPointVectorProxy(*m_ProxyContext.get());
                }
@@ -1237,7 +1245,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
          if(CreatePointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
-            PointVectorWriterContextAutoPtr context = CreatePointVectorWriterContext(handle);
+            PointVectorWriterContextAutoPtr context(CreatePointVectorWriterContext(handle));
 
             if(context.get())
             {
@@ -1245,7 +1253,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
 
                VectorBuffer* const vectorBuffer = GetVectorBuffer();
 
-               PointVectorProxyContextAutoPtr proxy_context = CreatePointVectorProxyContext();
+               PointVectorProxyContextAutoPtr proxy_context(CreatePointVectorProxyContext());
 
                if(!proxy_context.get())
                {
@@ -1253,7 +1261,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
                }
                else
                {
-                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context));
+                  PointVectorAutoPtr vector(vectorBuffer->GetPointVectorProxy(*proxy_context.get()));
 
                   unsigned long index = 0;
                   unsigned long count = 0;
@@ -1273,7 +1281,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
                      {
                         if(isBinary || vectorBuffer->GetValidityProvider()->IsValid(index))
                         {
-                           if(!parser->Write(*context, *vector))
+                           if(!parser->Write(*context.get(), *vector))
                            {
                               success = FALSE;
                               break;
@@ -1766,7 +1774,7 @@ double ISO5436_2Container::GetOffsetZ() const
    return (0.0);
 }
 
-PointVectorProxyContextAutoPtr ISO5436_2Container::CreatePointVectorProxyContext() const
+PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() const
 {
    _ASSERT(HasDocument());
 

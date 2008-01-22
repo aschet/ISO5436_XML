@@ -38,7 +38,16 @@
 #     ifdef BUILD_ISO5436_2_XML
 #        define _OPENGPS_EXPORT
 #    else
-#        define _OPENGPS_EXPORT __declspec(dllimport)
+/* _USE_OPENGPS_LIBRARY must be specified by the
+user of a shared library version of openGPS.
+Otherwise no symbols will be imported. This is
+needed to distinguish between includes for
+static and shared library usage scenarios. */
+#        ifdef _USE_OPENGPS_LIBRARY
+#          define _OPENGPS_EXPORT __declspec(dllimport)
+#        else
+#          define _OPENGPS_EXPORT
+#        endif /* _USE_OPENGPS_LIBRARY */
 #     endif /* BUILD_ISO5436_2_XML */
 #  endif /* BUILD_ISO5436_2_XML_DLL */
 #else
@@ -111,7 +120,9 @@ extern "C"
     *
     * @param text Allocated string buffer. Will contain the resulting message on success.
     * @param size The size of the allocated buffer in characters.
-    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the name including the terminating null character.
+    * @returns On success returns the number of characters written, otherwise returns the
+    * required size in characters of an allocated text buffer to store the name including
+    * the terminating null character.
     */
    _OPENGPS_EXPORT size_t ogps_GetNameInfo(OGPS_Character* const text, const size_t size);
    
@@ -120,7 +131,9 @@ extern "C"
     *
     * @param text Allocated string buffer. Will contain the resulting message on success.
     * @param size The size of the allocated buffer in characters.
-    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the about message including the terminating null character.
+    * @returns On success returns the number of characters written, otherwise returns the
+    * required size  in characters of an allocated text buffer to store the about message
+    * including the terminating null character.
     */
    _OPENGPS_EXPORT size_t ogps_GetAboutInfo(OGPS_Character* const text, const size_t size);
    
@@ -129,7 +142,9 @@ extern "C"
     *
     * @param text Allocated string buffer. Will contain the resulting message on success.
     * @param size The size of the allocated buffer in characters.
-    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the version identifier including the terminating null character.
+    * @returns On success returns the number of characters written, otherwise returns the
+    * required size  in characters of an allocated text buffer to store the version
+    * identifier including the terminating null character.
     */
    _OPENGPS_EXPORT size_t ogps_GetVersionInfo(OGPS_Character* const text, const size_t size);
 
@@ -138,7 +153,9 @@ extern "C"
     *
     * @param text Allocated string buffer. Will contain the resulting message on success.
     * @param size The size of the allocated buffer in characters.
-    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the copyright information including the terminating null character.
+    * @returns On success returns the number of characters written, otherwise returns the
+    * required size  in characters of an allocated text buffer to store the copyright
+    * information including the terminating null character.
     */
    _OPENGPS_EXPORT size_t ogps_GetCopyrightInfo(OGPS_Character* const text, const size_t size);
 
@@ -147,7 +164,9 @@ extern "C"
     *
     * @param text Allocated string buffer. Will contain the resulting message on success.
     * @param size The size of the allocated buffer in characters.
-    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the license information including the terminating null character.
+    * @returns On success returns the number of characters written, otherwise returns the
+    * required size  in characters of an allocated text buffer to store the license
+    * information including the terminating null character.
     */
    _OPENGPS_EXPORT size_t ogps_GetLicenseInfo(OGPS_Character* const text, const size_t size);
 

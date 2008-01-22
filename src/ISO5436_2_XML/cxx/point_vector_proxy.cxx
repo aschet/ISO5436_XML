@@ -107,7 +107,7 @@ OGPS_Boolean PointVectorProxy::Set(const PointVectorBase& value)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
-   return (m_X->Set(*value.GetX()) && m_Y->Set(*value.GetY()) && m_Z->Set(*value.GetZ()));
+   return ((!m_X->IsValid() || m_X->Set(*value.GetX())) && (!m_Y->IsValid() || m_Y->Set(*value.GetY())) && m_Z->Set(*value.GetZ()));
 }
 
 OGPS_Boolean PointVectorProxy::Get(PointVectorBase& value) const

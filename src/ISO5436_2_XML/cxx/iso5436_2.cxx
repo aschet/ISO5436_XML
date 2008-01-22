@@ -194,7 +194,7 @@ OGPS_Boolean ISO5436_2::GetListCoord(
    return m_Instance->GetListCoord(index, x, y, z);
 }
 
-const ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()
+ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()
 {
    _ASSERT(m_Instance && m_Instance != this);
 

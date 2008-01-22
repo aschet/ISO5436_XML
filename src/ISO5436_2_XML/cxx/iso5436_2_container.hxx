@@ -225,7 +225,7 @@ namespace OpenGPS
       OGPS_Boolean ReadXmlDocument();
       OGPS_Boolean SaveXmlDocument(zipFile handle);
 
-      virtual PointVectorProxyContextAutoPtr CreatePointVectorProxyContext() const;
+      virtual PointVectorProxyContext* CreatePointVectorProxyContext() const;
 
 
    private:

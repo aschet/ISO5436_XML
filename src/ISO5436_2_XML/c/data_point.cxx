@@ -32,6 +32,7 @@
 
 #include "data_point.hxx"
 #include "../cxx/data_point_impl.hxx"
+#include "../cxx/stdafx.hxx"
 
 OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint)
 {

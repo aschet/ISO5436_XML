@@ -65,7 +65,7 @@ namespace OpenGPS
       virtual OGPS_Boolean Get(PointVectorBase& value) const;
 
    private:
-      const PointVectorProxyContext* m_Context;
+      const PointVectorProxyContext* const m_Context;
       VectorBuffer* m_Buffer;
 
       DataPoint* m_X;

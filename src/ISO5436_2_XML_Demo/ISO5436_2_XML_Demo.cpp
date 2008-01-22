@@ -32,7 +32,7 @@
 
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>
-#include <opengps/cxx/iso5436_2.hxx>
+#include <opengps/cxx/iso5436_2_handle.hxx>
 #include <opengps/cxx/iso5436_2_xsd.hxx>
 #include <opengps/cxx/point_iterator.hxx>
 #include <opengps/cxx/point_vector.hxx>
@@ -261,6 +261,9 @@ void readonlyExample(OpenGPS::String fileName)
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample1.x3p")*/, NULL, TRUE);
 
+   if(!handle)
+      return;
+
    /* Obtain handle to xml document. */
    ISO5436_2Type * document = ogps_GetDocument(handle);
 
@@ -298,11 +301,11 @@ void readonlyExample(OpenGPS::String fileName)
          ogps_GetXYZ(vector, &x, &y, &z);
 
          // Write point to console
-         std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << _T("X: ") << x << _T("; Y: ") << y << _T("; Z: ") << z <<std::endl;
+         std::cout << ("U: ") << u << ("; V: ") << v << ("; W: ") << w << ("X: ") << x << ("; Y: ") << y << ("; Z: ") << z <<std::endl;
       }    
       else
       {
-         std::cout << _T("U: ") << u << _T("; V: ") << v << _T("; W: ") << w << ": Invalid point" <<std::endl;
+         std::cout << ("U: ") << u << ("; V: ") << v << ("; W: ") << w << (": Invalid point") <<std::endl;
       }
 
    }
@@ -325,6 +328,9 @@ void readonlyExample2(OpenGPS::String fileName) {
   
   /* Open the file, hopefully everything went well... */
   OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str()/*_T("ISO5436_2-sample4_bin.x3p")*/, NULL, TRUE);
+
+  if(!handle)
+     return;
   
   /* Obtain handle to xml document. */
   ISO5436_2Type * document = ogps_GetDocument(handle);
@@ -428,6 +434,9 @@ void readonlyExample3(OpenGPS::String fileName) {
 
   /* Obtain handle to xml document. */
    const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();
+
+   if(document.get())
+   {
   
   /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
@@ -515,6 +524,8 @@ void readonlyExample3(OpenGPS::String fileName) {
     
   // Failed?
   assert(!iterator->HasNext());
+
+   }
     
   /* Close file */
   iso5436_2.Close();
@@ -557,7 +568,7 @@ void readonlyExample4(OpenGPS::String fileName) {
                   double x, y, z;
                   vector.GetXYZ(&x, &y, &z);
 
-                  std::cout << _T("N: ") << index << _T("X: ") << x << _T("; Y: ") << y << _T("; Z: ") << z << std::endl;
+                  std::cout << ("N: ") << index << ("X: ") << x << ("; Y: ") << y << ("; Z: ") << z << std::endl;
                }
             }
          }
@@ -570,10 +581,10 @@ int _tmain(int argc, _TCHAR* argv[])
 {
    //simpleExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1.x3p"));
    //mediumComplexExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample5_bin.x3p"));   
-   readonlyExample(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample1_bin.x3p"));
-   readonlyExample2(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample3.x3p"));
-   readonlyExample3(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample3.x3p"));
-   readonlyExample4(_T("H:\\Profile\\jo\\openGPS\\implementation\\test\\ISO5436-sample2.x3p"));
+   readonlyExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1_bin.x3p"));
+   readonlyExample2(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample3.x3p"));
+   readonlyExample3(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample3.x3p"));
+   readonlyExample4(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample2.x3p"));
 
 	return 0;
 }

@@ -72,11 +72,10 @@ const char* String::ToChar()
       delete[] m_Chars;
    }
 
-   size_t retval = 0;
    const size_t len = length();
    m_Chars = new char[len + 1];
-   wcstombs_s(&retval, m_Chars, (len + 1)*sizeof(char), c_str(), len);
-   m_Chars[retval] = 0;
+   wcstombs(m_Chars, c_str(), len);
+   m_Chars[len] = 0;
 
    return m_Chars;
 #else
@@ -90,11 +89,10 @@ void String::FromChar(const char* const s)
    if(s)
    {
 #ifdef _UNICODE
-      size_t retval = 0;
       const size_t len = strlen(s);
       wchar_t* chars = new wchar_t[len + 1];
-      mbstowcs_s(&retval, chars, (len + 1)*sizeof(wchar_t), s, len);
-      chars[retval] = 0;
+      mbstowcs(chars, s, len);
+      chars[len] = 0;
 
       *this = chars;
 
