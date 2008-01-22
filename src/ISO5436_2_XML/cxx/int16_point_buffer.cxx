@@ -76,5 +76,5 @@ OGPS_Boolean Int16PointBuffer::Get(const unsigned long index, short& value) cons
 
 OGPS_DataPointType Int16PointBuffer::GetType() const
 {
-   return Int16PointType;
+   return OGPS_Int16PointType;
 }

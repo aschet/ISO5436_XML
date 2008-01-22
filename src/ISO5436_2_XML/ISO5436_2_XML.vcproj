@@ -249,10 +249,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\opengps\iso5436_2_handle.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\opengps\opengps.h"
 				>
 			</File>

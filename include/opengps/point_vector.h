@@ -43,89 +43,347 @@
 extern "C" {
 #endif
 
-   /* Set of three data points corresponding to the current axis definition. */
-   typedef struct _OGPS_POINT_VECTOR * OGPS_PointVectorPtr;
-   /* HACK: with the typedef, the const qualifier is not reconised any more.
+   /* TODO: HACK: with the typedef, the const qualifier is not reconised any more.
    #define OGPS_PointVectorPtr struct _OGPS_POINT_VECTOR * */
+
+   /*!
+    * Typesafe representation of three-dimensional point measurement data.
+    *
+    * The corresponding C++ implementation is provided by OpenGPS::PointVector.
+    */
+   typedef struct _OGPS_POINT_VECTOR * OGPS_PointVectorPtr;
 
    /* create* functions. */
    /* If instance points to NULL new pre-initalized memory will be allocated
    * and true is returned. Otherwise nothing will happen and false is returned.
    Must be freed with ogps_FreePointVector. */
+   /*!
+    * Creates an instance of type ::OGPS_PointVectorPtr.
+    *
+    * @remarks If your create an ::OGPS_PointVectorPtr object using
+    * this function, you must call ::ogps_FreePointVector to release the object.
+    *
+    * @returns Returns an instance of type ::OGPS_PointVectorPtr.
+    */
    _OPENGPS_EXPORT OGPS_PointVectorPtr ogps_CreatePointVector(void);
 
-   /* Frees allocated memory and ogps_Sets given pointer to NULL to be on the safe side.
-   * Also it is safe to pass an unallocated null-pointer here. This function will
-   * perform an noop then. */
+   /*!
+    * Frees an instance of a point vector.
+    *
+    * @see ::ogps_CreatePointVector
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT void ogps_FreePointVector(OGPS_PointVectorPtr * const vector);
 
-   /* Access functions to PointVector properties. */
-   /* Returns the DataPoint stored in PointVector or NULL on failure. */
+   /*!
+    * Sets the new value for the x component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt16X(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
+
+   /*!
+    * Sets the new value for the x component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt32X(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
+
+   /*!
+    * Sets the new value for the x component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetFloatX(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
+
+   /*!
+    * Sets the new value for the x component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetDoubleX(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
+   /*!
+    * Sets the new value for the y component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt16Y(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
+
+   /*!
+    * Sets the new value for the y component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt32Y(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
+
+   /*!
+    * Sets the new value for the y component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetFloatY(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
+
+   /*!
+    * Sets the new value for the y component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetDoubleY(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
+   /*!
+    * Sets the new value for the z component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt16Z(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int16 value);
+
+   /*!
+    * Sets the new value for the z component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetInt32Z(
       OGPS_PointVectorPtr const vector,
       const OGPS_Int32 value);
+
+   /*!
+    * Sets the new value for the z component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetFloatZ(
       OGPS_PointVectorPtr const vector,
       const OGPS_Float value);
+
+   /*!
+    * Sets the new value for the z component of a given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param value The new value.
+    */
    _OPENGPS_EXPORT void ogps_SetDoubleZ(
       OGPS_PointVectorPtr const vector,
       const OGPS_Double value);
 
+   /*!
+    * Gets the values of each component of the given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param x Gets the value of the x component. If this parameter is set to NULL, this does nothing.
+    * @param y Gets the value of the y component. If this parameter is set to NULL, this does nothing.
+    * @param z Gets the value of the z component. If this parameter is set to NULL, this does nothing.
+    */
    _OPENGPS_EXPORT void ogps_GetXYZ(
       const OGPS_PointVectorPtr vector,
       OGPS_Double* const x,
       OGPS_Double* const y,
       OGPS_Double* const z);
 
+   /*!
+    * Gets the x component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector);
+
+   /*!
+    * Gets the y component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector);
+
+   /*!
+    * Gets the z component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector);
 
+   /*!
+    * Gets the value of the x component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int16.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the x component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int32.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the x component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Float.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the x component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Double.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector);
 
+   /*!
+    * Gets the value of the y component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int16.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the y component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int32.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the y component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Float.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the y component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Double.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector);
 
+   /*!
+    * Gets the value of the z component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int16.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the z component of the given vector.
+    *
+    * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Int32.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the z component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Float.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the value of the z component of the given vector.
+    *
+    * @remarks Returns 0.0 if there is a type mismatch and the value of the component is stored as a
+    * data type other than ::OGPS_Double.
+    *
+    * @see OGPS_DataPointType
+    *
+    * @param vector Operate on this point vector instance.
+    */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector);
 
-   /* Returns true for valid data point, false otherwise. */
+   /*!
+    * Asks if the given point vector stores a valid point.
+    *
+    * A valid point vector does not have components where some or all of its values are missing.
+    * Missing or invalid points are indicated by ::OGPS_MissingPointType.
+    *
+    * @param vector Operate on this point vector instance.
+    * @returns Returns TRUE if this point vector contains valid point components only, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector);
 
 #ifdef __cplusplus

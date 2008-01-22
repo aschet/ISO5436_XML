@@ -42,7 +42,7 @@ DataPoint::~DataPoint()
 DataPointImpl::DataPointImpl()
 : DataPoint()
 {
-   m_Type = MissingPointType;
+   m_Type = OGPS_MissingPointType;
 }
 
 DataPointImpl::~DataPointImpl()
@@ -58,7 +58,7 @@ OGPS_Boolean DataPointImpl::Get(OGPS_Int16* const value) const
 {
    _ASSERT(value);
 
-   if(m_Type == Int16PointType)
+   if(m_Type == OGPS_Int16PointType)
    {
       *value = m_Value.int16Value;
       return TRUE;
@@ -71,7 +71,7 @@ OGPS_Boolean DataPointImpl::Get(OGPS_Int32* const value) const
 {
    _ASSERT(value);
 
-   if(m_Type == Int32PointType)
+   if(m_Type == OGPS_Int32PointType)
    {
       *value = m_Value.int32Value;
       return TRUE;
@@ -84,7 +84,7 @@ OGPS_Boolean DataPointImpl::Get(OGPS_Float* const value) const
 {
    _ASSERT(value);
 
-   if(m_Type == FloatPointType)
+   if(m_Type == OGPS_FloatPointType)
    {
       *value = m_Value.floatValue;
       return TRUE;
@@ -97,7 +97,7 @@ OGPS_Boolean DataPointImpl::Get(OGPS_Double* const value) const
 {
    _ASSERT(value);
 
-   if(m_Type == DoublePointType)
+   if(m_Type == OGPS_DoublePointType)
    {
       *value = m_Value.doubleValue;
       return TRUE;
@@ -110,19 +110,19 @@ OGPS_Double DataPointImpl::Get() const
 {
    switch(m_Type)
    {
-   case Int16PointType:
+   case OGPS_Int16PointType:
       return m_Value.int16Value;
 
-   case Int32PointType:
+   case OGPS_Int32PointType:
       return m_Value.int32Value;
 
-   case FloatPointType:
+   case OGPS_FloatPointType:
       return m_Value.floatValue;
 
-   case DoublePointType:
+   case OGPS_DoublePointType:
       return m_Value.doubleValue;
 
-   case MissingPointType:
+   case OGPS_MissingPointType:
       _ASSERT(FALSE);
       return 0.0;
 
@@ -136,32 +136,32 @@ OGPS_Double DataPointImpl::Get() const
 
 OGPS_Boolean DataPointImpl::Set(const OGPS_Int16 value)
 {
-   m_Type = Int16PointType;
+   m_Type = OGPS_Int16PointType;
    m_Value.int16Value = value;
    return TRUE;
 }
 OGPS_Boolean DataPointImpl::Set(const OGPS_Int32 value)
 {
-   m_Type = Int32PointType;
+   m_Type = OGPS_Int32PointType;
    m_Value.int32Value = value;
    return TRUE;
 }
 OGPS_Boolean DataPointImpl::Set(const OGPS_Float value)
 {
-   m_Type = FloatPointType;
+   m_Type = OGPS_FloatPointType;
    m_Value.floatValue = value;
    return TRUE;
 }
 OGPS_Boolean DataPointImpl::Set(const OGPS_Double value)
 {
-   m_Type = DoublePointType;
+   m_Type = OGPS_DoublePointType;
    m_Value.doubleValue = value;
    return TRUE;
 }
 
 OGPS_Boolean DataPointImpl::IsValid() const
 {
-   return m_Type != MissingPointType;
+   return m_Type != OGPS_MissingPointType;
 }
 
 OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
@@ -172,31 +172,31 @@ OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
    efficient memcpy might lead to unexpected results - I guess. */
    switch(src.GetType())
    {
-   case Int16PointType:
+   case OGPS_Int16PointType:
       OGPS_Int16 vs;
       _VERIFY(src.Get(&vs));
       _VERIFY(Set(vs));
       break;
 
-   case Int32PointType:
+   case OGPS_Int32PointType:
       OGPS_Int32 vl;
       _VERIFY(src.Get(&vl));
       _VERIFY(Set(vl));
       break;
 
-   case FloatPointType:
+   case OGPS_FloatPointType:
       OGPS_Float vf;
       _VERIFY(src.Get(&vf));
       _VERIFY(Set(vf));
       break;
 
-   case DoublePointType:
+   case OGPS_DoublePointType:
       OGPS_Double vd;
       _VERIFY(src.Get(&vd));
       _VERIFY(Set(vd));
       break;
 
-   case MissingPointType:
+   case OGPS_MissingPointType:
       Reset();
       break;
 
@@ -211,6 +211,6 @@ OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
 
 void DataPointImpl::Reset()
 {
-   m_Type = MissingPointType;
+   m_Type = OGPS_MissingPointType;
    m_Value.doubleValue = 0.0;
 }

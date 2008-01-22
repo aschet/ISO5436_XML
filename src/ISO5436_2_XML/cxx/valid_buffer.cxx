@@ -185,7 +185,7 @@ OGPS_Boolean ValidBuffer::Write(std::ostream& stream)
 Int16ValidBuffer::Int16ValidBuffer(PointBuffer* const value)
 : ValidBuffer(value)
 {
-   _ASSERT(value && value->GetType() == Int16PointType);
+   _ASSERT(value && value->GetType() == OGPS_Int16PointType);
 }
 
 
@@ -212,7 +212,7 @@ OGPS_Boolean Int16ValidBuffer::SetValid(const unsigned int index, const OGPS_Boo
 Int32ValidBuffer::Int32ValidBuffer(PointBuffer* const value)
 : ValidBuffer(value)
 {
-   _ASSERT(value && value->GetType() == Int32PointType);
+   _ASSERT(value && value->GetType() == OGPS_Int32PointType);
 }
 
 Int32ValidBuffer::~Int32ValidBuffer()

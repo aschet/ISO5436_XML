@@ -35,8 +35,8 @@
 #  include <opengps/cxx/opengps.hxx>
 #endif
 
-#ifndef _OPENGPS_ISO5436_2_HANDLE_H
-#  include <opengps/iso5436_2_handle.h>
+#ifndef _OPENGPS_ISO5436_2_H
+#  include <opengps/iso5436_2.h>
 #endif
 
 namespace OpenGPS

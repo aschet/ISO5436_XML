@@ -1,51 +1,51 @@
 #include <opengps/cxx/opengps.hxx>
 
-size_t ogps_get_name_info(OGPS_Character* const text, const size_t size)
+size_t ogps_GetNameInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
    OpenGPS::Info::GetName(&src);
    return src.CopyTo(text, size);
 }
 
-size_t ogps_get_software_info(OGPS_Character* const text, const size_t size)
+size_t ogps_GetAboutInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
    OpenGPS::Info::GetDescription(&src);
    return src.CopyTo(text, size);
 }
 
-size_t ogps_get_version_info(OGPS_Character* const text, const size_t size)
+size_t ogps_GetVersionInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
    OpenGPS::Info::GetVersion(&src);
    return src.CopyTo(text, size);
 }
 
-void ogps_print_version_info()
+void ogps_PrintVersionInfo()
 {
    OpenGPS::Info::PrintVersion();
 }
 
-size_t ogps_get_copyright_info(OGPS_Character* const text, const size_t size)
+size_t ogps_GetCopyrightInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
    OpenGPS::Info::GetCopyright(&src);
    return src.CopyTo(text, size);
 }
 
-void ogps_print_copyright_info()
+void ogps_PrintCopyrightInfo()
 {
    OpenGPS::Info::PrintCopyright();
 }
 
-size_t ogps_get_license_info(OGPS_Character* const text, const size_t size)
+size_t ogps_GetLicenseInfo(OGPS_Character* const text, const size_t size)
 {
    OpenGPS::String src;
    OpenGPS::Info::GetLicense(&src);
    return src.CopyTo(text, size);
 }
 
-void ogps_print_license_info()
+void ogps_PrintLicenseInfo()
 {
    OpenGPS::Info::PrintLicense();
 }

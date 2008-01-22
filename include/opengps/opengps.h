@@ -79,15 +79,25 @@ typedef wchar_t OGPS_Character;
 typedef char OGPS_Character;
 #endif /* _UNICODE */
 
+/*! Represents measurement data of type short. */
 typedef short OGPS_Int16;
+/*! Represents measurement data of type int. */
 typedef int OGPS_Int32;
+/*! Represents measurement data of type float. */
 typedef float OGPS_Float;
+/*! Represents measurement data of type double. */
 typedef double OGPS_Double;
 
+/*!
+ * Possible failure conditions.
+ */
 typedef enum _OPENGPS_EXCEPTION_ID
 {
+   /*! No failure condition trapped. */
    OGPS_ExNone,
+   /*! A failure condition occured, but it has not been specified in detail. */
    OGPS_ExGeneral,
+   /*! An overflow occured. */
    OGPS_ExOverflow
 } OGPS_ExceptionId;
 
@@ -96,20 +106,83 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-_OPENGPS_EXPORT size_t ogps_get_name_info(OGPS_Character* const text, const size_t size);
-_OPENGPS_EXPORT size_t ogps_get_software_info(OGPS_Character* const text, const size_t size);
-_OPENGPS_EXPORT size_t ogps_get_version_info(OGPS_Character* const text, const size_t size);
+   /*!
+    * Gets a short name identifying this software library.
+    *
+    * @param text Allocated string buffer. Will contain the resulting message on success.
+    * @param size The size of the allocated buffer in characters.
+    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the name including the terminating null character.
+    */
+   _OPENGPS_EXPORT size_t ogps_GetNameInfo(OGPS_Character* const text, const size_t size);
+   
+   /*!
+    * Gets a short message describing the purpose of this software library.
+    *
+    * @param text Allocated string buffer. Will contain the resulting message on success.
+    * @param size The size of the allocated buffer in characters.
+    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the about message including the terminating null character.
+    */
+   _OPENGPS_EXPORT size_t ogps_GetAboutInfo(OGPS_Character* const text, const size_t size);
+   
+   /*!
+    * Gets the version identifier of this software library.
+    *
+    * @param text Allocated string buffer. Will contain the resulting message on success.
+    * @param size The size of the allocated buffer in characters.
+    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the version identifier including the terminating null character.
+    */
+   _OPENGPS_EXPORT size_t ogps_GetVersionInfo(OGPS_Character* const text, const size_t size);
 
-_OPENGPS_EXPORT void ogps_print_version_info();
+   /*!
+    * Gets the copyright information of this software library.
+    *
+    * @param text Allocated string buffer. Will contain the resulting message on success.
+    * @param size The size of the allocated buffer in characters.
+    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the copyright information including the terminating null character.
+    */
+   _OPENGPS_EXPORT size_t ogps_GetCopyrightInfo(OGPS_Character* const text, const size_t size);
 
-_OPENGPS_EXPORT size_t ogps_get_copyright_info(OGPS_Character* const text, const size_t size);
-_OPENGPS_EXPORT void ogps_print_copyright_info();
+   /*!
+    * Gets the license information of this software library.
+    *
+    * @param text Allocated string buffer. Will contain the resulting message on success.
+    * @param size The size of the allocated buffer in characters.
+    * @returns On success returns the number of characters written, otherwise returns the required size  in characters of an allocated text buffer to store the license information including the terminating null character.
+    */
+   _OPENGPS_EXPORT size_t ogps_GetLicenseInfo(OGPS_Character* const text, const size_t size);
 
-_OPENGPS_EXPORT size_t ogps_get_license_info(OGPS_Character* const text, const size_t size);
-_OPENGPS_EXPORT void ogps_print_license_info();
+   /*!
+    * Prints the version identifier of this software library to standard output.
+    */
+   _OPENGPS_EXPORT void ogps_PrintVersionInfo();
 
-_OPENGPS_EXPORT const OGPS_Character* ogps_get_error_message();
-_OPENGPS_EXPORT OGPS_ExceptionId ogps_get_error_id();
+
+   /*!
+    * Prints the copyright information of this software library to standard output.
+    */
+   _OPENGPS_EXPORT void ogps_PrintCopyrightInfo();
+
+   /*!
+    * Prints the license information of this software library to standard output.
+    */
+   _OPENGPS_EXPORT void ogps_PrintLicenseInfo();
+
+   /*!
+    * Gets the last handled error message or NULL.
+    *
+    * @remarks This may return NULL even though an error occured. This is because
+    * the description of a particular error condition may not be available.
+    *
+    * @see ::ogps_GetErrorId
+    */
+   _OPENGPS_EXPORT const OGPS_Character* ogps_GetErrorMessage();
+
+   /*!
+    * Gets the type of the last handled error condition.
+    *
+    * @see ::ogps_GetErrorMessage
+    */
+   _OPENGPS_EXPORT OGPS_ExceptionId ogps_GetErrorId();
 
 #ifdef __cplusplus
 }

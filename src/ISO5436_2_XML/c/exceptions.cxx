@@ -31,12 +31,12 @@
 #include <opengps/opengps.h>
 #include "exceptions.hxx"
 
-const OGPS_Character* ogps_get_error_message()
+const OGPS_Character* ogps_GetErrorMessage()
 {
    return OpenGPS::ExceptionHistory::GetLastErrorMessage();
 }
 
-OGPS_ExceptionId ogps_get_error_id()
+OGPS_ExceptionId ogps_GetErrorId()
 {
    return OpenGPS::ExceptionHistory::GetLastExceptionId();
 }

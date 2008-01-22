@@ -102,19 +102,19 @@ OGPS_Boolean VectorBufferBuilder::BuildValidityProvider()
 
    switch(dataType)
    {
-   case Int16PointType:
+   case OGPS_Int16PointType:
       provider = validBuffer = new Int16ValidBuffer(zBuffer);
       break;
-   case Int32PointType:
+   case OGPS_Int32PointType:
       provider = validBuffer = new Int32ValidBuffer(zBuffer);
       break;
-   case FloatPointType:
+   case OGPS_FloatPointType:
       provider = new FloatInlineValidity(zBuffer);
       break;
-   case DoublePointType:
+   case OGPS_DoublePointType:
       provider = new DoubleInlineValidity(zBuffer);
       break;
-   case MissingPointType:
+   case OGPS_MissingPointType:
       _ASSERT(FALSE);
       break;
    default:
@@ -144,23 +144,23 @@ PointBuffer* VectorBufferBuilder::CreatePointBuffer(const OGPS_DataPointType dat
 
    switch(dataType)
    {
-   case Int16PointType:
+   case OGPS_Int16PointType:
       point = new Int16PointBuffer();
       *retval = TRUE;
       break;
-   case Int32PointType:
+   case OGPS_Int32PointType:
       point = new Int32PointBuffer();
       *retval = TRUE;
       break;
-   case FloatPointType:
+   case OGPS_FloatPointType:
       point = new FloatPointBuffer();
       *retval = TRUE;
       break;
-   case DoublePointType:
+   case OGPS_DoublePointType:
       point = new DoublePointBuffer();
       *retval = TRUE;
       break;
-   case MissingPointType:
+   case OGPS_MissingPointType:
       *retval = TRUE;
       break;
    default:

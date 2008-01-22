@@ -43,48 +43,153 @@
 extern "C" {
 #endif
 
-   /* Point iterator interface. */
+   /*!
+    * Interface to a point iterator.
+    *
+    * The point iterator may be used to traverse all point vectors contained in
+    * an ISO5436-2 XML X3P file format container.
+    *
+    * @remarks An instance of ::OGPS_PointIteratorPtr can be obtained from
+    * ::ogps_CreateNextPointIterator or ::ogps_CreatePrevPointIterator.
+    * You must free an instance of type ::OGPS_PointIteratorPtr with
+    * ::ogps_FreePointIterator when you done with it.
+    *
+    * The corresponding C++ implementation is provided by OpenGPS::PointIterator.
+    */
    typedef struct _OGPS_POINT_ITERATOR * OGPS_PointIteratorPtr;
 
-   /* Returns TRUE, if there is another point available, FALSE otherwise. */
+   /*!
+    * Asks if there is another point available to iterate.
+    *
+    * @remarks Use this function with an iterator handle obtained from ::ogps_CreateNextPointIterator.
+    *
+    * @see ::ogps_MoveNextPoint, ::ogps_HasPrevPoint
+    *
+    * @param iterator Operate on this iterator handle.
+    * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_HasNextPoint(const OGPS_PointIteratorPtr iterator);
 
-   /* Returns TRUE, if there is a previous point available, FALSE otherwise. */
+   /*!
+    * Asks if there is another point available to iterate.
+    *
+    * @remarks Use this function with an iterator handle obtained from ::ogps_CreatePrevPointIterator.
+    *
+    * @see ::ogps_MovePrevPoint, ::ogps_HasNextPoint
+    *
+    * @param iterator Operate on this iterator handle.
+    * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_HasPrevPoint(const OGPS_PointIteratorPtr iterator);
 
-   /* Moves the inner counter forward. Returns TRUE on success, otherwise FALSE. */
+   /*!
+    * Moves the iterator forward.
+    *
+    * @remaks Use this function directly after initialising the iterator object with
+    * ::ogps_CreateNextPointIterator to move to the first point.
+    *
+    * @see ::ogps_HasNextPoint
+    *
+    * @param iterator Operate on this iterator handle.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_MoveNextPoint(OGPS_PointIteratorPtr const iterator);
 
-   /* Moves the inner counter backward. Returns TRUE on success, otherwise FALSE. */
+   /*!
+    * Moves the iterator backward.
+    *
+    * @remaks Use this function directly after initialising the iterator object with
+    * ::ogps_CreatePrevPointIterator to move to the first point.
+    *
+    * @see ::ogps_HasPrevPoint
+    *
+    * @param iterator Operate on this iterator handle.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_MovePrevPoint(OGPS_PointIteratorPtr const iterator);
 
-   /* Resets the inner index to the beginning. */
+   /*!
+    * Resets the iterator to the beginning.
+    *
+    * @remarks Use this function with an iterator handle obtained from ::ogps_CreateNextPointIterator.
+    *
+    * @param iterator Operate on this iterator handle.
+    */
    _OPENGPS_EXPORT void ogps_ResetNextPointIterator(OGPS_PointIteratorPtr const iterator);
 
-   /* Resets the inner index to the end. */
+   /*!
+    * Resets the iterator to the beginning.
+    *
+    * @remarks Use this function with an iterator handle obtained from ::ogps_CreatePrevPointIterator.
+    *
+    * @param iterator Operate on this iterator handle.
+    */
    _OPENGPS_EXPORT void ogps_ResetPrevPointIterator(OGPS_PointIteratorPtr const iterator);
 
-   /* Reads the current point vector. Returns TRUE on success, FALSE otherwise. */
+   /*!
+    * Gets the value of the current point vector.
+    *
+    * @see ::ogps_MoveNext
+    *
+    * @param iterator Operate on this iterator handle.
+    * @param vector Holds a copy of the vector at the current iterator position.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetCurrentPoint(
       const OGPS_PointIteratorPtr iterator,
       OGPS_PointVectorPtr const vector);
 
+   /*!
+    * Sets the value of the current point vector.
+    *
+    * @see ::ogps_MoveNext
+    *
+    * @param iterator Operate on this iterator handle.
+    * @param vector New value of the current point vector. May be NULL to indicate an invalid point.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_SetCurrentPoint(
       const OGPS_PointIteratorPtr iterator,
       const OGPS_PointVectorPtr vector);
 
-   /* Retrieves the current position of the iterator in matrix coordinates. */
+   /*!
+    * Gets the current position of the iterator in topology coordinates.
+    *
+    * @see ::ogps_MoveNext, ::ogps_GetListPosition
+    *
+    * @param iterator Operate on this iterator handle.
+    * @param u Gets the position index of the u component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+    * @param v Gets the position index of the v component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+    * @param w Gets the position index of the w component of the surface. If this parameter is set to NULL, it will be safely ignored and nothing returns here.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixPosition(
       const OGPS_PointIteratorPtr iterator,
       unsigned long* u,
       unsigned long* v,
       unsigned long* w);
 
+   /*!
+    * Gets the current position of the iterator.
+    *
+    * @see ::ogps_MoveNext, ::ogps_GetMatrixPosition
+    *
+    * @param iterator Operate on this iterator handle.
+    * @param index Gets the position index.
+    * @returns Returns TRUE on success, FALSE otherwise.
+    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetListPosition(
       const OGPS_PointIteratorPtr iterator,
       unsigned long* index);
 
-   /* Frees the point iterator. */
+   /*!
+    * Frees the point iterator instance.
+    *
+    * @remarks Must be called for every point iterator handle obtained through
+    * ::ogps_CreateNextPointIterator or ::ogps_CreatePrevPointIterator.
+    *
+    * @param iterator Operate on this iterator handle.
+    */
    _OPENGPS_EXPORT void ogps_FreePointIterator(OGPS_PointIteratorPtr * const iterator);
 
 #ifdef __cplusplus

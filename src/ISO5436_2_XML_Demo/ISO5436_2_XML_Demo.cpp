@@ -31,7 +31,7 @@
 //
 
 #include <opengps/iso5436_2.h>
-#include <opengps/cxx/iso5436_2_handle.hxx>
+#include <opengps/cxx/iso5436_2.hxx>
 #include <opengps/cxx/iso5436_2.hxx>
 #include <opengps/cxx/iso5436_2_xsd.hxx>
 #include <opengps/cxx/point_iterator.hxx>
@@ -446,19 +446,19 @@ void readonlyExample3(OpenGPS::String fileName) {
     if(vector.IsValid())
     {
       switch(vector.GetX()->GetType()) {
-        case Int16PointType : {
+        case OGPS_Int16PointType : {
             short xs;
             vector.GetX()->Get(&xs);
           } break;
-          case Int32PointType : {
+          case OGPS_Int32PointType : {
             int xi;
             vector.GetX()->Get(&xi);
           } break;
-          case FloatPointType : {
+          case OGPS_FloatPointType : {
             float xf;
             vector.GetX()->Get(&xf);
           } break;
-          case DoublePointType : {
+          case OGPS_DoublePointType : {
             double xd;
             vector.GetX()->Get(&xd);
           } break;
@@ -468,19 +468,19 @@ void readonlyExample3(OpenGPS::String fileName) {
         }
       
       switch(vector.GetY()->GetType()) {
-        case Int16PointType : {
+        case OGPS_Int16PointType : {
             short ys;
             vector.GetX()->Get(&ys);
           } break;
-          case Int32PointType : {
+          case OGPS_Int32PointType : {
             int yi;
             vector.GetX()->Get(&yi);
           } break;
-          case FloatPointType : {
+          case OGPS_FloatPointType : {
             float yf;
             vector.GetX()->Get(&yf);
           } break;
-          case DoublePointType : {
+          case OGPS_DoublePointType : {
             double yd;
             vector.GetX()->Get(&yd);
           } break;
@@ -490,19 +490,19 @@ void readonlyExample3(OpenGPS::String fileName) {
         }
       
       switch(vector.GetZ()->GetType()) {
-        case Int16PointType : {
+        case OGPS_Int16PointType : {
             short zs;
             vector.GetX()->Get(&zs);
           } break;
-          case Int32PointType : {
+          case OGPS_Int32PointType : {
             int zi;
             vector.GetX()->Get(&zi);
           } break;
-          case FloatPointType : {
+          case OGPS_FloatPointType : {
             float zf;
             vector.GetX()->Get(&zf);
           } break;
-          case DoublePointType : {
+          case OGPS_DoublePointType : {
             double zd;
             vector.GetX()->Get(&zd);
           } break;

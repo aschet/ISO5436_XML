@@ -35,13 +35,20 @@
 extern "C" {
 #endif
 
-   /* Possible data types (incorporating missing type information). */
+   /*!
+    * Possible types of data stored in an ::OGPS_DataPointPtr instance.
+    */
    typedef enum _OGPS_DATA_POINT_TYPE {
-      MissingPointType, /* Data point where its value is marked as invalid. */
-      Int16PointType,
-      Int32PointType,
-      FloatPointType,
-      DoublePointType
+      /*! Describes an invalid type. */
+      OGPS_MissingPointType,
+      /*! Describes an instance of type ::OGPS_Int16. */
+      OGPS_Int16PointType,
+      /*! Describes an instance of type ::OGPS_Int32. */
+      OGPS_Int32PointType,
+      /*! Describes an instance of type ::OGPS_Float. */
+      OGPS_FloatPointType,
+      /*! Describes an instance of type ::OGPS_Double. */
+      OGPS_DoublePointType
    } OGPS_DataPointType;
 
 #ifdef __cplusplus

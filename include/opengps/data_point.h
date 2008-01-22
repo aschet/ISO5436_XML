@@ -43,37 +43,116 @@
 extern "C" {
 #endif
 
-   /* Incomplete type of data point record. */
-   typedef struct _OGPS_DATA_POINT * OGPS_DataPointPtr;
-   /* HACK: with the typedef, the const qualifier is not reconised any more.
+   /* TODO: HACK: with the typedef, the const qualifier is not reconised any more.
    #define OGPS_DataPointPtr struct _DATA_POINT * */
 
-   /* Gets the current type stored in this DataPoint. */
-   /* if(ogps_GetType(dataPoint)) { ... } checks if dataPoint has a valid
-   * data point value, since MissingPointType == 0. */
-   /* Returns MissingPointType if a null-pointer is passed. */
+
+   /*!
+    * Typesafe representation of a single data point value.
+    *
+    * In an ::OGPS_PointVectorPtr every component of that three-vector is
+    * accessible as its own ::OGPS_DataPointPtr instance.
+    *
+    * @remarks An instance of ::OGPS_DataPointPtr cannot be created of its own.
+    * Indirectly a handle of this type can be accessed through an ::OGPS_PointVectorPtr object.
+    *
+    * The corresponding C++ implementation is provided by OpenGPS::DataPoint.
+    */
+   typedef struct _OGPS_DATA_POINT * OGPS_DataPointPtr;
+
+   /*!
+    * Gets type information of the current value stored in a given data point.
+    *
+    * Returns ::OGPS_MissingPointType if this instance does not store any value at all.
+    *
+    * @param dataPoint Operate on this data point instance.
+    */
    _OPENGPS_EXPORT OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint);
 
-   /* Typesafe access functions to DataPoint properties. */
-   /* If you access a missing data point or have anticipated the wrong data type
-   * (even if types may be compatible) these functions return null (0/0.0). */
+   /*!
+    * Gets the stored value of type ::OGPS_Int16 from a given data point.
+    *
+    * @remarks If the current type does not equal ::OGPS_Int16, this function returns value 0.
+    * @see ::ogps_GetDataType
+    *
+    * @param dataPoint Operate on this data point instance.
+    */
    _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16(const OGPS_DataPointPtr dataPoint);
+
+   /*!
+    * Gets the stored value of type ::OGPS_Int32 from a given data point.
+    *
+    * @remarks If the current type does not equal ::OGPS_Int32, this function returns value 0.
+    * @see ::ogps_GetDataType
+    *
+    * @param dataPoint Operate on this data point instance.
+    */
    _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32(const OGPS_DataPointPtr dataPoint);
+
+   /*!
+    * Gets the stored value of type ::OGPS_Float from a given data point.
+    *
+    * @remarks If the current type does not equal ::OGPS_Float, this function returns value 0.0.
+    * @see ::ogps_GetDataType
+    *
+    * @param dataPoint Operate on this data point instance.
+    */
    _OPENGPS_EXPORT OGPS_Float ogps_GetFloat(const OGPS_DataPointPtr dataPoint);
+
+   /*!
+    * Gets the stored value of type ::OGPS_Double from a given data point.
+    *
+    * @remarks If the current type does not equal ::OGPS_Double, this function returns value 0.0.
+    * @see ::ogps_GetDataType
+    *
+    * @param dataPoint Operate on this data point instance.
+    */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDouble(const OGPS_DataPointPtr dataPoint);
 
-   /* Typesafe write access to DataPoint properties. */
-   /* This functions return false if anything went wrong. This should in fact
-   * never ever be the case - except when passing a null-pointer. */
+   /*!
+    * Stores a new value into a given data point.
+    *
+    * Also adjusts the current type information reflecting this set operation, if necessary.
+    *
+    * @param dataPoint Operate on this data point instance.
+    * @param value The new value to be stored.
+    */
    _OPENGPS_EXPORT void ogps_SetInt16(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Int16 value);
+
+   /*!
+    * Stores a new value into a given data point.
+    *
+    * Also adjusts the current type information reflecting this set operation, if necessary.
+    *
+    * @param dataPoint Operate on this data point instance.
+    * @param value The new value to be stored.
+    */
    _OPENGPS_EXPORT void ogps_SetInt32(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Int32 value);
+
+   /*!
+    * Stores a new value into a given data point.
+    *
+    * Also adjusts the current type information reflecting this set operation, if necessary.
+    *
+    * @param dataPoint Operate on this data point instance.
+    * @param value The new value to be stored.
+    */
    _OPENGPS_EXPORT void ogps_SetFloat(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Float value);
+
+   /*!
+    * Stores a new value into a given data point.
+    *
+    * Also adjusts the current type information reflecting this set operation, if necessary.
+    *
+    * @param dataPoint Operate on this data point instance.
+    * @param value The new value to be stored.
+    */
    _OPENGPS_EXPORT void ogps_SetDouble(
       OGPS_DataPointPtr const dataPoint,
       const OGPS_Double value);

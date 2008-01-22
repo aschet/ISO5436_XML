@@ -198,10 +198,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\opengps\iso5436_2_handle.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\opengps\opengps.h"
 				>
 			</File>
@@ -266,7 +262,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -277,7 +273,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>

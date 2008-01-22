@@ -1,19 +1,19 @@
-# Doxyfile 1.4.7
+# Doxyfile 1.5.3
 
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = "openGPS ISO 5436-2 XML"
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "openGPS ISO 5436-2 XML  "
 PROJECT_NUMBER         = 0.01
 OUTPUT_DIRECTORY       = S:/openGPS/ISO5436_XML/trunk/doc/SDK
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
-USE_WINDOWS_ENCODING   = YES
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
-ABBREVIATE_BRIEF       = "The $name class" \
-                         "The $name widget" \
-                         "The $name file" \
+ABBREVIATE_BRIEF       = "The $name class  " \
+                         "The $name widget  " \
+                         "The $name file  " \
                          is \
                          provides \
                          specifies \
@@ -26,10 +26,12 @@ ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
 STRIP_FROM_PATH        = C:/Programme/doxygen/bin/ \
-                         S:/openGPS/trunk/src
+                         S:/openGPS/trunk/src \
+                         S:\openGPS\ISO5436_XML\trunk\src
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
-JAVADOC_AUTOBRIEF      = NO
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
 MULTILINE_CPP_IS_BRIEF = NO
 DETAILS_AT_TOP         = YES
 INHERIT_DOCS           = YES
@@ -38,7 +40,8 @@ TAB_SIZE               = 8
 ALIASES                = 
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
+CPP_CLI_SUPPORT        = NO
 DISTRIBUTE_GROUP_DOC   = NO
 SUBGROUPING            = YES
 #---------------------------------------------------------------------------
@@ -49,6 +52,7 @@ EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_ANON_NSPACES   = NO
 HIDE_UNDOC_MEMBERS     = NO
 HIDE_UNDOC_CLASSES     = NO
 HIDE_FRIEND_COMPOUNDS  = NO
@@ -78,12 +82,13 @@ WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
 WARN_NO_PARAMDOC       = YES
-WARN_FORMAT            = "$file:$line: $text"
+WARN_FORMAT            = "$file:$line: $text  "
 WARN_LOGFILE           = DoxygenWarnings.log
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = S:/openGPS/ISO5436_XML/trunk/src
+INPUT                  = S:\openGPS\ISO5436_XML\trunk\include
+INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
@@ -111,9 +116,10 @@ FILE_PATTERNS          = *.c \
                          *.mm \
                          *.dox
 RECURSIVE              = YES
-EXCLUDE                = 
+EXCLUDE                = S:\openGPS\ISO5436_XML\trunk\src\zlib
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
+EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
@@ -145,11 +151,12 @@ IGNORE_PREFIX          =
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
-HTML_HEADER            = S:/openGPS/trunk/Doc/Inline/HTML_Stylesheet/doxy_header.html
-HTML_FOOTER            = S:/openGPS/trunk/Doc/Inline/HTML_Stylesheet/doxy_footer.html
+HTML_HEADER            = S:/openGPS/ISO5436_XML/trunk/doc/SDK/HTML_Stylesheet/doxy_header.html
+HTML_FOOTER            = S:/openGPS/ISO5436_XML/trunk/doc/SDK/HTML_Stylesheet/doxy_footer.html
 HTML_STYLESHEET        = 
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = NO
+HTML_DYNAMIC_SECTIONS  = NO
 CHM_FILE               = 
 HHC_LOCATION           = 
 GENERATE_CHI           = NO
@@ -164,7 +171,7 @@ TREEVIEW_WIDTH         = 250
 #---------------------------------------------------------------------------
 GENERATE_LATEX         = YES
 LATEX_OUTPUT           = latex
-LATEX_CMD_NAME         = "C:/Programme/MiKTeX 2.5/miktex/bin/latex.exe"
+LATEX_CMD_NAME         = "C:/Programme/MiKTeX 2.5/miktex/bin/latex.exe  "
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = YES
 PAPER_TYPE             = a4
@@ -233,6 +240,7 @@ PERL_PATH              = /usr/bin/perl
 # Configuration options related to the dot tool   
 #---------------------------------------------------------------------------
 CLASS_DIAGRAMS         = YES
+MSCGEN_PATH            = 
 HIDE_UNDOC_RELATIONS   = YES
 HAVE_DOT               = NO
 CLASS_GRAPH            = YES
@@ -249,8 +257,7 @@ DIRECTORY_GRAPH        = YES
 DOT_IMAGE_FORMAT       = png
 DOT_PATH               = 
 DOTFILE_DIRS           = 
-MAX_DOT_GRAPH_WIDTH    = 1024
-MAX_DOT_GRAPH_HEIGHT   = 1024
+DOT_GRAPH_MAX_NODES    = 50
 MAX_DOT_GRAPH_DEPTH    = 1000
 DOT_TRANSPARENT        = NO
 DOT_MULTI_TARGETS      = NO

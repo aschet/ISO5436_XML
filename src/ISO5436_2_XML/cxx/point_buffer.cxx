@@ -116,5 +116,5 @@ OGPS_Boolean PointBuffer::Allocate(const unsigned long size)
 
 OGPS_DataPointType PointBuffer::GetType() const
 {
-   return MissingPointType;
+   return OGPS_MissingPointType;
 }

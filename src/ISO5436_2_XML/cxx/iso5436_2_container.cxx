@@ -272,9 +272,9 @@ OGPS_Boolean ISO5436_2Container::SetMatrixPoint(
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
-   _ASSERT(!vector || (IsIncrementalX() && vector->GetX()->GetType() == MissingPointType) || (!IsIncrementalX() && vector->GetX()->GetType() != MissingPointType));
-   _ASSERT(!vector || (IsIncrementalY() && vector->GetY()->GetType() == MissingPointType) || (!IsIncrementalY() && vector->GetY()->GetType() != MissingPointType));
-   _ASSERT(!vector || vector->GetZ()->GetType() != MissingPointType);
+   _ASSERT(!vector || (IsIncrementalX() && vector->GetX()->GetType() == OGPS_MissingPointType) || (!IsIncrementalX() && vector->GetX()->GetType() != OGPS_MissingPointType));
+   _ASSERT(!vector || (IsIncrementalY() && vector->GetY()->GetType() == OGPS_MissingPointType) || (!IsIncrementalY() && vector->GetY()->GetType() != OGPS_MissingPointType));
+   _ASSERT(!vector || vector->GetZ()->GetType() != OGPS_MissingPointType);
 
    // TODO: cast entfernen?
    ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
@@ -307,7 +307,7 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
 
    if(IsIncrementalX())
    {
-      _ASSERT(vector.GetX()->GetType() == MissingPointType);
+      _ASSERT(vector.GetX()->GetType() == OGPS_MissingPointType);
 
       try
       {
@@ -321,7 +321,7 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
 
    if(IsIncrementalY())
    {
-      _ASSERT(vector.GetY()->GetType() == MissingPointType);
+      _ASSERT(vector.GetY()->GetType() == OGPS_MissingPointType);
 
       try
       {
@@ -344,9 +344,9 @@ OGPS_Boolean ISO5436_2Container::SetListPoint(
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
 
-   _ASSERT((IsIncrementalX() && vector.GetX()->GetType() == MissingPointType) || (!IsIncrementalX() && vector.GetX()->GetType() != MissingPointType));
-   _ASSERT((IsIncrementalY() && vector.GetY()->GetType() == MissingPointType) || (!IsIncrementalY() && vector.GetY()->GetType() != MissingPointType));
-   _ASSERT(vector.GetZ()->GetType() != MissingPointType);
+   _ASSERT((IsIncrementalX() && vector.GetX()->GetType() == OGPS_MissingPointType) || (!IsIncrementalX() && vector.GetX()->GetType() != OGPS_MissingPointType));
+   _ASSERT((IsIncrementalY() && vector.GetY()->GetType() == OGPS_MissingPointType) || (!IsIncrementalY() && vector.GetY()->GetType() != OGPS_MissingPointType));
+   _ASSERT(vector.GetZ()->GetType() != OGPS_MissingPointType);
 
    // TODO: cast entfernen?
    ((PointVectorProxyContextList*)m_ProxyContext.get())->SetIndex(index);
@@ -369,7 +369,7 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
 
    if(IsIncrementalX())
    {
-      _ASSERT(vector.GetX()->GetType() == MissingPointType);
+      _ASSERT(vector.GetX()->GetType() == OGPS_MissingPointType);
 
       try
       {
@@ -383,7 +383,7 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
 
    if(IsIncrementalY())
    {
-      _ASSERT(vector.GetY()->GetType() == MissingPointType);
+      _ASSERT(vector.GetY()->GetType() == OGPS_MissingPointType);
 
       try
       {
@@ -1474,13 +1474,13 @@ OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const Schemas::ISO5436_2:
          switch(axis.DataType().get())
          {
          case Schemas::ISO5436_2::DataType::I:
-            return Int16PointType;
+            return OGPS_Int16PointType;
          case Schemas::ISO5436_2::DataType::L:
-            return Int32PointType;
+            return OGPS_Int32PointType;
          case Schemas::ISO5436_2::DataType::F:
-            return FloatPointType;
+            return OGPS_FloatPointType;
          case Schemas::ISO5436_2::DataType::D:
-            return DoublePointType;
+            return OGPS_DoublePointType;
          default:
             _ASSERT(FALSE);
             break;
@@ -1488,7 +1488,7 @@ OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const Schemas::ISO5436_2:
       }
    }
 
-   return MissingPointType;
+   return OGPS_MissingPointType;
 }
 
 unsigned long ISO5436_2Container::GetPointCount() const throw(...)

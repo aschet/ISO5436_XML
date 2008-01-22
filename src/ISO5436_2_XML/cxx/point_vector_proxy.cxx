@@ -255,7 +255,7 @@ OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const
       }
    }
 
-   return MissingPointType;
+   return OGPS_MissingPointType;
 }
 
 OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const
@@ -409,35 +409,35 @@ OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const DataPoint& src)
    {
       switch(srcType)
       {
-      case Int16PointType:
+      case OGPS_Int16PointType:
          OGPS_Int16 vs;
          if(src.Get(&vs))
          {
             success = Set(vs);
          }
          break;
-      case Int32PointType:
+      case OGPS_Int32PointType:
          OGPS_Int32 vl;
          if(src.Get(&vl))
          {
             success = Set(vl);
          }
          break;
-      case FloatPointType:
+      case OGPS_FloatPointType:
          OGPS_Float vf;
          if(src.Get(&vf))
          {
             success = Set(vf);
          }
          break;
-      case DoublePointType:
+      case OGPS_DoublePointType:
          OGPS_Double vd;
          if(src.Get(&vd))
          {
             success = Set(vd);
          }
          break;
-      case MissingPointType:
+      case OGPS_MissingPointType:
          success = TRUE;
          break;
       default:

@@ -78,7 +78,7 @@ void ogps_SetInt16(
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   dataPoint->instance->Set(value);
+   _VERIFY(dataPoint->instance->Set(value));
 }
 
 void ogps_SetInt32(
@@ -87,7 +87,7 @@ void ogps_SetInt32(
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   dataPoint->instance->Set(value);
+   _VERIFY(dataPoint->instance->Set(value));
 }
 
 void ogps_SetFloat(
@@ -96,7 +96,7 @@ void ogps_SetFloat(
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   dataPoint->instance->Set(value);
+   _VERIFY(dataPoint->instance->Set(value));
 }
 
 void ogps_SetDouble(
@@ -105,5 +105,5 @@ void ogps_SetDouble(
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   dataPoint->instance->Set(value);
+   _VERIFY(dataPoint->instance->Set(value));
 }

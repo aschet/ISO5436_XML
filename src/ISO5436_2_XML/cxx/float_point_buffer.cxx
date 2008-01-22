@@ -76,5 +76,5 @@ OGPS_Boolean FloatPointBuffer::Get(const unsigned long index, float& value) cons
 
 OGPS_DataPointType FloatPointBuffer::GetType() const
 {
-   return FloatPointType;
+   return OGPS_FloatPointType;
 }

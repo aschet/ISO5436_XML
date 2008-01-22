@@ -31,8 +31,291 @@
 #ifndef _OPENGPS_ISO5436_2_H
 #define _OPENGPS_ISO5436_2_H
 
-#ifndef _OPENGPS_ISO5436_2_HANDLE_H
-#  include <opengps/iso5436_2_handle.h>
+#ifndef _OPENGPS_H
+#  include <opengps/opengps.h>
+#endif
+
+#ifndef _OPENGPS_POINT_VECTOR_H
+#  include <opengps/point_vector.h>
+#endif
+
+#ifndef _OPENGPS_POINT_ITERATOR_H
+#  include <opengps/point_iterator.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+   /*!
+    * Represents the ISO5436-2 XML X3P file format container.
+    *
+    * Provides access to the content of an already existing or newly created X3P file container.
+    * You can obtain an instance of this handle by calling ::ogps_OpenISO5436_2, ::ogps_CreateMatrixISO5436_2 or ::ogps_CreateListISO5436_2.
+    *
+    * @remarks An instance of ::OGPS_DataPointPtr cannot be created of its own. Instead refer to ::ogps_OpenISO5436_2, ::ogps_CreateMatrixISO5436_2 or ::ogps_CreateListISO5436_2.
+    *
+    * The corresponding C++ implementation is given by OpenGPS::ISO5436_2.
+    */
+   typedef struct _OGPS_ISO5436_2_HANDLE * OGPS_ISO5436_2Handle;
+
+   /*!
+    * Opens an existing ISO5436-2 XML X3P file.
+    *
+    * @remarks You must free the returned handle by calling ::ogps_CloseISO5436_2 when done with it.
+    *
+    * @see ::ogps_CloseISO5436_2
+    *
+    * @param file Full path to the ISO5436-2 XML X3P to open.
+    * @param temp Optionally specifies a path to the directory where unpacked X3P data gets stored temporarily. If this parameter is set to NULL the default directory for temporary files will be used as specified by your system.
+    * @param readOnly If set to TRUE subsequend operations on the returned handle object assume that you will access any obtained data as read-only and won't make any changes. This may speed up some operations. If unsure set this parameter to FALSE.
+    * @returns On success returns the handle object to the opened file, otherwise a NULL pointer is returned. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
+      const OGPS_Character* const file,
+      const OGPS_Character* const temp = NULL,
+      const OGPS_Boolean readOnly = FALSE);
+
+   /*!
+    * Writes any changes back to the X3P file.
+    *
+    * Call this function before ::ogps_CloseISO5436_2 if you want to store the changes you have made.
+    *
+    * @see ::ogps_CreateMatrixISO5436_2, ::ogps_CreateListISO5436_2, ::ogps_OpenISO5436_2, ::ogps_CloseISO5436_2
+    *
+    * @param handle Operate on this handle object.
+    * @param compressionLevel Optionally specifies the compression level used when writing the X3P file which is nothing else than a simple zip file container. The default value for this parameter is (-1) which enables standard compression level as a good trade-off between processing time and compression ratio. Values between 0 and 9 are possible. A value of 0 means "no compression" and a value of 9 enables the highest level compression rate at the cost of highest computation time.
+    * @returns Returns TRUE on success and FALSE if anything went wrong. When FALSE no changes will be saved. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel = -1);
+
+   /*!
+    * Closes an ::OGPS_ISO5436_2Handle file handle and frees its resources.
+    *
+    * @remarks This does not save any changes you made! You must call ::ogps_WriteISO5436_2 before if your changes should be saved.
+    *
+    * @see ::ogps_CreateMatrixISO5436_2, ::ogps_CreateListISO5436_2, ::ogps_OpenISO5436_2, ::ogps_WriteISO5436_2
+    *
+    * @param handle Handle object to close.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
+
+   /*!
+    * Creates an iterator to access point data contained in an ISO5436-2 X3P file.
+    *
+    * Iterates the point data in forward direction.
+    *
+    * @remarks You must free the resources occupied by the returned iterator handle by calling ::ogps_FreePointIterator.
+    *
+    * @param handle Operate on this handle object.
+    * @returns Returns an iterator handle on success otherwise NULL.
+    */
+   _OPENGPS_EXPORT OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle);
+
+   /*!
+    * Creates an iterator to access point data contained in an ISO5436-2 X3P file.
+    *
+    * Iterates the point data in backward direction.
+    *
+    * @remarks You must free the resources occupied by the returned iterator handle by calling ::ogps_FreePointIterator.
+    *
+    * @param handle Operate on this handle object.
+    * @returns Returns an iterator handle on success otherwise NULL.
+    */
+   _OPENGPS_EXPORT OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle handle);
+
+   /*!
+    * Sets the value of a three-dimensional data point vector at a given surface position.
+    *
+    * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
+    *
+    * @remarks The data types of the values stored in the given vector parameter must correspond
+    * with the data types specified in the ISO5436-2 XML document within the axes definition area.
+    * Also ::ogps_SetMatrixPoint is the valid access method only if point vectors are stored in
+    * matrix format with encoded topology information. If this is not the case point vectors are
+    * stored in list format. Then you must use ::ogps_SetListPoint instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_SetListPoint
+    *
+    * @param handle Operate on this handle object.
+    * @param u The u-direction of the surface position.
+    * @param v The v-direction of the surface position.
+    * @param w The w-direction of the surface position.
+    * @param vector Set this point value at the given u,v,w position. If this parameter is set to
+    * NULL, this indicates there is no measurement data available for this position. This is due
+    * to the topology encoding properties of the matrix format storage.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_SetMatrixPoint(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long u,
+      const unsigned long v,
+      const unsigned long w,
+      const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the raw value of a data point vector at a given surface position.
+    *
+    *
+    * @remarks ::ogps_GetMatrixPoint is the valid access method only if point vectors are stored in
+    * matrix format with encoded topology information. If this is not the case point vectors are
+    * stored in list format. Then you must use ::ogps_GetListPoint instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_GetMatrixCoord, ::ogps_GetListPoint
+    *
+    * @param handle Operate on this handle object.
+    * @param u The u-direction of the surface position.
+    * @param v The v-direction of the surface position.
+    * @param w The w-direction of the surface position.
+    * @param vector Returns the raw point value at the given u,v,w position.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixPoint(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long u,
+      const unsigned long v,
+      const unsigned long w,
+      OGPS_PointVectorPtr const vector);
+
+   /*!
+    * Sets the value of a three-dimensional data point vector at a given surface position.
+    *
+    * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
+    *
+    * @remarks The data types of the values stored in the given vector parameter must correspond
+    * with the data types specified in the ISO5436-2 XML document within the axes definition area.
+    * Also ::ogps_SetListPoint is the valid access method only if point vectors are stored in
+    * list format. If this is not the case and point vectors are stored in matrix format with
+    * encoded topology information then you must use ::ogps_SetMatrixPoint instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_SetMatrixPoint
+    *
+    * @param handle Operate on this handle object.
+    * @param index The index position of the point vector to manipulate.
+    * @param vector Set this point value at the given index position.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_SetListPoint(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long index,
+      const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the raw value of a data point vector at a given surface position.
+    *
+    *
+    * @remarks ::ogps_GetListPoint is the valid access method only if point vectors are stored in
+    * list format. If this is not the case and point vectors are stored in matrix format with
+    * encoded topology information, then you must use ::ogps_GetMatrixPoint instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_GetListCoord, ::ogps_GetMatrixPoint
+    *
+    * @param handle Operate on this handle object.
+    * @param index The index of the surface position.
+    * @param vector Returns the raw point value at the given position.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListPoint(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long index,
+      OGPS_PointVectorPtr const vector);
+
+   /*!
+    * Gets the fully transformed value of a data point vector at a given surface position.
+    *
+    * Other than with ::ogps_GetMatrixPoint this function also applies the axes transformation
+    * specified in the axes definition area of the ISO 5436-2 XML document.
+    *
+    * @remarks ::ogps_GetMatrixCoord is the valid access method only if point vectors are stored in
+    * matrix format with encoded topology information. If this is not the case point vectors are
+    * stored in list format. Then you must use ::ogps_GetListCoord instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_GetMatrixPoint, ::ogps_GetListCoord
+    *
+    * @param handle Operate on this handle object.
+    * @param u The u-direction of the surface position.
+    * @param v The v-direction of the surface position.
+    * @param w The w-direction of the surface position.
+    * @param x Returns the fully transformed x component of the point value at the given u,v,w position. If this parameter is set to NULL, the x axis component will be safely ignored.
+    * @param y Returns the fully transformed y component of the point value at the given u,v,w position. If this parameter is set to NULL, the y axis component will be safely ignored.
+    * @param z Returns the fully transformed z component of the point value at the given u,v,w position. If this parameter is set to NULL, the z axis component will be safely ignored.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixCoord(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long u,
+      const unsigned long v,
+      const unsigned long w,
+      OGPS_Double* const x,
+      OGPS_Double* const y,
+      OGPS_Double* const z);
+
+   /*!
+    * Finds out if there is point vector data stored at the given matrix position.
+    *
+    * Since the matrix storage format encodes topology information there may not exist valid point
+    * vector data for every u,v,w position because there was no measurement data available.
+    *
+    * @see ::ogps_GetMatrixPoint, ::ogps_GetMatrixCoord, ::ogps_SetMatrixPoint
+    *
+    * @param handle Operate on this handle object.
+    * @param u The u-direction of the surface position.
+    * @param v The v-direction of the surface position.
+    * @param w The w-direction of the surface position.
+    * @returns Returns TRUE if the vector point data at the given position is valid, otherwise return FALSE to indicate there is no measurement data available at this particular position.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrixCoordValid(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long u,
+      const unsigned long v,
+      const unsigned long w);
+
+   /*!
+    * Gets the fully transformed value of a data point vector at a given surface position.
+    *
+    * Other than with ::ogps_GetListPoint this function also applies the axes transformation
+    * specified in the axes definition area of the ISO 5436-2 XML document.
+    *
+    * @remarks ::ogps_GetListCoord is the valid access method only if point vectors are stored in
+    * list format. If this is not the case and point vectors are stored in matrix format with
+    * encoded topology information, then you must use ::ogps_GetMatrixCoord instead. What is the correct
+    * format for access is revealed by the ISO5436-2 XML document.
+    * Access to the ISO5436-2 XML document which is part of an X3P file container can be
+    * obtained through ::ogps_GetDocument.
+    *
+    * @see ::ogps_GetListPoint, ::ogps_GetMatrixCoord
+    *
+    * @param handle Operate on this handle object.
+    * @param index The index of the surface position.
+    * @param x Returns the fully transformed x component of the point value at the given u,v,w position. If this parameter is set to NULL, the x axis component will be safely ignored.
+    * @param y Returns the fully transformed y component of the point value at the given u,v,w position. If this parameter is set to NULL, the y axis component will be safely ignored.
+    * @param z Returns the fully transformed z component of the point value at the given u,v,w position. If this parameter is set to NULL, the z axis component will be safely ignored.
+    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListCoord(
+      const OGPS_ISO5436_2Handle handle,
+      const unsigned long index,
+      OGPS_Double* const x,
+      OGPS_Double* const y,
+      OGPS_Double* const z);
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* _OPENGPS_ISO5436_2_H */

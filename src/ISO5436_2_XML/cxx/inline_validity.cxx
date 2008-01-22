@@ -37,7 +37,7 @@
 FloatInlineValidity::FloatInlineValidity(PointBuffer* const value)
 : PointValidityProvider(value)
 {
-   _ASSERT(value && value->GetType() == FloatPointType);
+   _ASSERT(value && value->GetType() == OGPS_FloatPointType);
 }
 
 FloatInlineValidity::~FloatInlineValidity()
@@ -72,7 +72,7 @@ OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const
 DoubleInlineValidity::DoubleInlineValidity(PointBuffer* const value)
 : PointValidityProvider(value)
 {
-   _ASSERT(value && value->GetType() == DoublePointType);
+   _ASSERT(value && value->GetType() == OGPS_DoublePointType);
 }
 
 DoubleInlineValidity::~DoubleInlineValidity()

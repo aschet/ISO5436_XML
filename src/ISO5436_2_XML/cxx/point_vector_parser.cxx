@@ -126,15 +126,15 @@ DataPointParser* PointVectorParser::CreateDataPointParser(const OGPS_DataPointTy
 {
    switch(dataType)
    {
-   case Int16PointType:
+   case OGPS_Int16PointType:
       return new Int16DataPointParser();
-   case Int32PointType:
+   case OGPS_Int32PointType:
       return new Int32DataPointParser();
-   case FloatPointType:
+   case OGPS_FloatPointType:
       return new FloatDataPointParser();
-   case DoublePointType:
+   case OGPS_DoublePointType:
       return new DoubleDataPointParser();
-   case MissingPointType:
+   case OGPS_MissingPointType:
       return new MissingDataPointParser();
    default:
       _ASSERT(FALSE);
