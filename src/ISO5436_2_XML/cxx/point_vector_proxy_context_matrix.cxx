@@ -129,5 +129,5 @@ OGPS_Boolean PointVectorProxyContextMatrix::HasNext() const
       return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
    }
 
-   return FALSE;
+   //return FALSE;
 }

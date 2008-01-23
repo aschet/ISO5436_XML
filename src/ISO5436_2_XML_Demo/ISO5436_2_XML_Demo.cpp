@@ -581,10 +581,22 @@ int _tmain(int argc, _TCHAR* argv[])
 {
    //simpleExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1.x3p"));
    //mediumComplexExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample5_bin.x3p"));   
-   readonlyExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1_bin.x3p"));
+   /* readonlyExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1_bin.x3p"));
    readonlyExample2(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample3.x3p"));
    readonlyExample3(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample3.x3p"));
    readonlyExample4(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample2.x3p"));
+   */
 
+   /*
+   readonlyExample(_T("..\\SampleFiles\\ISO5436-sample1_bin.x3p"));
+   readonlyExample2(_T("..\\SampleFiles\\ISO5436-sample3.x3p"));
+   readonlyExample3(_T("..\\SampleFiles\\ISO5436-sample3.x3p"));
+   readonlyExample4(_T("..\\SampleFiles\\ISO5436-sample2.x3p"));
+   */
+
+   readonlyExample(_T("S:\\openGPS\\ISO5436_XML\\install\\SampleFiles\\ISO5436-sample1_bin.x3p"));
+   readonlyExample2(_T("S:\\openGPS\\ISO5436_XML\\install\\SampleFiles\\ISO5436-sample3.x3p"));
+   readonlyExample3(_T("S:\\openGPS\\ISO5436_XML\\install\\SampleFiles\\ISO5436-sample3.x3p"));
+   readonlyExample4(_T("S:\\openGPS\\ISO5436_XML\\install\\SampleFiles\\ISO5436-sample2.x3p"));
 	return 0;
 }

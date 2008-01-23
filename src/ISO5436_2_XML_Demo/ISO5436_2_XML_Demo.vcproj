@@ -169,6 +169,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description="Publish example files to install directory"
+				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(SolutionDir)/../../install/SampleFiles/&quot;"
 			/>
 		</Configuration>
 		<Configuration
