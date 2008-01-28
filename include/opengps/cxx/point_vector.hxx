@@ -28,6 +28,12 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Typesafe representation of three-dimensional point measurement data.
+ * A point vector holds all three components of 3D point data stored in an ISO 5436-2 X3P file
+ * and provides methods for typesafe access.
+ */
+
 #ifndef _OPENGPS_CXX_POINT_VECTOR_HXX
 #define _OPENGPS_CXX_POINT_VECTOR_HXX
 

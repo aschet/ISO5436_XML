@@ -28,14 +28,29 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Common define's and typedef's, copyright and license information.
+ * @see cxx/opengps.hxx
+ */
+
 #ifndef _OPENGPS_H
 #define _OPENGPS_H
 
 #ifdef _WIN32
 #  ifdef BUILD_ISO5436_2_XML_DLL
+/*!
+ * Manages export and import of symbols when used as shared library.
+ * @remarks If you use openGPS as a shared library within you project
+ * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ */
 #     define _OPENGPS_EXPORT __declspec(dllexport)
 #  else
 #     ifdef BUILD_ISO5436_2_XML
+/*!
+ * Manages export and import of symbols when used as shared library.
+ * @remarks If you use openGPS as a shared library within you project
+ * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ */
 #        define _OPENGPS_EXPORT
 #    else
 /* _USE_OPENGPS_LIBRARY must be specified by the
@@ -44,47 +59,71 @@ Otherwise no symbols will be imported. This is
 needed to distinguish between includes for
 static and shared library usage scenarios. */
 #        ifdef _USE_OPENGPS_LIBRARY
+/*!
+ * Manages export and import of symbols when used as shared library.
+ * @remarks If you use openGPS as a shared library within you project
+ * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ */
 #          define _OPENGPS_EXPORT __declspec(dllimport)
 #        else
+/*!
+ * Manages export and import of symbols when used as shared library.
+ * @remarks If you use openGPS as a shared library within you project
+ * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ */
 #          define _OPENGPS_EXPORT
 #        endif /* _USE_OPENGPS_LIBRARY */
 #     endif /* BUILD_ISO5436_2_XML */
 #  endif /* BUILD_ISO5436_2_XML_DLL */
 #else
+/*!
+ * Manages export and import of symbols when used as shared library.
+ * @remarks If you use openGPS as a shared library within you project
+ * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ */
 #  define _OPENGPS_EXPORT
 #endif /* _WIN32 */
 
 #ifndef NULL
+/*! Initial value for pointers when they do not point to any memory location. */
 # define NULL 0
 #endif
 
 #ifndef FALSE
 # ifdef __cplusplus
+/*! The FALSE boolean value. @see OGPS_Boolean */
 #   define FALSE false
 # else
+/*! The FALSE boolean value. @see OGPS_Boolean */
 #   define FALSE 0
 # endif /* __cplusplus */
 #endif /* FALSE */
 
 #ifndef TRUE
 # ifdef __cplusplus
+/*! The TRUE boolean value. @see OGPS_Boolean */
 #   define TRUE true
 # else
+/*! The TRUE boolean value. @see OGPS_Boolean */
 #   define TRUE 1
 # endif /* __cplusplus */
 #endif /* TRUE */
 
 #ifndef OGPS_Boolean
 # ifdef __cplusplus
+/*! Holds a boolean value. @see FALSE, TRUE */
 typedef bool OGPS_Boolean;
 # else
+/*! Holds a boolean value. @see FALSE, TRUE */
 typedef int OGPS_Boolean;
 # endif /* __cplusplus */
 #endif /* OGPS_Boolean */
 
 #ifdef _UNICODE
+/*! The current type of characters. This is either unicode (wchar_t) or char. */
 typedef wchar_t OGPS_Character;
 #else
+/*! The current type of characters. This is either unicode (wchar_t) or char. */
 typedef char OGPS_Character;
 #endif /* _UNICODE */
 
@@ -108,7 +147,7 @@ typedef enum _OPENGPS_EXCEPTION_ID
    OGPS_ExGeneral,
    /*! An overflow occured. */
    OGPS_ExOverflow
-} OGPS_ExceptionId;
+} OGPS_ExceptionId; /*! Possible failure conditions. */
 
 #ifdef __cplusplus
 extern "C"

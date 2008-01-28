@@ -28,6 +28,13 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Enhancing C++ part of the C interface of the abstract data type of the
+ * ISO 5436-2 X3P file format. Since the underlying ISO 5436-2 XML document
+ * can be created using a C++ interface only, the C and C++ part of the
+ * abstract data type coded mainly in C are split up into two files. @see iso5436_2.h
+ */
+
 #ifndef _OPENGPS_CXX_ISO5436_2_HANDLE_HXX
 #define _OPENGPS_CXX_ISO5436_2_HANDLE_HXX
 

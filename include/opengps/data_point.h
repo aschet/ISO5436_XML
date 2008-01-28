@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * The abstract data type of the typesafe representation of a single data point value.
+ * The interface supports getting and setting an encapsulated data value of a predetermined type.
+ */
+
 #ifndef _OPENGPS_DATA_POINT_H
 #define _OPENGPS_DATA_POINT_H
 
@@ -51,7 +56,7 @@ extern "C" {
     * Typesafe representation of a single data point value.
     *
     * In an ::OGPS_PointVectorPtr every component of that three-vector is
-    * accessible as its own ::OGPS_DataPointPtr instance.
+    * accessible through its own ::OGPS_DataPointPtr instance.
     *
     * @remarks An instance of ::OGPS_DataPointPtr cannot be created of its own.
     * Indirectly a handle of this type can be accessed through an ::OGPS_PointVectorPtr object.
@@ -72,7 +77,7 @@ extern "C" {
    /*!
     * Gets the stored value of type ::OGPS_Int16 from a given data point.
     *
-    * @remarks If the current type does not equal ::OGPS_Int16, this function returns value 0.
+    * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value 0.
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -82,7 +87,7 @@ extern "C" {
    /*!
     * Gets the stored value of type ::OGPS_Int32 from a given data point.
     *
-    * @remarks If the current type does not equal ::OGPS_Int32, this function returns value 0.
+    * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value 0.
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -92,7 +97,7 @@ extern "C" {
    /*!
     * Gets the stored value of type ::OGPS_Float from a given data point.
     *
-    * @remarks If the current type does not equal ::OGPS_Float, this function returns value 0.0.
+    * @remarks If the current type does not equal ::OGPS_Float, this function returns the value 0.0.
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -102,7 +107,7 @@ extern "C" {
    /*!
     * Gets the stored value of type ::OGPS_Double from a given data point.
     *
-    * @remarks If the current type does not equal ::OGPS_Double, this function returns value 0.0.
+    * @remarks If the current type does not equal ::OGPS_Double, this function returns the value 0.0.
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.

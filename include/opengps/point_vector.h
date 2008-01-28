@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * The abstract data type of a point vector which holds values for
+ * all components of 3D point data stored in an ISO 5436-2 X3P file.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_H
 #define _OPENGPS_POINT_VECTOR_H
 

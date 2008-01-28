@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * The abstract data type of a point iterator used for direct manipulation
+ * of point data stored in an ISO 5436-2 X3P file.
+ */
+
 #ifndef _OPENGPS_POINT_ITERATOR_H
 #define _OPENGPS_POINT_ITERATOR_H
 

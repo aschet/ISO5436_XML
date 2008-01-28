@@ -28,6 +28,12 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Common define's and typedef's, copyright and license information.
+ * This file is an enhanced version of opengps.h for C++ maintance.
+ * @see opengps.h
+ */
+
 #ifndef _OPENGPS_CXX_OPENGPS_HXX
 #define _OPENGPS_CXX_OPENGPS_HXX
 
@@ -37,14 +43,30 @@
 
 #include <string>
 
+/*! @namespace OpenGPS
+ * The standard namespace for the openGPS software library.
+ */
 namespace OpenGPS
 {
+   /*! @namespace OpenGPS::Schemas
+    * Holds the C++ representations of the structure of all
+    * supported XML documents.
+    */
+   namespace Schemas
+   {
+   };
+
+   /*! Data type of the size of one (possibly signed) byte. */
    typedef char Byte;
+   /*! Pointer to a data type of the size of one (possibly signed) byte. */
    typedef Byte* BytePtr;
 
+   /*! Data type of the size of one unsigned byte. */
    typedef unsigned char UnsignedByte;
+   /*! Pointer to a data type of the size of one unsigned byte. */
    typedef UnsignedByte* UnsignedBytePtr;
 
+   /*! Character type used to provide more information about an exception. */
    typedef char OGPS_ExceptionChar;
 
    /*!
@@ -59,6 +81,7 @@ namespace OpenGPS
 #endif /* _UNICODE */
 
    {
+      /*! The std::string<::OGPS_Character> type.*/
       typedef
 
 #ifdef _UNICODE
@@ -103,7 +126,7 @@ namespace OpenGPS
       void FromChar(const char* const s);
 
       /*!
-       * Store an MD5 sum as a character sequence in hexadecimal format.
+       * Stores an MD5 sum as a character sequence in hexadecimal format.
        *
        * @param md5 The 128-Bit MD5 value to be storedin hexadecimal format.
        * @returns Returns TRUE on success, FALSE otherwise.

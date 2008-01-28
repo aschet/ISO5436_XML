@@ -28,6 +28,14 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Represents the ISO5436-2 XML X3P file format container. It serves as the main
+ * interface for communication with this software library. Interfaces for opening and creating
+ * X3P files, altering or parsing the contained ISO 5436-2 XML documents and direct access to the point
+ * data are provided. Point data can be accessed as raw data or geometrically transformed based
+ * on the axes descriptions. Also it can be chosen between an iterator interface and indexing techniques.
+ */
+
 #ifndef _OPENGPS_CXX_ISO5436_2_HXX
 #define _OPENGPS_CXX_ISO5436_2_HXX
 
@@ -58,14 +66,25 @@ namespace OpenGPS
    class VectorBufferBuilder;
    class PointVectorParserBuilder;
 
+   /*! std::auto_ptr for usage with OpenGPS::PointBuffer type. */
    typedef std::auto_ptr<PointBuffer> PointBufferAutoPtr;
+
+   /*! std::auto_ptr for usage with OpenGPS::PointVectorBase type. */
    typedef std::auto_ptr<PointVectorBase> PointVectorAutoPtr;
 
+   /*! std::auto_ptr for usage with OpenGPS::PointIterator type. */
    typedef std::auto_ptr<PointIterator> PointIteratorAutoPtr;
+   
+   /*! std::auto_ptr for usage with OpenGPS::Schemas::ISO5436_2::ISO5436_2Type type. */
    typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
 
+   /*! std::auto_ptr for usage with OpenGPS::VectorBuffer type. */
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
+
+   /*! std::auto_ptr for usage with OpenGPS::VectorBufferBuilder type. */
    typedef std::auto_ptr<VectorBufferBuilder> VectorBufferBuilderAutoPtr;
+   
+   /*! std::auto_ptr for usage with OpenGPS::PointVectorParserBuilder type. */
    typedef std::auto_ptr<PointVectorParserBuilder> PointVectorParserBuilderAutoPtr;
 }
 

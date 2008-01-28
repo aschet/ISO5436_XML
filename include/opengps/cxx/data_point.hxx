@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Typesafe representation of a single data point value.
+ * The interface supports getting and setting an encapsulated data value of a predetermined type.
+ */
+
 #ifndef _OPENGPS_CXX_DATA_POINT_HXX
 #define _OPENGPS_CXX_DATA_POINT_HXX
 
@@ -70,7 +75,7 @@ namespace OpenGPS
       /*!
        * Gets the stored value.
        *
-       * @remarks If the current type does not equal ::OGPS_Int16, this function returns value FALSE and does nothing at all.
+       * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value FALSE and does nothing at all.
        * @see DataPoint::GetType
        *
        * @param value Destination for the currently stored value.
@@ -81,7 +86,7 @@ namespace OpenGPS
       /*!
        * Gets the stored value.
        *
-       * @remarks If the current type does not equal ::OGPS_Int32, this function returns value FALSE and does nothing at all.
+       * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value FALSE and does nothing at all.
        * @see DataPoint::GetType
        *
        * @param value Destination for the currently stored value.
@@ -92,7 +97,7 @@ namespace OpenGPS
       /*!
        * Gets the stored value.
        *
-       * @remarks If the current type does not equal ::OGPS_Float, this function returns value FALSE and does nothing at all.
+       * @remarks If the current type does not equal ::OGPS_Float, this function returns the value FALSE and does nothing at all.
        * @see DataPoint::GetType
        *
        * @param value Destination for the currently stored value.
@@ -103,7 +108,7 @@ namespace OpenGPS
       /*!
        * Gets the stored value.
        *
-       * @remarks If the current type does not equal ::OGPS_Double, this function returns value FALSE and does nothing at all.
+       * @remarks If the current type does not equal ::OGPS_Double, this function returns the value FALSE and does nothing at all.
        * @see DataPoint::GetType
        *
        * @param value Destination for the currently stored value.

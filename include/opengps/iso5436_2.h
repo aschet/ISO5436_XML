@@ -28,6 +28,16 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * The abstract data type of the ISO 5436-2 X3P file specification. It serves as the main
+ * interface for communicating with this software library. Methods for opening and creating
+ * X3P files, altering or parsing the contained ISO 5436-2 XML document and direct access to the point
+ * data are provided. Point data can be accessed either as raw data or geometrically transformed based
+ * on the axes descriptions. Also it can be chosen between an iterator interface and indexing techniques.
+ * This abstract data type is split into two files because some methods involve C++ types which
+ * have no representation in the C interface. @see cxx/iso5436_2_handle.hxx
+ */
+
 #ifndef _OPENGPS_ISO5436_2_H
 #define _OPENGPS_ISO5436_2_H
 
