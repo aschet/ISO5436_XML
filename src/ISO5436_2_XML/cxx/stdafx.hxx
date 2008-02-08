@@ -55,7 +55,7 @@ using namespace OpenGPS;
 
 // TODO: Unix? / Mac?
 #define _OPENGPS_ENV_OPENGPS_LOCATION _T("OPENGPS_LOCATION")
-#define _OPENGPS_ISO5436_LOCATION _T("ISO5436_2_XML/iso5436_2.xsd")
+#define _OPENGPS_ISO5436_LOCATION _T("iso5436_2.xsd")
 
 #ifdef _DEBUG
 
