@@ -834,69 +834,85 @@ namespace OpenGPS
         //@}
 
         /**
-         * @name VendorSpecific
+         * @name VendorSpecificID
          *
-         * @brief Accessor and modifier functions for the %VendorSpecific
-         * sequence element.
+         * @brief Accessor and modifier functions for the %VendorSpecificID
+         * optional element.
          *
-         * This is an extension hook for vendor specific
-         * tags.
+         * This is an extension hook for vendor specific data formats derived from
+         * ISO5436_2_XML
+         * This tag contains a vendor specific ID which is the URL of the vendor. It does
+         * not need to be valid
+         * but it must be worldwide unique!
+         * Example: http://www.example-inc.com/myformat
          */
         //@{
 
         /**
          * @brief Element type.
          */
-        typedef ::xml_schema::string VendorSpecific_type;
+        typedef ::xml_schema::uri VendorSpecificID_type;
 
         /**
-         * @brief Element sequence container type.
+         * @brief Element optional container type.
          */
-        typedef ::xsd::cxx::tree::sequence< VendorSpecific_type > VendorSpecific_sequence;
-
-        /**
-         * @brief Element iterator type.
-         */
-        typedef VendorSpecific_sequence::iterator VendorSpecific_iterator;
-
-        /**
-         * @brief Element constant iterator type.
-         */
-        typedef VendorSpecific_sequence::const_iterator VendorSpecific_const_iterator;
+        typedef ::xsd::cxx::tree::optional< VendorSpecificID_type > VendorSpecificID_optional;
 
         /**
          * @brief Element traits type.
          */
-        typedef ::xsd::cxx::tree::traits< VendorSpecific_type, wchar_t > VendorSpecific_traits;
+        typedef ::xsd::cxx::tree::traits< VendorSpecificID_type, wchar_t > VendorSpecificID_traits;
 
         /**
          * @brief Return a read-only (constant) reference to the element
-         * sequence.
+         * container.
          *
-         * @return A constant reference to the sequence container.
+         * @return A constant reference to the optional container.
          */
-        const VendorSpecific_sequence&
-        VendorSpecific () const;
+        const VendorSpecificID_optional&
+        VendorSpecificID () const;
 
         /**
-         * @brief Return a read-write reference to the element sequence.
+         * @brief Return a read-write reference to the element container.
          *
-         * @return A reference to the sequence container.
+         * @return A reference to the optional container.
          */
-        VendorSpecific_sequence&
-        VendorSpecific ();
+        VendorSpecificID_optional&
+        VendorSpecificID ();
 
         /**
-         * @brief Copy elements from a given sequence.
+         * @brief Set the element value.
          *
-         * @param s A sequence to copy elements from.
+         * @param x A new value to set.
          *
-         * For each element in @a s this function makes a copy and adds it 
-         * to the sequence. Note that this operation completely changes the 
-         * sequence and all old elements will be lost.
+         * This function makes a copy of its argument and sets it as
+         * the new value of the element.
          */
         void
-        VendorSpecific (const VendorSpecific_sequence& s);
+        VendorSpecificID (const VendorSpecificID_type& x);
+
+        /**
+         * @brief Set the element value.
+         *
+         * @param x An optional container with the new value to set.
+         *
+         * If the value is present in @a x then this function makes a copy 
+         * of this value and sets it as the new value of the element.
+         * Otherwise the element container is set the 'not present' state.
+         */
+        void
+        VendorSpecificID (const VendorSpecificID_optional& x);
+
+        /**
+         * @brief Set the element value without copying.
+         *
+         * @param p A new value to use.
+         *
+         * This function will try to use the passed value directly instead
+         * of making a copy.
+         */
+        void
+        VendorSpecificID (::std::auto_ptr< VendorSpecificID_type > p);
 
         //@}
 
@@ -967,7 +983,7 @@ namespace OpenGPS
         Record2_optional Record2_;
         ::xsd::cxx::tree::one< Record3_type > Record3_;
         ::xsd::cxx::tree::one< Record4_type > Record4_;
-        VendorSpecific_sequence VendorSpecific_;
+        VendorSpecificID_optional VendorSpecificID_;
       };
 
       _OPENGPS_EXPORT

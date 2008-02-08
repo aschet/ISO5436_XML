@@ -262,22 +262,34 @@ namespace OpenGPS
         this->Record4_.set (Record4);
       }
 
-      const ISO5436_2Type::VendorSpecific_sequence& ISO5436_2Type::
-      VendorSpecific () const
+      const ISO5436_2Type::VendorSpecificID_optional& ISO5436_2Type::
+      VendorSpecificID () const
       {
-        return this->VendorSpecific_;
+        return this->VendorSpecificID_;
       }
 
-      ISO5436_2Type::VendorSpecific_sequence& ISO5436_2Type::
-      VendorSpecific ()
+      ISO5436_2Type::VendorSpecificID_optional& ISO5436_2Type::
+      VendorSpecificID ()
       {
-        return this->VendorSpecific_;
+        return this->VendorSpecificID_;
       }
 
       void ISO5436_2Type::
-      VendorSpecific (const VendorSpecific_sequence& VendorSpecific)
+      VendorSpecificID (const VendorSpecificID_type& VendorSpecificID)
       {
-        this->VendorSpecific_ = VendorSpecific;
+        this->VendorSpecificID_.set (VendorSpecificID);
+      }
+
+      void ISO5436_2Type::
+      VendorSpecificID (const VendorSpecificID_optional& VendorSpecificID)
+      {
+        this->VendorSpecificID_ = VendorSpecificID;
+      }
+
+      void ISO5436_2Type::
+      VendorSpecificID (::std::auto_ptr< VendorSpecificID_type > VendorSpecificID)
+      {
+        this->VendorSpecificID_.set (VendorSpecificID);
       }
 
 
@@ -1635,7 +1647,7 @@ namespace OpenGPS
         Record2_ (::xml_schema::flags (), this),
         Record3_ (Record3, ::xml_schema::flags (), this),
         Record4_ (Record4, ::xml_schema::flags (), this),
-        VendorSpecific_ (::xml_schema::flags (), this)
+        VendorSpecificID_ (::xml_schema::flags (), this)
       {
       }
 
@@ -1648,7 +1660,7 @@ namespace OpenGPS
         Record2_ (x.Record2_, f, this),
         Record3_ (x.Record3_, f, this),
         Record4_ (x.Record4_, f, this),
-        VendorSpecific_ (x.VendorSpecific_, f, this)
+        VendorSpecificID_ (x.VendorSpecificID_, f, this)
       {
       }
 
@@ -1661,7 +1673,7 @@ namespace OpenGPS
         Record2_ (f, this),
         Record3_ (f, this),
         Record4_ (f, this),
-        VendorSpecific_ (f, this)
+        VendorSpecificID_ (f, this)
       {
         if ((f & ::xml_schema::flags::base) == 0)
         {
@@ -1736,15 +1748,18 @@ namespace OpenGPS
             }
           }
 
-          // VendorSpecific
+          // VendorSpecificID
           //
-          if (n.name () == L"VendorSpecific" && n.namespace_ ().empty ())
+          if (n.name () == L"VendorSpecificID" && n.namespace_ ().empty ())
           {
-            ::std::auto_ptr< VendorSpecific_type > r (
-              VendorSpecific_traits::create (i, f, this));
+            ::std::auto_ptr< VendorSpecificID_type > r (
+              VendorSpecificID_traits::create (i, f, this));
 
-            this->VendorSpecific ().push_back (r);
-            continue;
+            if (!this->VendorSpecificID ())
+            {
+              this->VendorSpecificID (r);
+              continue;
+            }
           }
 
           break;
@@ -1786,7 +1801,7 @@ namespace OpenGPS
         x.Record2 () == y.Record2 () &&
         x.Record3 () == y.Record3 () &&
         x.Record4 () == y.Record4 () &&
-        x.VendorSpecific () == y.VendorSpecific ();
+        x.VendorSpecificID () == y.VendorSpecificID ();
       }
 
       bool
@@ -3839,11 +3854,9 @@ namespace OpenGPS
 
         o << ::std::endl << L"Record3: " << i.Record3 ();
         o << ::std::endl << L"Record4: " << i.Record4 ();
-        for (ISO5436_2Type::VendorSpecific_const_iterator
-             b (i.VendorSpecific ().begin ()), e (i.VendorSpecific ().end ());
-             b != e; ++b)
+        if (i.VendorSpecificID ())
         {
-          o << ::std::endl << L"VendorSpecific: " << *b;
+          o << ::std::endl << L"VendorSpecificID: " << *i.VendorSpecificID ();
         }
 
         return o;
@@ -4639,18 +4652,16 @@ namespace OpenGPS
           s << i.Record4 ();
         }
 
-        // VendorSpecific
+        // VendorSpecificID
         //
-        for (ISO5436_2Type::VendorSpecific_const_iterator
-             b (i.VendorSpecific ().begin ()), n (i.VendorSpecific ().end ());
-             b != n; ++b)
+        if (i.VendorSpecificID ())
         {
           ::xercesc::DOMElement& s (
             ::xsd::cxx::xml::dom::create_element (
-              L"VendorSpecific",
+              L"VendorSpecificID",
               e));
 
-          s << *b;
+          s << *i.VendorSpecificID ();
         }
       }
 
