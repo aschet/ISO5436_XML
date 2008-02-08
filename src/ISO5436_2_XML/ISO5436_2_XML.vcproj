@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="xerces-c_2.lib"
-				OutputFile="$(SolutionDir)\..\..\install\lib\$(ProjectName).lib"
+				OutputFile="$(OutDir)\$(ProjectName).lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -543,6 +543,10 @@
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
 				</FileConfiguration>
+				<File
+					RelativePath=".\iso5436_2.h"
+					>
+				</File>
 			</File>
 			<File
 				RelativePath=".\iso5436_2_xsd.cxx"
