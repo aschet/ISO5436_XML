@@ -30,10 +30,6 @@
 
 #include "iso5436_2_container.hxx"
 
-#ifndef _OPENGPS_POINT_ITERATOR_IMPL_HXX
-#  include "point_iterator_impl.hxx"
-#endif
-
 #include <opengps/cxx/point_vector.hxx>
 #include <opengps/cxx/data_point.hxx>
 
@@ -104,34 +100,39 @@ ISO5436_2Container::~ISO5436_2Container()
 
 OGPS_Boolean ISO5436_2Container::Open(const OGPS_Boolean readOnly)
 {
+   OGPS_Boolean retval = FALSE;
+
    if(!HasDocument())
    {
       m_IsReadOnly = readOnly;
 
-      if(!Decompress())
+      if(CreateTempDir())
       {
-         Reset();
-         return FALSE;
-      }
+         if(Decompress())
+         {
+            retval = CreatePointBuffer();
+         }
 
-      return TRUE;
+         if(!RemoveTempDir())
+         {
+            retval = FALSE;
+         }
+
+         if(!retval)
+         {
+            Reset();
+         }
+      }
    }
 
-   return FALSE;
+   return retval;
 }
 
 OGPS_Boolean ISO5436_2Container::Decompress()
 {
-   if(CreateTempDir())
-   {
-      OGPS_Boolean unpacked = (DecompressMain() && ReadDocument() && DecompressChecksum() && DecompressDataBin() && CreatePointBuffer());
-
-      if(RemoveTempDir())
-      {
-         return unpacked;
-      }
-   }
-   return FALSE;
+   _ASSERT(HasTempDir());
+   
+   return (DecompressMain() && ReadDocument() && DecompressChecksum() && DecompressDataBin());
 }
 
 OGPS_Boolean ISO5436_2Container::VerifyChecksum(const OpenGPS::String& filePath, const OpenGPS::UnsignedBytePtr checksum, const size_t size) const
@@ -311,28 +312,14 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
    {
       _ASSERT(vector.GetX()->GetType() == OGPS_MissingPointType);
 
-      try
-      {
-         vector.SetX(ConvertULongToInt32(u));
-      }
-      catch(const OverflowException&)
-      {
-         return FALSE;
-      }
+      vector.SetX(ConvertULongToInt32(u));
    }
 
    if(IsIncrementalY())
    {
       _ASSERT(vector.GetY()->GetType() == OGPS_MissingPointType);
 
-      try
-      {
-         vector.SetY(ConvertULongToInt32(v));
-      }
-      catch(const OverflowException&)
-      {
-         return FALSE;
-      }
+      vector.SetY(ConvertULongToInt32(v));
    }
 
    return retval;
@@ -375,28 +362,14 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
    {
       _ASSERT(vector.GetX()->GetType() == OGPS_MissingPointType);
 
-      try
-      {
-         vector.SetX(ConvertULongToInt32(index));
-      }
-      catch(const OverflowException&)
-      {
-         return FALSE;
-      }
+      vector.SetX(ConvertULongToInt32(index));
    }
 
    if(IsIncrementalY())
    {
       _ASSERT(vector.GetY()->GetType() == OGPS_MissingPointType);
 
-      try
-      {
-         vector.SetY(ConvertULongToInt32(index));
-      }
-      catch(const OverflowException&)
-      {
-         return FALSE;
-      }
+      vector.SetY(ConvertULongToInt32(index));
    }
 
    return retval;
@@ -514,7 +487,7 @@ OGPS_Boolean ISO5436_2Container::IsMatrix() const
    return FALSE;
 }
 
-String ISO5436_2Container::GetContainerTempFilePath() const
+String ISO5436_2Container::CreateContainerTempFilePath() const
 {
    const Environment* const env = Environment::GetInstance();
 
@@ -668,7 +641,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
             if(unzGetCurrentFileInfo(handle, &fileInfo, NULL, 0, NULL, 0, NULL, 0) == UNZ_OK)
             {
                // Open binary target stream for uncompressed data
-               PointVectorOutputBinaryFileStream binaryTarget(dst);
+               OutputBinaryFileStream binaryTarget(dst);
 
                if(!binaryTarget.fail())
                {
@@ -744,7 +717,7 @@ OGPS_Boolean ISO5436_2Container::Compress()
    if(CreateTempDir())
    {
 
-      OpenGPS::String targetZip = GetContainerTempFilePath();
+      OpenGPS::String targetZip = CreateContainerTempFilePath();
       zipFile handle = zipOpen(targetZip.ToChar(), APPEND_STATUS_CREATE);
 
       if(handle)
@@ -878,10 +851,10 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
    _ASSERT(!HasVectorBuffer());
 
    // Build and setup internal point buffer
-   VectorBufferBuilderAutoPtr v_builder(CreateVectorBufferBuilder());
+   VectorBufferBuilderAutoPtr v_builder(new VectorBufferBuilder());
    if(v_builder.get())
    {
-      if(CreateVectorBuffer(*v_builder.get()))
+      if(BuildVectorBuffer(*v_builder.get()))
       {
          m_VectorBufferBuilder = v_builder;
       }
@@ -894,18 +867,25 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
       // read valid points file
       if(HasValidPointsLink())
       {
-         PointVectorInputBinaryFileStream vstream(GetValidPointsFileName());
-         if(!vectorBuffer->HasValidityBuffer() || !vectorBuffer->GetValidityBuffer()->Read(vstream))
+         if(vectorBuffer->HasValidityBuffer())
          {
-            return FALSE;
+            InputBinaryFileStream vstream(GetValidPointsFileName());
+            if(!vectorBuffer->GetValidityBuffer()->Read(vstream))
+            {
+               return FALSE;
+            }
+         }
+         else
+         {
+             // TODO: Warnung -> ValidityBuffer überflüssig, wird daher ignoriert.
          }
       }
 
       // Create point parser for this document
-      PointVectorParserBuilderAutoPtr p_builder(CreatePointVectorParserBuilder());
+      PointVectorParserBuilderAutoPtr p_builder(new PointVectorParserBuilder());
       if(p_builder.get())
       {
-         if(CreatePointVectorParser(*p_builder.get()))
+         if(BuildPointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
             PointVectorReaderContextAutoPtr context(CreatePointVectorReaderContext());
@@ -1045,10 +1025,10 @@ OGPS_Boolean ISO5436_2Container::SaveChecksumFile(zipFile handle, const OpenGPS:
          {
             OpenGPS::String mainArchiveName(GetMainArchiveName());
 
-            zipOut.write(md5out.ToChar(), md5out.size());
-            zipOut.write(" *", 2);
-            zipOut.write(mainArchiveName.ToChar(), mainArchiveName.size());
-            zipOut.write("\n", 1);
+            zipOut.write(md5out);
+            zipOut.write(_T(" *"));
+            zipOut.write(mainArchiveName);
+            zipOut.write(_T("\n"));
 
             retval = TRUE;
          }
@@ -1070,67 +1050,60 @@ OGPS_Boolean ISO5436_2Container::SaveXmlDocument(zipFile handle)
    OGPS_Boolean retval = FALSE;
 
    xml_schema::namespace_infomap map;
-   if(ConfigureNamespaceMap(map))
+   ConfigureNamespaceMap(map);
+
+   // Creates new file in the zip container.
+   OpenGPS::String mainDocument(GetMainArchiveName());
+   if(zipOpenNewFileInZip(handle,
+      mainDocument.ToChar(),
+      NULL,
+      NULL,
+      0,
+      NULL,
+      0,
+      NULL,
+      Z_DEFLATED,
+      m_CompressionLevel) == ZIP_OK)
    {
-      // Creates new file in the zip container.
-      OpenGPS::String mainDocument(GetMainArchiveName());
-      if(zipOpenNewFileInZip(handle,
-         mainDocument.ToChar(),
-         NULL,
-         NULL,
-         0,
-         NULL,
-         0,
-         NULL,
-         Z_DEFLATED,
-         m_CompressionLevel) == ZIP_OK)
+      ZipStreamBuffer buffer(handle, TRUE);
+      ZipOutputStream zipOut(buffer);
+
+
+      if (!zipOut.fail ())
       {
-         ZipStreamBuffer buffer(handle, TRUE);
-         ZipOutputStream zipOut(buffer);
-
-
-         if (!zipOut.fail ())
+         // TODO: throw(...)
+         try
          {
-            // TODO: throw(...)
-            try
-            {
-               Schemas::ISO5436_2::ISO5436_2(zipOut, *m_Document, map);
-               retval = TRUE;
-            }
-            catch(const xml_schema::exception& ex)
-            {
-               // TODO: bessere error behandlung
-               std::wstringstream ws;
-               ws << ex;
-               OpenGPS::String s = ws.str();
-
-               std::cerr << s.ToChar() << std::endl;
-            }
+            Schemas::ISO5436_2::ISO5436_2(zipOut, *m_Document, map);
+            retval = TRUE;
          }
-
-         if(zipCloseFileInZip(handle) == ZIP_OK)
+         catch(const xml_schema::exception& ex)
          {
-            retval = retval && TRUE;
-         }
+            // TODO: bessere error behandlung
+            std::wstringstream ws;
+            ws << ex;
+            OpenGPS::String s = ws.str();
 
-         OpenGPS::UnsignedByte md5[16];
-         retval = retval & (buffer.GetMd5(md5) && SaveChecksumFile(handle, md5));
+            std::cerr << s.ToChar() << std::endl;
+         }
       }
-   }
-   else
-   {
-      // TODO: print warning message
+
+      if(zipCloseFileInZip(handle) == ZIP_OK)
+      {
+         retval = retval && TRUE;
+      }
+
+      OpenGPS::UnsignedByte md5[16];
+      retval = retval & (buffer.GetMd5(md5) && SaveChecksumFile(handle, md5));
    }
 
    return retval;
 }
 
-OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::namespace_infomap& map) const
+void ISO5436_2Container::ConfigureNamespaceMap(xml_schema::namespace_infomap& map) const
 {
    map[_T("p")].name = _OPENGPS_XSD_ISO5436_NAMESPACE;
    map[_T("p")].schema = _OPENGPS_XSD_ISO5436_LOCATION;
-
-   return TRUE;
 }
 
 OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& props) const
@@ -1239,10 +1212,10 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
       ResetValidPointsLink();
 
       // Create point parser for this document
-      PointVectorParserBuilderAutoPtr p_builder(CreatePointVectorParserBuilder());
+      PointVectorParserBuilderAutoPtr p_builder(new PointVectorParserBuilder());
       if(p_builder.get())
       {
-         if(CreatePointVectorParser(*p_builder.get()))
+         if(BuildPointVectorParser(*p_builder.get()))
          {
             PointVectorParser* parser = p_builder->GetParser();
             PointVectorWriterContextAutoPtr context(CreatePointVectorWriterContext(handle));
@@ -1266,14 +1239,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
                   unsigned long index = 0;
                   unsigned long count = 0;
 
-                  try
-                  {
-                     count = GetPointCount();
-                  }
-                  catch(const OverflowException&)
-                  {
-                     success = FALSE;
-                  }
+                  count = GetPointCount();
 
                   if(success)
                   {
@@ -1334,17 +1300,7 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
    return retval;
 }
 
-PointVectorParserBuilder* ISO5436_2Container::CreatePointVectorParserBuilder() const
-{
-   return new PointVectorParserBuilder();
-}
-
-VectorBufferBuilder* ISO5436_2Container::CreateVectorBufferBuilder() const
-{
-   return new VectorBufferBuilder();
-}
-
-OGPS_Boolean ISO5436_2Container::CreatePointVectorParser(PointVectorParserBuilder& builder) const
+OGPS_Boolean ISO5436_2Container::BuildPointVectorParser(PointVectorParserBuilder& builder) const
 {
    OGPS_DataPointType xType = GetXaxisDataType();
    OGPS_DataPointType yType = GetYaxisDataType();
@@ -1356,7 +1312,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointVectorParser(PointVectorParserBuilde
       builder.BuildZ(zType));
 }
 
-OGPS_Boolean ISO5436_2Container::CreateVectorBuffer(VectorBufferBuilder& builder) const
+OGPS_Boolean ISO5436_2Container::BuildVectorBuffer(VectorBufferBuilder& builder) const
 {
    _ASSERT(HasDocument());
 
@@ -1364,16 +1320,7 @@ OGPS_Boolean ISO5436_2Container::CreateVectorBuffer(VectorBufferBuilder& builder
    OGPS_DataPointType yType = GetYaxisDataType();
    OGPS_DataPointType zType = GetZaxisDataType();
 
-   unsigned long size = 0;
-
-   try
-   {
-       size = GetPointCount();
-   }
-   catch(const OverflowException&)
-   {
-      return FALSE;
-   }
+   const unsigned long size = GetPointCount();
 
    return (builder.BuildBuffer() &&
       builder.BuildX(xType, size) &&
@@ -1506,9 +1453,9 @@ unsigned long ISO5436_2Container::GetPointCount() const throw(...)
    // calculate point count of matrix type
    if(IsMatrix())
    {
-      unsigned long xSize = m_Document->Record3().MatrixDimension()->SizeX();
-      unsigned long ySize = m_Document->Record3().MatrixDimension()->SizeY();
-      unsigned long zSize = m_Document->Record3().MatrixDimension()->SizeZ();
+      const unsigned long long xSize = m_Document->Record3().MatrixDimension()->SizeX();
+      const unsigned long long ySize = m_Document->Record3().MatrixDimension()->SizeY();
+      const unsigned long long zSize = m_Document->Record3().MatrixDimension()->SizeZ();
 
       _ASSERT(xSize > 0 && ySize > 0 && zSize > 0);
 
@@ -1516,7 +1463,7 @@ unsigned long ISO5436_2Container::GetPointCount() const throw(...)
    }
 
    // calculate point count of list type
-   return m_Document->Record3().ListDimension().get();
+   return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
 unsigned long ISO5436_2Container::GetMaxU() const
@@ -1525,10 +1472,10 @@ unsigned long ISO5436_2Container::GetMaxU() const
 
    if(IsMatrix())
    {
-      return m_Document->Record3().MatrixDimension()->SizeX();
+      return ConvertULongLongToULong(m_Document->Record3().MatrixDimension()->SizeX());
    }
 
-   return m_Document->Record3().ListDimension().get();
+   return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
 unsigned long ISO5436_2Container::GetMaxV() const
@@ -1537,10 +1484,10 @@ unsigned long ISO5436_2Container::GetMaxV() const
 
    if(IsMatrix())
    {
-      return m_Document->Record3().MatrixDimension()->SizeY();
+      return ConvertULongLongToULong(m_Document->Record3().MatrixDimension()->SizeY());
    }
 
-   return m_Document->Record3().ListDimension().get();
+   return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
 unsigned long ISO5436_2Container::GetMaxW() const
@@ -1549,10 +1496,10 @@ unsigned long ISO5436_2Container::GetMaxW() const
 
    if(IsMatrix())
    {
-      return m_Document->Record3().MatrixDimension()->SizeZ();
+      return ConvertULongLongToULong(m_Document->Record3().MatrixDimension()->SizeZ());
    }
 
-   return m_Document->Record3().ListDimension().get();
+   return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
 OGPS_Boolean ISO5436_2Container::IsBinary() const
@@ -1782,46 +1729,52 @@ PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() con
    {
       const Schemas::ISO5436_2::MatrixDimensionType& mtype = m_Document->Record3().MatrixDimension().get();
 
-      OGPS_Boolean overflow = FALSE;
+      SafeMultipilcation(SafeMultipilcation(mtype.SizeX(), mtype.SizeY()), mtype.SizeZ());
+      
+      const unsigned long sx = ConvertULongLongToULong(mtype.SizeX());
+      const unsigned long sy = ConvertULongLongToULong(mtype.SizeY());
+      const unsigned long sz = ConvertULongLongToULong(mtype.SizeZ());
 
-      try
-      {
-         SafeMultipilcation(SafeMultipilcation(mtype.SizeX(), mtype.SizeY()), mtype.SizeZ());
-      }
-      catch(const OverflowException)
-      {
-         overflow = TRUE;
-      }
-
-      if(overflow)
-      {
-         return NULL;
-      }
-
-      return new PointVectorProxyContextMatrix(mtype.SizeX(), mtype.SizeY(), mtype.SizeZ());
+      return new PointVectorProxyContextMatrix(sx, sy, sz);
    }
 
    _ASSERT(m_Document->Record3().ListDimension().present());
 
-   return new PointVectorProxyContextList(m_Document->Record3().ListDimension().get());
+   return new PointVectorProxyContextList(ConvertULongLongToULong(m_Document->Record3().ListDimension().get()));
 }
 
-OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long value) const throw(...)
+OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long long value) const throw(...)
 {
-   if((unsigned long)std::numeric_limits<OGPS_Int32>::max() < value)
+   if((unsigned long long)std::numeric_limits<OGPS_Int32>::max() < value)
    {
-      throw OverflowException();
+      throw OpenGPS::Exception(OGPS_ExOverflow,
+         _EX_T("An integer overflow occured."),
+         _EX_T("Point data of implicit axes is derived from the current point index. Since point indexes are of unsigned type, very large values can not be converted into a signed integer. But within a point vector the components are of signed integer and therefore the current index value could not be saved in a point vector. In other words: reduce the amount of point data stored to be able to fit the upper bound of a signed integer data type."));
    }
 
    return (OGPS_Int32)value;
 }
 
-unsigned long ISO5436_2Container::SafeMultipilcation(const unsigned long value1, const unsigned long value2) const throw(...)
+unsigned long ISO5436_2Container::ConvertULongLongToULong(const unsigned long long value) const throw(...)
+{
+   if((unsigned long long)std::numeric_limits<unsigned long>::max() < value)
+   {
+      throw OpenGPS::Exception(OGPS_ExOverflow,
+         _EX_T("An integer overflow occured."),
+         _EX_T("The amount of point data stored as a list of points or at least one of the dimensions of the topology matrix did exceed the maximum value that could be handled by an unsigned long data type. To avoid this problem either reduce the amount of point data stored or the dimensions of the matrix topology to be able to fit the upper bound of an unsigned long data type."));
+   }
+
+   return (unsigned long)value;
+}
+
+unsigned long ISO5436_2Container::SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...)
 {
    if(value1 > (std::numeric_limits<unsigned long>::max() / value2))
    {
-      throw OverflowException();
+      throw OpenGPS::Exception(OGPS_ExOverflow,
+         _EX_T("An integer overflow occured due to a multiplication operation."),
+         _EX_T("Two values of the same data type were multiplied with each other, but the result is too large to fit the same data type. Your point data is layed out by a matrix topology. Then every data point of a single axis may be indexed successfully of their own, but a single index might not be sufficient to be able of indexing all three axes components at once. Since this is a required property of the current implementation, the amount of point data needs to be reduced, so that indexing of all axes components with a single index becomes possible again."));
    }
 
-   return (value1 * value2);
+   return ((unsigned long)(value1 * value2));
 }

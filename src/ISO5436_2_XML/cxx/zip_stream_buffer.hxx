@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Integrates Info-Zip handles into the common standard io framework.
+ */
+
 #ifndef _OPENGPS_ZIP_STREAM_BUFFER_HXX
 #define _OPENGPS_ZIP_STREAM_BUFFER_HXX
 
@@ -44,31 +48,73 @@
 
 namespace OpenGPS
 {
+   class String;
+
+   /*!
+    * Provides a buffer interface suitable for streaming the zipFile
+    * handle defined in the zlib/minizip package.
+    * @see ZipOutputStream
+    */
    class ZipStreamBuffer : public std::streambuf
    {
+      /*! Data type of the super class. */
       typedef std::streambuf BaseType;
 
    public:
+      /*!
+       * Creates a new instance.
+       * @param handle The Info-Zip file handle buffered binary data is written to.
+       * @param enable_md5 When set to TRUE generates md5 checksums of the buffered
+       * binary data, if FALSE no cheksum data will be generated.
+       */
       ZipStreamBuffer(zipFile handle, const OGPS_Boolean enable_md5);
+
+      /*! Destroys this instance. */
       ~ZipStreamBuffer();
 
+      /*!
+       * Gets the current md5 checksum. Also resets the computed md5 data internally.
+       * @param md5 Gets the 128-bit md5 data.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean GetMd5(OpenGPS::UnsignedByte md5[16]);
 
    protected:
+      /*! Overrides the super class. */
       virtual std::streamsize xsputn( const char * s, std::streamsize n );
 
    private:
+      /*! Handle to the zipFile where buffered data gets written to. */
       zipFile m_Handle;
+
+      /*! The current state of md5 checksum processing. */
       md5_context *m_Md5Context;
    };
 
+   /*!
+    * Provides an output stream interface to write binary data to Info-Zip archives.
+    */
    class ZipOutputStream : public std::ostream
    {
+   public:
+      /*! Data type of the super class. */
       typedef std::ostream BaseType;
 
    public:
+      /*!
+       * Creates a new instance.
+       * @param buffer The buffer object that is streamed.
+       */
       ZipOutputStream(ZipStreamBuffer& buffer);
+
+      /*! Destroys this instance. */
       ~ZipOutputStream();
+
+      /*!
+       * Appends a string to the stream.
+       * @param s The string to append.
+       */
+      ZipOutputStream::BaseType& write(const OpenGPS::String& s);
    };
 }
 

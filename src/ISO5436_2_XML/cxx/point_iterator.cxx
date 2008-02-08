@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "point_iterator_impl.hxx"
+#include "iso5436_2_container.hxx"
 #include <opengps/cxx/point_vector.hxx>
 
 #include "stdafx.hxx"
@@ -41,7 +41,7 @@ PointIterator::~PointIterator()
 {
 }
 
-PointIteratorImpl::PointIteratorImpl(
+ISO5436_2Container::PointIteratorImpl::PointIteratorImpl(
                                      ISO5436_2Container * const handle,
                                      const OGPS_Boolean isForward,
                                      const OGPS_Boolean isMatrix) : PointIterator(), m_Handle(handle)
@@ -50,25 +50,20 @@ PointIteratorImpl::PointIteratorImpl(
 
    m_IsForward = isForward;
    m_IsMatrix = isMatrix;
-   m_Buffer = NULL;
 
    m_U = m_V = m_W = 0;
    m_IsReset = TRUE;
 }
 
-PointIteratorImpl::~PointIteratorImpl()
+ISO5436_2Container::PointIteratorImpl::~PointIteratorImpl()
 {
-   if(m_Buffer)
-   {
-      delete m_Buffer;
-   }
 }
 
-OGPS_Boolean PointIteratorImpl::HasNext() const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
-   if(m_IsForward && !m_Buffer)
+   if(m_IsForward)
    {
       if(m_IsReset)
       {
@@ -92,11 +87,11 @@ OGPS_Boolean PointIteratorImpl::HasNext() const
    return FALSE;
 }
 
-OGPS_Boolean PointIteratorImpl::HasPrev() const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
-   if(!m_IsForward && !m_Buffer)
+   if(!m_IsForward)
    {
       if(m_IsReset)
       {
@@ -120,7 +115,7 @@ OGPS_Boolean PointIteratorImpl::HasPrev() const
    return FALSE;
 }
 
-OGPS_Boolean PointIteratorImpl::MoveNext()
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext()
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -172,7 +167,7 @@ OGPS_Boolean PointIteratorImpl::MoveNext()
    return FALSE;
 }
 
-OGPS_Boolean PointIteratorImpl::MovePrev()
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MovePrev()
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -248,33 +243,21 @@ OGPS_Boolean PointIteratorImpl::MovePrev()
    return FALSE;
 }
 
-void PointIteratorImpl::ResetNext()
+void ISO5436_2Container::PointIteratorImpl::ResetNext()
 {
-   if(m_Buffer)
-   {
-      delete m_Buffer;
-      m_Buffer = NULL;
-   }
-
    m_U = m_V = m_W = 0;
    m_IsReset = TRUE;
    m_IsForward = TRUE;
 }
 
-void PointIteratorImpl::ResetPrev()
+void ISO5436_2Container::PointIteratorImpl::ResetPrev()
 {
-   if(m_Buffer)
-   {
-      delete m_Buffer;
-      m_Buffer = NULL;
-   }
-
    m_U = m_V = m_W = 0;
    m_IsReset = TRUE;
    m_IsForward = FALSE;
 }
 
-OGPS_Boolean PointIteratorImpl::GetCurrent(PointVector& vector)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -286,7 +269,7 @@ OGPS_Boolean PointIteratorImpl::GetCurrent(PointVector& vector)
    return m_Handle->GetListPoint(m_U, vector);
 }
 
-OGPS_Boolean PointIteratorImpl::SetCurrent(const PointVector* const vector)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -301,7 +284,7 @@ OGPS_Boolean PointIteratorImpl::SetCurrent(const PointVector* const vector)
    return m_Handle->SetListPoint(m_U, *vector);
 }
 
-OGPS_Boolean PointIteratorImpl::GetPosition(unsigned long* const index) const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(unsigned long* const index) const
 {
    _ASSERT(index);
 
@@ -314,7 +297,7 @@ OGPS_Boolean PointIteratorImpl::GetPosition(unsigned long* const index) const
    return FALSE;
 }
 
-OGPS_Boolean PointIteratorImpl::GetPosition(
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(
    unsigned long* const u,
    unsigned long* const v,
    unsigned long* const w) const

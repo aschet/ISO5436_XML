@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Allocate static memory to store point data.
+ */
+
 #ifndef _OPENGPS_POINT_BUFFER_HXX
 #define _OPENGPS_POINT_BUFFER_HXX
 
@@ -41,34 +45,137 @@
 
 namespace OpenGPS
 {
+   /*!
+    * A static memory buffer that stores all point data belonging to a single axis.
+    * Internally point vectors are not stored as a sequence of values of their three 
+    * components (as one might have naturally thought). But rather there are three memory
+    * blocks. One for each axis that stores all its data point values in a single array.
+    * The three point buffer instances managing typesafe access to their memory blocks
+    * are assembled by the OpenGPS::VectorBufferBuilder and combined within an instance
+    * of OpenGPS::VectorBuffer. To make OpenGPS::VectorBuffer accessible as an instance
+    * of OpenGPS::PointVector one needs to obtain a OpenGPS::PointVectorProxy object by using
+    * OpenGPS::VectorBuffer::GetPointVectorProxy and providing a OpenGPS::PointVectorProxyContext
+    * object which holds the array index of the row which - expanded over the three internal
+    * memory blocks - constraints OpenGPS::VectorBuffer to be seen as one single OpenGPS::PointVector.
+    */
    class PointBuffer
    {
    protected:
+      /*! Creates a new instance. */
       PointBuffer();
 
    public:
+      /*! Destroys this instance. */
       virtual ~PointBuffer();
 
-      virtual OGPS_Boolean Set(const unsigned long index, const short value);
-      virtual OGPS_Boolean Set(const unsigned long index, const int value);
-      virtual OGPS_Boolean Set(const unsigned long index, const float value);
-      virtual OGPS_Boolean Set(const unsigned long index, const double value);
+      /*!
+       * Sets the value of the inernal memory at the given position.
+       *
+       * @param index Where to set the new value.
+       * @param value The new value to be set.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Int16 value);
 
-      virtual OGPS_Boolean Get(const unsigned long index, short& value) const;
-      virtual OGPS_Boolean Get(const unsigned long index, int& value) const;
-      virtual OGPS_Boolean Get(const unsigned long index, float& value) const;
-      virtual OGPS_Boolean Get(const unsigned long index, double& value) const;
+      /*!
+       * Sets the value of the inernal memory at the given position.
+       *
+       * @param index Where to set the new value.
+       * @param value The new value to be set.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Int32 value);
 
+      /*!
+       * Sets the value of the inernal memory at the given position.
+       *
+       * @param index Where to set the new value.
+       * @param value The new value to be set.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Float value);
+
+      /*!
+       * Sets the value of the inernal memory at the given position.
+       *
+       * @param index Where to set the new value.
+       * @param value The new value to be set.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Double value);
+
+      /*!
+       * Gets the value of the inernal memory at the given position.
+       *
+       * @param index Get the value from this position.
+       * @param value Stores the value.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Int16& value) const;
+
+      /*!
+       * Gets the value of the inernal memory at the given position.
+       *
+       * @param index Get the value from this position.
+       * @param value Stores the value.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Int32& value) const;
+
+      /*!
+       * Gets the value of the inernal memory at the given position.
+       *
+       * @param index Get the value from this position.
+       * @param value Stores the value.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Float& value) const;
+
+      /*!
+       * Gets the value of the inernal memory at the given position.
+       *
+       * @param index Get the value from this position.
+       * @param value Stores the value.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Double& value) const;
+
+      /*!
+       * Allocates internal memory.
+       *
+       * @param size Amount of point data to be stored.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean Allocate(const unsigned long size);
+
+      /*!
+       * Gets the maximum amount of point data taht can be stored.
+       */
       virtual unsigned long GetSize() const;
 
+      /*!
+       * Gets the type of point data that can be stored within this instance.
+       */
       virtual OGPS_DataPointType GetType() const;
 
    protected:
+      /*!
+       * Allocates internal memory.
+       *
+       * @param size Amount of point data to be stored.
+       * @param typeSize The size of the data type of the point data stored herein in bytes.
+       * @returns Returns a pointer to allocated memory or NULL.
+       */
       OpenGPS::UnsignedBytePtr Allocate(const unsigned long size, const size_t typeSize);
+
+      /*!
+       * Frees allocated memory.
+       * @param value The pointer to the memory to be freed.
+       */
       void Free(OpenGPS::UnsignedBytePtr* value);
 
    private:
+      /*! Logical size or amount of point data that can be stored. */
       unsigned long m_Size;
    };
 }

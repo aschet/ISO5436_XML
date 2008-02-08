@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Communicate validity of point vectors through special IEEE754 values.
+ */
+
 #ifndef _OPENGPS_INLINE_VALIDITY_HXX
 #define _OPENGPS_INLINE_VALIDITY_HXX
 
@@ -41,20 +45,48 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Implements OpenGPS::PointValidityProvider as a lookup
+    * of a special IEEE754 value.
+    *
+    * If the value of the point data stored for the Z component
+    * of a point vector equals the special IEEE754 value
+    * of infinity, then the point measurement is identified as invalid.
+    */
    class FloatInlineValidity : public PointValidityProvider
    {
    public:
+      /*!
+       * Creates a new instance.
+       * @param value The point buffer of the Z axis.
+       */
       FloatInlineValidity(PointBuffer* const value);
+
+      /*! Destroys this instance. */
       ~FloatInlineValidity();
 
       virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
       virtual OGPS_Boolean IsValid(const unsigned int index) const;
    };
 
+   /*!
+    * Implements OpenGPS::PointValidityProvider as a lookup
+    * of a special IEEE754 value.
+    *
+    * If the value of the point data stored for the Z component
+    * of a point vector equals the special IEEE754 value
+    * of infinity, then the point measurement is identified as invalid.
+    */
    class DoubleInlineValidity : public PointValidityProvider
    {
    public:
+      /*!
+       * Creates a new instance.
+       * @param value The point buffer of the Z axis.
+       */
       DoubleInlineValidity(PointBuffer* const value);
+
+      /*! Destroys this instance. */
       ~DoubleInlineValidity();
 
       virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);

@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Implementation of access methods for writing typed point data to a binary file of point vectors.
+ */
+
 #ifndef _OPENGPS_BINARY_LSB_POINT_VECTOR_WRITER_CONTEXT_HXX
 #define _OPENGPS_BINARY_LSB_POINT_VECTOR_WRITER_CONTEXT_HXX
 
@@ -37,18 +41,31 @@
 
 namespace OpenGPS
 {
-   class PointVectorOutputBinaryFileStream;
+   class OutputBinaryFileStream;
 
-   class BinaryLSBPointVectorWriterContext : public BinaryPointVectorWriterContext {
-  public:
-     BinaryLSBPointVectorWriterContext(zipFile handle);
-    virtual ~BinaryLSBPointVectorWriterContext();
+   /*!
+    * Implements OpenGPS::BinaryPointVectorWriterContext for binary files to
+    * be written on machines operating in least significant byte order. Writes
+    * binary data to a compressed stream. Normally this stream points to a
+    * file descriptor within a zip archive.
+    */
+   class BinaryLSBPointVectorWriterContext : public BinaryPointVectorWriterContext
+   {
+   public:
+      /*!
+       * Creates a new instance.
+       * @param handle The zip-stream where binary data is written to.
+       */
+      BinaryLSBPointVectorWriterContext(zipFile handle);
 
-    virtual OGPS_Boolean Write(const OGPS_Int16* const value);
-    virtual OGPS_Boolean Write(const OGPS_Int32* const value);
-    virtual OGPS_Boolean Write(const OGPS_Float* const value);
-    virtual OGPS_Boolean Write(const OGPS_Double* const value);
-  };
+      /*! Destroys this instance. */
+      virtual ~BinaryLSBPointVectorWriterContext();
+
+      virtual OGPS_Boolean Write(const OGPS_Int16* const value);
+      virtual OGPS_Boolean Write(const OGPS_Int32* const value);
+      virtual OGPS_Boolean Write(const OGPS_Float* const value);
+      virtual OGPS_Boolean Write(const OGPS_Double* const value);
+   };
 }
 
 #endif /* _OPENGPS_BINARY_LSB_POINT_VECTOR_WRITER_CONTEXT_HXX */

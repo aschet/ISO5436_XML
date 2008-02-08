@@ -30,6 +30,7 @@
 
 #include "vector_buffer.hxx"
 #include "point_vector_proxy.hxx"
+#include "point_buffer.hxx"
 
 #include "stdafx.hxx"
 

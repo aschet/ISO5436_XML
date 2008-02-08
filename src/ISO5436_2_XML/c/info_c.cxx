@@ -1,4 +1,6 @@
-#include <opengps/cxx/opengps.hxx>
+#include <opengps/info.h>
+#include <opengps/cxx/info.hxx>
+#include <opengps/cxx/string.hxx>
 
 size_t ogps_GetNameInfo(OGPS_Character* const text, const size_t size)
 {

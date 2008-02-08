@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Implementation of access methods for writing typed point data to a string list of point vectors.
+ */
+
 #ifndef _OPENGPS_XML_POINT_VECTOR_WRITER_CONTEXT_HXX
 #define _OPENGPS_XML_POINT_VECTOR_WRITER_CONTEXT_HXX
 
@@ -40,12 +44,27 @@
 namespace OpenGPS
 {
    class PointVectorOutputStringStream;
+   class String;
 
-   class XmlPointVectorWriterContext : public PointVectorWriterContext {
+   /*!
+    * Specialized OpenGPS::PointVectorWriterContext for point vectors stored as list of strings.
+    * Each string in the list represents one point vector. The values of the three coordinates
+    * are seperated either by free space or a semicolon. If a value of a coordinate needs
+    * not to be stored in the string because its corresponding axis has an incremental axis
+    * definition the value is completely omittet, i.e. no semicolon is written either.
+    */
+   class XmlPointVectorWriterContext : public PointVectorWriterContext
+   {
    public:
       typedef Schemas::ISO5436_2::DataListType::Datum_sequence StringList;
 
+      /*!
+       * Creates a new instance.
+       * @param pointVectorList The list of point vectors to be streamed herein.
+       */
       XmlPointVectorWriterContext(StringList* const pointVectorList);
+
+      /*! Destroys this instance. */
       virtual ~XmlPointVectorWriterContext();
 
       virtual OGPS_Boolean Write(const OGPS_Int16* const value);
@@ -58,15 +77,42 @@ namespace OpenGPS
       virtual OGPS_Boolean MoveNext();
 
    protected:
+      /*!
+       * Asks if the underlying data stream is still valid.
+       * @returns Returns TRUE if no previous access to the underlying
+       * data stream was harmful. Returns FALSE if any damage occured.
+       */
       virtual OGPS_Boolean IsGood() const;
+
+      /*!
+       * Appends the separator of two data point values.
+       */
       virtual void AppendSeparator();
 
    private:
-      OpenGPS::String Get() const;
+      /*!
+       * Gets the content of the inner stream buffer. After all three
+       * vector components have been written this euqals the string
+       * representation of a single point vector.
+       *
+       * @param value Returns the content of the stream buffer.
+       */
+      void Get(OpenGPS::String* const value) const;
+      
+      /*!
+       * Resets/empties the inner stream buffer.
+       */
       void Reset();
 
+      /*! The inner stream buffer which holds the current compilation of
+       * a point vector to be added to the string list. */
       PointVectorOutputStringStream* m_Stream;
+
+      /*! TRUE if a separator needs to be added on the next call to
+       * XmlPointVectorWriterContext::Write, FALSE otherwise. */
       OGPS_Boolean m_NeedsSeparator;
+
+      /*! The inner string list of point vectors written so far. */
       StringList* m_PointVectorList;
    };
 }

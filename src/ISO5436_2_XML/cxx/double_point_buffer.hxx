@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Allocate static memory to store point data.
+ */
+
 #ifndef _OPENGPS_DOUBLE_POINT_BUFFER_HXX
 #define _OPENGPS_DOUBLE_POINT_BUFFER_HXX
 
@@ -37,21 +41,29 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Manages static memory and typesafe access.
+    * Allocates an internal memory buffer to store point data of type ::OGPS_Double.
+    */
    class DoublePointBuffer : public PointBuffer
    {
    public:
+      /*! Create a new instance. */
       DoublePointBuffer();
+
+      /*! Destroys this instance. */
       virtual ~DoublePointBuffer();
 
       virtual OGPS_Boolean Allocate(const unsigned long size);
 
-      virtual OGPS_Boolean Set(const unsigned long index, const double value);
-      virtual OGPS_Boolean Get(const unsigned long index, double& value) const;
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Double value);
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Double& value) const;
 
       virtual OGPS_DataPointType GetType() const;
 
    private:
-      double* m_Buffer;
+      /*! Pointer to internal memory. */
+      OGPS_Double* m_Buffer;
    };
 }
 

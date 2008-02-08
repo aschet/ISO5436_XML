@@ -33,10 +33,10 @@
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>
 
-#include "point_iterator.hxx"
-#include "point_vector.hxx"
+#include "point_iterator_c.hxx"
+#include "point_vector_c.hxx"
 
-#include "exceptions.hxx"
+#include "messages_c.hxx"
 
 #include "../cxx/iso5436_2_container.hxx"
 #include "../cxx/stdafx.hxx"
@@ -216,8 +216,21 @@ OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle ha
 {
    _ASSERT(handle && handle->instance);
 
-   OGPS_PointIteratorPtr iter = new OGPS_PointIterator();
-   iter->instance = handle->instance->CreateNextPointIterator().release();
+   OGPS_PointIteratorPtr iter = NULL;
+   
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+
+         /* Statement within try-block */ \
+         iter = new OGPS_PointIterator(); \
+         iter->instance = handle->instance->CreateNextPointIterator().release(); \
+         , \
+         /* Statement within catch-block */ \
+         if(iter) \
+         { \
+            delete iter; \
+            iter = NULL; \
+         }
+      );
 
    return iter;
 }
@@ -226,8 +239,21 @@ OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle ha
 {
    _ASSERT(handle && handle->instance);
 
-   OGPS_PointIteratorPtr iter = new OGPS_PointIterator;
-   iter->instance = handle->instance->CreatePrevPointIterator().release();
+   OGPS_PointIteratorPtr iter = NULL;
+   
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+
+         /* Statement within try-block */ \
+         iter = new OGPS_PointIterator(); \
+         iter->instance = handle->instance->CreatePrevPointIterator().release(); \
+         , \
+         /* Statement within catch-block */ \
+         if(iter) \
+         { \
+            delete iter; \
+            iter = NULL; \
+         }
+      );
 
    return iter;
 }

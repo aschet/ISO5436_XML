@@ -28,10 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+#include <opengps/cxx/info.hxx>
+#include <opengps/cxx/string.hxx>
 #include <iostream>
-
-#include <opengps/cxx/opengps.hxx>
-
 #include "stdafx.hxx"
 
 Info::Info()

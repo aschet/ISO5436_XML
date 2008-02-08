@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright by Johannes Herwig (NanoFocus AG) 2007                      *
  *   Copyright by Georg Wiora (NanoFocus AG) 2007                          *
  *                                                                         *
  *   This file is part of the openGPS (R)[TM] software library.            *
@@ -30,6 +31,11 @@
 // ISO5436_2_XML_Demo.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
 //
 
+#include <opengps/cxx/opengps.hxx>
+
+#undef _OPENGPS_EXPORT
+#define _OPENGPS_EXPORT
+
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>
 #include <opengps/cxx/iso5436_2_handle.hxx>
@@ -37,6 +43,7 @@
 #include <opengps/cxx/point_iterator.hxx>
 #include <opengps/cxx/point_vector.hxx>
 #include <opengps/cxx/data_point.hxx>
+#include <opengps/cxx/string.hxx>
 
 #include <string>
 #include <iostream>
@@ -549,7 +556,8 @@ void readonlyExample4(OpenGPS::String fileName) {
 
             OpenGPS::PointVector vector;
 
-            const unsigned long maxIndex = document->Record3().ListDimension().get();
+            // safe cast, since values greater than 32bit are not supported by the ISO5436-2 XML specification.
+            const unsigned long maxIndex = (unsigned long)document->Record3().ListDimension().get();
             for(unsigned long index = 0; index < maxIndex; ++index)
             {
                if(!iso5436_2.GetListPoint(index, vector))
@@ -577,7 +585,7 @@ void readonlyExample4(OpenGPS::String fileName) {
    }
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int _cdecl _tmain(int argc, _TCHAR* argv[])
 {
    //simpleExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample1.x3p"));
    //mediumComplexExample(_T("H:\\Profile\\jo\\openGPS\\test\\ISO5436-sample5_bin.x3p"));   

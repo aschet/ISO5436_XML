@@ -28,12 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <stdlib.h>
+#include <opengps/cxx/string.hxx>
 
+#include <stdlib.h>
 #include <sstream>
 #include <iomanip>
-
-#include <opengps/cxx/opengps.hxx>
 
 #include "stdafx.hxx"
 

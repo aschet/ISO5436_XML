@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Implementation of access methods for reading typed point data from a string list of point vectors.
+ */
+
 #ifndef _OPENGPS_XML_POINT_VECTOR_READER_CONTEXT_HXX
 #define _OPENGPS_XML_POINT_VECTOR_READER_CONTEXT_HXX
 
@@ -40,13 +44,28 @@
 namespace OpenGPS
 {
    class PointVectorInputStringStream;
+   class String;
 
+   /*!
+    * Specialized OpenGPS::PointVectorReaderContext for point vectors stored as list of strings.
+    * Each string in the list represents one point vector. The values of the three coordinates
+    * are seperated either by free space or a semicolon. If a value of a coordinate needs
+    * not to be stored in the string because its corresponding axis has an incremental axis
+    * definition the value is completely omittet, i.e. no semicolon is written either.
+    * If there is an empty string in the list, it is recognised as an invalid 3d point measurement.
+    */
    class XmlPointVectorReaderContext : public PointVectorReaderContext
    {
    public:
       typedef Schemas::ISO5436_2::DataListType::Datum_sequence StringList;
 
+      /*!
+       * Creates a new instance.
+       * @param pointVectorList The list of point vectors to be streamed herein.
+       */
       XmlPointVectorReaderContext(const StringList* const pointVectorList);
+
+      /*! Destroys this instance. */
       virtual ~XmlPointVectorReaderContext();
 
       virtual OGPS_Boolean Read(OGPS_Int16* const value);
@@ -60,14 +79,33 @@ namespace OpenGPS
       virtual OGPS_Boolean IsValid() const;
 
    protected:
+      /*!
+       * Asks if the underlying data stream is still valid.
+       * @returns Returns TRUE if no previous access to the underlying
+       * data stream was harmful. Returns FALSE if any damage occured.
+       */
       virtual OGPS_Boolean IsGood() const;
 
    private:
+      /*!
+       * Feeds the underlying stream object with one single string
+       * out of the inner string list to be parsed as the current vector.
+       * @param buf The string representation of the next point vector to be parsed.
+       */
       void Set(const OpenGPS::String& buf);
+
+      /*!
+       * Resets the inner stream object.
+       */
       void Reset();
 
+      /*! The inner list of all point vectors to be parsed. */
       const StringList* m_PointVectorList;
+
+      /*! The index of the next point vector to be parsed. */
       unsigned long m_Next;
+
+      /*! The inner stream object which streams the current point vector. */
       PointVectorInputStringStream* m_Stream;            
    };
 }

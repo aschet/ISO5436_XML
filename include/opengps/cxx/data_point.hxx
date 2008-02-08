@@ -47,14 +47,14 @@
 namespace OpenGPS
 {
    /*!
-    * Typesafe representation of a single data point value.
-    *
-    * In an OpenGPS::PointVector every component of that three-vector is
-    * accessible as its own OpenGPS::DataPoint instance.
-    *
-    * @remarks An instance of OpenGPS::DataPoint cannot be created of its own.
-    * Indirectly a handle of this type can be accessed through an OpenGPS::PointVector object.
-    */
+   * Typesafe representation of a single data point value.
+   *
+   * In an OpenGPS::PointVector every component of that three-vector is
+   * accessible as its own OpenGPS::DataPoint instance.
+   *
+   * @remarks An instance of OpenGPS::DataPoint cannot be created of its own.
+   * Indirectly a handle of this type can be accessed through an OpenGPS::PointVector object.
+   */
    class _OPENGPS_EXPORT DataPoint
    {
    protected:
@@ -66,125 +66,130 @@ namespace OpenGPS
       virtual ~DataPoint() = 0;
 
       /*!
-       * Gets type information of the current value stored within this data point.
-       *
-       * @returns Returns ::OGPS_MissingPointType if this instance does not store any value at all.
-       */
+      * Gets type information of the current value stored within this data point.
+      *
+      * @returns Returns ::OGPS_MissingPointType if this instance does not store any value at all.
+      */
       virtual OGPS_DataPointType GetType() const = 0;
 
       /*!
-       * Gets the stored value.
-       *
-       * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value FALSE and does nothing at all.
-       * @see DataPoint::GetType
-       *
-       * @param value Destination for the currently stored value.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Gets the stored value.
+      *
+      * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value FALSE and does nothing at all.
+      * @see DataPoint::GetType
+      *
+      * @param value Destination for the currently stored value.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Get(OGPS_Int16* const value) const = 0;
 
       /*!
-       * Gets the stored value.
-       *
-       * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value FALSE and does nothing at all.
-       * @see DataPoint::GetType
-       *
-       * @param value Destination for the currently stored value.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Gets the stored value.
+      *
+      * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value FALSE and does nothing at all.
+      * @see DataPoint::GetType
+      *
+      * @param value Destination for the currently stored value.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Get(OGPS_Int32* const value) const = 0;
 
       /*!
-       * Gets the stored value.
-       *
-       * @remarks If the current type does not equal ::OGPS_Float, this function returns the value FALSE and does nothing at all.
-       * @see DataPoint::GetType
-       *
-       * @param value Destination for the currently stored value.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Gets the stored value.
+      *
+      * @remarks If the current type does not equal ::OGPS_Float, this function returns the value FALSE and does nothing at all.
+      * @see DataPoint::GetType
+      *
+      * @param value Destination for the currently stored value.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Get(OGPS_Float* const value) const = 0;
 
       /*!
-       * Gets the stored value.
-       *
-       * @remarks If the current type does not equal ::OGPS_Double, this function returns the value FALSE and does nothing at all.
-       * @see DataPoint::GetType
-       *
-       * @param value Destination for the currently stored value.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Gets the stored value.
+      *
+      * @remarks If the current type does not equal ::OGPS_Double, this function returns the value FALSE and does nothing at all.
+      * @see DataPoint::GetType
+      *
+      * @param value Destination for the currently stored value.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Get(OGPS_Double* const value) const = 0;
 
       /*!
-       * Gets the stored value.
-       *
-       * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetType returns ::OGPS_MissingPointType in this case).
-       */
+      * Gets the stored value.
+      *
+      * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetType returns ::OGPS_MissingPointType in this case).
+      */
       virtual OGPS_Double Get() const = 0;
 
       /*!
-       * Asks if there is currently a stored value.
-       *
-       * @see DataPoint::GetType
-       *
-       * @returns Returns TRUE if a value is stored, FALSE otherwise.
-       */
+      * Asks if there is currently a stored value.
+      *
+      * @see DataPoint::GetType
+      *
+      * @returns Returns TRUE if a value is stored, FALSE otherwise.
+      */
       virtual OGPS_Boolean IsValid() const = 0;
 
       /*!
-       * Stores a new value.
-       *
-       * Also adjusts the current type information reflecting this set operation, if necessary.
-       *
-       * @param value The new value to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Stores a new value.
+      *
+      * Also adjusts the current type information reflecting this set operation, if necessary.
+      *
+      * @param value The new value to be stored.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Set(const OGPS_Int16 value) = 0;
-      
+
       /*!
-       * Stores a new value.
-       *
-       * Also adjusts the current type information reflecting this set operation, if necessary.
-       *
-       * @param value The new value to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Stores a new value.
+      *
+      * Also adjusts the current type information reflecting this set operation, if necessary.
+      *
+      * @param value The new value to be stored.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Set(const OGPS_Int32 value) = 0;
 
       /*!
-       * Stores a new value.
-       *
-       * Also adjusts the current type information reflecting this set operation, if necessary.
-       *
-       * @param value The new value to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Stores a new value.
+      *
+      * Also adjusts the current type information reflecting this set operation, if necessary.
+      *
+      * @param value The new value to be stored.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Set(const OGPS_Float value) = 0;
 
       /*!
-       * Stores a new value.
-       *
-       * Also adjusts the current type information reflecting this set operation, if necessary.
-       *
-       * @param value The new value to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Stores a new value.
+      *
+      * Also adjusts the current type information reflecting this set operation, if necessary.
+      *
+      * @param value The new value to be stored.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Set(const OGPS_Double value) = 0;
 
       /*!
-       * Stores a new value. Copies from an existing ::DataPoint instance.
-       *
-       * @param src Object from which to copy.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       */
+      * Stores a new value. Copies from an existing ::DataPoint instance.
+      *
+      * @param src Object from which to copy.
+      * @returns Returns TRUE on success, FALSE otherwise.
+      */
       virtual OGPS_Boolean Set(const DataPoint& src) = 0;
 
-   protected:
       /*!
-       * Resets this instance to its initial state.
-       */
+      * Resets this instance to its initial state.
+      */
       virtual void Reset() = 0;
+
+   private:
+      /*! The copy-ctor is not implemented. This prevents its usage. */
+      DataPoint(const DataPoint& src);
+      /*! The assignment-operator is not implemented. This prevents its usage. */
+      DataPoint& operator=(const DataPoint& src);
    };
 }
 

@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * A data point parser for point data of type ::OGPS_MissingPointType.
+ */
+
 #ifndef _OPENGPS_MISSING_DATA_POINT_PARSER_HXX
 #define _OPENGPS_MISSING_DATA_POINT_PARSER_HXX
 
@@ -37,14 +41,21 @@
 
 namespace OpenGPS
 {
-   class MissingDataPointParser : public DataPointParser {
-  public:
-    MissingDataPointParser();
-    virtual ~MissingDataPointParser();
-    
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
-  };
+   /*!
+    * Reads/Writes instances of OpenGPS::DataPoint of missing point data.
+    */
+   class MissingDataPointParser : public DataPointParser
+   {
+   public:
+      /*! Creates a new instance. */
+      MissingDataPointParser();
+
+      /*! Destroys this instance. */
+      virtual ~MissingDataPointParser();
+
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
+   };
 }
 
 #endif /* _OPENGPS_MISSING_DATA_POINT_PARSER_HXX */

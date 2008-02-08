@@ -29,8 +29,9 @@
  ***************************************************************************/
 
 #include "point_vector_iostream.hxx"
-
 #include "stdafx.hxx"
+
+#include <opengps/cxx/string.hxx>
 
 PointVectorWhitespaceFacet::PointVectorWhitespaceFacet(const size_t refs)
 : BaseType(refs)
@@ -94,7 +95,7 @@ PointVectorOutputStringStream::~PointVectorOutputStringStream()
 {
 }
 
-PointVectorInputBinaryFileStream::PointVectorInputBinaryFileStream(const OpenGPS::String& filePath)
+InputBinaryFileStream::InputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
    imbue(PointVectorInvariantLocale::GetInstance());
@@ -103,11 +104,11 @@ PointVectorInputBinaryFileStream::PointVectorInputBinaryFileStream(const OpenGPS
    open(buf.ToChar(), std::ios_base::in | std::ios_base::binary);
 }
 
-PointVectorInputBinaryFileStream::~PointVectorInputBinaryFileStream()
+InputBinaryFileStream::~InputBinaryFileStream()
 {
 }
 
-PointVectorOutputBinaryFileStream::PointVectorOutputBinaryFileStream(const OpenGPS::String& filePath)
+OutputBinaryFileStream::OutputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
    imbue(PointVectorInvariantLocale::GetInstance());
@@ -116,6 +117,6 @@ PointVectorOutputBinaryFileStream::PointVectorOutputBinaryFileStream(const OpenG
    open(buf.ToChar(), std::ios_base::out | std::ios_base::binary);
 }
 
-PointVectorOutputBinaryFileStream::~PointVectorOutputBinaryFileStream()
+OutputBinaryFileStream::~OutputBinaryFileStream()
 {
 }

@@ -40,7 +40,6 @@ Environment* Environment::m_Instance = NULL;
 
 const Environment* const Environment::GetInstance()
 {
-   //_ASSERT(m_Instance);
    if(!m_Instance)
    {
       m_Instance = CreateInstance();
@@ -48,14 +47,6 @@ const Environment* const Environment::GetInstance()
 
    return m_Instance;
 }
-/*
-void Environment::SetInstance(Environment* instance)
-{
-   _ASSERT(!m_Instance);
-
-   m_Instance = instance;
-}
-*/
 
 void Environment::Reset()
 {
@@ -76,8 +67,16 @@ Environment::~Environment()
 
 OGPS_Boolean Environment::IsLittleEndian() const
 {
-   // TODO
-   return TRUE;
+   OpenGPS::UnsignedByte test[2];
+   test[0] = 0;
+   test[1] = 1;
+
+   short value;
+   ByteSwap16(&test[0], &value);
+
+   _ASSERT(value == 1 || value == 256);
+
+   return (value == 1);
 }
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap(const short* const value, OpenGPS::UnsignedBytePtr dst) const
@@ -94,7 +93,7 @@ void Environment::ByteSwap(const OpenGPS::UnsignedBytePtr src, short* const valu
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap16(const short* const value, OpenGPS::UnsignedBytePtr dst) const
 {
-   _ASSERT(value && dst && sizeof(*value) == _OGPS_SHORT_SIZE && sizeof(*dst) == 2);
+   _ASSERT(value && dst && sizeof(*value) == _OGPS_SHORT_SIZE);
 
    const OpenGPS::UnsignedBytePtr src = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -110,7 +109,7 @@ OpenGPS::UnsignedBytePtr Environment::ByteSwap16(const short* const value, OpenG
 
 void Environment::ByteSwap16(const OpenGPS::UnsignedBytePtr src, short* const value) const
 {
-   _ASSERT(value && src && sizeof(*value) == _OGPS_SHORT_SIZE && sizeof(*src) == 2);
+   _ASSERT(value && src && sizeof(*value) == _OGPS_SHORT_SIZE);
 
    const OpenGPS::UnsignedBytePtr dst = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -124,7 +123,7 @@ void Environment::ByteSwap16(const OpenGPS::UnsignedBytePtr src, short* const va
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap(const int* const value, OpenGPS::UnsignedBytePtr dst) const
 {
-   _ASSERT(value && dst && sizeof(*value) == _OGPS_INT_SIZE && sizeof(*dst) == _OGPS_INT_SIZE);
+   _ASSERT(value && dst && sizeof(*value) == _OGPS_INT_SIZE);
 
    const OpenGPS::UnsignedBytePtr src = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -160,7 +159,7 @@ OpenGPS::UnsignedBytePtr Environment::ByteSwap(const int* const value, OpenGPS::
 
 void Environment::ByteSwap(const OpenGPS::UnsignedBytePtr src, int* const value) const
 {
-   _ASSERT(src && value && sizeof(*src) == _OGPS_INT_SIZE && sizeof(*value) == _OGPS_INT_SIZE);
+   _ASSERT(src && value && sizeof(*value) == _OGPS_INT_SIZE);
 
    OpenGPS::UnsignedBytePtr dst = (OpenGPS::UnsignedBytePtr)value;
 
@@ -194,7 +193,7 @@ void Environment::ByteSwap(const OpenGPS::UnsignedBytePtr src, int* const value)
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap32(const int* const value, OpenGPS::UnsignedBytePtr dst) const
 {
-   _ASSERT(value && dst && sizeof(*value) == _OGPS_INT_SIZE && sizeof(*dst) == 4);
+   _ASSERT(value && dst && sizeof(*value) == _OGPS_INT_SIZE);
 
    const OpenGPS::UnsignedBytePtr src = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -228,12 +227,9 @@ OpenGPS::UnsignedBytePtr Environment::ByteSwap32(const int* const value, OpenGPS
 
 void Environment::ByteSwap32(const OpenGPS::UnsignedBytePtr src, int* const value) const
 {
-   _ASSERT(src && value && sizeof(*src) == 4 && sizeof(*value) == _OGPS_INT_SIZE);
+   _ASSERT(src && value && sizeof(*value) == _OGPS_INT_SIZE);
 
    OpenGPS::UnsignedBytePtr dst = (OpenGPS::UnsignedBytePtr)value;
-
-   // dst is MSB
-   // src is LSB
 
 #if _OGPS_INT_SIZE == 2
    dst[0] = src[3];
@@ -277,7 +273,7 @@ void Environment::ByteSwap(const OpenGPS::UnsignedBytePtr src, float* const valu
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap32(const float* const value, OpenGPS::UnsignedBytePtr dst) const
 {
-   _ASSERT(value && dst && sizeof(*value) == _OGPS_FLOAT_SIZE && sizeof(*dst) == 4);
+   _ASSERT(value && dst && sizeof(*value) == _OGPS_FLOAT_SIZE);
 
    const OpenGPS::UnsignedBytePtr src = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -295,7 +291,7 @@ OpenGPS::UnsignedBytePtr Environment::ByteSwap32(const float* const value, OpenG
 
 void Environment::ByteSwap32(const OpenGPS::UnsignedBytePtr src, float* const value) const
 {
-   _ASSERT(src && value && sizeof(*src) == 4 && sizeof(*value) == _OGPS_FLOAT_SIZE);
+   _ASSERT(src && value && sizeof(*value) == _OGPS_FLOAT_SIZE);
 
    OpenGPS::UnsignedBytePtr dst = (OpenGPS::UnsignedBytePtr)value;
 
@@ -323,7 +319,7 @@ void Environment::ByteSwap(const OpenGPS::UnsignedBytePtr src, double* const val
 
 OpenGPS::UnsignedBytePtr Environment::ByteSwap64(const double* const value, OpenGPS::UnsignedBytePtr dst) const
 {
-   _ASSERT(value && dst && sizeof(*value) == _OGPS_DOUBLE_SIZE && sizeof(*dst) == 8);
+   _ASSERT(value && dst && sizeof(*value) == _OGPS_DOUBLE_SIZE);
 
    const OpenGPS::UnsignedBytePtr src = (const OpenGPS::UnsignedBytePtr)value;
 
@@ -345,7 +341,7 @@ OpenGPS::UnsignedBytePtr Environment::ByteSwap64(const double* const value, Open
 
 void Environment::ByteSwap64(const OpenGPS::UnsignedBytePtr src, double* const value) const
 {
-   _ASSERT(src && value && sizeof(*src) == 8 && sizeof(*value) == _OGPS_DOUBLE_SIZE);
+   _ASSERT(src && value && sizeof(*value) == _OGPS_DOUBLE_SIZE);
 
    OpenGPS::UnsignedBytePtr dst = (OpenGPS::UnsignedBytePtr)value;
 

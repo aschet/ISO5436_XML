@@ -28,16 +28,28 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _C_POINT_ITERATOR_HXX
-#define _C_POINT_ITERATOR_HXX
+/*! @file
+ * Handle mechanism which makes a C++ OpenGPS::PointIterator object accessible
+ * through the corresponding C interface of a point iterator.
+ */
+
+#ifndef _OPENGPS_C_POINT_ITERATOR_HXX
+#define _OPENGPS_C_POINT_ITERATOR_HXX
 
 #ifndef _OPENGPS_AUTO_PTR_TYPES_HXX
 #  include "../cxx/auto_ptr_types.hxx"
 #endif
 
+/*!
+ * Encapsulates the internal C++ structure of a point iterator handle used within
+ * the C interface. This fact is hidden from the public because ::OGPS_PointIteratorPtr
+ * is defined as an incomplete data type.
+ */
 typedef struct _OGPS_POINT_ITERATOR
 {
+   /*! Gets/Sets the pointer to the internal C++ object behind the scenes. */
    OpenGPS::PointIterator* instance;
-} OGPS_PointIterator, *OGPS_PointIteratorPtr;
+} OGPS_PointIterator, *OGPS_PointIteratorPtr; /*! Encapsulates the internal C++ structure
+ * of a data point handle used within the C interface. */
 
-#endif /* _C_POINT_ITERATOR_HXX */
+#endif /* _OPENGPS_C_POINT_ITERATOR_HXX */

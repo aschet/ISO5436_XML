@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Agglomerated definition of std::auto_ptr commonly used.
+ */
+
 #ifndef _OPENGPS_AUTO_PTR_TYPES_HXX
 #define _OPENGPS_AUTO_PTR_TYPES_HXX
 

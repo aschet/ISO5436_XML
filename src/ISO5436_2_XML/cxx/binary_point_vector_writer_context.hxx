@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Interface for writing typed point data to an underlying binary of point vectors.
+ */
+
 #ifndef _OPENGPS_BINARY_POINT_VECTOR_WRITER_CONTEXT_HXX
 #define _OPENGPS_BINARY_POINT_VECTOR_WRITER_CONTEXT_HXX
 
@@ -41,31 +45,69 @@
 
 namespace OpenGPS
 {
-   class BinaryPointVectorWriterContext : public PointVectorWriterContext {
-  public:
-     BinaryPointVectorWriterContext(zipFile handle);
+   /*!
+    * Implements OpenGPS::PointVectorWriterContext for writing to
+    * compressed binary streams of point vectors. Usually
+    * this points to a file descriptor within a zip archive.
+    */
+   class BinaryPointVectorWriterContext : public PointVectorWriterContext
+   {
+   public:
+      /*!
+       * Creates a new instance.
+       * @param handle The zip-stream where binary data is written to.
+       */
+      BinaryPointVectorWriterContext(zipFile handle);
 
-     virtual OGPS_Boolean Close();
+      /*!
+       * Closes the internal handle to the binary stream and frees its resources.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Close();
 
-     virtual OGPS_Boolean Skip();
-
+      virtual OGPS_Boolean Skip();
       virtual OGPS_Boolean MoveNext();
 
+      /*!
+       * Gets the md5 checksum of all bytes written.
+       * When called this resets the currently computed md5 sum. Future
+       * calls to this method will ignore older md5 data.
+       */
       void GetMd5(OpenGPS::UnsignedByte md5[16]);
 
    protected:
+      /*! Destroys this instance. */
       virtual ~BinaryPointVectorWriterContext();
 
+      /*!
+       * Gets the internal binary stream.
+       * @returns Returns the target binary stream or NULL.
+       */
       std::ostream* GetStream();
-      
+
+      /*!
+       * Asks whether there is a target stream available.
+       * @returns Returns TRUE if there is an operable target
+       * stream for point data, FALSE otherwise.
+       * @see BinaryPointVectorWriterContext::IsGood
+       */
       OGPS_Boolean HasStream() const;
 
+      /*!
+       * Asks if the underlying data stream is still valid.
+       * @returns Returns TRUE if no previous access to the underlying
+       * data stream was harmful. Returns FALSE if any damage occured.
+       */
       OGPS_Boolean IsGood() const;
 
    private:
+      /*! The target buffer where compressed binary data gets stored. */
       ZipStreamBuffer* m_Buffer;
+
+      /*! The stream buffer which makes BinaryPointVectorWriterContext::m_Buffer
+       * accessible through the more abstract std::ostream interface. */
       ZipOutputStream* m_Stream;
-  };
+   };
 }
 
 #endif /* _OPENGPS_BINARY_POINT_VECTOR_WRITER_CONTEXT_HXX */

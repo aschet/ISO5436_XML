@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Indexing of point data managed by OpenGPS::VectorBuffer.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
 #define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_HXX
 
@@ -37,15 +41,23 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Indexing of point data managed by OpenGPS::VectorBuffer.
+    */
    class PointVectorProxyContext
    {
-   public:      
+   public:
+      /*! Destroys this instance. */
       virtual ~PointVectorProxyContext();
 
+      /*! Gets the current index. */
       virtual unsigned long GetIndex() const;
+
+      /*! Increments the current inde by one. */
       virtual OGPS_Boolean IncrementIndex();
 
    protected:
+      /*! Creates a new instance. */
       PointVectorProxyContext();
    };
 }

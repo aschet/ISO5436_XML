@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * The environment of Microsoft Windows operating systems.
+ */
+
 #ifndef _OPENGPS_WIN32_ENVIRONMENT_HXX
 #define _OPENGPS_WIN32_ENVIRONMENT_HXX
 
@@ -39,10 +43,17 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Implements access methods to various parts of the environment
+    * on Microsoft Windows operating systems.
+    */
    class Win32Environment : public Environment
    {
    public:
-      Win32Environment(); // TODO: ctor private!
+      /*! Creates a new instance. */
+      Win32Environment();
+
+      /*! Destroys this instance. */
       ~Win32Environment();
 
       virtual OGPS_Character GetDirectorySeparator() const;
@@ -59,7 +70,7 @@ namespace OpenGPS
       virtual OGPS_Boolean GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const;
 
    private: 
-      // TODO: make this work! static Win32Environment m_Instance;
+      /*! Tracks whether the sofware randomization API still needs to be initialized before its usage. */
       static OGPS_Boolean m_InitRandom;
    };
 }

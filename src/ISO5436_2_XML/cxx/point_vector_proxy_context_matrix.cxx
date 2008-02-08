@@ -77,15 +77,6 @@ OGPS_Boolean PointVectorProxyContextMatrix::IncrementIndex()
 {
    if(HasNext())
    {
-      /*if(m_IsReset)
-      {
-         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
-
-         m_IsReset = FALSE;
-
-         return TRUE;
-      }*/
-
       if(m_U + 1 < m_MaxU)
       {
          ++m_U;
@@ -116,18 +107,5 @@ OGPS_Boolean PointVectorProxyContextMatrix::IncrementIndex()
 
 OGPS_Boolean PointVectorProxyContextMatrix::HasNext() const
 {
-
-   //if(m_IsForward)
-   {
-      /*if(m_IsReset)
-      {
-         _ASSERT(m_U == 0 && m_V == 0 && m_W == 0);
-
-         return m_Handle->GetMaxU() > 0;
-      }*/
-
-      return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
-   }
-
-   //return FALSE;
+   return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
 }

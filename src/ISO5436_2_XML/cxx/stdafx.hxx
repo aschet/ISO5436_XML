@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Standard includes and defines.
+ */
+
 #ifndef _OPENGPS_STDAFX_HXX
 #define _OPENGPS_STDAFX_HXX
 

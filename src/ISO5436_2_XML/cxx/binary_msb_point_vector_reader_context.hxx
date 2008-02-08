@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Implementation of access methods for reading typed point data from a binary file of point vectors.
+ */
+
 #ifndef _OPENGPS_BINARY_MSB_POINT_VECTOR_READER_CONTEXT_HXX
 #define _OPENGPS_BINARY_MSB_POINT_VECTOR_READER_CONTEXT_HXX
 
@@ -37,31 +41,27 @@
 
 namespace OpenGPS
 {
-   class PointVectorInputBinaryFileStream;
+   /*!
+    * Implements OpenGPS::BinaryPointVectorReaderContext for binary files to
+    * be parsed on machines reading in most significant byte order.
+    */
+   class BinaryMSBPointVectorReaderContext : public BinaryPointVectorReaderContext
+   {
+   public:
+      /*!
+       * Creates a new instance.
+       * @param filePath Absolute path to the binary file streamed herein.
+       */
+      BinaryMSBPointVectorReaderContext(const OpenGPS::String& filePath);
 
-   class BinaryMSBPointVectorReaderContext : public BinaryPointVectorReaderContext {
-  public:
-     BinaryMSBPointVectorReaderContext(const OpenGPS::String& filePath);
-    virtual ~BinaryMSBPointVectorReaderContext();
+      /*! Destroys this instance. */
+      virtual ~BinaryMSBPointVectorReaderContext();
 
-    virtual OGPS_Boolean Read(OGPS_Int16* const value);
-    virtual OGPS_Boolean Read(OGPS_Int32* const value);
-    virtual OGPS_Boolean Read(OGPS_Float* const value);
-    virtual OGPS_Boolean Read(OGPS_Double* const value);
-
-    virtual OGPS_Boolean Skip();
-
-    virtual OGPS_Boolean MoveNext();
-    virtual OGPS_Boolean IsValid() const;
-
-    virtual OGPS_Boolean Close();
-
-   protected:
-      virtual OGPS_Boolean IsGood() const;
-
-   private:
-      PointVectorInputBinaryFileStream* m_Stream;
-  };
+      virtual OGPS_Boolean Read(OGPS_Int16* const value);
+      virtual OGPS_Boolean Read(OGPS_Int32* const value);
+      virtual OGPS_Boolean Read(OGPS_Float* const value);
+      virtual OGPS_Boolean Read(OGPS_Double* const value);
+   };
 }
 
 #endif /* _OPENGPS_BINARY_MSB_POINT_VECTOR_READER_CONTEXT_HXX */

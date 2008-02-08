@@ -35,13 +35,31 @@
 #include <windows.h>
 
 #include "win32_environment.hxx"
-#include "stream_types.hxx"
 #include "stdafx.hxx"
+
+#include <opengps/cxx/string.hxx>
+
+#include <sstream>
+
+#ifdef _UNICODE
+
+namespace OpenGPS
+{
+   typedef std::wostringstream OutStringStream;
+}
+
+#else /* _UNICODE */
+
+namespace OpenGPS
+{
+   typedef std::ostringstream OutStringStream;
+}
+
+#endif /* _UNICODE */
 
 Win32Environment::Win32Environment()
 : Environment()
 {
-   //SetInstance(this);
 }
 
 Win32Environment::~Win32Environment()
@@ -71,7 +89,7 @@ OGPS_Boolean Win32Environment::GetPathName(const OpenGPS::String& path, OpenGPS:
     * Do not use the following reserved device names for the name of a file: CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9. Also avoid these names followed by an extension, for example, NUL.tx7.
     */
 
-   const int length = path.size();
+   const size_t length = path.size();
 
    clean_path.resize(length);
    clean_path.erase();   
@@ -83,7 +101,7 @@ OGPS_Boolean Win32Environment::GetPathName(const OpenGPS::String& path, OpenGPS:
    
    /* Use any character in the current code page for a name, including Unicode characters, except characters in the range of zero (0) through 31, or any character that the file system does not allow. A name can contain characters in the extended character set (128–255). However, it cannot contain the following reserved characters: < > : " / \ | ? *
    */
-   for(int index = 0; index < length; ++index)
+   for(size_t index = 0; index < length; ++index)
    {
       const OGPS_Character c = path.c_str()[index];
       
@@ -128,8 +146,8 @@ OGPS_Boolean Win32Environment::GetPathName(const OpenGPS::String& path, OpenGPS:
 
    /* Do not end a file or directory name with a trailing space or a period. Although the underlying file system may support such names, the operating system does not. You can start a name with a period (.).
     */
-   const int length2 = clean_path.size();
-   for(int index2 = length2 - 1; index2 > 0; --index2)
+   const size_t length2 = clean_path.size();
+   for(size_t index2 = length2 - 1; index2 > 0; --index2)
    {
       const OGPS_Character c2 = clean_path.c_str()[index2];
       
@@ -196,47 +214,45 @@ OGPS_Boolean Win32Environment::PathExists(const OpenGPS::String& file) const
    _ASSERT(file.length() > 0);
 
    const DWORD dwAttr = GetFileAttributes(file.c_str());
-if (dwAttr == INVALID_FILE_ATTRIBUTES)
-{
-  const DWORD dwError = GetLastError();
-  if (dwError == ERROR_FILE_NOT_FOUND)
-  {
-    // file not found
-     return FALSE;
-  }
-  else if (dwError == ERROR_PATH_NOT_FOUND)
-  {
-    // path not found
-     return FALSE;
-  }
-  else if (dwError == ERROR_ACCESS_DENIED)
-  {
-    // file or directory exists, but access is denied
-     return TRUE;
-  }
-  else
-  {
-    // some other error has occured
-     _ASSERT(FALSE);
-     return FALSE;
-  }
-}
-else
-{
-   /*
-  if (dwAttr & FILE_ATTRIBUTE_DIRECTORY)
-  {
-    // this is a directory
-  }
-  else
-  {
-    // this is an ordinary file
-  }
-  */
-   return TRUE;
-}
-_ASSERT(FALSE);
-return FALSE;
+   if (dwAttr == INVALID_FILE_ATTRIBUTES)
+   {
+      const DWORD dwError = GetLastError();
+      if (dwError == ERROR_FILE_NOT_FOUND)
+      {
+         // file not found
+         return FALSE;
+      }
+      else if (dwError == ERROR_PATH_NOT_FOUND)
+      {
+         // path not found
+         return FALSE;
+      }
+      else if (dwError == ERROR_ACCESS_DENIED)
+      {
+         // file or directory exists, but access is denied
+         return TRUE;
+      }
+      //else
+      {
+         // some other error has occured
+         _ASSERT(FALSE);
+         return FALSE;
+      }
+   }
+   //else
+   {
+      /*
+      if (dwAttr & FILE_ATTRIBUTE_DIRECTORY)
+      {
+      // this is a directory
+      }
+      else
+      {
+      // this is an ordinary file
+      }
+      */
+      return TRUE;
+   }
 }
 
 OGPS_Boolean Win32Environment::RemoveFile(const OpenGPS::String& file) const
@@ -251,7 +267,7 @@ OpenGPS::String Win32Environment::GetUniqueName() const
 {
    if(m_InitRandom)
    {
-      srand ( time(NULL) );
+      srand ( (unsigned int)time(NULL) );
       m_InitRandom = FALSE;
    }
 
@@ -325,7 +341,7 @@ OGPS_Boolean Win32Environment::RenameFile(const OpenGPS::String& src, const Open
 
 OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const
 {
-   const int bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0) - 1;
+   const size_t bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0) - 1;
    
    if(bufferLength < 0)
    {
@@ -349,7 +365,7 @@ OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenG
        OpenGPS::String unescaped;
       unescaped.assign(value);
       
-      const int bufferLength2 = ExpandEnvironmentStrings(unescaped.c_str(), NULL, 0) - 1;
+      const size_t bufferLength2 = ExpandEnvironmentStrings(unescaped.c_str(), NULL, 0) - 1;
 
       if(bufferLength2 < 0)
       {

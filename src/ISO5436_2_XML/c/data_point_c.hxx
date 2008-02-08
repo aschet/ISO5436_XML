@@ -28,25 +28,29 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _OPENGPS_STREAM_TYPES_H
-#define _OPENGPS_STREAM_TYPES_H
+/*! @file
+ * Handle mechanism which makes a C++ OpenGPS::DataPoint object accessible
+ * through the corresponding C interface of a data point.
+ */
 
-#include <sstream>
-
-#ifdef _UNICODE
-
-namespace OpenGPS
-{
-   typedef std::wostringstream OutStringStream;
-}
-
-#else /* _UNICODE */
+#ifndef _OPENGPS_C_DATA_POINT_HXX
+#define _OPENGPS_C_DATA_POINT_HXX
 
 namespace OpenGPS
 {
-   typedef std::ostringstream OutStringStream;
+   class DataPoint;
 }
 
-#endif /* _UNICODE */
+/*!
+ * Encapsulates the internal C++ structure of a data point handle used within
+ * the C interface. This fact is hidden from the public because ::OGPS_DataPointPtr
+ * is defined as an incomplete data type.
+ */
+typedef struct _OGPS_DATA_POINT
+{
+   /*! Gets/Sets the pointer to the internal C++ object behind the scenes. */
+   OpenGPS::DataPoint* instance;
+} OGPS_DataPoint, *OGPS_DataPointPtr; /*! Encapsulates the internal C++ structure
+ * of a data point handle used within the C interface. */
 
-#endif /* _OPENGPS_STREAM_TYPES_H */
+#endif /* _OPENGPS_C_DATA_POINT_HXX */

@@ -28,17 +28,29 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _C_ISO5436_2_HANDLE_HXX
-#define _C_ISO5436_2_HANDLE_HXX
+/*! @file
+ * Handle mechanism which makes a C++ OpenGPS::ISO5436_2 object accessible
+ * through the corresponding C interface of an ISO5436-2 X3P file container.
+ */
+
+#ifndef _OPENGPS_C_ISO5436_2_HXX
+#define _OPENGPS_C_ISO5436_2_HXX
 
 namespace OpenGPS
 {
    class ISO5436_2;
 }
 
+/*!
+ * Encapsulates the internal C++ structure of an ISO5436-2 handle used within
+ * the C interface. This fact is hidden from the public because ::OGPS_ISO5436_2Handle
+ * is defined as an incomplete data type.
+ */
 typedef struct _OGPS_ISO5436_2_HANDLE
 {
+   /*! Gets/Sets the pointer to the internal C++ object behind the scenes. */
    OpenGPS::ISO5436_2* instance;
-} OGPS_ISO5436_2, *OGPS_ISO5436_2Handle;
+} OGPS_ISO5436_2, *OGPS_ISO5436_2Handle; /*! Encapsulates the internal C++ structure
+ * of a data point handle used within the C interface. */
 
-#endif /* _C_ISO5436_2_HANDLE_HXX */
+#endif /* _OPENGPS_C_ISO5436_2_HXX */

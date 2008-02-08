@@ -42,6 +42,14 @@
 #  include <opengps/cxx/opengps.hxx>
 #endif
 
+#ifndef _OPENGPS_MESSAGES_H
+#  include <opengps/messages.h>
+#endif
+
+#ifndef _OPENGPS_CXX_STRING_HXX
+#  include <opengps/cxx/string.hxx>
+#endif
+
 namespace OpenGPS
 {
    /*!
@@ -49,32 +57,20 @@ namespace OpenGPS
     */
    class _OPENGPS_EXPORT Exception : public std::exception
    {
-   public:      
+   public:
+      Exception(const OGPS_ExceptionId id, const OGPS_ExceptionChar *text, const OGPS_ExceptionChar *details) throw();
       Exception(const Exception& rhs) throw();
       virtual ~Exception() throw();
 
       /*! Gets an identifier for the current type of excpetion. */
       OGPS_ExceptionId id() const throw();
 
-   protected:
-      Exception(const OGPS_ExceptionChar *text, const OGPS_ExceptionId id) throw();
+      /*! Gets a detailed description possible with hints to its avoidance. */
+      const OpenGPS::String& details() const throw();
 
    private:
       OGPS_ExceptionId m_Id;
-   };
-
-   /*!
-    * Describes a overflow exception.
-    */
-   class _OPENGPS_EXPORT OverflowException : public Exception
-   {
-   private:
-      static const OGPS_ExceptionChar * m_Message;
-
-   public:
-      OverflowException() throw();
-      OverflowException(const OverflowException& rhs) throw();
-      virtual ~OverflowException() throw();
+      OpenGPS::String m_Details;
    };
 }
 

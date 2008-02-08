@@ -45,7 +45,7 @@ OGPS_Boolean Int16PointBuffer::Allocate(const unsigned long size)
 {
    if(!m_Buffer)
    {
-      m_Buffer = (short*)PointBuffer::Allocate(size, sizeof(short));
+      m_Buffer = (OGPS_Int16*)PointBuffer::Allocate(size, sizeof(OGPS_Int16));
       
       if(m_Buffer)
       {
@@ -56,7 +56,7 @@ OGPS_Boolean Int16PointBuffer::Allocate(const unsigned long size)
    return FALSE;
 }
 
-OGPS_Boolean Int16PointBuffer::Set(const unsigned long index, const short value)
+OGPS_Boolean Int16PointBuffer::Set(const unsigned long index, const OGPS_Int16 value)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
@@ -65,7 +65,7 @@ OGPS_Boolean Int16PointBuffer::Set(const unsigned long index, const short value)
    return TRUE;
 }
 
-OGPS_Boolean Int16PointBuffer::Get(const unsigned long index, short& value) const
+OGPS_Boolean Int16PointBuffer::Get(const unsigned long index, OGPS_Int16& value) const
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

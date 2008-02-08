@@ -46,7 +46,6 @@ MissingDataPointParser::~MissingDataPointParser()
     
 OGPS_Boolean MissingDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
-   /* TODO: add reset method to data point?
    if(context.Skip())
    {
       value.Reset();
@@ -54,9 +53,6 @@ OGPS_Boolean MissingDataPointParser::Read(PointVectorReaderContext& context, Dat
    }
 
    return FALSE;
-   */
-
-   return context.Skip();
 }
 
 OGPS_Boolean MissingDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)

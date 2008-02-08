@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Interface for reading typed point data from an underlying binary file
+ * stream of point vectors.
+ */
+
 #ifndef _OPENGPS_BINARY_POINT_VECTOR_READER_CONTEXT_HXX
 #define _OPENGPS_BINARY_POINT_VECTOR_READER_CONTEXT_HXX
 
@@ -37,15 +42,57 @@
 
 namespace OpenGPS
 {
-   class BinaryPointVectorReaderContext : public PointVectorReaderContext {
-  public:
-     BinaryPointVectorReaderContext();    
+   class InputBinaryFileStream;
+   class String;
 
-    virtual OGPS_Boolean Close() = 0;
+   /*!
+    * Specialized OpenGPS::PointVectorReaderContext for binary streams.
+    */
+   class BinaryPointVectorReaderContext : public PointVectorReaderContext
+   {
+   public:
+      virtual OGPS_Boolean Skip();
+      virtual OGPS_Boolean MoveNext();
+      virtual OGPS_Boolean IsValid() const;
 
    protected:
+      /*!
+       * Creates a new instance.
+       * @param filePath Absolute path to the binary file streamed herein.
+       */
+      BinaryPointVectorReaderContext(const OpenGPS::String& filePath);
+
+      /*! Destroys this instance. */
       virtual ~BinaryPointVectorReaderContext();
-  };
+
+      /*!
+       * Asks if the underlying data stream is still valid.
+       * @returns Returns TRUE if no previous access to the underlying
+       * data stream was harmful. Returns FALSE if any damage occured.
+       */
+      virtual OGPS_Boolean IsGood() const;
+
+      /*!
+       * Returns TRUE if the underlying stream object had successfully
+       * been allocated, FALSE otherwise.
+       */
+      OGPS_Boolean HasStream() const;
+
+      /*!
+       * Returns the underlying data stream for read access.
+       */
+      InputBinaryFileStream* GetStream();
+
+      /*!
+       * Closes the internal handle to the binary file and frees its resources.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Close();
+
+   private:
+      /*! Pointer to the underlying data stream of binary point vectors. */
+      InputBinaryFileStream* m_Stream;
+   };
 }
 
 #endif /* _OPENGPS_BINARY_POINT_VECTOR_READER_CONTEXT_HXX */

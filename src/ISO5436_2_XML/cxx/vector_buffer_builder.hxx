@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Methods to assemble a OpenGPS::VectorBuffer instance.
+ */
+
 #ifndef _OPENGPS_VECTOR_BUFFER_BUILDER_HXX
 #define _OPENGPS_VECTOR_BUFFER_BUILDER_HXX
 
@@ -44,27 +48,73 @@ namespace OpenGPS
    class PointBuffer;
    class VectorBuffer;
 
-class VectorBufferBuilder
-{
-public:
-   VectorBufferBuilder();
-   ~VectorBufferBuilder();
+   /*!
+    * Creates an object which is able to assemble a OpenGPS::VectorBuffer instance.
+    */
+   class VectorBufferBuilder
+   {
+   public:
+      /*! Creates a new instance. */
+      VectorBufferBuilder();
 
-   virtual OGPS_Boolean BuildBuffer();
+      /*! Destroys thisinstance. */
+      ~VectorBufferBuilder();
 
-   virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType, const unsigned long size);
-   virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType, const unsigned long size);
-   virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType, const unsigned long size);
+      /*!
+       * Creates the initial OpenGPS::VectorBuffer to be assembled.
+       * @remarks This must preceed all other steps of the building process.
+       */
+      virtual OGPS_Boolean BuildBuffer();
 
-   virtual OGPS_Boolean BuildValidityProvider();
+      /*!
+       * Connects the appropriate OpenGPS::PointBuffer connected with the X axis description.
+       * @param dataType The type of point data connected to the X axis. A value of
+       * ::OGPS_MissingPointType describes an incremental (non-explicit) axis for which
+       * no point data needs to be stored.
+       * @param size The amount of points stored for the X component of all available vectors.
+       */
+      virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType, const unsigned long size);
 
-   virtual VectorBuffer* GetBuffer();
+      /*!
+       * Connects the appropriate OpenGPS::PointBuffer connected with the Y axis description.
+       * @param dataType The type of point data connected to the Y axis. A value of
+       * ::OGPS_MissingPointType describes an incremental (non-explicit) axis for which
+       * no point data needs to be stored.
+       * @param size The amount of points stored for the Y component of all available vectors.
+       */
+      virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType, const unsigned long size);
 
-private:
-   PointBuffer* CreatePointBuffer(const OGPS_DataPointType dataType, const unsigned long size, OGPS_Boolean* const retval) const;
+      /*!
+       * Connects the appropriate OpenGPS::PointBuffer connected with the Z axis description.
+       * @param dataType The type of point data connected to the X axis. Since the Z componet
+       * is forced to be saved explicitly regardless whether the axis is defined as incremental
+       * or not, a value of ::OGPS_MissingPointType is invalid here.
+       * @param size The amount of points stored for the Z component of all available vectors.
+       */
+      virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType, const unsigned long size);
 
-   VectorBuffer* m_Buffer;
-};
+      /*!
+       * Connects the appropriate OpenGPS::PointValidityProvider.
+       * @remarks This is the last step of the building process.
+       */
+      virtual OGPS_Boolean BuildValidityProvider();
+
+      /*! Gets the object built. This object instance remains managed by the builder, though. */
+      virtual VectorBuffer* GetBuffer();
+
+   private:
+      /*!
+       * Creates the appropriate OpenGPS::PointBuffer instance depending on the type of point data to be handled.
+       * @param dataType The type of point data that must be handled by the OpenGPS::PointBuffer instance to be created.
+       * @param size The amount of point data to be handled.
+       * @param retval Gets TRUE on success, FALSE otherwise.
+       * @returns Returns an instance of a buffer object or NULL if the type of point data to be handled equals ::OGPS_MissingPointType.
+       */
+      PointBuffer* CreatePointBuffer(const OGPS_DataPointType dataType, const unsigned long size, OGPS_Boolean* const retval) const;
+
+      /*! The vector buffer object to be assembled. */
+      VectorBuffer* m_Buffer;
+   };
 
 }
 

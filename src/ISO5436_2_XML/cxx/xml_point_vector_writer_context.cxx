@@ -33,6 +33,8 @@
 
 #include "stdafx.hxx"
 
+#include <opengps/cxx/string.hxx>
+
 PointVectorWriterContext::PointVectorWriterContext()
 {
 }
@@ -61,14 +63,18 @@ XmlPointVectorWriterContext::~XmlPointVectorWriterContext()
    }
 }
 
-String XmlPointVectorWriterContext::Get() const
+void XmlPointVectorWriterContext::Get(OpenGPS::String* const value) const
 {
+   _ASSERT(value);
+
    if(m_Stream)
    {
-   return m_Stream->str();
+      *value = m_Stream->str();
    }
-
-   return _T("");
+   else
+   {
+      value->clear();
+   }
 }
 
 void XmlPointVectorWriterContext::Reset()
@@ -175,7 +181,8 @@ OGPS_Boolean XmlPointVectorWriterContext::MoveNext()
 {
    if(m_Stream && m_PointVectorList)
    {
-      const OpenGPS::String vector = Get();
+      OpenGPS::String vector;
+      Get(&vector);
       Schemas::ISO5436_2::DataListType::Datum_type datum(vector);
       m_PointVectorList->push_back(datum);
 

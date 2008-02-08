@@ -83,6 +83,7 @@ OGPS_Boolean VectorBufferBuilder::BuildY(const OGPS_DataPointType dataType, cons
 OGPS_Boolean VectorBufferBuilder::BuildZ(const OGPS_DataPointType dataType, const unsigned long size)
 {
    _ASSERT(m_Buffer);
+   _ASSERT(dataType != OGPS_MissingPointType);
 
    OGPS_Boolean success = FALSE;
    m_Buffer->SetZ(CreatePointBuffer(dataType, size, &success));

@@ -28,62 +28,96 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _OPENGPS_POINT_ITERATOR_IMPL_HXX
-#define _OPENGPS_POINT_ITERATOR_IMPL_HXX
+/*! @file
+ * Error and warning messages during application.
+ */
 
-#ifndef _OPENGPS_CXX_POINT_ITERATOR_HXX
-#  include <opengps/cxx/point_iterator.hxx>
+#ifndef _OPENGPS_C_MESSAGES_HXX
+#define _OPENGPS_C_MESSAGES_HXX
+
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+#  include <opengps/cxx/opengps.hxx>
 #endif
 
-#ifndef _OPENGPS_ISO5436_2_CONTAINER_HXX
-#  include "iso5436_2_container.hxx"
+#ifndef _OPENGPS_CXX_EXCEPTIONS_HXX
+#  include <opengps/cxx/exceptions.hxx>
+#endif
+
+#ifndef _OPENGPS_CXX_STRING_HXX
+#  include <opengps/cxx/string.hxx>
 #endif
 
 namespace OpenGPS
 {
-   class PointIteratorImpl : public PointIterator
-  {
-  public:
-     PointIteratorImpl(ISO5436_2Container * const handle,
-   const OGPS_Boolean isForward,
-   const OGPS_Boolean isMatrix);
-    virtual ~PointIteratorImpl();
-    
-    virtual OGPS_Boolean HasNext() const;
-    virtual OGPS_Boolean HasPrev() const;
+   class ExceptionHistory
+   {
+   public:
+      static void SetLastException(const OpenGPS::Exception& ex);
+      static void SetLastException();
 
-    virtual OGPS_Boolean MoveNext();
-    virtual OGPS_Boolean MovePrev();
+      static void Reset();
 
-    virtual void ResetNext();
-    virtual void ResetPrev();
+      static const OGPS_Character* GetLastErrorMessage();
+      static const OGPS_Character* GetLastErrorDescription();
+      static OGPS_ExceptionId GetLastExceptionId();
 
-    virtual OGPS_Boolean GetCurrent(PointVector& vector);
+   private:
+      ExceptionHistory();
+      ~ExceptionHistory();
 
-    virtual OGPS_Boolean SetCurrent(const PointVector* const vector);
-    
-    virtual OGPS_Boolean GetPosition(unsigned long* const index) const;
-    virtual OGPS_Boolean GetPosition(
-            unsigned long* const u,
-            unsigned long* const v,
-            unsigned long* const w) const;
-    
-  private:
-    ISO5436_2Container * const m_Handle;
-            
-    /* Forward- or backward iterator. */
-    OGPS_Boolean m_IsForward;
-
-    OGPS_Boolean m_IsReset;
-    OGPS_Boolean m_IsMatrix;
-
-    PointVector* m_Buffer;
-  
-    /* Current index. */
-    unsigned long m_U; /* Matrix or list index. */
-    unsigned long m_V; /* Matrix only. */
-    unsigned long m_W; /* Matrix only. */
-  };
+      static OpenGPS::String m_LastErrorMessage;
+      static OpenGPS::String m_LastErrorDescription;
+      static OGPS_ExceptionId m_LastExceptionId;
+   };
 }
 
-#endif /* _OPENGPS_POINT_ITERATOR_IMPL_HXX */
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      return (STATEMENT); \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(); \
+   } \
+   return FALSE;
+
+
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT, CLEANUP_STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      STATEMENT; \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      CLEANUP_STATEMENT; \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      CLEANUP_STATEMENT; \
+      OpenGPS::ExceptionHistory::SetLastException(); \
+   }
+
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_TRYONLY(STATEMENT) \
+   OpenGPS::ExceptionHistory::Reset(); \
+   try \
+   { \
+      STATEMENT; \
+   } \
+   catch(const OpenGPS::Exception& ex) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(...) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(); \
+   }
+
+#endif /* _OPENGPS_C_MESSAGES_HXX */

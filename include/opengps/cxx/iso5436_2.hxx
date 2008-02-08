@@ -59,6 +59,7 @@ namespace OpenGPS
       }
    }
 
+   class String;
    class PointBuffer;
    class PointVectorBase;
    class PointIterator;
@@ -411,6 +412,11 @@ namespace OpenGPS
 
       /*! Internal object instance. Either "this" or ISO5436_2::ISO5436_2Container instance. */
       ISO5436_2* m_Instance;
+
+      /*! The copy-ctor is not implemented. This prevents its usage. */
+      ISO5436_2(const ISO5436_2& src);
+      /*! The assignment-operator is not implemented. This prevents its usage. */
+      ISO5436_2& operator=(const ISO5436_2& src);
    };
 }
 

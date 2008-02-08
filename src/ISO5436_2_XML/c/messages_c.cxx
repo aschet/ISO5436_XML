@@ -28,17 +28,75 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _C_DATA_POINT_HXX
-#define _C_DATA_POINT_HXX
+#include <opengps/messages.h>
+#include "messages_c.hxx"
 
-namespace OpenGPS
+const OGPS_Character* ogps_GetErrorMessage()
 {
-   class DataPoint;
+   return OpenGPS::ExceptionHistory::GetLastErrorMessage();
 }
 
-typedef struct _OGPS_DATA_POINT
+const OGPS_Character* ogps_GetErrorDescription()
 {
-   OpenGPS::DataPoint* instance;
-} OGPS_DataPoint, *OGPS_DataPointPtr;
+   return OpenGPS::ExceptionHistory::GetLastErrorDescription();
+}
 
-#endif /* _C_DATA_POINT_HXX */
+OGPS_ExceptionId ogps_GetErrorId()
+{
+   return OpenGPS::ExceptionHistory::GetLastExceptionId();
+}
+
+void OpenGPS::ExceptionHistory::SetLastException(const OpenGPS::Exception& ex)
+{
+   OpenGPS::String msg;
+   msg.FromChar(ex.what());
+
+   m_LastErrorMessage = msg;
+   m_LastErrorDescription = ex.details();
+   m_LastExceptionId = ex.id();
+}
+
+void OpenGPS::ExceptionHistory::SetLastException()
+{
+   /* Set to NULL, because ex.what() may be unspecified. */
+   m_LastErrorMessage.clear();
+   m_LastErrorDescription.clear();
+
+   /* At least there must have been an exception... */
+   m_LastExceptionId = OGPS_ExGeneral;
+}
+
+
+void OpenGPS::ExceptionHistory::Reset()
+{
+   m_LastErrorMessage.clear();
+   m_LastErrorDescription.clear();
+   m_LastExceptionId = OGPS_ExNone;
+}
+
+const OGPS_Character* OpenGPS::ExceptionHistory::GetLastErrorMessage()
+{
+   return m_LastErrorMessage.empty() ? NULL : m_LastErrorMessage.c_str();
+}
+
+const OGPS_Character* OpenGPS::ExceptionHistory::GetLastErrorDescription()
+{
+   return m_LastErrorDescription.empty() ? NULL : m_LastErrorDescription.c_str();
+}
+
+OGPS_ExceptionId OpenGPS::ExceptionHistory::GetLastExceptionId()
+{
+   return m_LastExceptionId;
+}
+
+OpenGPS::ExceptionHistory::ExceptionHistory()
+{
+}
+
+OpenGPS::ExceptionHistory::~ExceptionHistory()
+{
+}
+
+OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorMessage;
+OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorDescription;
+OGPS_ExceptionId OpenGPS::ExceptionHistory::m_LastExceptionId = OGPS_ExNone;

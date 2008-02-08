@@ -29,7 +29,6 @@
  ***************************************************************************/
 
 #include "binary_msb_point_vector_reader_context.hxx"
-#include "binary_lsb_point_vector_reader_context.hxx"
 
 #include "point_vector_iostream.hxx"
 #include "environment.hxx"
@@ -37,27 +36,24 @@
 #include "stdafx.hxx"
 
 BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const OpenGPS::String& filePath)
-   : BinaryPointVectorReaderContext()
-     {
-        m_Stream = new PointVectorInputBinaryFileStream(filePath);
-     }
+: BinaryPointVectorReaderContext(filePath)
+{
+}
 
-     BinaryMSBPointVectorReaderContext::~BinaryMSBPointVectorReaderContext()
-     {
-        Close();
-
-        Environment::Reset();
-     }
+BinaryMSBPointVectorReaderContext::~BinaryMSBPointVectorReaderContext()
+{
+   Environment::Reset();
+}
 
 OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
-   if(m_Stream)
+   if(HasStream())
    {
       OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_INT16_SIZE];
-      m_Stream->read(&buffer[0], _OPENGPS_BINFORMAT_INT16_SIZE);
-      
+      GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_INT16_SIZE);
+
       if(IsGood())
       {
          _ASSERT(_OPENGPS_BINFORMAT_INT16_SIZE == 2); // 2 bytes
@@ -73,11 +69,11 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
-   if(m_Stream)
+   if(HasStream())
    {
       OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_INT32_SIZE];
-      m_Stream->read(&buffer[0], _OPENGPS_BINFORMAT_INT32_SIZE);
-      
+      GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_INT32_SIZE);
+
       if(IsGood())
       {
          _ASSERT(_OPENGPS_BINFORMAT_INT32_SIZE == 4); // 4 bytes
@@ -93,11 +89,11 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
-   if(m_Stream)
+   if(HasStream())
    {
       OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_FLOAT_SIZE];
-      m_Stream->read(&buffer[0], _OPENGPS_BINFORMAT_FLOAT_SIZE);
-      
+      GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_FLOAT_SIZE);
+
       if(IsGood())
       {
          _ASSERT(_OPENGPS_BINFORMAT_FLOAT_SIZE == 4); // 4 bytes
@@ -113,11 +109,11 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 
-   if(m_Stream)
+   if(HasStream())
    {
       OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_DOUBLE_SIZE];
-      m_Stream->read(&buffer[0], _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-      
+      GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+
       if(IsGood())
       {
          _ASSERT(_OPENGPS_BINFORMAT_DOUBLE_SIZE == 8); // 8 bytes
@@ -127,51 +123,4 @@ OGPS_Boolean BinaryMSBPointVectorReaderContext::Read(OGPS_Double* const value)
    }
 
    return FALSE;
-}
-
- OGPS_Boolean BinaryMSBPointVectorReaderContext::Skip()
- {
-    if(m_Stream)
-    {
-      return IsGood();
-    }
-
-    return FALSE;
- }
-
- OGPS_Boolean BinaryMSBPointVectorReaderContext::IsGood() const
-{
-   _ASSERT(m_Stream);
-
-   const std::ios_base::io_state state = m_Stream->rdstate();
-   return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
-}
-
- OGPS_Boolean BinaryMSBPointVectorReaderContext::Close()
- {
-    if(m_Stream)
-    {
-       m_Stream->close();
-       delete m_Stream;
-       m_Stream = NULL;
-
-       return TRUE;
-    }
-
-    return FALSE;
- }
-
- OGPS_Boolean BinaryMSBPointVectorReaderContext::MoveNext()
-{
-   if(m_Stream)
-   {
-      return !m_Stream->eof();
-   }
-
-   return FALSE;
-}
-
- OGPS_Boolean BinaryMSBPointVectorReaderContext::IsValid() const
-{
-   return TRUE; // TODO: parse invalid file here!
 }

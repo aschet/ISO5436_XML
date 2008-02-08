@@ -31,8 +31,8 @@
 #include <opengps/point_vector.h>
 #include <opengps/cxx/point_vector.hxx>
 
-#include "data_point.hxx"
-#include "point_vector.hxx"
+#include "data_point_c.hxx"
+#include "point_vector_c.hxx"
 
 #include "../cxx/stdafx.hxx"
 

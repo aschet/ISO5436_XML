@@ -28,60 +28,64 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <opengps/opengps.h>
-#include "exceptions.hxx"
+/*! @file
+ * Global handling of error and warning messages.
+ */
 
-const OGPS_Character* ogps_GetErrorMessage()
+#ifndef _OPENGPS_MESSAGES_H
+#define _OPENGPS_MESSAGES_H
+
+#ifndef _OPENGPS_H
+#  include <opengps/opengps.h>
+#endif
+
+/*!
+ * Possible failure conditions.
+ */
+typedef enum _OPENGPS_EXCEPTION_ID
 {
-   return OpenGPS::ExceptionHistory::GetLastErrorMessage();
-}
+   /*! No failure condition trapped. */
+   OGPS_ExNone,
+   /*! A failure condition occured, but it has not been specified in detail. */
+   OGPS_ExGeneral,
+   /*! An overflow occured. */
+   OGPS_ExOverflow
+} OGPS_ExceptionId; /*! Possible failure conditions. */
 
-OGPS_ExceptionId ogps_GetErrorId()
+#ifdef __cplusplus
+extern "C"
 {
-   return OpenGPS::ExceptionHistory::GetLastExceptionId();
+#endif /* __cplusplus */
+
+   /*!
+    * Gets the last handled error message or NULL.
+    *
+    * @remarks This may return NULL even though an error occured. This is because
+    * the description of a particular error condition may not be available.
+    *
+    * @see ::ogps_GetErrorId
+    */
+   _OPENGPS_EXPORT const OGPS_Character* ogps_GetErrorMessage();
+
+   /*!
+    * Gets the last handled detailed error message or NULL.
+    *
+    * @remarks This may return NULL even though an error occured. This is because
+    * the description of a particular error condition may not be available.
+    *
+    * @see ::ogps_GetErrorId
+    */
+   _OPENGPS_EXPORT const OGPS_Character* ogps_GetErrorDescription();
+
+   /*!
+    * Gets the type of the last handled error condition.
+    *
+    * @see ::ogps_GetErrorMessage
+    */
+   _OPENGPS_EXPORT OGPS_ExceptionId ogps_GetErrorId();
+
+#ifdef __cplusplus
 }
+#endif /* __cplusplus */
 
-void OpenGPS::ExceptionHistory::SetLastException(const Exception& ex)
-{
-   OpenGPS::String msg;
-   msg.FromChar(ex.what());
-
-   m_LastErrorMessage = msg;
-   m_LastExceptionId = ex.id();
-}
-
-void OpenGPS::ExceptionHistory::SetLastException()
-{
-   /* Set to NULL, because ex.what() may be unspecified. */
-   m_LastErrorMessage.clear();
-
-   /* At least there must have been an exception... */
-   m_LastExceptionId = OGPS_ExGeneral;
-}
-
-void OpenGPS::ExceptionHistory::Reset()
-{
-   m_LastErrorMessage.clear();
-   m_LastExceptionId = OGPS_ExNone;
-}
-
-const OGPS_Character* OpenGPS::ExceptionHistory::GetLastErrorMessage()
-{
-   return m_LastErrorMessage.empty() ? NULL : m_LastErrorMessage.c_str();
-}
-
-OGPS_ExceptionId OpenGPS::ExceptionHistory::GetLastExceptionId()
-{
-   return m_LastExceptionId;
-}
-
-OpenGPS::ExceptionHistory::ExceptionHistory()
-{
-}
-
-OpenGPS::ExceptionHistory::~ExceptionHistory()
-{
-}
-
-OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorMessage;
-OGPS_ExceptionId OpenGPS::ExceptionHistory::m_LastExceptionId = OGPS_ExNone;
+#endif	/* _OPENGPS_MESSAGES_H */

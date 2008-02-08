@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Indexing of point data managed by OpenGPS::VectorBuffer.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_LIST_HXX
 #define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_LIST_HXX
 
@@ -41,20 +45,39 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Indexing of point data managed by OpenGPS::VectorBuffer.
+    * The indexes are calculated for point measurements stored in
+    * a simple list structure.
+    */
    class PointVectorProxyContextList : public PointVectorProxyContext
    {
-   public:      
+   public:
+      /*!
+       * Creates a new instance.
+       * @param maxIndex The maximum amount of indexable measurement data.
+       * In other words: the number of elements contained in the list structure.
+       */
       PointVectorProxyContextList(const unsigned long maxIndex);
+
+      /*! Destroys this instance. */       
       virtual ~PointVectorProxyContextList();
 
+      /*!
+       * Sets the current index.
+       * @param index The new arbitrary index.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       virtual OGPS_Boolean SetIndex(const unsigned long index);
 
       virtual unsigned long GetIndex() const;
-
       virtual OGPS_Boolean IncrementIndex();
 
    private:
+      /*! The current index. */
       unsigned long m_Index;
+
+      /*! The maximum index possible. */
       unsigned long m_MaxIndex;
    };
 }

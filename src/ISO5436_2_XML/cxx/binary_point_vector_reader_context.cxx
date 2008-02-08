@@ -28,83 +28,76 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include <opengps/data_point.h>
+#include "binary_point_vector_reader_context.hxx"
+#include "point_vector_iostream.hxx"
 
-#include "data_point.hxx"
-#include "../cxx/data_point_impl.hxx"
-#include "../cxx/stdafx.hxx"
+#include "stdafx.hxx"
 
-OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint)
+BinaryPointVectorReaderContext::BinaryPointVectorReaderContext(const OpenGPS::String& filePath)
+: PointVectorReaderContext()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
-
-   return dataPoint->instance->GetType();
+   m_Stream = new InputBinaryFileStream(filePath);
 }
 
-short ogps_GetInt16(const OGPS_DataPointPtr dataPoint)
+BinaryPointVectorReaderContext::~BinaryPointVectorReaderContext()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
-
-   short v;
-   return (dataPoint->instance->Get(&v) ? v : 0);
+   Close();
 }
 
-int ogps_GetInt32(const OGPS_DataPointPtr dataPoint)
+OGPS_Boolean BinaryPointVectorReaderContext::Close()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
+   if(m_Stream)
+   {
+      m_Stream->close();
+      delete m_Stream;
+      m_Stream = NULL;
 
-   int v;
-   return (dataPoint->instance->Get(&v) ? v : 0);
+      return TRUE;
+   }
+
+   return FALSE;
 }
 
-float ogps_GetFloat(const OGPS_DataPointPtr dataPoint)
+OGPS_Boolean BinaryPointVectorReaderContext::MoveNext()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
+   if(m_Stream)
+   {
+      m_Stream->peek();
+      return !m_Stream->eof();
+   }
 
-   float v;
-   return (dataPoint->instance->Get(&v) ? v : 0.0F);
+   return FALSE;
 }
 
-double ogps_GetDouble(const OGPS_DataPointPtr dataPoint)
+OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const
 {
-   _ASSERT(dataPoint && dataPoint->instance);
-
-   double v;
-   return (dataPoint->instance->Get(&v) ? v : 0.0);
+   return TRUE; // TODO: parse invalid file here!
 }
 
-void ogps_SetInt16(
-	OGPS_DataPointPtr const dataPoint,
-	const short value)
+OGPS_Boolean BinaryPointVectorReaderContext::Skip()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
+   if(m_Stream)
+   {
+      return IsGood();
+   }
 
-   _VERIFY(dataPoint->instance->Set(value));
+   return FALSE;
 }
 
-void ogps_SetInt32(
-	OGPS_DataPointPtr const dataPoint,
-	const int value)
+OGPS_Boolean BinaryPointVectorReaderContext::IsGood() const
 {
-   _ASSERT(dataPoint && dataPoint->instance);
+   _ASSERT(m_Stream);
 
-   _VERIFY(dataPoint->instance->Set(value));
+   const std::ios_base::io_state state = m_Stream->rdstate();
+   return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
 }
 
-void ogps_SetFloat(
-	OGPS_DataPointPtr const dataPoint,
-	const float value)
+OGPS_Boolean BinaryPointVectorReaderContext::HasStream() const
 {
-   _ASSERT(dataPoint && dataPoint->instance);
-
-   _VERIFY(dataPoint->instance->Set(value));
+   return m_Stream != NULL;
 }
 
-void ogps_SetDouble(
-	OGPS_DataPointPtr const dataPoint,
-	const double value)
+InputBinaryFileStream* BinaryPointVectorReaderContext::GetStream()
 {
-   _ASSERT(dataPoint && dataPoint->instance);
-
-   _VERIFY(dataPoint->instance->Set(value));
+   return m_Stream;
 }

@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Interface for reading typed point data from an underlying stream of point vectors.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_READER_CONTEXT_HXX
 #define _OPENGPS_POINT_VECTOR_READER_CONTEXT_HXX
 
@@ -37,25 +41,105 @@
 
 namespace OpenGPS
 {
-/* Current context information for parser. Which position/index to read/write
-   * to and the current container's handle. */
-  class PointVectorReaderContext {
-  public:
-    virtual ~PointVectorReaderContext();
+   /*!
+    * Encapsulates an underlying stream of point vector data. Provides
+    * methods for reading point data from that stream. The exact data type
+    * of point data stored at the current position of the imagined stream
+    * pointer must be known a-priori though. This meta information must
+    * be extracted from elsewhere before and is not accessible from here.
+    * Three values of point data make up one point vector. To read one
+    * point vector use PointVectorReaderContext::MoveNext to start reading.
+    * Check if the current point vector is valid. Then make three subsequent
+    * calls to the PointVectorReaderContext::Read/
+    * PointVectorReaderContext::Skip methods (you must know the data type of
+    * all values in the stream to be able to do that).
+    */
+   class PointVectorReaderContext
+   {
+   public:
+      /*! Destroys this instance. */
+      virtual ~PointVectorReaderContext();
 
-    virtual OGPS_Boolean Read(OGPS_Int16* const value) = 0;
-    virtual OGPS_Boolean Read(OGPS_Int32* const value) = 0;
-    virtual OGPS_Boolean Read(OGPS_Float* const value) = 0;
-    virtual OGPS_Boolean Read(OGPS_Double* const value) = 0;
+      /*!
+       * Reads the currently underlying data as ::OGPS_Int16.
+       * Also moves the current reading position of the stream
+       * to the next coordinate of the three-vector.
+       * @param value Contains the point value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Read(OGPS_Int16* const value) = 0;
 
-    virtual OGPS_Boolean Skip() = 0;
+      /*!       
+       * Reads the currently underlying data as ::OGPS_Int32.
+       * Also moves the current reading position of the stream
+       * to the next coordinate of the three-vector.
+       * @param value Contains the point value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Read(OGPS_Int32* const value) = 0;
 
-    virtual OGPS_Boolean MoveNext() = 0;
-    virtual OGPS_Boolean IsValid() const = 0;
-    
-  protected:
-    PointVectorReaderContext();
-  };
+      /*!
+       * Reads the currently underlying data as ::OGPS_Float.
+       * Also moves the current reading position of the stream
+       * to the next coordinate of the three-vector.
+       * @param value Contains the point value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Read(OGPS_Float* const value) = 0;
+
+      /*!
+       * Reads the currently underlying data as ::OGPS_Double.
+       * Also moves the current reading position of the stream
+       * to the next coordinate of the three-vector.
+       * @param value Contains the point value on success.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Read(OGPS_Double* const value) = 0;
+
+      /*!
+       * Skips reading of the currently underlying data.
+       * Also moves the current reading position of the stream
+       * to the next coordinate of the three-vector.
+       * @remarks This must be called for integrity if
+       * it is expected from the reading process that there
+       * is no point data available for reading, i.e. for
+       * the current coordinate no point data was saved
+       * because the corresponding axis is of incremental type.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Skip() = 0;
+
+      /*!
+       * Move the current reading position of the stream
+       * to the next three-vector. This is possible only if all
+       * three coordinates of the current point vector data
+       * had been fully read (see PointVectorReaderContext::Read
+       * and PointVectorReaderContext::Skip member
+       * functions). If PointVectorReaderContext::IsValid returns
+       * FALSE, call this method directly to move to the
+       * next point vector in storage.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean MoveNext() = 0;
+
+      /*!
+       * Asks if there is readable point vector stored
+       * at the current position. A point vector may be
+       * invalid if it had not been measured, but is needed
+       * for topological consistency though.
+       * @remarks This must be checked before one attempts to
+       * PointVectorReaderContext::Read/
+       * PointVectorReaderContext::Skip any of the point
+       * data of one of the three coordinates.
+       * @returns Returns TRUE if the current point is readable,
+       * FALSE otherwise.
+       */
+      virtual OGPS_Boolean IsValid() const = 0;
+
+   protected:
+      /*! Creates a new instance. */
+      PointVectorReaderContext();
+   };
 }
 
 #endif /* _OPENGPS_POINT_VECTOR_READER_CONTEXT_HXX */

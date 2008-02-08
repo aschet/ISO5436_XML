@@ -29,13 +29,18 @@
  ***************************************************************************/
 
 #include <opengps/cxx/exceptions.hxx>
-
+#include <opengps/cxx/string.hxx>
 #include "stdafx.hxx"
 
-Exception::Exception(const OGPS_ExceptionChar *text, const OGPS_ExceptionId id) throw()
+Exception::Exception(const OGPS_ExceptionId id,
+                     const OGPS_ExceptionChar *text,
+                     const OGPS_ExceptionChar *details) throw()
    : std::exception(text)
 {
+   _ASSERT(text && details);
+
    m_Id = id;
+   m_Details.FromChar(details);
 }
 
 Exception::Exception(const Exception& rhs) throw()
@@ -53,18 +58,7 @@ OGPS_ExceptionId Exception::id() const throw()
    return m_Id;
 }
 
-const OGPS_ExceptionChar * OverflowException::m_Message = _OPENGPS_EXCEPTION_MESG("overflow occured");
-
-OverflowException::OverflowException() throw()
-   : Exception(OverflowException::m_Message, OGPS_ExOverflow)
+const OpenGPS::String& Exception::details() const throw()
 {
-}
-
-OverflowException::OverflowException(const OverflowException& rhs) throw()
-   : Exception(rhs)
-{   
-}
-
-OverflowException::~OverflowException() throw()
-{
+   return m_Details;
 }

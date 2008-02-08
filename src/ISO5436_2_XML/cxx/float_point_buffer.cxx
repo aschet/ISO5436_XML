@@ -45,7 +45,7 @@ OGPS_Boolean FloatPointBuffer::Allocate(const unsigned long size)
 {
    if(!m_Buffer)
    {
-      m_Buffer = (float*)PointBuffer::Allocate(size, sizeof(float));
+      m_Buffer = (OGPS_Float*)PointBuffer::Allocate(size, sizeof(OGPS_Float));
       
       if(m_Buffer)
       {
@@ -56,7 +56,7 @@ OGPS_Boolean FloatPointBuffer::Allocate(const unsigned long size)
    return FALSE;
 }
 
-OGPS_Boolean FloatPointBuffer::Set(const unsigned long index, const float value)
+OGPS_Boolean FloatPointBuffer::Set(const unsigned long index, const OGPS_Float value)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
@@ -65,7 +65,7 @@ OGPS_Boolean FloatPointBuffer::Set(const unsigned long index, const float value)
    return TRUE;
 }
 
-OGPS_Boolean FloatPointBuffer::Get(const unsigned long index, float& value) const
+OGPS_Boolean FloatPointBuffer::Get(const unsigned long index, OGPS_Float& value) const
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

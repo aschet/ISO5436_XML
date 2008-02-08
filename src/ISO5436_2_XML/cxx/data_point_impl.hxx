@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * An implementation of a data point to be used for typesafe storage
+ * of point data internally.
+ */
+
 #ifndef _OPENGPS_DATA_POINT_IMPL_HXX
 #define _OPENGPS_DATA_POINT_IMPL_HXX
 
@@ -35,18 +40,26 @@
 
 namespace OpenGPS
 {
+   /*!
+    * A straightforward implementation of OpenGPS::DataPoint. This mainly
+    * supports OpenGPS::PointVector where typesafe storage
+    * of arbitrary point data must be maintained for its components internally.
+    */
    class DataPointImpl : public DataPoint
    {
    public:
+      /*! Creates a new instance. */
       DataPointImpl();
+
+      /*! Destroys this instance. */
       virtual ~DataPointImpl();
 
       virtual OGPS_DataPointType GetType() const;
 
       virtual OGPS_Boolean Get(OGPS_Int16* const value) const;
-    virtual OGPS_Boolean Get(OGPS_Int32* const value) const;
-    virtual OGPS_Boolean Get(OGPS_Float* const value) const;
-    virtual OGPS_Boolean Get(OGPS_Double* const value) const;
+      virtual OGPS_Boolean Get(OGPS_Int32* const value) const;
+      virtual OGPS_Boolean Get(OGPS_Float* const value) const;
+      virtual OGPS_Boolean Get(OGPS_Double* const value) const;
 
       virtual OGPS_Double Get() const;
 
@@ -63,18 +76,31 @@ namespace OpenGPS
       virtual void Reset();
 
    private:
-      /* Tag. Defines which value type is valid. */
+      /*! This tag defines which value type is valid within DataPointImpl::m_Value.
+       * This restricts access to the currently safe element of DataPointImpl::m_Value. */
       OGPS_DataPointType m_Type;
 
-      /* Possible values by data type. */
+      /*! Typesafe storage for every possible data type of point data. */
       typedef union _OGPS_DATA_POINT_VALUE
       {
+         /*! Stores a value of ::OGPS_Int16 data type. The value is undefined if
+         DataPointImpl::m_Type does not equal ::OGPS_Int16PointType. */
          OGPS_Int16 int16Value;
-         OGPS_Int32 int32Value;
-         OGPS_Float floatValue;
-         OGPS_Double doubleValue;
-      } OGPS_DataPointValue;
 
+         /*! Stores a value of ::OGPS_Int32 data type. The value is undefined if
+         DataPointImpl::m_Type does not equal ::OGPS_Int32PointType. */
+         OGPS_Int32 int32Value;
+
+         /*! Stores a value of ::OGPS_Float data type. The value is undefined if
+         DataPointImpl::m_Type does not equal ::OGPS_FloatPointType. */
+         OGPS_Float floatValue;
+
+         /*! Stores a value of ::OGPS_Double data type. The value is undefined if
+         DataPointImpl::m_Type does not equal ::OGPS_DoublePointType. */
+         OGPS_Double doubleValue;
+      } OGPS_DataPointValue;/*! Typesafe storage for every data type possible. */
+
+      /*! The stored value of this data point. @see DataPointImpl::m_Type */
       OGPS_DataPointValue m_Value;
    };
 }

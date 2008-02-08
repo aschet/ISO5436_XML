@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Allocate static memory to store point data.
+ */
+
 #ifndef _OPENGPS_INT16_POINT_BUFFER_HXX
 #define _OPENGPS_INT16_POINT_BUFFER_HXX
 
@@ -37,21 +41,29 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Manages static memory and typesafe access.
+    * Allocates an internal memory buffer to store point data of type ::OGPS_Int16.
+    */
    class Int16PointBuffer : public PointBuffer
    {
    public:
+      /*! Create a new instance. */
       Int16PointBuffer();
+
+      /*! Destroys this instance. */
       virtual ~Int16PointBuffer();
 
       virtual OGPS_Boolean Allocate(const unsigned long size);
 
-      virtual OGPS_Boolean Set(const unsigned long index, const short value);
-      virtual OGPS_Boolean Get(const unsigned long index, short& value) const;
+      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Int16 value);
+      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Int16& value) const;
 
       virtual OGPS_DataPointType GetType() const;
 
    private:
-      short* m_Buffer;
+      /*! Pointer to internal memory. */
+      OGPS_Int16* m_Buffer;
    };
 }
 

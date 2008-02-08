@@ -28,53 +28,82 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#include "double_point_buffer.hxx"
-#include "stdafx.hxx"
+/*! @file
+ * Copyright and license information.
+ */
 
-DoublePointBuffer::DoublePointBuffer() : PointBuffer()
-{
-   m_Buffer = NULL;
-}
+#ifndef _OPENGPS_CXX_INFO_HXX
+#define _OPENGPS_CXX_INFO_HXX
 
-DoublePointBuffer::~DoublePointBuffer()
-{
-      Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
-}
+#ifndef _OPENGPS_CXX_OPENGPS_HXX
+# include <opengps/cxx/opengps.hxx>
+#endif
 
-OGPS_Boolean DoublePointBuffer::Allocate(const unsigned long size)
+namespace OpenGPS
 {
-   if(!m_Buffer)
+   class String;
+
+   /*!
+    * Publishes license text, ownership and similar information.
+    */
+   class _OPENGPS_EXPORT Info
    {
-      m_Buffer = (OGPS_Double*)PointBuffer::Allocate(size, sizeof(OGPS_Double));
+   public:
+      /*!
+       * Gets a short name identifying this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetName(OpenGPS::String* const text);
+
+      /*!
+       * Gets a short message describing the purpose of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetAbout(OpenGPS::String* const text);
+
+      /*!
+       * Gets the version identifier of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetVersion(OpenGPS::String* const text);
+
+      /*!
+       * Gets the copyright information of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetCopyright(OpenGPS::String* const text);
+
+      /*!
+       * Gets the license information of this software library.
+       *
+       * @param text Contains the resulting message.
+       */
+      static void GetLicense(OpenGPS::String* const text);
+
+      /*!
+       * Prints the version identifier of this software library to standard output.
+       */
+      static void PrintVersion();
+
+      /*!
+       * Prints the copyright information of this software library to standard output.
+       */
+      static void PrintCopyright();
       
-      if(m_Buffer)
-      {
-         return TRUE;
-      }
-   }
+      /*!
+       * Prints the license information of this software library to standard output.
+       */
+      static void PrintLicense();
 
-   return FALSE;
+   private:
+      Info();
+      ~Info();
+   };
+
 }
 
-OGPS_Boolean DoublePointBuffer::Set(const unsigned long index, const OGPS_Double value)
-{
-   _ASSERT(index < GetSize() && m_Buffer);
-
-   m_Buffer[index] = value;
-
-   return TRUE;
-}
-
-OGPS_Boolean DoublePointBuffer::Get(const unsigned long index, OGPS_Double& value) const
-{
-   _ASSERT(index < GetSize() && m_Buffer);
-
-   value = m_Buffer[index];
-
-   return TRUE;
-}
-
-OGPS_DataPointType DoublePointBuffer::GetType() const
-{
-   return OGPS_DoublePointType;
-}
+#endif	/* _OPENGPS_CXX_INFO_HXX */

@@ -45,7 +45,7 @@ OGPS_Boolean Int32PointBuffer::Allocate(const unsigned long size)
 {
    if(!m_Buffer)
    {
-      m_Buffer = (int*)PointBuffer::Allocate(size, sizeof(int));
+      m_Buffer = (OGPS_Int32*)PointBuffer::Allocate(size, sizeof(OGPS_Int32));
       
       if(m_Buffer)
       {
@@ -56,7 +56,7 @@ OGPS_Boolean Int32PointBuffer::Allocate(const unsigned long size)
    return FALSE;
 }
 
-OGPS_Boolean Int32PointBuffer::Set(const unsigned long index, const int value)
+OGPS_Boolean Int32PointBuffer::Set(const unsigned long index, const OGPS_Int32 value)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
@@ -65,7 +65,7 @@ OGPS_Boolean Int32PointBuffer::Set(const unsigned long index, const int value)
    return TRUE;
 }
 
-OGPS_Boolean Int32PointBuffer::Get(const unsigned long index, int& value) const
+OGPS_Boolean Int32PointBuffer::Get(const unsigned long index, OGPS_Int32& value) const
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

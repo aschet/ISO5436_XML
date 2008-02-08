@@ -29,10 +29,11 @@
  ***************************************************************************/
 
 #include "xml_point_vector_reader_context.hxx"
-
 #include "point_vector_iostream.hxx"
 
 #include "stdafx.hxx"
+
+#include <opengps/cxx/string.hxx>
 
 PointVectorReaderContext::PointVectorReaderContext()
 {

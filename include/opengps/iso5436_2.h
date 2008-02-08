@@ -35,7 +35,7 @@
  * data are provided. Point data can be accessed either as raw data or geometrically transformed based
  * on the axes descriptions. Also it can be chosen between an iterator interface and indexing techniques.
  * This abstract data type is split into two files because some methods involve C++ types which
- * have no representation in the C interface. @see cxx/iso5436_2_handle.hxx
+ * have no representation in the C interface. @see cxx/iso5436_2_c.hxx
  */
 
 #ifndef _OPENGPS_ISO5436_2_H

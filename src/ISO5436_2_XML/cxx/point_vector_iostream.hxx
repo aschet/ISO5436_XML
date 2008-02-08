@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Locale related stuff to support locale invariant parsing of point vector data .
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_IOSTREAM_HXX
 #define _OPENGPS_POINT_VECTOR_IOSTREAM_HXX
 
@@ -39,71 +43,133 @@
 #include <sstream>
 #include <fstream>
 
-// TODO: std::* typedefs (wchar_t/char)
-
 namespace OpenGPS
 {
+   class String;
+
+   /*!
+    * Redefines the white space character set to make parsing of a
+    * point vector easier. In an ISO5436-2 XML document the three
+    * components of a point vector are separated by a semicolon.
+    * This facet classifies the semicolon as white space, too. This
+    * way the commonly known standard io operator can be used as
+    * usual to read the three separate components of the point vector
+    * from the string stream.
+    */
    class PointVectorWhitespaceFacet : public std::ctype<OGPS_Character>
    {
+      /*! The type of the super class. */
       typedef std::ctype<OGPS_Character> BaseType;
 
-      public:
-         PointVectorWhitespaceFacet(const size_t refs = 0);
-         ~PointVectorWhitespaceFacet();
+   public:
+      /*! Creates a new instance. */
+      PointVectorWhitespaceFacet(const size_t refs = 0);
+
+      /*! Destroys this instance. */
+      ~PointVectorWhitespaceFacet();
 
    protected:
+      /*!
+       * Classifies a character.
+       * @param msk Check whether the character belongs to the
+       * sepcified group.
+       * @param ch The character to be classified.
+       */
       virtual bool do_is(mask msk, OGPS_Character ch) const;
    };
 
+   /*!
+    * The culture invariant locale.
+    * Uses an instance of OpenGPS::PointVectorWhitespaceFacet
+    * to classify white space.
+    */
    class PointVectorInvariantLocale : public std::locale
    {
+      /*! The type of the super class. */
       typedef std::locale BaseType;
 
    public:
+      /*! Creates a new instance. */
       PointVectorInvariantLocale();
+
+      /*! Destroys this instance. */
       ~PointVectorInvariantLocale();
 
+      /*! Gets a buffered instance of the invariant locale. */
       static const PointVectorInvariantLocale& GetInstance();
 
    private:
+      /*! Buffered instance of the invariant locale. */
       static PointVectorInvariantLocale m_Instance;
    };
 
+   /*! A string stream used for parsing a point vector as defined in ISO5436-2 XML. */
    class PointVectorInputStringStream : public std::basic_istringstream<OGPS_Character>
    {
+      /*! The type of the super class. */
       typedef std::basic_istringstream<OGPS_Character> BaseType;
 
    public:
+      /*! Creates a new instance. */
       PointVectorInputStringStream();
+
+      /*!
+       * Creates a new instance.
+       * @param s The source which is streamed.
+       */
       PointVectorInputStringStream(const OpenGPS::String& s);
+
+      /*! Destroys this instance. */
       ~PointVectorInputStringStream();
    };
 
+   /*! A locale invariant string stream used to convert a point vector object to its
+    * representation as text according to the ISO5436-2 XML specification. */
    class PointVectorOutputStringStream : public std::basic_ostringstream<OGPS_Character>
    {
+      /*! The type of the super class. */
       typedef std::basic_ostringstream<OGPS_Character> BaseType;
 
    public:
+      /*! Creates a new instance. */
       PointVectorOutputStringStream();
+
+      /*! Destroys this instance. */
       ~PointVectorOutputStringStream();
    };
 
-   class PointVectorInputBinaryFileStream : public std::basic_ifstream<OpenGPS::UnsignedByte>
+   /*! A binary stream class used for reading from binary files. */
+   class InputBinaryFileStream : public std::basic_ifstream<OpenGPS::UnsignedByte>
    {
+      /*! The type of the super class. */
       typedef std::basic_ifstream<OpenGPS::UnsignedByte> BaseType;
 
    public:
-      PointVectorInputBinaryFileStream(const OpenGPS::String& filePath);
-      ~PointVectorInputBinaryFileStream();
+      /*!
+       * Creates a new instance.
+       * @param filePath Full path to the binary file to be read.
+       */
+      InputBinaryFileStream(const OpenGPS::String& filePath);
+
+      /*! Destroys this instance. */
+      ~InputBinaryFileStream();
    };
 
-   class PointVectorOutputBinaryFileStream : public std::basic_ofstream<OpenGPS::UnsignedByte>
+   /*! A binary stream class used for writing to binary files. */
+   class OutputBinaryFileStream : public std::basic_ofstream<OpenGPS::UnsignedByte>
    {
+      /*! The type of the super class. */
       typedef std::basic_ofstream<OpenGPS::UnsignedByte> BaseType;
 
    public:
-      PointVectorOutputBinaryFileStream(const OpenGPS::String& filePath);
-      ~PointVectorOutputBinaryFileStream();
+      /*!
+       * Creates a new instance.
+       * @param filePath Full path to the binary file to be written.
+       */
+      OutputBinaryFileStream(const OpenGPS::String& filePath);
+
+      /*! Destroys this instance. */
+      ~OutputBinaryFileStream();
    };
 }
 

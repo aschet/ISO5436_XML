@@ -30,12 +30,12 @@
 
 #include <opengps/point_iterator.h>
 
-#include "../cxx/point_iterator_impl.hxx"
+#include "point_iterator_c.hxx"
+#include "point_vector_c.hxx"
 
-#include "point_iterator.hxx"
-#include "point_vector.hxx"
+#include "messages_c.hxx"
 
-#include "exceptions.hxx"
+#include <opengps/cxx/point_iterator.hxx>
 
 OGPS_Boolean ogps_HasNextPoint(const OGPS_PointIteratorPtr iterator) throw()
 {

@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Indexing of point data managed by OpenGPS::VectorBuffer.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_MATRIX_HXX
 #define _OPENGPS_POINT_VECTOR_PROXY_CONTEXT_MATRIX_HXX
 
@@ -41,33 +45,63 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Indexing of point data managed by OpenGPS::VectorBuffer.
+    * The indexes are calculated for point measurements stored in
+    * a matrix structure that saves extra topology information.
+    */
    class PointVectorProxyContextMatrix : public PointVectorProxyContext
    {
-   public:      
+   public:
+      /*!
+       * Creates a new instance.
+       * @param maxU The maximum index possible in X direction of the topology mapping.
+       * @param maxV The maximum index possible in Y direction of the topology mapping.
+       * @param maxW The maximum index possible in Z direction of the topology mapping.
+       */
       PointVectorProxyContextMatrix(
          const unsigned long maxU,
          const unsigned long maxV,
          const unsigned long maxW);
+
+      /*! Destroys this instance. */
       virtual ~PointVectorProxyContextMatrix();
 
+      /*!
+       * Sets the current index.
+       * @param u The new arbitrary index in X direction of the topology mapping.
+       * @param v The new arbitrary index in Y direction of the topology mapping.
+       * @param w The new arbitrary index in Z direction of the topology mapping.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
       OGPS_Boolean SetIndex(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w);
 
       virtual unsigned long GetIndex() const;
-
       virtual OGPS_Boolean IncrementIndex();
 
    private:
+      /*! Returns FALSE if the maximum possible index is reached, TRUE otherwise. */
       OGPS_Boolean HasNext() const;
 
+      /*! The current index in X direction of the topology mapping. */
       unsigned long m_U;
+
+      /*! The current index in Y direction of the topology mapping. */
       unsigned long m_V;
+
+      /*! The current index in Z direction of the topology mapping. */
       unsigned long m_W;
 
+      /*! The maximum index possible in X direction. */
       unsigned long m_MaxU;
+      
+      /*! The maximum index possible in Y direction. */
       unsigned long m_MaxV;
+
+      /*! The maximum index possible in Z direction. */
       unsigned long m_MaxW;
    };
 }

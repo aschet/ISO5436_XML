@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * A data point parser for point data of type ::OGPS_FloatPointType.
+ */
+
 #ifndef _OPENGPS_FLOAT_DATA_POINT_PARSER_HXX
 #define _OPENGPS_FLOAT_DATA_POINT_PARSER_HXX
 
@@ -37,14 +41,21 @@
 
 namespace OpenGPS
 {
-   class FloatDataPointParser : public DataPointParser {
-  public:
-    FloatDataPointParser();
-    virtual ~FloatDataPointParser();
-    
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
-  };
+   /*!
+    * Reads/Writes instances of OpenGPS::DataPoint of ::OGPS_Float point data.
+    */
+   class FloatDataPointParser : public DataPointParser
+   {
+   public:
+      /*! Creates a new instance. */
+      FloatDataPointParser();
+
+      /*! Destroys this instance. */
+      virtual ~FloatDataPointParser();
+
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
+   };
 }
 
 #endif /* _OPENGPS_FLOAT_DATA_POINT_PARSER_HXX */

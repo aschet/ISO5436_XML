@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * A data point parser for point data of type ::OGPS_DoublePointType.
+ */
+
 #ifndef _OPENGPS_DOUBLE_DATA_POINT_PARSER_HXX
 #define _OPENGPS_DOUBLE_DATA_POINT_PARSER_HXX
 
@@ -37,14 +41,21 @@
 
 namespace OpenGPS
 {
-   class DoubleDataPointParser : public DataPointParser {
-  public:
-    DoubleDataPointParser();
-    virtual ~DoubleDataPointParser();
-    
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
-  };
+   /*!
+    * Reads/Writes instances of OpenGPS::DataPoint of ::OGPS_Double point data.
+    */
+   class DoubleDataPointParser : public DataPointParser
+   {
+   public:
+      /*! Creates a new instance. */
+      DoubleDataPointParser();
+
+      /*! Destroys this instance. */
+      virtual ~DoubleDataPointParser();
+
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
+   };
 }
 
 #endif /* _OPENGPS_DOUBLE_DATA_POINT_PARSER_HXX */

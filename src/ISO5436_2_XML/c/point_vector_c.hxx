@@ -28,86 +28,46 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _OPENGPS_EXCEPTIONS_HXX
-#define _OPENGPS_EXCEPTIONS_HXX
+/*! @file
+ * Handle mechanism which makes a C++ OpenGPS::PointVector object accessible
+ * through the corresponding C interface of a point vector.
+ */
 
-#ifndef _OPENGPS_CXX_OPENGPS_HXX
-#  include <opengps/cxx/opengps.hxx>
+#ifndef _OPENGPS_C_POINT_VECTOR_HXX
+#define _OPENGPS_C_POINT_VECTOR_HXX
+
+#ifndef _OPENGPS_CXX_POINT_VECTOR_HXX
+#  include <opengps/cxx/point_vector.hxx>
 #endif
 
-#ifndef _OPENGPS_CXX_EXCEPTIONS_HXX
-#  include <opengps/cxx/exceptions.hxx>
-#endif
-
-namespace OpenGPS
+/*!
+ * Encapsulates the internal C++ structure of a point vector handle used within
+ * the C interface. This fact is hidden from the public because ::OGPS_PointVectorPtr
+ * is defined as an incomplete data type.
+ */
+typedef struct _OGPS_POINT_VECTOR
 {
-   class ExceptionHistory
-   {
-   public:
-      static void SetLastException(const Exception& ex);
-      static void SetLastException();
+   /*! Gets/Sets the pointer to the internal C++ object behind the scenes. */
+   OpenGPS::PointVector instance;
 
-      static void Reset();
+   /*!
+    * Gets/Sets the buffered C interface wrapper for typesafe access to the X member
+    * of the internal C++ OpenGPS::PointVector instance.
+    */
+   OGPS_DataPointPtr x;
 
-      static const OGPS_Character* GetLastErrorMessage();
-      static OGPS_ExceptionId GetLastExceptionId();
+   /*!
+    * Gets/Sets the buffered C interface wrapper for typesafe access to the Y member
+    * of the internal C++ OpenGPS::PointVector instance.
+    */
+   OGPS_DataPointPtr y;
 
-   private:
-      ExceptionHistory();
-      ~ExceptionHistory();
+   /*!
+    * Gets/Sets the buffered C interface wrapper for typesafe access to the Z member
+    * of the internal C++ OpenGPS::PointVector instance.
+    */
+   OGPS_DataPointPtr z;
+} OGPS_PointVector, *OGPS_PointVectorPtr; /*! Encapsulates the internal C++ structure
+ * of a data point handle used within the C interface. */
 
-      static OpenGPS::String m_LastErrorMessage;
-      static OGPS_ExceptionId m_LastExceptionId;
-   };
-}
-
-#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(STATEMENT) \
-   OpenGPS::ExceptionHistory::Reset(); \
-   try \
-   { \
-      return (STATEMENT); \
-   } \
-   catch(const OpenGPS::Exception& ex) \
-   { \
-      OpenGPS::ExceptionHistory::SetLastException(ex); \
-   } \
-   catch(...) \
-   { \
-      OpenGPS::ExceptionHistory::SetLastException(); \
-   } \
-   return FALSE;
-
-
-#define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT, CLEANUP_STATEMENT) \
-   OpenGPS::ExceptionHistory::Reset(); \
-   try \
-   { \
-      STATEMENT; \
-   } \
-   catch(const OpenGPS::Exception& ex) \
-   { \
-      CLEANUP_STATEMENT; \
-      OpenGPS::ExceptionHistory::SetLastException(ex); \
-   } \
-   catch(...) \
-   { \
-      CLEANUP_STATEMENT; \
-      OpenGPS::ExceptionHistory::SetLastException(); \
-   }
-
-#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_TRYONLY(STATEMENT) \
-   OpenGPS::ExceptionHistory::Reset(); \
-   try \
-   { \
-      STATEMENT; \
-   } \
-   catch(const OpenGPS::Exception& ex) \
-   { \
-      OpenGPS::ExceptionHistory::SetLastException(ex); \
-   } \
-   catch(...) \
-   { \
-      OpenGPS::ExceptionHistory::SetLastException(); \
-   }
-
-#endif /* _OPENGPS_EXCEPTIONS_HXX */
+#endif /* _OPENGPS_C_POINT_VECTOR_HXX */

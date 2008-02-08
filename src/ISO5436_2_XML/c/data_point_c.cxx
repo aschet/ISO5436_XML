@@ -28,20 +28,84 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-#ifndef _C_POINT_VECTOR_HXX
-#define _C_POINT_VECTOR_HXX
+#include <opengps/data_point.h>
 
-#ifndef _OPENGPS_CXX_POINT_VECTOR_HXX
-#  include <opengps/cxx/point_vector.hxx>
-#endif
+#include "data_point_c.hxx"
 
-typedef struct _OGPS_POINT_VECTOR
+#include "../cxx/data_point_impl.hxx"
+#include "../cxx/stdafx.hxx"
+
+OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint)
 {
-   OpenGPS::PointVector instance;
+   _ASSERT(dataPoint && dataPoint->instance);
 
-   OGPS_DataPointPtr x;
-   OGPS_DataPointPtr y;
-   OGPS_DataPointPtr z;
-} OGPS_PointVector, *OGPS_PointVectorPtr;
+   return dataPoint->instance->GetType();
+}
 
-#endif /* _C_POINT_VECTOR_HXX */
+short ogps_GetInt16(const OGPS_DataPointPtr dataPoint)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   short v;
+   return (dataPoint->instance->Get(&v) ? v : 0);
+}
+
+int ogps_GetInt32(const OGPS_DataPointPtr dataPoint)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   int v;
+   return (dataPoint->instance->Get(&v) ? v : 0);
+}
+
+float ogps_GetFloat(const OGPS_DataPointPtr dataPoint)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   float v;
+   return (dataPoint->instance->Get(&v) ? v : 0.0F);
+}
+
+double ogps_GetDouble(const OGPS_DataPointPtr dataPoint)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   double v;
+   return (dataPoint->instance->Get(&v) ? v : 0.0);
+}
+
+void ogps_SetInt16(
+	OGPS_DataPointPtr const dataPoint,
+	const short value)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   _VERIFY(dataPoint->instance->Set(value));
+}
+
+void ogps_SetInt32(
+	OGPS_DataPointPtr const dataPoint,
+	const int value)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   _VERIFY(dataPoint->instance->Set(value));
+}
+
+void ogps_SetFloat(
+	OGPS_DataPointPtr const dataPoint,
+	const float value)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   _VERIFY(dataPoint->instance->Set(value));
+}
+
+void ogps_SetDouble(
+	OGPS_DataPointPtr const dataPoint,
+	const double value)
+{
+   _ASSERT(dataPoint && dataPoint->instance);
+
+   _VERIFY(dataPoint->instance->Set(value));
+}

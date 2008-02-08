@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Builder which assembles a concrete instance of the generic point vector parser.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_PARSER_BUILDER_HXX
 #define _OPENGPS_POINT_VECTOR_PARSER_BUILDER_HXX
 
@@ -43,26 +47,55 @@ namespace OpenGPS
 {
    class PointVectorParser;
 
-   /* Interface which handles the building process of a specialized parser
-   * object for reading and writing typed point data of three axis. */
-   class PointVectorParserBuilder {
+   /*!
+    * Component which handles the building process of a specialized parser
+    * object for reading and writing typed point data as a three-vector.
+    * @see OpenGPS::PointVectorParser, OpenGPS::DataPointParser
+    */
+   class PointVectorParserBuilder
+   {
    public:
+      /*! Creates a new instance. */
       PointVectorParserBuilder();
+
+      /*! Destroys this instance. */
       virtual ~PointVectorParserBuilder();
 
-      /* Build the main parser object itself. */
+      /*!
+       * Builds the main parser object to be assembled.
+       * @remarks This must be called firstly when starting the build process.
+       */
       virtual OGPS_Boolean BuildParser();
 
-      /* Build objects to parse one single data point. Take into account the
-      * axis data type. Connect point parsers with the main parser object. */
+      /*!
+       * Builds the object used to parse the X component of the vector.
+       * @param dataType The data type of the X axis.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       * @see PointVectorParserBuilder::BuildParser
+       */
       virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType);
+      
+      /*!
+       * Builds the object used to parse the Y component of the vector.
+       * @param dataType The data type of the Y axis.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       * @see PointVectorParserBuilder::BuildParser
+       */
       virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType);
+
+      /*!
+       * Builds the object used to parse the Z component of the vector.
+       * @param dataType The data type of the Z axis.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       * @see PointVectorParserBuilder::BuildParser
+       */
       virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType);
 
-      /* Gets the assembled point vector parser (for three axis). */
+      /*! Gets the assembled point vector parser. */
       virtual PointVectorParser* GetParser();
 
    private:
+      /*! The object to be built. */
       PointVectorParser* m_Parser;
    };
 }

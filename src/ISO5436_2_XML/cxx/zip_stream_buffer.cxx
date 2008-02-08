@@ -31,6 +31,8 @@
 #include "zip_stream_buffer.hxx"
 #include "stdafx.hxx"
 
+#include <opengps/cxx/string.hxx>
+
 ZipStreamBuffer::ZipStreamBuffer(zipFile handle, const OGPS_Boolean enable_md5)
 : BaseType()
 {
@@ -90,4 +92,9 @@ ZipOutputStream::ZipOutputStream(ZipStreamBuffer& buffer)
 
 ZipOutputStream::~ZipOutputStream()
 {
+}
+
+ZipOutputStream::BaseType& ZipOutputStream::write(const OpenGPS::String& s)
+{
+   return BaseType::write((const char*)s.c_str(), s.size() * sizeof(OpenGPS::String::ElementType));
 }

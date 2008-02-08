@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * A data point parser for point data of type ::OGPS_Int32PointType.
+ */
+
 #ifndef _OPENGPS_INT32_DATA_POINT_PARSER_HXX
 #define _OPENGPS_INT32_DATA_POINT_PARSER_HXX
 
@@ -37,14 +41,21 @@
 
 namespace OpenGPS
 {
-   class Int32DataPointParser : public DataPointParser {
-  public:
-    Int32DataPointParser();
-    virtual ~Int32DataPointParser();
-    
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
-  };
+   /*!
+    * Reads/Writes instances of OpenGPS::DataPoint of ::OGPS_Int32 point data.
+    */
+   class Int32DataPointParser : public DataPointParser
+   {
+   public:
+      /*! Creates a new instance. */
+      Int32DataPointParser();
+
+      /*! Destroys this instance. */
+      virtual ~Int32DataPointParser();
+
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
+   };
 }
 
 #endif /* _OPENGPS_INT32_DATA_POINT_PARSER_HXX */

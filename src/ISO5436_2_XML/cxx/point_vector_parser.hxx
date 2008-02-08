@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ * Generic parser of a point vector.
+ */
+
 #ifndef _OPENGPS_POINT_VECTOR_PARSER_HXX
 #define _OPENGPS_POINT_VECTOR_PARSER_HXX
 
@@ -46,26 +50,87 @@ namespace OpenGPS
    class PointVectorBase;
    class DataPointParser;
 
-/* General parser for a point vector. Xml and binary format. */
-  class PointVectorParser {
-  public:
-     PointVectorParser();
-    virtual ~PointVectorParser();
+   /*!
+    * Generic parser of a point vector.
+    *
+    * Reads/Writes an instance of OpenGPS::PointVectorBase from/to any file
+    * or resource described by an instance of OpenGPS::PointVectorReaderContext/
+    * OpenGPS::PointVectorWriterContext.
+    */
+   class PointVectorParser
+   {
+   public:
+      /*! Creates a new instance. */
+      PointVectorParser();
 
-    void SetX(DataPointParser* const value);
-    void SetY(DataPointParser* const value);
-    void SetZ(DataPointParser* const value);
+      /*! Destroys this instance. */
+      virtual ~PointVectorParser();
 
-    virtual OGPS_Boolean Read(PointVectorReaderContext& context, PointVectorBase& value);
-    virtual OGPS_Boolean Write(PointVectorWriterContext& context, const PointVectorBase& value);
+      /*!
+       * Sets the interface object to be used for parsing point data of the X component.
+       * @remarks The pointer passed will become managed. Its resources may become
+       * inaccessible at any time.
+       * @param value Typesafe point parser of the first vector component.
+       * @see PointVectorParser::CreateDataPointParser
+       */
+      void SetX(DataPointParser* const value);
 
-    virtual DataPointParser* CreateDataPointParser(const OGPS_DataPointType dataType) const;
+      /*!
+       * Sets the interface object to be used for parsing point data of the Y component.
+       * @remarks The pointer passed will become managed. Its resources may become
+       * inaccessible at any time.
+       * @param value Typesafe point parser of the second vector component.
+       * @see PointVectorParser::CreateDataPointParser
+       */
+      void SetY(DataPointParser* const value);
 
-    private:
-     DataPointParser* m_X;
-     DataPointParser* m_Y;
-     DataPointParser* m_Z;
-  };
+      /*!
+       * Sets the interface object to be used for parsing point data of the Z component.
+       * @remarks The pointer passed will become managed. Its resources may become
+       * inaccessible at any time.
+       * @param value Typesafe point parser of the third vector component.
+       * @see PointVectorParser::CreateDataPointParser
+       */
+      void SetZ(DataPointParser* const value);
+
+      /*!
+       * Reads point vector data from arbitrary media.
+       *
+       * @param context Methods to read point data from the media.
+       * @param value Holds the point data read assembled as a three-vector.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Read(PointVectorReaderContext& context, PointVectorBase& value);
+      
+      /*!
+       * Write point vector data to arbitrary media.
+       *
+       * @param context Methods to write point data to the media.
+       * @param value Holds the vector to be written.
+       * @returns Returns TRUE on success, FALSE otherwise.
+       */
+      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const PointVectorBase& value);
+
+      /*!
+       * Creates the appropriate point parser corresponding to an axis data type.
+       * @remarks The returned point parser instance must be free explicitly unless
+       * it is directly passed to one of the PointVectorParser::SetX, PointVectorParser::SetY,
+       * PointVectorParser::SetZ methods.
+       * @param dataType The axis data type to instantiate the point parser for.
+       * @returns Returns the instance of the point parser or NULL on failure.
+       */
+      virtual DataPointParser* CreateDataPointParser(const OGPS_DataPointType dataType) const;
+
+   private:
+      /*! Instance of the point parser of the X component. */
+      DataPointParser* m_X;
+      
+      /*! Instance of the point parser of the Y component. */
+      DataPointParser* m_Y;
+
+      /*! Instance of the point parser of the Z component. */
+      DataPointParser* m_Z;
+   };
 }
 
 #endif /* _OPENGPS_POINT_VECTOR_PARSER_HXX */
