@@ -65,31 +65,28 @@ namespace OpenGPS
        * Builds the main parser object to be assembled.
        * @remarks This must be called firstly when starting the build process.
        */
-      virtual OGPS_Boolean BuildParser();
+      void BuildParser();
 
       /*!
        * Builds the object used to parse the X component of the vector.
        * @param dataType The data type of the X axis.
-       * @returns Returns TRUE on success, FALSE otherwise.
        * @see PointVectorParserBuilder::BuildParser
        */
-      virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType);
+      virtual void BuildX(const OGPS_DataPointType dataType);
       
       /*!
        * Builds the object used to parse the Y component of the vector.
        * @param dataType The data type of the Y axis.
-       * @returns Returns TRUE on success, FALSE otherwise.
        * @see PointVectorParserBuilder::BuildParser
        */
-      virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType);
+      virtual void BuildY(const OGPS_DataPointType dataType);
 
       /*!
        * Builds the object used to parse the Z component of the vector.
        * @param dataType The data type of the Z axis.
-       * @returns Returns TRUE on success, FALSE otherwise.
        * @see PointVectorParserBuilder::BuildParser
        */
-      virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType);
+      virtual void BuildZ(const OGPS_DataPointType dataType);
 
       /*! Gets the assembled point vector parser. */
       virtual PointVectorParser* GetParser();

@@ -97,10 +97,10 @@ extern "C" {
     * @param compressionLevel Optionally specifies the compression level used when writing the X3P file which is nothing else than a simple zip file container. The default value for this parameter is (-1) which enables standard compression level as a good trade-off between processing time and compression ratio. Values between 0 and 9 are possible. A value of 0 means "no compression" and a value of 9 enables the highest level compression rate at the cost of highest computation time.
     * @returns Returns TRUE on success and FALSE if anything went wrong. When FALSE no changes will be saved. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel = -1);
+   _OPENGPS_EXPORT void ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel = -1);
 
    /*!
-    * Closes an ::OGPS_ISO5436_2Handle file handle and frees its resources.
+    * Closes an ::OGPS_ISO5436_2Handle file handle and releases its resources.
     *
     * @remarks This does not save any changes you made! You must call ::ogps_WriteISO5436_2 before if your changes should be saved.
     *
@@ -108,7 +108,7 @@ extern "C" {
     *
     * @param handle Handle object to close.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
+   _OPENGPS_EXPORT void ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
 
    /*!
     * Creates an iterator to access point data contained in an ISO5436-2 X3P file.

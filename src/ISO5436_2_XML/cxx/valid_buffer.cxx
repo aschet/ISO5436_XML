@@ -137,8 +137,10 @@ OGPS_Boolean ValidBuffer::IsValid(const unsigned int index) const throw(...)
    return ((*rawByte & bitValue) != 0);
 }
 
-OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...)
+void ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...)
 {
+   OGPS_Boolean success = FALSE;
+
    // get length of file:
    stream.seekg (0, std::ios::end);
    if(!stream.fail())
@@ -155,21 +157,36 @@ OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream
             stream.read ((OpenGPS::UnsignedBytePtr)m_ValidityBuffer,length);
             if(!stream.fail())
             {
-               return TRUE;
+               success = TRUE;
             }
          }
       }
    }
 
-   Reset();
+   if(!success)
+   {
+      Reset();
 
-   return FALSE;
+      throw OpenGPS::Exception(
+         OGPS_ExGeneral,
+         _EX_T("Could not read binary point validity file contained in the X3P archive."),
+         _EX_T("Verify that the X3P file is not corrupted using the zip utility of your choice and try again."),
+         _EX_T("OpenGPS::ValidBuffer::Read"));
+   }
 }
 
-OGPS_Boolean ValidBuffer::Write(std::ostream& stream)
+void ValidBuffer::Write(std::ostream& stream) throw(...)
 {
    stream.write((const char*)m_ValidityBuffer, m_RawSize);
-   return !stream.fail();
+   
+   if(stream.fail())
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExGeneral,
+         _EX_T("Failed to write to the point validity stream."),
+         _EX_T("Check for filesystem permissions and enough space."),
+         _EX_T("OpenGPS::ValidBuffer::Write"));
+   }
 }
 
 Int16ValidBuffer::Int16ValidBuffer(PointBuffer* const value)

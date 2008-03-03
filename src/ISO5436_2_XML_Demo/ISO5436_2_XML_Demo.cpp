@@ -546,7 +546,8 @@ void readonlyExample4(OpenGPS::String fileName) {
     
    /* Open the file, hopefully everything went well... */
    OpenGPS::ISO5436_2 iso5436_2(fileName);
-   if(iso5436_2.Open(TRUE))
+   iso5436_2.Open(TRUE);
+   if(!ogps_HasError());
    {
       /* Obtain handle to xml document. */
       const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();

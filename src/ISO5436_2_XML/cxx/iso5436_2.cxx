@@ -75,35 +75,35 @@ ISO5436_2::~ISO5436_2()
    }
 }
 
-OGPS_Boolean ISO5436_2::Open(const OGPS_Boolean readOnly)
+void ISO5436_2::Open(const OGPS_Boolean readOnly) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Open(readOnly);
+   m_Instance->Open(readOnly);
 }
 
     /* Create matrix. */
-OGPS_Boolean ISO5436_2::Create(
+void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
             const Schemas::ISO5436_2::Record2Type& record2,
             const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-            const OGPS_Boolean useBinaryData)
+            const OGPS_Boolean useBinaryData) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Create(record1, record2, matrixDimension, useBinaryData);
+   m_Instance->Create(record1, record2, matrixDimension, useBinaryData);
 }
 
     /* Create list. */
-OGPS_Boolean ISO5436_2::Create(
+void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
             const Schemas::ISO5436_2::Record2Type& record2,
             const unsigned long listDimension,
-            const OGPS_Boolean useBinaryData)
+            const OGPS_Boolean useBinaryData) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Create(record1, record2, listDimension, useBinaryData);
+   m_Instance->Create(record1, record2, listDimension, useBinaryData);
 }
 
 PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator()
@@ -201,16 +201,16 @@ ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()
    return m_Instance->GetDocument();
 }
 
-OGPS_Boolean ISO5436_2::Write(const int compressionLevel)
+void ISO5436_2::Write(const int compressionLevel) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Write(compressionLevel);
+   m_Instance->Write(compressionLevel);
 }
 
-OGPS_Boolean ISO5436_2::Close()
+void ISO5436_2::Close()
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->Close();
+   m_Instance->Close();
 }

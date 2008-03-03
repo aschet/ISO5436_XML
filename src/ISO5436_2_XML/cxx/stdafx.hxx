@@ -118,8 +118,8 @@ using namespace OpenGPS;
 /// Define ID string with programm name and Version
 #define _OPENGPS_ID _OPENGPS_NAME _T(" (V") _OPENGPS_VERSIONSTRING _T(")")
 
-#define _OPENGPS_DELETE(x) if(x) { delete (x); (x) = NULL; }
-#define _OPENGPS_DELETE_ARRAY(x) if(x) { delete[] (x); (x) = NULL; }
-#define _OPENGPS_FREE(x) if(x) { free(x); (x) = NULL; }
+#define _OPENGPS_DELETE(x) if((x) != NULL) { delete (x); (x) = NULL; }
+#define _OPENGPS_DELETE_ARRAY(x) if((x) != NULL) { delete[] (x); (x) = NULL; }
+#define _OPENGPS_FREE(x) if((x) != NULL) { free(x); (x) = NULL; }
 
 #endif /* _OPENGPS_STDAFX_HXX */

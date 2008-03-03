@@ -30,6 +30,11 @@
 
 #include <opengps/messages.h>
 #include "messages_c.hxx"
+#include "../cxx/stdafx.hxx"
+
+#ifdef _DEBUG
+#  include <iostream>
+#endif
 
 const OGPS_Character* ogps_GetErrorMessage()
 {
@@ -59,6 +64,9 @@ void OpenGPS::ExceptionHistory::SetLastException(const OpenGPS::Exception& ex)
    m_LastErrorMessage = msg;
    m_LastErrorDescription = ex.details();
    m_LastErrorId = ex.id();
+   m_LastErrorSource = ex.method();
+
+   DumpIt();
 }
 
 void OpenGPS::ExceptionHistory::SetLastException(const std::exception& ex)
@@ -69,6 +77,9 @@ void OpenGPS::ExceptionHistory::SetLastException(const std::exception& ex)
    m_LastErrorMessage = msg;
    m_LastErrorDescription.clear();
    m_LastErrorId = OGPS_ExGeneral;
+   m_LastErrorSource.clear();
+
+   DumpIt();
 }
 
 void OpenGPS::ExceptionHistory::SetLastException()
@@ -76,16 +87,30 @@ void OpenGPS::ExceptionHistory::SetLastException()
    /* An exception occured, but no further details are known. */
    m_LastErrorMessage.clear();
    m_LastErrorDescription.clear();
+   m_LastErrorSource.clear();
 
    /* At least there must have been an exception... */
    m_LastErrorId = OGPS_ExGeneral;
+
+   DumpIt();
 }
 
+void OpenGPS::ExceptionHistory::DumpIt()
+{
+#ifdef _DEBUG
+   OpenGPS::String title(_T("Exception:")), brief(_T("Brief: ")), detail(_T("Details: ")), method(_T("In method: "));
+   std::cerr << title.ToChar() << std::endl <<
+      brief.ToChar() << m_LastErrorMessage.ToChar() << std::endl <<
+      detail.ToChar() << m_LastErrorDescription.ToChar() << std::endl <<
+      method.ToChar() << m_LastErrorSource.ToChar() << std::endl << std::endl;
+#endif
+}
 
 void OpenGPS::ExceptionHistory::Reset()
 {
    m_LastErrorMessage.clear();
    m_LastErrorDescription.clear();
+   m_LastErrorSource.clear();
    m_LastErrorId = OGPS_ExNone;
 }
 
@@ -114,4 +139,5 @@ OpenGPS::ExceptionHistory::~ExceptionHistory()
 
 OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorMessage;
 OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorDescription;
+OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorSource;
 OGPS_ExceptionId OpenGPS::ExceptionHistory::m_LastErrorId = OGPS_ExNone;

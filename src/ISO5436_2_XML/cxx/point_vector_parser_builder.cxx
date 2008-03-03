@@ -46,40 +46,32 @@ PointVectorParserBuilder::~PointVectorParserBuilder()
    _OPENGPS_DELETE(m_Parser);
 }
     
-OGPS_Boolean PointVectorParserBuilder::BuildParser()
+void PointVectorParserBuilder::BuildParser()
 {
    _ASSERT(!m_Parser);
 
    m_Parser = new PointVectorParser();
-
-   return TRUE;
 }
 
-OGPS_Boolean PointVectorParserBuilder::BuildX(const OGPS_DataPointType dataType)
+void PointVectorParserBuilder::BuildX(const OGPS_DataPointType dataType)
 {
    _ASSERT(m_Parser);
 
    m_Parser->SetX(m_Parser->CreateDataPointParser(dataType));
-
-   return TRUE;
 }
 
-OGPS_Boolean PointVectorParserBuilder::BuildY(const OGPS_DataPointType dataType)
+void PointVectorParserBuilder::BuildY(const OGPS_DataPointType dataType)
 {
    _ASSERT(m_Parser);
 
    m_Parser->SetY(m_Parser->CreateDataPointParser(dataType));
-
-   return TRUE;
 }
 
-OGPS_Boolean PointVectorParserBuilder::BuildZ(const OGPS_DataPointType dataType)
+void PointVectorParserBuilder::BuildZ(const OGPS_DataPointType dataType)
 {
    _ASSERT(m_Parser);
 
    m_Parser->SetZ(m_Parser->CreateDataPointParser(dataType));
-
-   return TRUE;
 }
 
 PointVectorParser* PointVectorParserBuilder::GetParser()

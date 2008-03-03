@@ -46,9 +46,6 @@ VectorBuffer::VectorBuffer()
 
 VectorBuffer::~VectorBuffer()
 {
-   // TODO: maybe we should overload following
-   // delete operators, since memory is not
-   // allocated within the current class scope?
    _OPENGPS_DELETE(m_X);
    _OPENGPS_DELETE(m_Y);
    _OPENGPS_DELETE(m_Z);

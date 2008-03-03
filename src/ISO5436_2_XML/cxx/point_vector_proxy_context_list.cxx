@@ -71,3 +71,8 @@ OGPS_Boolean PointVectorProxyContextList::IncrementIndex()
 
    return FALSE;
 }
+
+OGPS_Boolean PointVectorProxyContextList::IsMatrix() const
+{
+   return FALSE;
+}

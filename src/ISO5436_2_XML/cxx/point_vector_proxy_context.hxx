@@ -53,8 +53,11 @@ namespace OpenGPS
       /*! Gets the current index. */
       virtual unsigned long GetIndex() const;
 
-      /*! Increments the current inde by one. */
+      /*! Increments the current index by one. */
       virtual OGPS_Boolean IncrementIndex();
+
+      /*! Asks whether this context is for points managed in matrices or lists. */
+      virtual OGPS_Boolean IsMatrix() const = 0;
 
    protected:
       /*! Creates a new instance. */

@@ -49,29 +49,80 @@
 
 namespace OpenGPS
 {
+   /*!
+    * Maintains a history of exceptions.
+    */
    class ExceptionHistory
    {
    public:
+      /*!
+       * Sets an exception object as the last one that occured during execution.
+       * @param ex Add this exception object to the history of exceptions.
+       */
       static void SetLastException(const OpenGPS::Exception& ex);
+      /*!
+       * Sets an exception object as the last one that occured during execution.
+       * @param ex Add this exception object to the history of exceptions.
+       */
       static void SetLastException(const std::exception& ex);
+      /*!
+       * Notify that an unknown type of exception occured.
+       */
       static void SetLastException();
 
+      /*!
+       * Reset the history of exceptions.
+       */
       static void Reset();
 
+      /*!
+       * Gets the brief failure description of the last known exception or NULL.
+       */
       static const OGPS_Character* GetLastErrorMessage();
+
+      /*!
+       * Gets the detailed failure description of the last known exception or NULL.
+       */
       static const OGPS_Character* GetLastErrorDescription();
+
+      /*!
+       * Gets the classifier of the last known exception or ::OGPS_ExNone if none
+       * is maintained so far.
+       */
       static OGPS_ExceptionId GetLastErrorId();
 
    private:
+      /*! Creates a new instance. */
       ExceptionHistory();
+      /*! Destroys this instance. */
       ~ExceptionHistory();
 
+      /*! The brief description of the last known failure condition or empty. */
       static OpenGPS::String m_LastErrorMessage;
+
+      /*! The detailed description of the last known failure condition or empty. */
       static OpenGPS::String m_LastErrorDescription;
+
+      /*! The classifier of the last known failure condition or ::OGPS_ExNone. */
       static OGPS_ExceptionId m_LastErrorId;
+
+      /*! Source of the last error condition. */
+      static OpenGPS::String m_LastErrorSource;
+
+      /*! Dumps a message to the error console. This works in _DEBUG only. */
+      static void DumpIt();
    };
 }
 
+/*!
+ * Helper for handling thrown exceptions.
+ *
+ * First resets the history of exceptions, see OpenGPS::ExceptionHistory::Reset. Then executes a statement
+ * that is surrounded by a try-catch block. If an exception is thrown within the statement it is added to
+ * the history of exceptions, see OpenGPS::ExceptionHistory::SetLastException.
+ * 
+ * @param STATEMENT A statement with boolean return value to be executed.
+ */
 #define _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(STATEMENT) \
    OpenGPS::ExceptionHistory::Reset(); \
    try \
@@ -92,7 +143,16 @@ namespace OpenGPS
    } \
    return FALSE;
 
-
+/*!
+ * Helper for handling thrown exceptions.
+ *
+ * First resets the history of exceptions, see OpenGPS::ExceptionHistory::Reset. Then executes a statement
+ * that is surrounded by a try-catch block. If an exception is thrown within the statement it is added to
+ * the history of exceptions, see OpenGPS::ExceptionHistory::SetLastException.
+ * 
+ * @param STATEMENT The statement to be executed within the try-block.
+ * @param CLEANUP_STATEMENT The statement to be executed within the catch-block.
+ */
 #define _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(STATEMENT, CLEANUP_STATEMENT) \
    OpenGPS::ExceptionHistory::Reset(); \
    try \
@@ -115,6 +175,17 @@ namespace OpenGPS
       OpenGPS::ExceptionHistory::SetLastException(); \
    }
 
+/*!
+ * Helper for handling thrown exceptions.
+ *
+ * First resets the history of exceptions, see OpenGPS::ExceptionHistory::Reset. Then executes a statement
+ * that is surrounded by a try-catch block. If an exception is thrown within the statement it is added to
+ * the history of exceptions, see OpenGPS::ExceptionHistory::SetLastException.
+ *
+ * See ::_OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL for statements of boolean return type.
+ * 
+ * @param STATEMENT A statement to be executed.
+ */
 #define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT) \
    OpenGPS::ExceptionHistory::Reset(); \
    try \

@@ -70,16 +70,15 @@ namespace OpenGPS
       /*!
        * Maps the bit buffer from a binary stream.
        * @param stream The bit array gets copied from here.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...);
+      virtual void Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...);
       
       /*!
        * Maps the bit buffer to a binary stream.
        * @param stream The internal bit array gets written to the given stream.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Write(std::ostream& stream);
+      virtual void Write(std::ostream& stream) throw(...);
 
       virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
       virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);

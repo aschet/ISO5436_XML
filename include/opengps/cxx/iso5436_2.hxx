@@ -147,42 +147,47 @@ namespace OpenGPS
       *
       * @see ISO5436_2::Close
       *
+      * Specific implementations may raise an exception.
+      *
       * @param readOnly If set to TRUE subsequend operations on the current object assume that you will access any obtained data as read-only and won't make any changes. This may speed up some operations. If unsure set this parameter to FALSE.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Open(const OGPS_Boolean readOnly = TRUE);
+      virtual void Open(const OGPS_Boolean readOnly = TRUE) throw(...);
 
       /*!
        * Creates a new ISO5436-2 XML X3P file.
        *
        * @remarks The Record3 object defined in the ISO5436_2 XML specification will be created automatically.
+       *
+       * Specific implementations may raise an exception.
        *
        * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
        * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
        * @param matrixDimension Specifies the topology for which point measurement data will be processed.
        * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
        */
-      virtual OGPS_Boolean Create(
+      virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type& record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-         const OGPS_Boolean useBinaryData = TRUE);
+         const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       /*!
        * Creates a new ISO5436-2 XML X3P file.
        *
        * @remarks The Record3 object defined in the ISO5436_2 XML specification will be created automatically.
        *
+       * Specific implementations may raise an exception.
+       *
        * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
        * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
        * @param listDimension Specifies the size of point measurement data that will be processed.
        * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
        */
-      virtual OGPS_Boolean Create(
+      virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type& record2,
          const unsigned long listDimension,
-         const OGPS_Boolean useBinaryData = TRUE);
+         const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       /*! Destructs this object. */
       virtual ~ISO5436_2();
@@ -409,10 +414,11 @@ namespace OpenGPS
        *
        * @see ISO5436_2::Create, ISO5436_2::Open, ISO5436_2::Close
        *
+       * Specific implementations may raise an exception.
+       *
        * @param compressionLevel Optionally specifies the compression level used when writing the X3P file which is nothing else than a simple zip file container. The default value for this parameter is (-1) which enables standard compression level as a good trade-off between processing time and compression ratio. Values between 0 and 9 are possible. A value of 0 means "no compression" and a value of 9 enables the highest level compression rate at the cost of highest computation time.
-       * @returns Returns TRUE on success and FALSE if anything went wrong.
        */
-      virtual OGPS_Boolean Write(const int compressionLevel = -1);
+      virtual void Write(const int compressionLevel = -1) throw(...);
 
       /*!
        * Closes an open file handle and frees its resources.
@@ -421,7 +427,7 @@ namespace OpenGPS
        *
        * @see ISO5436_2::Create, ISO5436_2::Open, ISO5436_2::Write
        */
-      virtual OGPS_Boolean Close();
+      virtual void Close();
 
    private:
       const OGPS_Boolean m_IsProtected;

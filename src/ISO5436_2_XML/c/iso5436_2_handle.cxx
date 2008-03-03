@@ -59,10 +59,7 @@ OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
          file, \
          temp ? temp : _T("")); \
       \
-      if(!h->instance->Open(readOnly)) \
-      { \
-         _OPENGPS_DELETE(h); \
-      } \
+      h->instance->Open(readOnly); \
       , \
       \
       /* Statement within catch-block */ \
@@ -93,19 +90,16 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
          file, \
          temp ? temp : _T("")); \
       \
-      if(!h->instance->Create( \
+      h->instance->Create( \
          record1, \
          record2, \
          matrixDimension, \
-         useBinaryData)) \
-      { \
-         _OPENGPS_DELETE(h); \
-      } \
+         useBinaryData); \
       , \
       \
       /* Statement within catch-block */ \
       _OPENGPS_DELETE(h); \
-      
+
    );
 
    return h;
@@ -132,14 +126,11 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
          file, \
          temp ? temp : _T("")); \
       \
-      if(!h->instance->Create( \
+      h->instance->Create( \
          record1, \
          record2, \
          listDimension, \
-         useBinaryData)) \
-      { \
-         _OPENGPS_DELETE(h); \
-      } \
+         useBinaryData); \
       , \
       \
       /* Statement within catch-block */ \
@@ -157,14 +148,14 @@ Schemas::ISO5436_2::ISO5436_2Type * ogps_GetDocument(const OGPS_ISO5436_2Handle 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetDocument().get());
 }
 
-OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel) throw()
+void ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel) throw()
 {
    _ASSERT(handle && handle->instance);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->Write(compressionLevel));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->Write(compressionLevel));
 }
 
-OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle) throw()
+void ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle) throw()
 {
    _ASSERT(handle);
 
@@ -174,18 +165,12 @@ OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle) throw()
    {
       _ASSERT(h->instance);
 
-      OGPS_Boolean closed = FALSE;
-
       _OPENGPS_GENERIC_EXCEPTION_HANDLER( \
-         closed = h->instance->Close(); \
+         h->instance->Close(); \
          _OPENGPS_DELETE(h->instance); \
          _OPENGPS_DELETE(h); \
          );
-
-      return closed;
    }
-
-   return TRUE;
 }
 
 OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle) throw()

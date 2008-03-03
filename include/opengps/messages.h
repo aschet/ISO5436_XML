@@ -29,7 +29,9 @@
  ***************************************************************************/
 
 /*! @file
- * Global handling of error and warning messages.
+ * Global handling of error and warning messages. This wrappes C++ exception
+ * handling to be usable in the C interface. See OpenGPS::Exception for
+ * details about throwing exceptions in this software library.
  */
 
 #ifndef _OPENGPS_MESSAGES_H
@@ -55,7 +57,9 @@ typedef enum _OPENGPS_EXCEPTION_ID
    /*! A specific implementation of an interface does not implement this operation. */
    OGPS_ExNotImplemented,
    /*! An overflow occured. There is no guarantee of the integrity of further processing steps. */
-   OGPS_ExOverflow
+   OGPS_ExOverflow,
+   /*! Indicates a non-fatal error that may be ignored. This is for informational purpose only. */
+   OGPS_ExWarning
 } OGPS_ExceptionId; /*! Possible failure conditions. */
 
 #ifdef __cplusplus

@@ -72,6 +72,7 @@ namespace OpenGPS
 
       virtual unsigned long GetIndex() const;
       virtual OGPS_Boolean IncrementIndex();
+      virtual OGPS_Boolean IsMatrix() const;
 
    private:
       /*! The current index. */

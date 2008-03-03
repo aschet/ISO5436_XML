@@ -105,19 +105,19 @@ namespace OpenGPS
 
       /* Implements public ISO5436_2 interface. */
 
-      virtual OGPS_Boolean Open(const OGPS_Boolean readOnly = TRUE);
+      virtual void Open(const OGPS_Boolean readOnly = TRUE) throw(...);
 
-      virtual OGPS_Boolean Create(
+      virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type& record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-         const OGPS_Boolean useBinaryData = TRUE);
+         const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
-      virtual OGPS_Boolean Create(
+      virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type& record2,
          const unsigned long listDimension,
-         const OGPS_Boolean useBinaryData = TRUE);
+         const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       virtual PointIteratorAutoPtr CreateNextPointIterator();
       virtual PointIteratorAutoPtr CreatePrevPointIterator();
@@ -163,9 +163,9 @@ namespace OpenGPS
 
       virtual ISO5436_2TypeAutoPtr& GetDocument();
 
-      virtual OGPS_Boolean Write(const int compressionLevel = -1);
+      virtual void Write(const int compressionLevel = -1) throw(...);
 
-      virtual OGPS_Boolean Close();
+      virtual void Close();
 
    protected:
 
@@ -269,51 +269,46 @@ namespace OpenGPS
 
       /*!
        * Decompresses and verifies the current X3P archive.
-       * @returns Returns TRUE on success, FALSE otherwise.
-       * @remarks If this returns FALSE there may exist incorrect and incomplete data.
+       *
+       * @remarks If this throws an exception there may exist incorrect and incomplete data.
        * Do call ISO5436_2Container::Reset to avoid an inconsistent state.
        */
-      OGPS_Boolean Decompress();
+      void Decompress() throw(...);
 
       /*!
        * Decompresses a single file within the zip archive.
        * @param src The name of the file to be decompressed. This is the relative path with
        * the archive itself set as the root element.
        * @param dst The absolute(!) target path where uncompressed data gets stored on the media.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean Decompress(const OpenGPS::String& src, const OpenGPS::String& dst) const;
+      void Decompress(const OpenGPS::String& src, const OpenGPS::String& dst) const throw(...);
 
       /*!
        * Decompresses the main xml document contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetMainArchiveName,
        * ISO5436_2Container::GetMainFileName
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean DecompressMain() const;
+      void DecompressMain() const throw(...);
       
       /*!
        * Decompresses the md5 checksum file contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetChecksumArchiveName,
        * ISO5436_2Container::GetChecksumFileName
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean DecompressChecksum() const;
+      void DecompressChecksum() throw(...);
       
       /*!
        * Decompresses the binary point data file contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetPointDataArchiveName,
        * ISO5436_2Container::GetPointDataFileName
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean DecompressDataBin();
+      void DecompressDataBin() throw(...);
 
 
       /*!
        * (Over)writes the current X3P archive file with the actual content.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean Compress();
+      void Compress() throw(...);
 
       /*!
        * Creates the internal XML document tree structure.
@@ -328,28 +323,25 @@ namespace OpenGPS
        * @param useBinaryData Set this to TRUE to store the point
        * data within an external binary file. If set to FALSE point vectors
        * will get storead within the ISO5436-2 XML document directly.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean CreateDocument(
+      void CreateDocument(
          const Schemas::ISO5436_2::Record1Type* const record1,
          const Schemas::ISO5436_2::Record2Type* const record2,
          const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
          const unsigned long listDimension,
-         const OGPS_Boolean useBinaryData);
+         const OGPS_Boolean useBinaryData) throw(...);
 
       /*!
        * Creates an instance of the internal ISO5436-2 XML document tree.
        * An instance is created from the decompressed main xml document file.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean ReadDocument();
+      void ReadDocument() throw(...);
 
       /*!
        * Assembles a new OpenGPS::PointVectorParser object using the OpenGPS::PointVectorParserBuilder.
        * @param builder The instance of the builder that is used to create the vector parser.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean BuildPointVectorParser(PointVectorParserBuilder& builder) const;
+      virtual void BuildPointVectorParser(PointVectorParserBuilder& builder) const;
 
       /*! Gets the data type of point data of the X component of a vector. */
       OGPS_DataPointType GetXaxisDataType() const;
@@ -380,18 +372,16 @@ namespace OpenGPS
        * Sets up the internal memory storage of point data.
        * Creates and allocates the internal vector buffer and fills in point data from either the
        * ISO5436-2 main xml document or from an external binary file.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean CreatePointBuffer();
+      void CreatePointBuffer() throw(...);
       
       /*!
        * Saves the current state of internal memory storage of point data either to the zip archive
        * as an external binary point file or directly into the actual tree structure of the internal
        * document handle of the main ISO5436-2 XML document depending on the current settings.
        * @param handle The handle to the zip archive where the data is to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean SavePointBuffer(zipFile handle);
+      void SavePointBuffer(zipFile handle) throw(...);
 
       /*!
        * Removes the point list xml tag and its content from the xml document handle.
@@ -406,17 +396,15 @@ namespace OpenGPS
       /*!
        * Saves the current state of internal memory storage of point validity data to the zip archive.
        * @param handle The handle to the zip archive where the data is to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean SaveValidPointsLink(zipFile handle);
+      void SaveValidPointsLink(zipFile handle) throw(...);
 
       /*!
        * Saves the main md5 checksum to the zip archive.
        * @param handle The handle to the zip archive where the data is to be stored.
        * @param checksum The value of the calculated 128bit md5 checksum.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]);
+      void SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]) throw(...);
 
       /*!
        * Creates an instance of appropriate access methods to read point data depending on
@@ -460,15 +448,14 @@ namespace OpenGPS
       /*!
        * Reads the main ISO5436-2 XML document contained in an X3P archive to the internal
        * document handle as a tree structure.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean ReadXmlDocument();
+      void ReadXmlDocument() throw(...);
 
       /*!
        * Writes the content of the internal document handle to the main XML document present in an X3P archive.
        * @param handle The handle of the X3P archive.
        */
-      OGPS_Boolean SaveXmlDocument(zipFile handle);
+      void SaveXmlDocument(zipFile handle) throw(...);
 
       /*!
        * Creates a new instance of a vector proxy context that is used to map point data saved distinctively
@@ -514,16 +501,25 @@ namespace OpenGPS
       PointVectorAutoPtr m_PointVector;
 
       /*! Creates a temporary directory in the file system and sets ISO5436_2Container::m_TempPath. */
-      OGPS_Boolean CreateTempDir();
+      void CreateTempDir() throw(...);
 
       /*! Returns TRUE if a unique temporary directory has been created or FALSE if not. */
       OGPS_Boolean HasTempDir() const;
 
       /*! Removes the current temporary directory from the file system and erases all of its content. */
-      OGPS_Boolean RemoveTempDir();
+      void RemoveTempDir();
 
       /*! Gets a pointer to the vector buffer or NULL. */
       VectorBuffer* GetVectorBuffer();
+
+      /*! FALSE, if the md5 checksum could not be verified after reading. */
+      OGPS_Boolean m_MainChecksum;
+
+      /*! FALSE, if the md5 checksum could not be verified after reading. */
+      OGPS_Boolean m_DataBinChecksum;
+
+      /*! FALSE, if the md5 checksum could not be verified after reading. */
+      OGPS_Boolean m_ValidBinChecksum;
 
       /*!
        * Sets a valid namespace mapping for writing the ISO5436-2 XML document. 
@@ -549,21 +545,24 @@ namespace OpenGPS
 
       /*!
        * Verifies the checksum of the main document ISO5436-2 XML file.
-       * @returns Returns TRUE when the checksum could be verified, FALSE otherwise.
        */
-      OGPS_Boolean VerifyMainChecksum() const;
+      void VerifyMainChecksum();
       
       /*!
        * Verifies the checksum of the binary point data file.
-       * @returns Returns TRUE when the checksum could be verified, FALSE otherwise.
        */
-      OGPS_Boolean VerifyDataBinChecksum();
+      void VerifyDataBinChecksum();
       
       /*!
        * Verifies the checksum of the binary point validity data file.
-       * @returns Returns TRUE when the checksum could be verified, FALSE otherwise.
        */
-      OGPS_Boolean VerifyValidBinChecksum();
+      void VerifyValidBinChecksum();
+
+      /*!
+       * Check if all checksums were verified.
+       * If any one of them could not be verified this throws an OpenGPS::Exception of type ::OGPS_ExWarning that may be ignored.
+       */
+      void TestChecksums() throw(...);
 
       /*!
        * Reads the first md5 checksum from a file that contains md5 checksums of files.
@@ -693,13 +692,13 @@ namespace OpenGPS
          /*! TRUE to use matrix indexes and access methods, but FALSE for the simple list interface. */
          OGPS_Boolean m_IsMatrix;
 
-         /* The current index in X direction. Used when iterating both matrices and lists. */
+         /*! The current index in X direction. Used when iterating both matrices and lists. */
          unsigned long m_U;
 
-         /* The current index in Y direction. Used with matrices only. */
+         /*! The current index in Y direction. Used with matrices only. */
          unsigned long m_V;
 
-         /* The current index in Z direction. Used with matrices only. */
+         /*! The current index in Z direction. Used with matrices only. */
          unsigned long m_W;
 
          /*! The copy-ctor is not implemented. This prevents its usage. */
