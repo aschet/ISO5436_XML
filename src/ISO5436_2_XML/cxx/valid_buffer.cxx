@@ -32,6 +32,8 @@
 #include "point_buffer.hxx"
 #include "stdafx.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 ValidBuffer::ValidBuffer(PointBuffer* const value)
    : PointValidityProvider(value)
 {
@@ -44,53 +46,48 @@ ValidBuffer::~ValidBuffer()
    Reset();
 }
 
-OGPS_Boolean ValidBuffer::Allocate()
+void ValidBuffer::Allocate() throw(...)
 {
    _ASSERT(!m_ValidityBuffer && m_RawSize == 0 && GetPointBuffer());
 
    const unsigned int size = GetPointBuffer()->GetSize();
 
-   if(size == 0)
+   if(size > 0)
    {
-      return TRUE;
+      unsigned int rawSize = size / 8;
+
+      if(rawSize * 8 < size)
+      {
+         ++rawSize;
+      }
+
+      AllocateRaw(rawSize);
    }
-
-   unsigned int rawSize = size / 8;
-
-   if(rawSize * 8 < size)
-   {
-      ++rawSize;
-   }
-
-   return AllocateRaw(rawSize);
 }
 
-OGPS_Boolean ValidBuffer::AllocateRaw(const unsigned int rawSize)
+void ValidBuffer::AllocateRaw(const unsigned int rawSize) throw(...)
 {
    _ASSERT(!m_ValidityBuffer);
 
    m_ValidityBuffer = (OpenGPS::UnsignedBytePtr)malloc(rawSize);
 
-   if(m_ValidityBuffer)
+   if(!m_ValidityBuffer)
    {
-      _VERIFY(memset(m_ValidityBuffer, 255, rawSize));
-
-      m_RawSize = rawSize;
-
-      return TRUE;
+      throw OpenGPS::Exception(
+         OGPS_ExGeneral,
+         _EX_T("Attempt to allocate memory failed."),
+         _EX_T("Could not allocate memory using malloc. This usually means there has not been left enough virtual memory on your system to fulfill the request. You may close some applications currently running and then try again or upgrade your computer hardware."),
+         _EX_T("ValidBuffer::AllocateRaw"));
    }
 
-   return FALSE;
+   _VERIFY(memset(m_ValidityBuffer, 255, rawSize));
+   m_RawSize = rawSize;
 }
 
 void ValidBuffer::Reset()
 {
-   if(m_ValidityBuffer)
-   {
-      free(m_ValidityBuffer);
-   }
+   _OPENGPS_FREE(m_ValidityBuffer);
 
-   m_ValidityBuffer = NULL;
    m_RawSize = 0;
 }
 
@@ -99,35 +96,29 @@ OGPS_Boolean ValidBuffer::IsAllocated() const
    return (m_ValidityBuffer != NULL);
 }
 
-OGPS_Boolean ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value)
+void ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
-   if(m_ValidityBuffer)
+   _ASSERT(m_ValidityBuffer);
+   _ASSERT(index < GetPointBuffer()->GetSize());
+
+   unsigned int bytePosition = index / 8;
+   unsigned int bitPosition = index % 8;
+
+   OpenGPS::UnsignedByte bitValue = (OpenGPS::UnsignedByte)(((OpenGPS::UnsignedByte)1) << bitPosition);
+
+   OpenGPS::UnsignedBytePtr rawByte = &m_ValidityBuffer[bytePosition];
+
+   if(value)
    {
-      _ASSERT(index < GetPointBuffer()->GetSize());
-
-      unsigned int bytePosition = index / 8;
-      unsigned int bitPosition = index % 8;
-
-      OpenGPS::UnsignedByte bitValue = (OpenGPS::UnsignedByte)(((OpenGPS::UnsignedByte)1) << bitPosition);
-
-      OpenGPS::UnsignedBytePtr rawByte = &m_ValidityBuffer[bytePosition];
-
-      if(value)
-      {
-         *rawByte |= bitValue;
-      }
-      else
-      {
-         *rawByte &= ~bitValue;
-      }
-
-      return TRUE;
+      *rawByte |= bitValue;
    }
-
-   return FALSE;
+   else
+   {
+      *rawByte &= ~bitValue;
+   }
 }
 
-OGPS_Boolean ValidBuffer::IsValid(const unsigned int index) const
+OGPS_Boolean ValidBuffer::IsValid(const unsigned int index) const throw(...)
 {
    if(!m_ValidityBuffer)
    {
@@ -146,7 +137,7 @@ OGPS_Boolean ValidBuffer::IsValid(const unsigned int index) const
    return ((*rawByte & bitValue) != 0);
 }
 
-OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream)
+OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...)
 {
    // get length of file:
    stream.seekg (0, std::ios::end);
@@ -158,14 +149,13 @@ OGPS_Boolean ValidBuffer::Read(std::basic_istream<OpenGPS::UnsignedByte>& stream
          stream.seekg (0, std::ios::beg);
          if(!stream.fail())
          {
-            if(AllocateRaw(length))
+            AllocateRaw(length);
+
+            // read data as a block
+            stream.read ((OpenGPS::UnsignedBytePtr)m_ValidityBuffer,length);
+            if(!stream.fail())
             {
-               // read data as a block
-               stream.read ((OpenGPS::UnsignedBytePtr)m_ValidityBuffer,length);
-               if(!stream.fail())
-               {
-                  return TRUE;
-               }
+               return TRUE;
             }
          }
       }
@@ -193,20 +183,15 @@ Int16ValidBuffer::~Int16ValidBuffer()
 {
 }
 
-OGPS_Boolean Int16ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value)
+void Int16ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
-   if(ValidBuffer::SetValid(index, value))
+   ValidBuffer::SetValid(index, value);
+
+   if(!value)
    {
-      if(!value)
-      {
-         const OGPS_Int16 invalid = 0;
-         return GetPointBuffer()->Set(index, invalid);
-      }
-
-      return TRUE;
+      const OGPS_Int16 invalid = 0;
+      GetPointBuffer()->Set(index, invalid);
    }
-
-   return FALSE;
 }
 
 Int32ValidBuffer::Int32ValidBuffer(PointBuffer* const value)
@@ -219,18 +204,13 @@ Int32ValidBuffer::~Int32ValidBuffer()
 {
 }
 
-OGPS_Boolean Int32ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value)
+void Int32ValidBuffer::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
-   if(ValidBuffer::SetValid(index, value))
+   ValidBuffer::SetValid(index, value);
+
+   if(!value)
    {
-      if(!value)
-      {
-         const OGPS_Int32 invalid = 0;
-         return GetPointBuffer()->Set(index, invalid);
-      }
-
-      return TRUE;
+      const OGPS_Int32 invalid = 0;
+      GetPointBuffer()->Set(index, invalid);
    }
-
-   return FALSE;
 }

@@ -68,15 +68,15 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~XmlPointVectorReaderContext();
 
-      virtual OGPS_Boolean Read(OGPS_Int16* const value);
-      virtual OGPS_Boolean Read(OGPS_Int32* const value);
-      virtual OGPS_Boolean Read(OGPS_Float* const value);
-      virtual OGPS_Boolean Read(OGPS_Double* const value);
+      virtual void Read(OGPS_Int16* const value) throw(...);
+      virtual void Read(OGPS_Int32* const value) throw(...);
+      virtual void Read(OGPS_Float* const value) throw(...);
+      virtual void Read(OGPS_Double* const value) throw(...);
 
-      virtual OGPS_Boolean Skip();
+      virtual void Skip() throw(...);
 
-      virtual OGPS_Boolean MoveNext();
-      virtual OGPS_Boolean IsValid() const;
+      virtual OGPS_Boolean MoveNext() throw(...);
+      virtual OGPS_Boolean IsValid() const throw(...);
 
    protected:
       /*!

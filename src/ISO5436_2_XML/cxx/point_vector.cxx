@@ -48,11 +48,12 @@ PointVector::PointVector() : PointVectorBase()
    m_Y = new DataPointImpl();
    m_Z = new DataPointImpl();
 }
+
 PointVector::~PointVector()
 {
-   delete m_X;
-   delete m_Y;
-   delete m_Z;
+   _OPENGPS_DELETE(m_X);
+   _OPENGPS_DELETE(m_Y);
+   _OPENGPS_DELETE(m_Z);
 }
 
 const DataPoint* PointVector::GetX() const
@@ -60,11 +61,13 @@ const DataPoint* PointVector::GetX() const
    _ASSERT(m_X);
    return m_X;
 }
+
 const DataPoint* PointVector::GetY() const
 {
    _ASSERT(m_Y);
    return m_Y;
 }
+
 const DataPoint* PointVector::GetZ() const
 {
    _ASSERT(m_Z);
@@ -76,169 +79,167 @@ DataPoint* PointVector::GetX()
    _ASSERT(m_X);
    return m_X;
 }
+
 DataPoint* PointVector::GetY()
 {
    _ASSERT(m_Y);
    return m_Y;
 }
+
 DataPoint* PointVector::GetZ()
 {
    _ASSERT(m_Z);
    return m_Z;
 }
 
-OGPS_Boolean PointVector::GetX(OGPS_Int16* const value) const
+void PointVector::GetX(OGPS_Int16* const value) const throw(...)
 {
    _ASSERT(value && m_X);
-
-   return m_X->Get(value);
+   m_X->Get(value);
 }
 
-OGPS_Boolean PointVector::GetX(OGPS_Int32* const value) const
+void PointVector::GetX(OGPS_Int32* const value) const throw(...)
 {
    _ASSERT(value && m_X);
-
-   return m_X->Get(value);
+   m_X->Get(value);
 }
 
-OGPS_Boolean PointVector::GetX(OGPS_Float* const value) const
+void PointVector::GetX(OGPS_Float* const value) const throw(...)
 {
    _ASSERT(value && m_X);
-
-   return m_X->Get(value);
+   m_X->Get(value);
 }
 
-OGPS_Boolean PointVector::GetX(OGPS_Double* const value) const
+void PointVector::GetX(OGPS_Double* const value) const throw(...)
 {
    _ASSERT(value && m_X);
-
-   return m_X->Get(value);
+   m_X->Get(value);
 }
 
-OGPS_Boolean PointVector::GetY(OGPS_Int16* const value) const
+void PointVector::GetY(OGPS_Int16* const value) const throw(...)
 {
    _ASSERT(value && m_Y);
-
-   return m_Y->Get(value);
+   m_Y->Get(value);
 }
 
-OGPS_Boolean PointVector::GetY(OGPS_Int32* const value) const
+void PointVector::GetY(OGPS_Int32* const value) const throw(...)
 {
    _ASSERT(value && m_Y);
-
-   return m_Y->Get(value);
+   m_Y->Get(value);
 }
 
-OGPS_Boolean PointVector::GetY(OGPS_Float* const value) const
+void PointVector::GetY(OGPS_Float* const value) const throw(...)
 {
    _ASSERT(value && m_Y);
-
-   return m_Y->Get(value);
+   m_Y->Get(value);
 }
 
-OGPS_Boolean PointVector::GetY(OGPS_Double* const value) const
+void PointVector::GetY(OGPS_Double* const value) const throw(...)
 {
    _ASSERT(value && m_Y);
-
-   return m_Y->Get(value);
+   m_Y->Get(value);
 }
 
-OGPS_Boolean PointVector::GetZ(OGPS_Int16* const value) const
+void PointVector::GetZ(OGPS_Int16* const value) const throw(...)
 {
    _ASSERT(value && m_Z);
-
-   return m_Z->Get(value);
+   m_Z->Get(value);
 }
 
-OGPS_Boolean PointVector::GetZ(OGPS_Int32* const value) const
+void PointVector::GetZ(OGPS_Int32* const value) const throw(...)
 {
    _ASSERT(value && m_Z);
-
-   return m_Z->Get(value);
+   m_Z->Get(value);
 }
 
-OGPS_Boolean PointVector::GetZ(OGPS_Float* const value) const
+void PointVector::GetZ(OGPS_Float* const value) const throw(...)
 {
    _ASSERT(value && m_Z);
-
-   return m_Z->Get(value);
+   m_Z->Get(value);
 }
 
-OGPS_Boolean PointVector::GetZ(OGPS_Double* const value) const
+void PointVector::GetZ(OGPS_Double* const value) const throw(...)
 {
    _ASSERT(value && m_Z);
-
-   return m_Z->Get(value);
+   m_Z->Get(value);
 }
 
-void PointVector::SetX(const OGPS_Int16 value)
-{
-   _ASSERT(m_X);
-   m_X->Set(value);
-}
-void PointVector::SetX(const OGPS_Int32 value)
-{
-   _ASSERT(m_X);
-   m_X->Set(value);
-}
-void PointVector::SetX(const OGPS_Float value)
-{
-   _ASSERT(m_X);
-   m_X->Set(value);
-}
-void PointVector::SetX(const OGPS_Double value)
+void PointVector::SetX(const OGPS_Int16 value) throw(...)
 {
    _ASSERT(m_X);
    m_X->Set(value);
 }
 
-void PointVector::SetY(const OGPS_Int16 value)
+void PointVector::SetX(const OGPS_Int32 value) throw(...)
 {
-   _ASSERT(m_Y);
-   m_Y->Set(value);
+   _ASSERT(m_X);
+   m_X->Set(value);
 }
-void PointVector::SetY(const OGPS_Int32 value)
+
+void PointVector::SetX(const OGPS_Float value) throw(...)
 {
-   _ASSERT(m_Y);
-   m_Y->Set(value);
+   _ASSERT(m_X);
+   m_X->Set(value);
 }
-void PointVector::SetY(const OGPS_Float value)
+
+void PointVector::SetX(const OGPS_Double value) throw(...)
 {
-   _ASSERT(m_Y);
-   m_Y->Set(value);
+   _ASSERT(m_X);
+   m_X->Set(value);
 }
-void PointVector::SetY(const OGPS_Double value)
+
+void PointVector::SetY(const OGPS_Int16 value) throw(...)
 {
    _ASSERT(m_Y);
    m_Y->Set(value);
 }
 
-void PointVector::SetZ(const OGPS_Int16 value)
+void PointVector::SetY(const OGPS_Int32 value) throw(...)
 {
-   _ASSERT(m_Z);
-   m_Z->Set(value);
+   _ASSERT(m_Y);
+   m_Y->Set(value);
 }
-void PointVector::SetZ(const OGPS_Int32 value)
+
+void PointVector::SetY(const OGPS_Float value) throw(...)
 {
-   _ASSERT(m_Z);
-   m_Z->Set(value);
+   _ASSERT(m_Y);
+   m_Y->Set(value);
 }
-void PointVector::SetZ(const OGPS_Float value)
+
+void PointVector::SetY(const OGPS_Double value) throw(...)
 {
-   _ASSERT(m_Z);
-   m_Z->Set(value);
+   _ASSERT(m_Y);
+   m_Y->Set(value);
 }
-void PointVector::SetZ(const OGPS_Double value)
+
+void PointVector::SetZ(const OGPS_Int16 value) throw(...)
 {
    _ASSERT(m_Z);
    m_Z->Set(value);
 }
 
+void PointVector::SetZ(const OGPS_Int32 value) throw(...)
+{
+   _ASSERT(m_Z);
+   m_Z->Set(value);
+}
+
+void PointVector::SetZ(const OGPS_Float value) throw(...)
+{
+   _ASSERT(m_Z);
+   m_Z->Set(value);
+}
+
+void PointVector::SetZ(const OGPS_Double value) throw(...)
+{
+   _ASSERT(m_Z);
+   m_Z->Set(value);
+}
 
 void PointVector::GetXYZ(
                          OGPS_Double* const x,
                          OGPS_Double* const y,
-                         OGPS_Double* const z) const
+                         OGPS_Double* const z) const throw(...)
 {
    if(x != NULL)
    {
@@ -259,13 +260,13 @@ void PointVector::GetXYZ(
    }
 }
 
-OGPS_Boolean PointVector::IsValid() const
+OGPS_Boolean PointVector::IsValid() const throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
-   return /*m_X->IsValid() && m_Y->IsValid() && */m_Z->IsValid();
+   return m_Z->IsValid();
 }
 
-PointVector& PointVector::operator=(const PointVector& src)
+PointVector& PointVector::operator=(const PointVector& src) throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
    _ASSERT(src.m_X && src.m_Y && src.m_Z);
@@ -275,24 +276,24 @@ PointVector& PointVector::operator=(const PointVector& src)
    return *this;
 }
 
-OGPS_Boolean PointVector::Set(const PointVectorBase& value)
+void PointVector::Set(const PointVectorBase& value) throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
    _ASSERT(value.GetX() && value.GetY() && value.GetZ());
 
-   return (m_X->Set(*value.GetX()) &&
-      m_Y->Set(*value.GetY()) &&
-      m_Z->Set(*value.GetZ()));
+   m_X->Set(*value.GetX());
+   m_Y->Set(*value.GetY());
+   m_Z->Set(*value.GetZ());
 }
 
-OGPS_Boolean PointVector::Get(PointVectorBase& value) const
+void PointVector::Get(PointVectorBase& value) const throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
    _ASSERT(value.GetX() && value.GetY() && value.GetZ());
 
-   return (value.GetX()->Set(*m_X) &&
-      value.GetY()->Set(*m_Y) &&
-      value.GetZ()->Set(*m_Z));
+   value.GetX()->Set(*m_X);
+   value.GetY()->Set(*m_Y);
+   value.GetZ()->Set(*m_Z);
 }

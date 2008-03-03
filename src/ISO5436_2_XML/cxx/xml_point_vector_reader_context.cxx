@@ -34,6 +34,29 @@
 #include "stdafx.hxx"
 
 #include <opengps/cxx/string.hxx>
+#include <opengps/cxx/exceptions.hxx>
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_STREAM_AND_THROW_EXCEPTION \
+   if(!m_Stream) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("No stream object available."), \
+      _EX_T("The operation on the stream object failed, because the stream has been released already."), \
+      _EX_T("OpenGPS::XmlPointVectorReaderContext")); \
+   }
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_ISGOOD_AND_THROW_EXCEPTION \
+   if(!IsGood()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("The underlying stream object became invalid."), \
+      _EX_T("A read/write error occured."), \
+      _EX_T("OpenGPS::XmlPointVectorReaderContext")); \
+   }
 
 PointVectorReaderContext::PointVectorReaderContext()
 {
@@ -67,86 +90,62 @@ void XmlPointVectorReaderContext::Set(const OpenGPS::String& buf)
 
 void XmlPointVectorReaderContext::Reset()
 {
-   if(m_Stream)
-   {
-      delete m_Stream;
-      m_Stream = NULL;
-   }
+   _OPENGPS_DELETE(m_Stream);
 
    m_Next = 0;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Int16* const value)
+void XmlPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      *m_Stream >> *value;
-      return IsGood();
-   }
-
-   return FALSE;
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   *m_Stream >> *value;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Int32* const value)
+void XmlPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      *m_Stream >> *value;
-      return IsGood();
-   }
-
-   return FALSE;
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   *m_Stream >> *value;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Float* const value)
+void XmlPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      *m_Stream >> *value;
-      return IsGood();
-   }
-
-   return FALSE;
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   *m_Stream >> *value;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::Read(OGPS_Double* const value)
+void XmlPointVectorReaderContext::Read(OGPS_Double* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      *m_Stream >> *value;      
-      return IsGood();
-   }
-
-   return FALSE;
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   *m_Stream >> *value;      
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
- OGPS_Boolean XmlPointVectorReaderContext::Skip()
- {
-    if(m_Stream)
-    {
-      return IsGood();
-    }
-
-    return FALSE;
- }
+void XmlPointVectorReaderContext::Skip() throw(...)
+{
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
+}
 
 OGPS_Boolean XmlPointVectorReaderContext::IsGood() const
 {
    _ASSERT(m_Stream);
 
-      const std::ios_base::io_state state = m_Stream->rdstate();
-      return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
+   const std::ios_base::io_state state = m_Stream->rdstate();
+   return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::MoveNext()
+OGPS_Boolean XmlPointVectorReaderContext::MoveNext() throw(...)
 {
    _ASSERT(m_PointVectorList);
 
@@ -175,7 +174,7 @@ OGPS_Boolean XmlPointVectorReaderContext::MoveNext()
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::IsValid() const
+OGPS_Boolean XmlPointVectorReaderContext::IsValid() const throw(...)
 {
    return (m_Stream && m_Stream->str().length() > 0);
 }

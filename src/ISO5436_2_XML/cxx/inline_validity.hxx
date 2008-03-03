@@ -65,8 +65,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~FloatInlineValidity();
 
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const;
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
    };
 
    /*!
@@ -89,8 +89,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~DoubleInlineValidity();
 
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const;
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
    };
 }
 

@@ -127,22 +127,25 @@ namespace OpenGPS
       /*!
        * Gets the value of the current point vector.
        *
+       * A specific instance may throw an OpenGPS::Exception on failure,
+       *
        * @see PointIterator::MoveNext
        *
        * @param vector Gets a copy of the vector at the current iterator position.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetCurrent(PointVector& vector) = 0;
+      virtual void GetCurrent(PointVector& vector) throw(...) = 0;
 
       /*!
        * Sets the value of the current point vector.
+       *
+       * A specific instance may throw an OpenGPS::Exception on failure,
        *
        * @see PointIterator::MoveNext
        *
        * @param vector New value of the current point vector. May be NULL to indicate an invalid point.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean SetCurrent(const PointVector* const vector) = 0;
+      virtual void SetCurrent(const PointVector* const vector) throw(...) = 0;
 
       /*!
        * Gets the current position of the iterator in topology coordinates.

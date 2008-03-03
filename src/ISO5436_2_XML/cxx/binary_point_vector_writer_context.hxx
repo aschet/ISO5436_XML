@@ -61,12 +61,11 @@ namespace OpenGPS
 
       /*!
        * Closes the internal handle to the binary stream and frees its resources.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Close();
+      virtual void Close();
 
-      virtual OGPS_Boolean Skip();
-      virtual OGPS_Boolean MoveNext();
+      virtual void Skip() throw(...);
+      virtual void MoveNext() throw(...);
 
       /*!
        * Gets the md5 checksum of all bytes written.

@@ -31,81 +31,88 @@
 #include <opengps/data_point.h>
 
 #include "data_point_c.hxx"
+#include "messages_c.hxx"
 
 #include "../cxx/data_point_impl.hxx"
 #include "../cxx/stdafx.hxx"
 
-OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint)
+OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   return dataPoint->instance->GetType();
+   OGPS_DataPointType retval = OGPS_MissingPointType;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(retval = dataPoint->instance->GetType());
+   return retval;
 }
 
-short ogps_GetInt16(const OGPS_DataPointPtr dataPoint)
+short ogps_GetInt16(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   short v;
-   return (dataPoint->instance->Get(&v) ? v : 0);
+   short v = 0;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Get(&v));
+   return v;
 }
 
-int ogps_GetInt32(const OGPS_DataPointPtr dataPoint)
+int ogps_GetInt32(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   int v;
-   return (dataPoint->instance->Get(&v) ? v : 0);
+   int v = 0;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Get(&v));
+   return v;
 }
 
-float ogps_GetFloat(const OGPS_DataPointPtr dataPoint)
+float ogps_GetFloat(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   float v;
-   return (dataPoint->instance->Get(&v) ? v : 0.0F);
+   float v = 0.0F;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Get(&v));
+   return v;
 }
 
-double ogps_GetDouble(const OGPS_DataPointPtr dataPoint)
+double ogps_GetDouble(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   double v;
-   return (dataPoint->instance->Get(&v) ? v : 0.0);
+   double v = 0.0;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Get(&v));
+   return v;
 }
 
 void ogps_SetInt16(
 	OGPS_DataPointPtr const dataPoint,
-	const short value)
+	const short value) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   _VERIFY(dataPoint->instance->Set(value));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Set(value));
 }
 
 void ogps_SetInt32(
 	OGPS_DataPointPtr const dataPoint,
-	const int value)
+	const int value) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   _VERIFY(dataPoint->instance->Set(value));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Set(value));
 }
 
 void ogps_SetFloat(
 	OGPS_DataPointPtr const dataPoint,
-	const float value)
+	const float value) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   _VERIFY(dataPoint->instance->Set(value));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Set(value));
 }
 
 void ogps_SetDouble(
 	OGPS_DataPointPtr const dataPoint,
-	const double value)
+	const double value) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
-   _VERIFY(dataPoint->instance->Set(value));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(dataPoint->instance->Set(value));
 }

@@ -53,12 +53,12 @@
 namespace OpenGPS
 {
    /*!
-    * Describes a gerenal exception.
+    * Describes a general exception.
     */
    class _OPENGPS_EXPORT Exception : public std::exception
    {
    public:
-      Exception(const OGPS_ExceptionId id, const OGPS_ExceptionChar *text, const OGPS_ExceptionChar *details) throw();
+      Exception(const OGPS_ExceptionId id, const OGPS_ExceptionChar *text, const OGPS_ExceptionChar *details, const OGPS_ExceptionChar *method) throw();
       Exception(const Exception& rhs) throw();
       virtual ~Exception() throw();
 
@@ -68,9 +68,13 @@ namespace OpenGPS
       /*! Gets a detailed description possible with hints to its avoidance. */
       const OpenGPS::String& details() const throw();
 
+      /*! Gets the name of the method where the exception occured or NULL. */
+      const OpenGPS::String& method() const throw();
+
    private:
       OGPS_ExceptionId m_Id;
       OpenGPS::String m_Details;
+      OpenGPS::String m_Method;
    };
 }
 

@@ -62,7 +62,7 @@ namespace OpenGPS
       virtual ~ValidBuffer();
 
       /*! Allocates the internal bit array. Initially all point vectors are assumed to be valid. */
-      virtual OGPS_Boolean Allocate();
+      virtual void Allocate() throw(...);
 
       /*! Returns wheter the bit buffer has been allocated already. */
       virtual OGPS_Boolean IsAllocated() const;
@@ -72,7 +72,7 @@ namespace OpenGPS
        * @param stream The bit array gets copied from here.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(std::basic_istream<OpenGPS::UnsignedByte>& stream);
+      virtual OGPS_Boolean Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...);
       
       /*!
        * Maps the bit buffer to a binary stream.
@@ -81,8 +81,8 @@ namespace OpenGPS
        */
       virtual OGPS_Boolean Write(std::ostream& stream);
 
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const;
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
 
    protected:
       /*!
@@ -96,7 +96,7 @@ namespace OpenGPS
        * @param rawSize Amount of memory to be allocated in bytes.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean AllocateRaw(const unsigned int rawSize);
+      virtual void AllocateRaw(const unsigned int rawSize) throw(...);
 
       /*! Frees allocated resources. */
       virtual void Reset();
@@ -124,7 +124,7 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~Int16ValidBuffer();
 
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
    };
 
    /*!
@@ -142,7 +142,7 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~Int32ValidBuffer();
 
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
    };
 }
 

@@ -44,24 +44,16 @@ Int32DataPointParser::~Int32DataPointParser()
 {
 }
     
-OGPS_Boolean Int32DataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
+void Int32DataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
 {
    OGPS_Int32 v;
-   if(context.Read(&v))
-   {
-      return value.Set(v);
-   }
-
-   return FALSE;
+   context.Read(&v);
+   value.Set(v);   
 }
 
-OGPS_Boolean Int32DataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
+void Int32DataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
 {
    OGPS_Int32 v;
-   if(value.Get(&v))
-   {
-      return context.Write(&v);
-   }
-
-   return FALSE;
+   value.Get(&v);
+   context.Write(&v);
 }

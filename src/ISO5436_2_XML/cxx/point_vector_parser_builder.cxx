@@ -43,10 +43,7 @@ PointVectorParserBuilder::PointVectorParserBuilder()
 
 PointVectorParserBuilder::~PointVectorParserBuilder()
 {
-   if(m_Parser)
-   {
-      delete m_Parser;
-   }
+   _OPENGPS_DELETE(m_Parser);
 }
     
 OGPS_Boolean PointVectorParserBuilder::BuildParser()

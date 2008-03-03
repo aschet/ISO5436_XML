@@ -236,10 +236,11 @@ void mediumComplexExample(OpenGPS::String fileName) {
     ogps_SetDoubleZ(vector, 4.8);
   
     /* 3. Write into document */  
-    if(!ogps_SetCurrentPoint(iterator, vector))
+    ogps_SetCurrentPoint(iterator, vector);
+    
+    if(ogps_HasError())
     {
-      // Error!
-      break;
+       break;
     }
   }
     
@@ -295,9 +296,10 @@ void readonlyExample(OpenGPS::String fileName)
       ogps_GetMatrixPosition(iterator, &u, &v, &w);
 
       /* Get points at current position. */
-      if(!ogps_GetCurrentPoint(iterator, vector))
+      ogps_GetCurrentPoint(iterator, vector);
+
+      if(ogps_HasError())
       {
-         // Error!
          break;
       }
 
@@ -358,10 +360,11 @@ void readonlyExample2(OpenGPS::String fileName) {
   while(ogps_MoveNextPoint(iterator))
   {
     /* Get points at current position. */
-    if(!ogps_GetCurrentPoint(iterator, vector))
+    ogps_GetCurrentPoint(iterator, vector);
+    
+    if(ogps_HasError())
     {
-      // Error!
-      break;
+       break;
     }
       
     /* Valid data point (not missing)?  */
@@ -560,13 +563,16 @@ void readonlyExample4(OpenGPS::String fileName) {
             const unsigned long maxIndex = (unsigned long)document->Record3().ListDimension().get();
             for(unsigned long index = 0; index < maxIndex; ++index)
             {
-               if(!iso5436_2.GetListPoint(index, vector))
+               iso5436_2.GetListPoint(index, vector);
+
+               if(ogps_HasError())
                {
-                  // Error!
                   break;
                }
 
-               if(!iso5436_2.SetListPoint(index, vector))
+               iso5436_2.SetListPoint(index, vector);
+               
+               if(ogps_HasError())
                {
                   break;
                }

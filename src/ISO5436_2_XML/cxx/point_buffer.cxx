@@ -33,6 +33,8 @@
 
 #include <stdlib.h>
 
+#include <opengps/cxx/exceptions.hxx>
+
 PointBuffer::PointBuffer()
 {
    m_Size = 0;
@@ -42,44 +44,76 @@ PointBuffer::~PointBuffer()
 {
 }
 
-OGPS_Boolean PointBuffer::Set(const unsigned long index, const short value)
+void PointBuffer::Set(const unsigned long index, const OGPS_Int16 value) throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not set point data due to conflicting types."),
+      _EX_T("There was an attempt to write point data of type OGPS_Int16, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-OGPS_Boolean PointBuffer::Set(const unsigned long index, const int value)
+void PointBuffer::Set(const unsigned long index, const OGPS_Int32 value) throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not set point data due to conflicting types."),
+      _EX_T("There was an attempt to write point data of type OGPS_Int32, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-OGPS_Boolean PointBuffer::Set(const unsigned long index, const float value)
+void PointBuffer::Set(const unsigned long index, const OGPS_Float value) throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not set point data due to conflicting types."),
+      _EX_T("There was an attempt to write point data of type OGPS_Float, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-OGPS_Boolean PointBuffer::Set(const unsigned long index, const double value)
+void PointBuffer::Set(const unsigned long index, const OGPS_Double value) throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not set point data due to conflicting types."),
+      _EX_T("There was an attempt to write point data of type OGPS_Double, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-OGPS_Boolean PointBuffer::Get(const unsigned long index, short& value) const
+void PointBuffer::Get(const unsigned long index, OGPS_Int16& value) const throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not read point data due to conflicting types."),
+      _EX_T("There was an attempt to read point data of type OGPS_Int16, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-OGPS_Boolean PointBuffer::Get(const unsigned long index, int& value) const
+void PointBuffer::Get(const unsigned long index, OGPS_Int32& value) const throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not read point data due to conflicting types."),
+      _EX_T("There was an attempt to read point data of type OGPS_Int32, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-OGPS_Boolean PointBuffer::Get(const unsigned long index, float& value) const
+void PointBuffer::Get(const unsigned long index, OGPS_Float& value) const throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not read point data due to conflicting types."),
+      _EX_T("There was an attempt to read point data of type OGPS_Float, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-OGPS_Boolean PointBuffer::Get(const unsigned long index, double& value) const
+void PointBuffer::Get(const unsigned long index, OGPS_Double& value) const throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExInvalidOperation,
+      _EX_T("Could not read point data due to conflicting types."),
+      _EX_T("There was an attempt to read point data of type OGPS_Double, but the axis description indicates a different type of point data. Both type information must match exacly to make this operation valid."),
+      _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
 unsigned long PointBuffer::GetSize() const
@@ -87,31 +121,38 @@ unsigned long PointBuffer::GetSize() const
    return m_Size;
 }
 
-OpenGPS::UnsignedBytePtr PointBuffer::Allocate(const unsigned long size, const size_t typeSize)
+OpenGPS::UnsignedBytePtr PointBuffer::Allocate(const unsigned long size, const size_t typeSize) throw(...)
 {
-      _ASSERT(m_Size == 0);
+   _ASSERT(m_Size == 0);
 
-      OpenGPS::UnsignedBytePtr buffer = (OpenGPS::UnsignedBytePtr)malloc(size * typeSize);
-      if(buffer)
-      {
-         m_Size = size;
-      }
+   OpenGPS::UnsignedBytePtr buffer = (OpenGPS::UnsignedBytePtr)malloc(size * typeSize);
+      
+   if(!buffer)
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExGeneral,
+         _EX_T("Attempt to allocate memory failed."),
+         _EX_T("Could not allocate memory using malloc. This usually means there has not been left enough virtual memory on your system to fulfill the request. You may close some applications currently running and then try again or upgrade your computer hardware."),
+         _EX_T("OpenGPS::PointBuffer::Allocate"));
+   }
 
-      return buffer;
+   m_Size = size;
+
+   return buffer;
 }
 
 void PointBuffer::Free(OpenGPS::UnsignedBytePtr* value)
 {
-   if(*value)
-   {
-      free(*value);
-      *value = NULL;
-   }
+   _OPENGPS_FREE(*value);
 }
 
-OGPS_Boolean PointBuffer::Allocate(const unsigned long size)
+void PointBuffer::Allocate(const unsigned long size) throw(...)
 {
-   return FALSE;
+   throw OpenGPS::Exception(
+      OGPS_ExNotImplemented,
+      _EX_T("This method has not been implemented yet."),
+      _EX_T("Implement this method for the current specialisation to be able to store some data herein."),
+      _EX_T("OpenGPS::PointBuffer::Allocate"));
 }
 
 OGPS_DataPointType PointBuffer::GetType() const

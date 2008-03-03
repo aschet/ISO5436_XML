@@ -54,7 +54,7 @@ ISO5436_2::ISO5436_2(
 ISO5436_2::ISO5436_2(const OpenGPS::String& file)
                      : m_IsProtected(FALSE)
 {
-   m_Instance = new ISO5436_2Container(file, _T("")); /* TODO: emptyOpenGPS::String? */
+   m_Instance = new ISO5436_2Container(file, _T(""));
 }
 
 ISO5436_2::~ISO5436_2()
@@ -71,7 +71,7 @@ ISO5436_2::~ISO5436_2()
    {
       _ASSERT(m_Instance != this);
 
-      delete m_Instance;
+      _OPENGPS_DELETE(m_Instance);
    }
 }
 
@@ -120,78 +120,78 @@ PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator()
    return m_Instance->CreatePrevPointIterator();
 }
 
-OGPS_Boolean ISO5436_2::SetMatrixPoint(
+void ISO5436_2::SetMatrixPoint(
                                  const unsigned long u,
                                  const unsigned long v,
                                  const unsigned long w,
-                                 const PointVector* const vector)
+                                 const PointVector* const vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->SetMatrixPoint(u, v, w, vector);
+   m_Instance->SetMatrixPoint(u, v, w, vector);
 }
 
-OGPS_Boolean ISO5436_2::GetMatrixPoint(
+void ISO5436_2::GetMatrixPoint(
                                  const unsigned long u,
                                  const unsigned long v,
                                  const unsigned long w,
-                                 PointVector& vector)
+                                 PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->GetMatrixPoint(u, v, w, vector);
+   m_Instance->GetMatrixPoint(u, v, w, vector);
 }
 
-OGPS_Boolean ISO5436_2::SetListPoint(
+void ISO5436_2::SetListPoint(
                                const unsigned long index,
-                               const PointVector& vector)
+                               const PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->SetListPoint(index, vector);
+   m_Instance->SetListPoint(index, vector);
 }
 
-OGPS_Boolean ISO5436_2::GetListPoint(
+void ISO5436_2::GetListPoint(
                                const unsigned long index,
-                               PointVector& vector)
+                               PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->GetListPoint(index, vector);
+   m_Instance->GetListPoint(index, vector);
 }
 
-OGPS_Boolean ISO5436_2::GetMatrixCoord(
+void ISO5436_2::GetMatrixCoord(
                                  const unsigned long u,
                                  const unsigned long v,
                                  const unsigned long w,
                                  OGPS_Double* const x,
                                  OGPS_Double* const y,
-                                 OGPS_Double* const z)
+                                 OGPS_Double* const z) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->GetMatrixCoord(u, v, w, x, y, z);
+   m_Instance->GetMatrixCoord(u, v, w, x, y, z);
 }
 
 OGPS_Boolean ISO5436_2::IsMatrixCoordValid(
        unsigned long u,
        unsigned long v,
-       unsigned long w)
+       unsigned long w) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->IsMatrixCoordValid(u, v, w);
 }
 
-OGPS_Boolean ISO5436_2::GetListCoord(
+void ISO5436_2::GetListCoord(
                                const unsigned long index,
                                OGPS_Double* const x,
                                OGPS_Double* const y,
-                               OGPS_Double* const z)
+                               OGPS_Double* const z) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->GetListCoord(index, x, y, z);
+   m_Instance->GetListCoord(index, x, y, z);
 }
 
 ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()

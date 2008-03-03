@@ -210,6 +210,9 @@ namespace OpenGPS
       *
       * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @remarks The data types of the values stored in the given vector parameter must correspond
       * with the data types specified in the ISO5436-2 XML document within the axes definition area.
       * Also ISO5436_2::SetMatrixPoint is the valid access method only if point vectors are stored in
@@ -227,17 +230,18 @@ namespace OpenGPS
       * @param vector Set this point value at the given u,v,w position. If this parameter is set to
       * NULL, this indicates there is no measurement data available for this position. This is due
       * to the topology encoding properties of the matrix format storage.
-      * @return Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean SetMatrixPoint(
+      virtual void SetMatrixPoint(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
-         const PointVector* const vector);
+         const PointVector* const vector) throw(...);
 
       /*!
        * Gets the raw value of a data point vector at a given surface position.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @remarks ISO5436_2::GetMatrixPoint is the valid access method only if point vectors are stored in
        * matrix format with encoded topology information. If this is not the case point vectors are
@@ -252,18 +256,20 @@ namespace OpenGPS
        * @param v The v-direction of the surface position.
        * @param w The w-direction of the surface position.
        * @param vector Returns the raw point value at the given u,v,w position.
-       * @return Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetMatrixPoint(
+      virtual void GetMatrixPoint(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
-         PointVector& vector);
+         PointVector& vector) throw(...);
 
       /*!
        * Sets the value of a three-dimensional data point vector at a given index position.
        *
        * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @remarks The data types of the values stored in the given vector parameter must correspond
        * with the data types specified in the ISO5436-2 XML document within the axes definition area.
@@ -278,15 +284,16 @@ namespace OpenGPS
        *
        * @param index The index position of the point vector to manipulate.
        * @param vector Set this point value at the given index position.
-       * @return Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean SetListPoint(
+      virtual void SetListPoint(
          const unsigned long index,
-         const PointVector& vector);
+         const PointVector& vector) throw(...);
 
       /*!
        * Gets the raw value of a data point vector at a given index position.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @remarks ISO5436_2::GetListPoint is the valid access method only if point vectors are stored in
        * list format. If this is not the case and point vectors are stored in matrix format with
@@ -301,15 +308,18 @@ namespace OpenGPS
        * @param vector Returns the raw point value at the given position.
        * @return Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetListPoint(
+      virtual void GetListPoint(
          const unsigned long index,
-         PointVector& vector);
+         PointVector& vector) throw(...);
 
       /*!
        * Gets the fully transformed value of a data point vector at a given surface position.
        *
        * Other than with ISO5436_2::GetMatrixPoint this function also applies the axes transformation
        * specified in the axes definition area of the ISO 5436-2 XML document.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @remarks ISO5436_2::GetMatrixCoord is the valid access method only if point vectors are stored in
        * matrix format with encoded topology information. If this is not the case point vectors are
@@ -328,19 +338,22 @@ namespace OpenGPS
        * @param z Returns the fully transformed z component of the point value at the given u,v,w position. If this parameter is set to NULL, the z axis component will be safely ignored.
        * @return Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetMatrixCoord(
+      virtual void GetMatrixCoord(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z);
+         OGPS_Double* const z) throw(...);
 
       /*!
        * Asks if there is point vector data stored at the given matrix position.
        *
        * Since the matrix storage format encodes topology information there may not exist valid point
        * vector data for every u,v,w position because there was no measurement data available.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @see ISO5436_2::GetMatrixPoint, ISO5436_2::GetMatrixCoord, ISO5436_2::SetMatrixPoint
        *
@@ -352,13 +365,16 @@ namespace OpenGPS
       virtual OGPS_Boolean IsMatrixCoordValid(
          unsigned long u,
          unsigned long v,
-         unsigned long w);
+         unsigned long w) throw(...);
 
       /*!
        * Gets the fully transformed value of a data point vector at a given index position.
        *
        * Other than with ::ogps_GetListPoint this function also applies the axes transformation
        * specified in the axes definition area of the ISO 5436-2 XML document.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @remarks ISO5436_2::GetListCoord is the valid access method only if point vectors are stored in
        * list format. If this is not the case and point vectors are stored in matrix format with
@@ -375,11 +391,11 @@ namespace OpenGPS
        * @param z Returns the fully transformed z component of the point value at the given index position. If this parameter is set to NULL, the z axis component will be safely ignored.
        * @return Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetListCoord(
+      virtual void GetListCoord(
          const unsigned long index,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z);
+         OGPS_Double* const z) throw(...);
 
       /*!
        * Gets access to the ISO5436_2 XML document.

@@ -53,13 +53,14 @@ namespace OpenGPS
    {
    public:
       static void SetLastException(const OpenGPS::Exception& ex);
+      static void SetLastException(const std::exception& ex);
       static void SetLastException();
 
       static void Reset();
 
       static const OGPS_Character* GetLastErrorMessage();
       static const OGPS_Character* GetLastErrorDescription();
-      static OGPS_ExceptionId GetLastExceptionId();
+      static OGPS_ExceptionId GetLastErrorId();
 
    private:
       ExceptionHistory();
@@ -67,7 +68,7 @@ namespace OpenGPS
 
       static OpenGPS::String m_LastErrorMessage;
       static OpenGPS::String m_LastErrorDescription;
-      static OGPS_ExceptionId m_LastExceptionId;
+      static OGPS_ExceptionId m_LastErrorId;
    };
 }
 
@@ -81,6 +82,10 @@ namespace OpenGPS
    { \
       OpenGPS::ExceptionHistory::SetLastException(ex); \
    } \
+   catch(const std::exception& sx) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(sx); \
+   } \
    catch(...) \
    { \
       OpenGPS::ExceptionHistory::SetLastException(); \
@@ -88,7 +93,7 @@ namespace OpenGPS
    return FALSE;
 
 
-#define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT, CLEANUP_STATEMENT) \
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(STATEMENT, CLEANUP_STATEMENT) \
    OpenGPS::ExceptionHistory::Reset(); \
    try \
    { \
@@ -98,6 +103,11 @@ namespace OpenGPS
    { \
       CLEANUP_STATEMENT; \
       OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(const std::exception& sx) \
+   { \
+      CLEANUP_STATEMENT; \
+      OpenGPS::ExceptionHistory::SetLastException(sx); \
    } \
    catch(...) \
    { \
@@ -105,7 +115,7 @@ namespace OpenGPS
       OpenGPS::ExceptionHistory::SetLastException(); \
    }
 
-#define _OPENGPS_GENERIC_EXCEPTION_HANDLER_TRYONLY(STATEMENT) \
+#define _OPENGPS_GENERIC_EXCEPTION_HANDLER(STATEMENT) \
    OpenGPS::ExceptionHistory::Reset(); \
    try \
    { \
@@ -114,6 +124,10 @@ namespace OpenGPS
    catch(const OpenGPS::Exception& ex) \
    { \
       OpenGPS::ExceptionHistory::SetLastException(ex); \
+   } \
+   catch(const std::exception& sx) \
+   { \
+      OpenGPS::ExceptionHistory::SetLastException(sx); \
    } \
    catch(...) \
    { \

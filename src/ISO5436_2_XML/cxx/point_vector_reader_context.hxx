@@ -64,50 +64,65 @@ namespace OpenGPS
        * Reads the currently underlying data as ::OGPS_Int16.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param value Contains the point value on success.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(OGPS_Int16* const value) = 0;
+      virtual void Read(OGPS_Int16* const value) throw(...) = 0;
 
       /*!       
        * Reads the currently underlying data as ::OGPS_Int32.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param value Contains the point value on success.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(OGPS_Int32* const value) = 0;
+      virtual void Read(OGPS_Int32* const value) throw(...) = 0;
 
       /*!
        * Reads the currently underlying data as ::OGPS_Float.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param value Contains the point value on success.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(OGPS_Float* const value) = 0;
+      virtual void Read(OGPS_Float* const value) throw(...) = 0;
 
       /*!
        * Reads the currently underlying data as ::OGPS_Double.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param value Contains the point value on success.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(OGPS_Double* const value) = 0;
+      virtual void Read(OGPS_Double* const value) throw(...) = 0;
 
       /*!
        * Skips reading of the currently underlying data.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @remarks This must be called for integrity if
        * it is expected from the reading process that there
        * is no point data available for reading, i.e. for
        * the current coordinate no point data was saved
        * because the corresponding axis is of incremental type.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Skip() = 0;
+      virtual void Skip() throw(...) = 0;
 
       /*!
        * Move the current reading position of the stream
@@ -118,9 +133,13 @@ namespace OpenGPS
        * functions). If PointVectorReaderContext::IsValid returns
        * FALSE, call this method directly to move to the
        * next point vector in storage.
-       * @returns Returns TRUE on success, FALSE otherwise.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
+       * @returns Returns TRUE when there is more data to be parsed, FALSE otherwise.
        */
-      virtual OGPS_Boolean MoveNext() = 0;
+      virtual OGPS_Boolean MoveNext() throw(...) = 0;
 
       /*!
        * Asks if there is readable point vector stored
@@ -131,10 +150,14 @@ namespace OpenGPS
        * PointVectorReaderContext::Read/
        * PointVectorReaderContext::Skip any of the point
        * data of one of the three coordinates.
+       *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @returns Returns TRUE if the current point is readable,
        * FALSE otherwise.
        */
-      virtual OGPS_Boolean IsValid() const = 0;
+      virtual OGPS_Boolean IsValid() const throw(...) = 0;
 
    protected:
       /*! Creates a new instance. */

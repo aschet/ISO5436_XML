@@ -31,7 +31,31 @@
 #include "binary_lsb_point_vector_reader_context.hxx"
 #include "point_vector_iostream.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 #include "stdafx.hxx"
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_STREAM_AND_THROW_EXCEPTION \
+   if(!HasStream()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("No binary file stream available."), \
+      _EX_T("The operation on the binary file stream failed, because the stream has been closed already."), \
+      _EX_T("OpenGPS::BinaryLSBPointVectorReaderContext")); \
+   }
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_ISGOOD_AND_THROW_EXCEPTION \
+   if(!IsGood()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("The underlying binary stream object became invalid."), \
+      _EX_T("A read/write error occured."), \
+      _EX_T("OpenGPS::BinaryLSBPointVectorReaderContext")); \
+   }
 
 BinaryLSBPointVectorReaderContext::BinaryLSBPointVectorReaderContext(const OpenGPS::String& filePath)
 : BinaryPointVectorReaderContext(filePath)
@@ -42,62 +66,50 @@ BinaryLSBPointVectorReaderContext::~BinaryLSBPointVectorReaderContext()
 {
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Int16* const value)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT16_SIZE);
-      // TODO: *value = 0.
-      GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT16_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT16_SIZE);
+   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT16_SIZE);
+   
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Int32* const value)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);
-      // TODO: *value = 0.
-      GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT32_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);  
+   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT32_SIZE);
+  
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Float* const value)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_FLOAT_SIZE);
-      // TODO: *value = 0.0F.
-      GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_FLOAT_SIZE);
+   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorReaderContext::Read(OGPS_Double* const value)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Double* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-      // TODO: *value = 0.0.
-      GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }

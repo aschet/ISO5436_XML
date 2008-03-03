@@ -44,24 +44,16 @@ DoubleDataPointParser::~DoubleDataPointParser()
 {
 }
     
-OGPS_Boolean DoubleDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
+void DoubleDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
 {
    OGPS_Double v;
-   if(context.Read(&v))
-   {
-      return value.Set(v);
-   }
-
-   return FALSE;
+   context.Read(&v);
+   value.Set(v);
 }
 
-OGPS_Boolean DoubleDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
+void DoubleDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
 {
    OGPS_Double v;
-   if(value.Get(&v))
-   {
-      return context.Write(&v);
-   }
-
-   return FALSE;
+   value.Get(&v);
+   context.Write(&v);   
 }

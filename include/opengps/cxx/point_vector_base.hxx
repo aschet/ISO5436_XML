@@ -89,18 +89,22 @@ namespace OpenGPS
       /*!
        * Copies values from another OpenGPS::PointVector instance.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param value OpenGPS::PointVectorBase object to copy from.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Set(const PointVectorBase& value) = 0;
+      virtual void Set(const PointVectorBase& value) throw(...) = 0;
 
       /*!
-       * Copies values from another OpenGPS::PointVectorBase instance.
+       * Copies values to another OpenGPS::PointVectorBase instance.
        *
-       * @param value Gets values from the current instance as a copy.
-       * @returns Returns TRUE on success, FALSE otherwise.
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
+       * @param value Retrieves values from the current instance as a copy.
        */
-      virtual OGPS_Boolean Get(PointVectorBase& value) const = 0;
+      virtual void Get(PointVectorBase& value) const throw(...) = 0;
 
    protected:
       /*! Creates a new instance. */

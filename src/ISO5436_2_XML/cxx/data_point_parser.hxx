@@ -66,11 +66,13 @@ namespace OpenGPS
        * gets stored in a OpenGPS::DataPoint instance. This operation is
        * typesafe.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param context Provides read access to the media.
        * @param value Buffer where the point data read gets stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value) = 0;
+      virtual void Read(PointVectorReaderContext& context, DataPoint& value) throw(...) = 0;
 
       /*!
        * Writes point data to a given context/media.
@@ -81,11 +83,13 @@ namespace OpenGPS
        * stored in the value object does not exacly match the current implementation of
        * the OpenGPS::DataPointParser interface.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param context Provides write access to the media.
        * @param value Buffer where the point data to be written is stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value) = 0;
+      virtual void Write(PointVectorWriterContext& context, const DataPoint& value) throw(...) = 0;
 
    protected:
       /*! Creates a new instance. */

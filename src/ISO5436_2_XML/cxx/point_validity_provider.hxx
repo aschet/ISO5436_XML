@@ -56,19 +56,24 @@ namespace OpenGPS
       /*!
        * Sets the validity of a point vector at a given location.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param index The location of the point data the validity is updated.
        * @param value The value of the current validity of the point vector at the given position.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean SetValid(const unsigned int index, const OGPS_Boolean value) = 0;
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...) = 0;
 
       /*!
        * Gets the validity of a point vector at a given location.
        *
+       * A specific implementation may throw an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param index The location of the point data the validity is checked.
        * @returns Returns TRUE if valid, FALSE otherwise.
        */
-      virtual OGPS_Boolean IsValid(const unsigned int index) const = 0;
+      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...) = 0;
 
    protected:
       /*!

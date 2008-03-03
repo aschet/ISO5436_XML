@@ -320,13 +320,13 @@ OpenGPS::String Win32Environment::GetTempDir() const
    if(GetTempPath(size, buffer) + 1 == size)
    {
       OpenGPS::String path(buffer);
-      delete buffer;
+      _OPENGPS_DELETE(buffer);
       return path;
    }
 
    _ASSERT(FALSE);
 
-   delete buffer;
+   _OPENGPS_DELETE(buffer);
    return _T("");
 }
 

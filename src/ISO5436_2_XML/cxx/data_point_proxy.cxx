@@ -33,7 +33,37 @@
 
 #include "point_buffer.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 #include "stdafx.hxx"
+
+/*!
+ * Checks whether an instance of a point buffer does exist. If not an exception is thrown.
+ * The message describing the cause of failure makes sense for a refused attempt to read point data.
+ */
+#define _CHECK_BUFFER_AND_THROW_READ_EXCEPTION \
+   if(!m_Buffer) \
+   { \
+      throw OpenGPS::Exception( \
+         OGPS_ExInvalidOperation, \
+         _EX_T("The value of a data point could not be read."), \
+         _EX_T("There exists no buffer of point data where to read from. Most likely this is an attempt to read point data of an implicit axis."), \
+         _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Get")); \
+   }
+
+/*!
+ * Checks whether an instance of a point buffer does exist. If not an exception is thrown.
+ * The message describing the cause of failure makes sense for a refused attempt to write point data.
+ */
+#define _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION \
+   if(!m_Buffer) \
+   { \
+      throw OpenGPS::Exception( \
+         OGPS_ExInvalidOperation, \
+         _EX_T("The value of a data point could not be set."), \
+         _EX_T("There exists no buffer of point data where to write to. Most likely this is an attempt to write point data of an implicit axis. There is no need to set point data explicitly then."), \
+         _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Set")); \
+   }
 
 PointVectorProxy::DataPointProxy::DataPointProxy(
    const PointVectorProxyContext* const context,
@@ -47,7 +77,7 @@ PointVectorProxy::DataPointProxy::~DataPointProxy()
 {
 }
 
-OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const
+OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const throw(...)
 {
    if(m_Buffer)
    {
@@ -57,178 +87,149 @@ OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const
    return OGPS_MissingPointType;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const
+void PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const throw(...)
 {
    _ASSERT(m_Context && value);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Get(m_Context->GetIndex(), *value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
+   m_Buffer->Get(m_Context->GetIndex(), *value);   
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const
+void PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const throw(...)
 {
    _ASSERT(m_Context && value);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Get(m_Context->GetIndex(), *value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
+   m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const
+void PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const throw(...)
 {
    _ASSERT(m_Context && value);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Get(m_Context->GetIndex(), *value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
+   m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const
+void PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const throw(...)
 {
    _ASSERT(m_Context && value);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Get(m_Context->GetIndex(), *value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
+   m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-OGPS_Double PointVectorProxy::DataPointProxy::Get() const
+OGPS_Double PointVectorProxy::DataPointProxy::Get() const throw(...)
 {
-   _ASSERT(FALSE);
-   return 0.0;
+   throw OpenGPS::Exception(
+      OGPS_ExNotImplemented,
+      _EX_T("This interface method is not implemented."),
+      _EX_T("Use one of the typesafe getters to obtain a value. The purpose of this specific implementation is to do just that, therefore a generic getter that converts the value to OGPS_Double does not make sense here."),
+      _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Get"));
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::IsValid() const
+OGPS_Boolean PointVectorProxy::DataPointProxy::IsValid() const throw(...)
 {
    return m_Buffer != NULL;
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value) throw(...)
 {
    _ASSERT(m_Context);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Set(m_Context->GetIndex(), value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION;
+   m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value) throw(...)
 {
    _ASSERT(m_Context);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Set(m_Context->GetIndex(), value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION;
+   m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Float value)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Float value) throw(...)
 {
    _ASSERT(m_Context);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Set(m_Context->GetIndex(), value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION;
+   m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const OGPS_Double value)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Double value) throw(...)
 {
    _ASSERT(m_Context);
 
-   if(m_Buffer)
-   {
-      return m_Buffer->Set(m_Context->GetIndex(), value);
-   }
-
-   return FALSE;
+   _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION;
+   m_Buffer->Set(m_Context->GetIndex(), value);   
 }
 
-void PointVectorProxy::DataPointProxy::Reset()
+void PointVectorProxy::DataPointProxy::Reset() throw(...)
 {
    // Shouldn't have a buffer, because mainly for an instance of the current
-   // data point proxy implementation a reset usually means that a value is skiped
-   // when reading. But this is exacly the case, when no explicit point data needs
-   // to be read, so that this instance should not contain that buffer either.
-   _ASSERT(!m_Buffer);
+   // data point proxy implementation a reset usually means that a value is skipped
+   // when reading from an input stream of vectors.
+   // But this is exacly the case, when no explicit point data needs
+   // to entered. So this instance should not contain a buffer, because
+   // nothing will be there to get stored herein.
+   if(!m_Buffer)
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Failed to reset point data."),
+         _EX_T("Failed to reset proxied point data. This method is not supported in this context."),
+         _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Reset"));
+   }
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::Set(const DataPoint& src)
+void PointVectorProxy::DataPointProxy::Set(const DataPoint& src) throw(...)
 {
    _ASSERT(m_Context);
-
-   OGPS_Boolean success = FALSE;
 
    const OGPS_DataPointType srcType = src.GetType();
    const OGPS_DataPointType thisType = GetType();
 
-   if(srcType == thisType)
+   if(srcType != thisType)
    {
-      switch(srcType)
-      {
-      case OGPS_Int16PointType:
-         OGPS_Int16 vs;
-         if(src.Get(&vs))
-         {
-            success = Set(vs);
-         }
-         break;
-      case OGPS_Int32PointType:
-         OGPS_Int32 vl;
-         if(src.Get(&vl))
-         {
-            success = Set(vl);
-         }
-         break;
-      case OGPS_FloatPointType:
-         OGPS_Float vf;
-         if(src.Get(&vf))
-         {
-            success = Set(vf);
-         }
-         break;
-      case OGPS_DoublePointType:
-         OGPS_Double vd;
-         if(src.Get(&vd))
-         {
-            success = Set(vd);
-         }
-         break;
-      case OGPS_MissingPointType:
-         success = TRUE;
-         break;
-      default:
-         _ASSERT(FALSE);
-         break;
-      }
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidArgument,
+         _EX_T("Could not copy from the given instance of type data point."),
+         _EX_T("This instance can not store the type of point data provided by the instance to be copied. The point data to be set must be exacly of the same type as defined by the targeted axis description."),
+         _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Set"));
    }
 
-   /* TODO:
-   if(!success)
+   switch(srcType)
    {
-      Reset();
+   case OGPS_Int16PointType:
+      OGPS_Int16 vs;
+      src.Get(&vs);
+      Set(vs);
+      break;
+   case OGPS_Int32PointType:
+      OGPS_Int32 vl;
+      src.Get(&vl);
+      Set(vl);
+      break;
+   case OGPS_FloatPointType:
+      OGPS_Float vf;
+      src.Get(&vf);
+      Set(vf);
+      break;
+   case OGPS_DoublePointType:
+      OGPS_Double vd;
+      src.Get(&vd);
+      Set(vd);
+      break;
+   case OGPS_MissingPointType:
+      // Nothing to be copied in this case.
+      break;
+   default:
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidArgument,
+         _EX_T("Could not copy from the given instance of type data point."),
+         _EX_T("The value of the type property of the argument given is unknown. It should be one of the following: OGPS_Int16PointType, OGPS_Int32PointType, OGPS_FloatPointType, OGPS_DoublePointType, OGPS_MissingPointType."),
+          _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Set"));
+      break;
    }
-   */
-
-   return success;
 }

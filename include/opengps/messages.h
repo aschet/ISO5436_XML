@@ -44,11 +44,17 @@
  */
 typedef enum _OPENGPS_EXCEPTION_ID
 {
-   /*! No failure condition trapped. */
+   /*! No failure condition trapped. This serves as some kind of default value. */
    OGPS_ExNone,
    /*! A failure condition occured, but it has not been specified in detail. */
    OGPS_ExGeneral,
-   /*! An overflow occured. */
+   /*! The value of at least one of the parameters passed to a function is invalid in the current context. */
+   OGPS_ExInvalidArgument,
+   /*! Due to the state of the object an operation could not be performed. */
+   OGPS_ExInvalidOperation,
+   /*! A specific implementation of an interface does not implement this operation. */
+   OGPS_ExNotImplemented,
+   /*! An overflow occured. There is no guarantee of the integrity of further processing steps. */
    OGPS_ExOverflow
 } OGPS_ExceptionId; /*! Possible failure conditions. */
 
@@ -63,12 +69,14 @@ extern "C"
     * @remarks This may return NULL even though an error occured. This is because
     * the description of a particular error condition may not be available.
     *
+    * Use ::ogps_HasError to check whether an error condition has been trapped.
+    *
     * @see ::ogps_GetErrorId
     */
    _OPENGPS_EXPORT const OGPS_Character* ogps_GetErrorMessage();
 
    /*!
-    * Gets the last handled detailed error message or NULL.
+    * Gets the last handled detailed error description or NULL.
     *
     * @remarks This may return NULL even though an error occured. This is because
     * the description of a particular error condition may not be available.
@@ -83,6 +91,12 @@ extern "C"
     * @see ::ogps_GetErrorMessage
     */
    _OPENGPS_EXPORT OGPS_ExceptionId ogps_GetErrorId();
+
+   /*!
+    * Returns TRUE when the statement executed previously failed.
+    * Use ::ogps_GetErrorId to obtain more information about the failure.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_HasError();
 
 #ifdef __cplusplus
 }

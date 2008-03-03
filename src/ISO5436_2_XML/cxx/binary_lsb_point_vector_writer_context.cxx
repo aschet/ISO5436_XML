@@ -31,7 +31,31 @@
 #include "binary_lsb_point_vector_writer_context.hxx"
 #include "point_vector_iostream.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 #include "stdafx.hxx"
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_STREAM_AND_THROW_EXCEPTION \
+   if(!HasStream()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("No binary file stream available."), \
+      _EX_T("The operation on the binary file stream failed, because the stream has been closed already."), \
+      _EX_T("OpenGPS::BinaryLSBPointVectorWriterContext")); \
+   }
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_ISGOOD_AND_THROW_EXCEPTION \
+   if(!IsGood()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("The underlying binary stream object became invalid."), \
+      _EX_T("A read/write error occured."), \
+      _EX_T("OpenGPS::BinaryLSBPointVectorWriterContext")); \
+   }
 
 BinaryLSBPointVectorWriterContext::BinaryLSBPointVectorWriterContext(zipFile handle)
 : BinaryPointVectorWriterContext(handle)
@@ -42,60 +66,50 @@ BinaryLSBPointVectorWriterContext::~BinaryLSBPointVectorWriterContext()
 {
 }
 
-OGPS_Boolean BinaryLSBPointVectorWriterContext::Write(const OGPS_Int16* const value)
+void BinaryLSBPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT16_SIZE);
-      GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_INT16_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT16_SIZE);
+   GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_INT16_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorWriterContext::Write(const OGPS_Int32* const value)
+void BinaryLSBPointVectorWriterContext::Write(const OGPS_Int32* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);
-      GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_INT32_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);
+   GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_INT32_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorWriterContext::Write(const OGPS_Float* const value)
+void BinaryLSBPointVectorWriterContext::Write(const OGPS_Float* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      // TODO: assumption valid with float???
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_FLOAT_SIZE);
-      GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_FLOAT_SIZE);
+   GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean BinaryLSBPointVectorWriterContext::Write(const OGPS_Double* const value)
+void BinaryLSBPointVectorWriterContext::Write(const OGPS_Double* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(HasStream())
-   {
-      // TODO: assumption valid with double???
-      _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-      GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-      return IsGood();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+   GetStream()->write((const char*)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }

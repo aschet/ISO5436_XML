@@ -122,44 +122,44 @@ namespace OpenGPS
       virtual PointIteratorAutoPtr CreateNextPointIterator();
       virtual PointIteratorAutoPtr CreatePrevPointIterator();
 
-      virtual OGPS_Boolean SetMatrixPoint(
+      virtual void SetMatrixPoint(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
-         const PointVector* const vector);
+         const PointVector* const vector) throw(...);
 
-      virtual OGPS_Boolean GetMatrixPoint(
+      virtual void GetMatrixPoint(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
-         PointVector& vector);
+         PointVector& vector) throw(...);
 
-      virtual OGPS_Boolean SetListPoint(
+      virtual void SetListPoint(
          const unsigned long index,
-         const PointVector& vector);
+         const PointVector& vector) throw(...);
 
-      virtual OGPS_Boolean GetListPoint(
+      virtual void GetListPoint(
          const unsigned long index,
-         PointVector& vector);
+         PointVector& vector) throw(...);
 
-      virtual OGPS_Boolean GetMatrixCoord(
+      virtual void GetMatrixCoord(
          const unsigned long u,
          const unsigned long v,
          const unsigned long w,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z);
+         OGPS_Double* const z) throw(...);
 
       virtual OGPS_Boolean IsMatrixCoordValid(
          unsigned long u,
          unsigned long v,
-         unsigned long w);
+         unsigned long w) throw(...);
 
-      virtual OGPS_Boolean GetListCoord(
+      virtual void GetListCoord(
          const unsigned long index,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z);
+         OGPS_Double* const z) throw(...);
 
       virtual ISO5436_2TypeAutoPtr& GetDocument();
 
@@ -575,17 +575,19 @@ namespace OpenGPS
 
       /*!
        * Extracts the three components of a point vector.
+       *
+       * May throw an OpenGPS::Exception on failure due to type incompatibilities or overflow.
+       *
        * @param vector The vector which components are to be extracted.
        * @param x Target of the value of the X component of that vector. If this equals NULL, this component is ignored.
        * @param y Target of the value of the Y component of that vector. If this equals NULL, this component is ignored.
        * @param z Target of the value of the Z component of that vector. If this equals NULL, this component is ignored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean ConvertPointToCoord(
+      void ConvertPointToCoord(
          const  PointVector& vector,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z);
+         OGPS_Double* const z) throw(...);
 
       /*! Returns TRUE if X has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
       OGPS_Boolean IsIncrementalX() const;
@@ -668,9 +670,9 @@ namespace OpenGPS
          virtual void ResetNext();
          virtual void ResetPrev();
 
-         virtual OGPS_Boolean GetCurrent(PointVector& vector);
+         virtual void GetCurrent(PointVector& vector) throw(...);
 
-         virtual OGPS_Boolean SetCurrent(const PointVector* const vector);
+         virtual void SetCurrent(const PointVector* const vector) throw(...);
 
          virtual OGPS_Boolean GetPosition(unsigned long* const index) const;
          virtual OGPS_Boolean GetPosition(

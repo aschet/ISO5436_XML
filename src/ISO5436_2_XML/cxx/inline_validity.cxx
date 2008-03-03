@@ -44,29 +44,23 @@ FloatInlineValidity::~FloatInlineValidity()
 {
 }
 
-OGPS_Boolean FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
+void FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
    _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
 
    if(!value)
    {
-      return GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Float>::infinity());
+      GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Float>::infinity());
    }
-
-   return value;
 }
 
-OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const
+OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const throw(...)
 {
    _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
 
    OGPS_Float value;
-   if(GetPointBuffer()->Get(index, value))
-   {
-      return value != std::numeric_limits<OGPS_Float>::infinity();
-   }
-
-   return FALSE;
+   GetPointBuffer()->Get(index, value);
+   return value != std::numeric_limits<OGPS_Float>::infinity();
 }
 
 DoubleInlineValidity::DoubleInlineValidity(PointBuffer* const value)
@@ -79,27 +73,21 @@ DoubleInlineValidity::~DoubleInlineValidity()
 {
 }
 
-OGPS_Boolean DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
+void DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
    _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
 
    if(!value)
    {
-      return GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Double>::infinity());
+      GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Double>::infinity());
    }
-
-   return value;
 }
 
-OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const
+OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const throw(...)
 {
    _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
 
    OGPS_Double value;
-   if(GetPointBuffer()->Get(index, value))
-   {
-      return value != std::numeric_limits<OGPS_Double>::infinity();
-   }
-
-   return FALSE;
+   GetPointBuffer()->Get(index, value);
+   return value != std::numeric_limits<OGPS_Double>::infinity();
 }

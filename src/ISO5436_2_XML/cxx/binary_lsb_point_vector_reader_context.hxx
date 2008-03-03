@@ -59,10 +59,10 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~BinaryLSBPointVectorReaderContext();
 
-      virtual OGPS_Boolean Read(OGPS_Int16* const value);
-      virtual OGPS_Boolean Read(OGPS_Int32* const value);
-      virtual OGPS_Boolean Read(OGPS_Float* const value);
-      virtual OGPS_Boolean Read(OGPS_Double* const value);
+      virtual void Read(OGPS_Int16* const value) throw(...);
+      virtual void Read(OGPS_Int32* const value) throw(...);
+      virtual void Read(OGPS_Float* const value) throw(...);
+      virtual void Read(OGPS_Double* const value) throw(...);
    };
 }
 

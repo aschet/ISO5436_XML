@@ -38,40 +38,28 @@ DoublePointBuffer::DoublePointBuffer() : PointBuffer()
 
 DoublePointBuffer::~DoublePointBuffer()
 {
-      Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
+   Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
 }
 
-OGPS_Boolean DoublePointBuffer::Allocate(const unsigned long size)
+void DoublePointBuffer::Allocate(const unsigned long size) throw(...)
 {
-   if(!m_Buffer)
-   {
-      m_Buffer = (OGPS_Double*)PointBuffer::Allocate(size, sizeof(OGPS_Double));
-      
-      if(m_Buffer)
-      {
-         return TRUE;
-      }
-   }
-
-   return FALSE;
+   _ASSERT(!m_Buffer);
+   
+   m_Buffer = (OGPS_Double*)PointBuffer::Allocate(size, sizeof(OGPS_Double));
 }
 
-OGPS_Boolean DoublePointBuffer::Set(const unsigned long index, const OGPS_Double value)
+void DoublePointBuffer::Set(const unsigned long index, const OGPS_Double value) throw(...)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
    m_Buffer[index] = value;
-
-   return TRUE;
 }
 
-OGPS_Boolean DoublePointBuffer::Get(const unsigned long index, OGPS_Double& value) const
+void DoublePointBuffer::Get(const unsigned long index, OGPS_Double& value) const throw(...)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
    value = m_Buffer[index];
-
-   return TRUE;
 }
 
 OGPS_DataPointType DoublePointBuffer::GetType() const

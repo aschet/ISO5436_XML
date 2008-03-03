@@ -51,9 +51,9 @@ namespace OpenGPS
    class BinaryPointVectorReaderContext : public PointVectorReaderContext
    {
    public:
-      virtual OGPS_Boolean Skip();
-      virtual OGPS_Boolean MoveNext();
-      virtual OGPS_Boolean IsValid() const;
+      virtual void Skip() throw(...);
+      virtual OGPS_Boolean MoveNext() throw(...);
+      virtual OGPS_Boolean IsValid() const throw(...);
 
    protected:
       /*!
@@ -84,10 +84,9 @@ namespace OpenGPS
       InputBinaryFileStream* GetStream();
 
       /*!
-       * Closes the internal handle to the binary file and frees its resources.
-       * @returns Returns TRUE on success, FALSE otherwise.
+       * Closes the internal handle to the binary file and releases its resources.
        */
-      virtual OGPS_Boolean Close();
+      virtual void Close();
 
    private:
       /*! Pointer to the underlying data stream of binary point vectors. */

@@ -52,31 +52,16 @@ PointVectorParser::PointVectorParser()
 
 PointVectorParser::~PointVectorParser()
 {
-   if(m_X)
-   {
-      delete m_X;
-   }
-
-   if(m_Y)
-   {
-      delete m_Y;
-   }
-
-   if(m_Z)
-   {
-      delete m_Z;
-   }
+   _OPENGPS_DELETE(m_X);
+   _OPENGPS_DELETE(m_Y);
+   _OPENGPS_DELETE(m_Z);
 }
 
 void PointVectorParser::SetX(DataPointParser* const value)
 {
    _ASSERT(value);
 
-   if(m_X)
-   {
-      delete m_X;
-   }
-
+   _OPENGPS_DELETE(m_X);
    m_X = value;
 }
 
@@ -84,11 +69,7 @@ void PointVectorParser::SetY(DataPointParser* const value)
 {
    _ASSERT(value);
 
-   if(m_Y)
-   {
-      delete m_Y;
-   }
-
+   _OPENGPS_DELETE(m_Y);
    m_Y = value;
 }
 
@@ -96,30 +77,26 @@ void PointVectorParser::SetZ(DataPointParser* const value)
 {
    _ASSERT(value);
 
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
+   _OPENGPS_DELETE(m_Z);
    m_Z = value;
 }
 
-OGPS_Boolean PointVectorParser::Read(PointVectorReaderContext& context, PointVectorBase& value)
+void PointVectorParser::Read(PointVectorReaderContext& context, PointVectorBase& value) throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
-   return (m_X->Read(context, *value.GetX()) && // parse x component
-      m_Y->Read(context, *value.GetY()) && // parse y component
-   m_Z->Read(context, *value.GetZ())); // parse z component
+   m_X->Read(context, *value.GetX()); // parse x component
+   m_Y->Read(context, *value.GetY()); // parse y component
+   m_Z->Read(context, *value.GetZ()); // parse z component
 }
 
-OGPS_Boolean PointVectorParser::Write(PointVectorWriterContext& context, const PointVectorBase& value)
+void PointVectorParser::Write(PointVectorWriterContext& context, const PointVectorBase& value) throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
-   return (m_X->Write(context, *value.GetX()) && // parse x component
-      m_Y->Write(context, *value.GetY()) && // parse y component
-   m_Z->Write(context, *value.GetZ()));  // parse z component
+   m_X->Write(context, *value.GetX()); // parse x component
+   m_Y->Write(context, *value.GetY()); // parse y component
+   m_Z->Write(context, *value.GetZ()); // parse z component
 }
 
 DataPointParser* PointVectorParser::CreateDataPointParser(const OGPS_DataPointType dataType) const

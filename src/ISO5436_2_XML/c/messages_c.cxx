@@ -43,7 +43,12 @@ const OGPS_Character* ogps_GetErrorDescription()
 
 OGPS_ExceptionId ogps_GetErrorId()
 {
-   return OpenGPS::ExceptionHistory::GetLastExceptionId();
+   return OpenGPS::ExceptionHistory::GetLastErrorId();
+}
+
+OGPS_Boolean ogps_HasError()
+{
+   return OpenGPS::ExceptionHistory::GetLastErrorId() != OGPS_ExNone;
 }
 
 void OpenGPS::ExceptionHistory::SetLastException(const OpenGPS::Exception& ex)
@@ -53,17 +58,27 @@ void OpenGPS::ExceptionHistory::SetLastException(const OpenGPS::Exception& ex)
 
    m_LastErrorMessage = msg;
    m_LastErrorDescription = ex.details();
-   m_LastExceptionId = ex.id();
+   m_LastErrorId = ex.id();
+}
+
+void OpenGPS::ExceptionHistory::SetLastException(const std::exception& ex)
+{
+   OpenGPS::String msg;
+   msg.FromChar(ex.what());
+
+   m_LastErrorMessage = msg;
+   m_LastErrorDescription.clear();
+   m_LastErrorId = OGPS_ExGeneral;
 }
 
 void OpenGPS::ExceptionHistory::SetLastException()
 {
-   /* Set to NULL, because ex.what() may be unspecified. */
+   /* An exception occured, but no further details are known. */
    m_LastErrorMessage.clear();
    m_LastErrorDescription.clear();
 
    /* At least there must have been an exception... */
-   m_LastExceptionId = OGPS_ExGeneral;
+   m_LastErrorId = OGPS_ExGeneral;
 }
 
 
@@ -71,7 +86,7 @@ void OpenGPS::ExceptionHistory::Reset()
 {
    m_LastErrorMessage.clear();
    m_LastErrorDescription.clear();
-   m_LastExceptionId = OGPS_ExNone;
+   m_LastErrorId = OGPS_ExNone;
 }
 
 const OGPS_Character* OpenGPS::ExceptionHistory::GetLastErrorMessage()
@@ -84,9 +99,9 @@ const OGPS_Character* OpenGPS::ExceptionHistory::GetLastErrorDescription()
    return m_LastErrorDescription.empty() ? NULL : m_LastErrorDescription.c_str();
 }
 
-OGPS_ExceptionId OpenGPS::ExceptionHistory::GetLastExceptionId()
+OGPS_ExceptionId OpenGPS::ExceptionHistory::GetLastErrorId()
 {
-   return m_LastExceptionId;
+   return m_LastErrorId;
 }
 
 OpenGPS::ExceptionHistory::ExceptionHistory()
@@ -99,4 +114,4 @@ OpenGPS::ExceptionHistory::~ExceptionHistory()
 
 OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorMessage;
 OpenGPS::String OpenGPS::ExceptionHistory::m_LastErrorDescription;
-OGPS_ExceptionId OpenGPS::ExceptionHistory::m_LastExceptionId = OGPS_ExNone;
+OGPS_ExceptionId OpenGPS::ExceptionHistory::m_LastErrorId = OGPS_ExNone;

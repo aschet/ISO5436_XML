@@ -30,7 +30,7 @@
 
 /*! @file
  * The abstract data type of the typesafe representation of a single data point value.
- * The interface supports getting and setting an encapsulated data value of a predetermined type.
+ * The interface supports getting and setting an encapsulated point value of a predetermined data type.
  */
 
 #ifndef _OPENGPS_DATA_POINT_H
@@ -66,18 +66,21 @@ extern "C" {
    typedef struct _OGPS_DATA_POINT * OGPS_DataPointPtr;
 
    /*!
-    * Gets type information of the current value stored in a given data point.
+    * Gets type information about the current value stored in a given data point instance.
     *
     * Returns ::OGPS_MissingPointType if this instance does not store any value at all.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
     * @param dataPoint Operate on this data point instance.
     */
    _OPENGPS_EXPORT OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint);
 
    /*!
-    * Gets the stored value of type ::OGPS_Int16 from a given data point.
+    * Gets the stored value of type ::OGPS_Int16 out of a given data point instance.
     *
     * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value 0.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
+    *
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -85,9 +88,11 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Int16 ogps_GetInt16(const OGPS_DataPointPtr dataPoint);
 
    /*!
-    * Gets the stored value of type ::OGPS_Int32 from a given data point.
+    * Gets the stored value of type ::OGPS_Int32 out of a given data point instance.
     *
     * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value 0.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
+    *
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -95,9 +100,11 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Int32 ogps_GetInt32(const OGPS_DataPointPtr dataPoint);
 
    /*!
-    * Gets the stored value of type ::OGPS_Float from a given data point.
+    * Gets the stored value of type ::OGPS_Float out of a given data point instance.
     *
     * @remarks If the current type does not equal ::OGPS_Float, this function returns the value 0.0.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
+    *
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -105,9 +112,11 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Float ogps_GetFloat(const OGPS_DataPointPtr dataPoint);
 
    /*!
-    * Gets the stored value of type ::OGPS_Double from a given data point.
+    * Gets the stored value of type ::OGPS_Double out of a given data point instance.
     *
     * @remarks If the current type does not equal ::OGPS_Double, this function returns the value 0.0.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
+    *
     * @see ::ogps_GetDataType
     *
     * @param dataPoint Operate on this data point instance.
@@ -115,9 +124,10 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Double ogps_GetDouble(const OGPS_DataPointPtr dataPoint);
 
    /*!
-    * Stores a new value into a given data point.
+    * Stores a new value within a given data point instance.
     *
     * Also adjusts the current type information reflecting this set operation, if necessary.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
     * @param dataPoint Operate on this data point instance.
     * @param value The new value to be stored.
@@ -127,9 +137,10 @@ extern "C" {
       const OGPS_Int16 value);
 
    /*!
-    * Stores a new value into a given data point.
+    * Stores a new value within a given data point instance.
     *
     * Also adjusts the current type information reflecting this set operation, if necessary.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
     * @param dataPoint Operate on this data point instance.
     * @param value The new value to be stored.
@@ -139,9 +150,10 @@ extern "C" {
       const OGPS_Int32 value);
 
    /*!
-    * Stores a new value into a given data point.
+    * Stores a new value within a given data point instance.
     *
     * Also adjusts the current type information reflecting this set operation, if necessary.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
     * @param dataPoint Operate on this data point instance.
     * @param value The new value to be stored.
@@ -151,9 +163,10 @@ extern "C" {
       const OGPS_Float value);
 
    /*!
-    * Stores a new value into a given data point.
+    * Stores a new value within a given data point instance.
     *
     * Also adjusts the current type information reflecting this set operation, if necessary.
+    * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
     * @param dataPoint Operate on this data point instance.
     * @param value The new value to be stored.

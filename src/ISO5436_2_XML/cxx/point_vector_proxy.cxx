@@ -48,9 +48,9 @@ PointVectorProxy::PointVectorProxy(const PointVectorProxyContext* const context,
 
 PointVectorProxy::~PointVectorProxy()
 {
-   delete m_X;
-   delete m_Y;
-   delete m_Z;
+   _OPENGPS_DELETE(m_X);
+   _OPENGPS_DELETE(m_Y);
+   _OPENGPS_DELETE(m_Z);
 }
 
 const DataPoint* PointVectorProxy::GetX() const
@@ -95,14 +95,24 @@ DataPoint* PointVectorProxy::GetZ()
    return m_Z;
 }
 
-OGPS_Boolean PointVectorProxy::Set(const PointVectorBase& value)
+void PointVectorProxy::Set(const PointVectorBase& value) throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
-   return ((!m_X->IsValid() || m_X->Set(*value.GetX())) && (!m_Y->IsValid() || m_Y->Set(*value.GetY())) && m_Z->Set(*value.GetZ()));
+   if(m_X->IsValid())
+   {
+      m_X->Set(*value.GetX());
+   }
+
+   if(m_Y->IsValid())
+   {
+      m_Y->Set(*value.GetY());
+   }
+
+   m_Z->Set(*value.GetZ());
 }
 
-OGPS_Boolean PointVectorProxy::Get(PointVectorBase& value) const
+void PointVectorProxy::Get(PointVectorBase& value) const throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
@@ -112,5 +122,7 @@ OGPS_Boolean PointVectorProxy::Get(PointVectorBase& value) const
 
    _ASSERT(x && y && z);
 
-   return (x->Set(*m_X) && y->Set(*m_Y) && z->Set(*m_Z));
+   x->Set(*m_X);
+   y->Set(*m_Y);
+   z->Set(*m_Z);
 }

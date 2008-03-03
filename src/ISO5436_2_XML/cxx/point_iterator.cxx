@@ -257,31 +257,31 @@ void ISO5436_2Container::PointIteratorImpl::ResetPrev()
    m_IsForward = FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector)
+void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector) throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
    if(m_IsMatrix)
    {
-      return m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
+      m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
    }
 
-   return m_Handle->GetListPoint(m_U, vector);
+   m_Handle->GetListPoint(m_U, vector);
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector)
+void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector) throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
    if(m_IsMatrix)
    {
-      return m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
+      m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
    }
 
    // NULL vector (invalid point) makes no sense in list type
    _ASSERT(vector);
 
-   return m_Handle->SetListPoint(m_U, *vector);
+   m_Handle->SetListPoint(m_U, *vector);
 }
 
 OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(unsigned long* const index) const

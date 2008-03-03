@@ -137,7 +137,7 @@ extern "C" {
    /*!
     * Sets the value of a three-dimensional data point vector at a given surface position.
     *
-    * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.
+    * Manipulates the point vector data stored in an ISO5436-2 X3P file directly.    
     *
     * @remarks The data types of the values stored in the given vector parameter must correspond
     * with the data types specified in the ISO5436-2 XML document within the axes definition area.
@@ -150,6 +150,8 @@ extern "C" {
     *
     * @see ::ogps_SetListPoint
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param u The u-direction of the surface position.
     * @param v The v-direction of the surface position.
@@ -157,9 +159,8 @@ extern "C" {
     * @param vector Set this point value at the given u,v,w position. If this parameter is set to
     * NULL, this indicates there is no measurement data available for this position. This is due
     * to the topology encoding properties of the matrix format storage.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_SetMatrixPoint(
+   _OPENGPS_EXPORT void ogps_SetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -179,14 +180,15 @@ extern "C" {
     *
     * @see ::ogps_GetMatrixCoord, ::ogps_GetListPoint
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param u The u-direction of the surface position.
     * @param v The v-direction of the surface position.
     * @param w The w-direction of the surface position.
     * @param vector Returns the raw point value at the given u,v,w position.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixPoint(
+   _OPENGPS_EXPORT void ogps_GetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -209,12 +211,13 @@ extern "C" {
     *
     * @see ::ogps_SetMatrixPoint
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param index The index position of the point vector to manipulate.
     * @param vector Set this point value at the given index position.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_SetListPoint(
+   _OPENGPS_EXPORT void ogps_SetListPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       const OGPS_PointVectorPtr vector);
@@ -232,12 +235,13 @@ extern "C" {
     *
     * @see ::ogps_GetListCoord, ::ogps_GetMatrixPoint
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param index The index of the surface position.
     * @param vector Returns the raw point value at the given position.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListPoint(
+   _OPENGPS_EXPORT void ogps_GetListPoint(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       OGPS_PointVectorPtr const vector);
@@ -257,6 +261,8 @@ extern "C" {
     *
     * @see ::ogps_GetMatrixPoint, ::ogps_GetListCoord
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param u The u-direction of the surface position.
     * @param v The v-direction of the surface position.
@@ -264,9 +270,8 @@ extern "C" {
     * @param x Returns the fully transformed x component of the point value at the given u,v,w position. If this parameter is set to NULL, the x axis component will be safely ignored.
     * @param y Returns the fully transformed y component of the point value at the given u,v,w position. If this parameter is set to NULL, the y axis component will be safely ignored.
     * @param z Returns the fully transformed z component of the point value at the given u,v,w position. If this parameter is set to NULL, the z axis component will be safely ignored.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixCoord(
+   _OPENGPS_EXPORT void ogps_GetMatrixCoord(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long u,
       const unsigned long v,
@@ -310,14 +315,15 @@ extern "C" {
     *
     * @see ::ogps_GetListPoint, ::ogps_GetMatrixCoord
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param handle Operate on this handle object.
     * @param index The index of the surface position.
     * @param x Returns the fully transformed x component of the point value at the given index position. If this parameter is set to NULL, the x axis component will be safely ignored.
     * @param y Returns the fully transformed y component of the point value at the given index position. If this parameter is set to NULL, the y axis component will be safely ignored.
     * @param z Returns the fully transformed z component of the point value at the given index position. If this parameter is set to NULL, the z axis component will be safely ignored.
-    * @return Returns TRUE on success, FALSE otherwise. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetListCoord(
+   _OPENGPS_EXPORT void ogps_GetListCoord(
       const OGPS_ISO5436_2Handle handle,
       const unsigned long index,
       OGPS_Double* const x,

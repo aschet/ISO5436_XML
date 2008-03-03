@@ -71,82 +71,99 @@ namespace OpenGPS
       /*!
        * Sets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Where to set the new value.
        * @param value The new value to be set.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Int16 value);
+      virtual void Set(const unsigned long index, const OGPS_Int16 value) throw(...);
 
       /*!
        * Sets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Where to set the new value.
        * @param value The new value to be set.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Int32 value);
+      virtual void Set(const unsigned long index, const OGPS_Int32 value) throw(...);
 
       /*!
        * Sets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Where to set the new value.
        * @param value The new value to be set.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Float value);
+      virtual void Set(const unsigned long index, const OGPS_Float value) throw(...);
 
       /*!
        * Sets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Where to set the new value.
        * @param value The new value to be set.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Set(const unsigned long index, const OGPS_Double value);
+      virtual void Set(const unsigned long index, const OGPS_Double value) throw(...);
 
       /*!
        * Gets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Get the value from this position.
        * @param value Stores the value.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Int16& value) const;
+      virtual void Get(const unsigned long index, OGPS_Int16& value) const throw(...);
 
       /*!
        * Gets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Get the value from this position.
        * @param value Stores the value.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Int32& value) const;
+      virtual void Get(const unsigned long index, OGPS_Int32& value) const throw(...);
 
       /*!
        * Gets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Get the value from this position.
        * @param value Stores the value.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Float& value) const;
+      virtual void Get(const unsigned long index, OGPS_Float& value) const throw(...);
 
       /*!
        * Gets the value of the inernal memory at the given position.
        *
+       * An exception might be thrown when this typed operation is
+       * not valid for a particular instance.
+       *
        * @param index Get the value from this position.
        * @param value Stores the value.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Get(const unsigned long index, OGPS_Double& value) const;
+      virtual void Get(const unsigned long index, OGPS_Double& value) const throw(...);
 
       /*!
        * Allocates internal memory.
        *
+       * Throws an exception on failure.
+       *
        * @param size Amount of point data to be stored.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Allocate(const unsigned long size);
+      virtual void Allocate(const unsigned long size) throw(...);
 
       /*!
        * Gets the maximum amount of point data taht can be stored.
@@ -162,14 +179,19 @@ namespace OpenGPS
       /*!
        * Allocates internal memory.
        *
+       * @remarks Allocated memory must be free by PointBuffer::Free manually.
+       *
+       * Throws an exception on failure.
+       *
        * @param size Amount of point data to be stored.
        * @param typeSize The size of the data type of the point data stored herein in bytes.
        * @returns Returns a pointer to allocated memory or NULL.
        */
-      OpenGPS::UnsignedBytePtr Allocate(const unsigned long size, const size_t typeSize);
+      OpenGPS::UnsignedBytePtr Allocate(const unsigned long size, const size_t typeSize) throw(...);
 
       /*!
        * Frees allocated memory.
+       * @see PointBuffer::Allocate
        * @param value The pointer to the memory to be freed.
        */
       void Free(OpenGPS::UnsignedBytePtr* value);

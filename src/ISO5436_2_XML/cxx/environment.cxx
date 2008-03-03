@@ -50,11 +50,7 @@ const Environment* const Environment::GetInstance()
 
 void Environment::Reset()
 {
-   if(m_Instance)
-   {
-      delete m_Instance;
-      m_Instance = NULL;
-   }
+   _OPENGPS_DELETE(m_Instance);
 }
 
 Environment::Environment()

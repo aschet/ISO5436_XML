@@ -29,6 +29,7 @@
  ***************************************************************************/
 
 #include "data_point_impl.hxx"
+#include <opengps/cxx/exceptions.hxx>
 #include "stdafx.hxx"
 
 DataPoint::DataPoint()
@@ -49,64 +50,76 @@ DataPointImpl::~DataPointImpl()
 {
 }
 
-OGPS_DataPointType DataPointImpl::GetType() const
+OGPS_DataPointType DataPointImpl::GetType() const throw(...)
 {
    return m_Type;
 }
 
-OGPS_Boolean DataPointImpl::Get(OGPS_Int16* const value) const
+void DataPointImpl::Get(OGPS_Int16* const value) const throw(...)
 {
    _ASSERT(value);
 
-   if(m_Type == OGPS_Int16PointType)
+   if(m_Type != OGPS_Int16PointType)
    {
-      *value = m_Value.int16Value;
-      return TRUE;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("An attempt to read a point value of type OGPS_Int16 is made, but the current value is of different type."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   return FALSE;
+   *value = m_Value.int16Value;   
 }
 
-OGPS_Boolean DataPointImpl::Get(OGPS_Int32* const value) const
+void DataPointImpl::Get(OGPS_Int32* const value) const throw(...)
 {
    _ASSERT(value);
 
-   if(m_Type == OGPS_Int32PointType)
+   if(m_Type != OGPS_Int32PointType)
    {
-      *value = m_Value.int32Value;
-      return TRUE;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("An attempt to read a point value of type OGPS_Int32 is made, but the current value is of different type."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   return FALSE;
+   *value = m_Value.int32Value;
 }
 
-OGPS_Boolean DataPointImpl::Get(OGPS_Float* const value) const
+void DataPointImpl::Get(OGPS_Float* const value) const throw(...)
 {
    _ASSERT(value);
 
-   if(m_Type == OGPS_FloatPointType)
+   if(m_Type != OGPS_FloatPointType)
    {
-      *value = m_Value.floatValue;
-      return TRUE;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("An attempt to read a point value of type OGPS_Float is made, but the current value is of different type."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   return FALSE;
+   *value = m_Value.floatValue;
 }
 
-OGPS_Boolean DataPointImpl::Get(OGPS_Double* const value) const
+void DataPointImpl::Get(OGPS_Double* const value) const throw(...)
 {
    _ASSERT(value);
 
-   if(m_Type == OGPS_DoublePointType)
+   if(m_Type != OGPS_DoublePointType)
    {
-      *value = m_Value.doubleValue;
-      return TRUE;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("An attempt to read a point value of type OGPS_Double is made, but the current value is of different type."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   return FALSE;
+   *value = m_Value.doubleValue;   
 }
 
-OGPS_Double DataPointImpl::Get() const
+OGPS_Double DataPointImpl::Get() const throw(...)
 {
    switch(m_Type)
    {
@@ -123,77 +136,80 @@ OGPS_Double DataPointImpl::Get() const
       return m_Value.doubleValue;
 
    case OGPS_MissingPointType:
-      _ASSERT(FALSE);
-      return 0.0;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("The value of the type property equals OGPS_MissingPointType. There is no point data available to be read."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
 
    default:
-      break;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Could not obtain the value of the data point."),
+         _EX_T("The value of the type property of this instance is unknown or invalid. It should be one of the following: OGPS_Int16PointType, OGPS_Int32PointType, OGPS_FloatPointType, OGPS_DoublePointType."),
+         _EX_T("OpenGPS::DataPointImpl::Get"));
    }
-
-   _ASSERT(FALSE);
-   return 0.0;
 }
 
-OGPS_Boolean DataPointImpl::Set(const OGPS_Int16 value)
+void DataPointImpl::Set(const OGPS_Int16 value) throw(...)
 {
    m_Type = OGPS_Int16PointType;
    m_Value.int16Value = value;
-   return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const OGPS_Int32 value)
+
+void DataPointImpl::Set(const OGPS_Int32 value) throw(...)
 {
    m_Type = OGPS_Int32PointType;
    m_Value.int32Value = value;
-   return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const OGPS_Float value)
+
+void DataPointImpl::Set(const OGPS_Float value) throw(...)
 {
    m_Type = OGPS_FloatPointType;
    m_Value.floatValue = value;
-   return TRUE;
 }
-OGPS_Boolean DataPointImpl::Set(const OGPS_Double value)
+
+void DataPointImpl::Set(const OGPS_Double value) throw(...)
 {
    m_Type = OGPS_DoublePointType;
    m_Value.doubleValue = value;
-   return TRUE;
 }
 
-OGPS_Boolean DataPointImpl::IsValid() const
+OGPS_Boolean DataPointImpl::IsValid() const throw(...)
 {
    return m_Type != OGPS_MissingPointType;
 }
 
-OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
+void DataPointImpl::Set(const DataPoint& src) throw(...)
 {
    /* I do not use memcpy or the like here, since possibly there are different memory models
-   implemented by different compiler/architecture combinations concerning the union data type,
-   allowing the compiler to allocate the size of unions dynamically . Therefore a simple but
-   efficient memcpy might lead to unexpected results - I guess. */
+   implemented by different combinations of compiler/architecture concerning the union data type,
+   allowing the compiler to allocate the size of unions dynamically. Therefore a simple but
+   efficient memcpy might lead to unexpected results. */
    switch(src.GetType())
    {
    case OGPS_Int16PointType:
       OGPS_Int16 vs;
-      _VERIFY(src.Get(&vs));
-      _VERIFY(Set(vs));
+      src.Get(&vs);
+      Set(vs);
       break;
 
    case OGPS_Int32PointType:
       OGPS_Int32 vl;
-      _VERIFY(src.Get(&vl));
-      _VERIFY(Set(vl));
+      src.Get(&vl);
+      Set(vl);
       break;
 
    case OGPS_FloatPointType:
       OGPS_Float vf;
-      _VERIFY(src.Get(&vf));
-      _VERIFY(Set(vf));
+      src.Get(&vf);
+      Set(vf);
       break;
 
    case OGPS_DoublePointType:
       OGPS_Double vd;
-      _VERIFY(src.Get(&vd));
-      _VERIFY(Set(vd));
+      src.Get(&vd);
+      Set(vd);
       break;
 
    case OGPS_MissingPointType:
@@ -201,15 +217,16 @@ OGPS_Boolean DataPointImpl::Set(const DataPoint& src)
       break;
 
    default:
-      _ASSERT(FALSE);
-      Reset();
-      return FALSE;
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidArgument,
+         _EX_T("Could not copy from the given instance of type data point."),
+         _EX_T("The value of the type property of the argument given is unknown. It should be one of the following: OGPS_Int16PointType, OGPS_Int32PointType, OGPS_FloatPointType, OGPS_DoublePointType, OGPS_MissingPointType."),
+         _EX_T("OpenGPS::DataPointImpl::Set"));
+      break;
    }
-
-   return TRUE;
 }
 
-void DataPointImpl::Reset()
+void DataPointImpl::Reset() throw(...)
 {
    m_Type = OGPS_MissingPointType;
    m_Value.doubleValue = 0.0;

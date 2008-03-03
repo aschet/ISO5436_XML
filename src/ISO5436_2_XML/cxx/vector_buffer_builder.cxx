@@ -38,6 +38,8 @@
 #include "float_point_buffer.hxx"
 #include "double_point_buffer.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 #include "stdafx.hxx"
 
 VectorBufferBuilder::VectorBufferBuilder()
@@ -47,10 +49,7 @@ VectorBufferBuilder::VectorBufferBuilder()
 
 VectorBufferBuilder::~VectorBufferBuilder()
 {
-   if(m_Buffer)
-   {
-      delete m_Buffer;
-   }
+   _OPENGPS_DELETE(m_Buffer);
 }
 
 OGPS_Boolean VectorBufferBuilder::BuildBuffer()
@@ -172,12 +171,15 @@ PointBuffer* VectorBufferBuilder::CreatePointBuffer(const OGPS_DataPointType dat
 
    if(point)
    {
-      if(!point->Allocate(size))
+      try
       {
-         delete point;
-         point = NULL;
+         point->Allocate(size);
+      }
+      catch(const OpenGPS::Exception& ex)
+      {
+         _OPENGPS_DELETE(point);
 
-         *retval = FALSE;
+         throw OpenGPS::Exception(ex);
       }
    }
 

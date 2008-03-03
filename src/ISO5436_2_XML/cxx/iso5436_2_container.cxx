@@ -263,11 +263,11 @@ PointIteratorAutoPtr ISO5436_2Container::CreatePrevPointIterator()
    return PointIteratorAutoPtr(new PointIteratorImpl(this, FALSE, IsMatrix()));
 }
 
-OGPS_Boolean ISO5436_2Container::SetMatrixPoint(
+void ISO5436_2Container::SetMatrixPoint(
    const unsigned long u,
    const unsigned long v,
    const unsigned long w,
-   const PointVector* const vector)
+   const PointVector* const vector) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(IsMatrix());
@@ -283,20 +283,17 @@ OGPS_Boolean ISO5436_2Container::SetMatrixPoint(
 
    if(vector)
    {
-      if(!m_PointVector->Set(*vector))
-      {
-         return FALSE;
-      }
+      m_PointVector->Set(*vector);
    }
 
-   return GetVectorBuffer()->GetValidityProvider()->SetValid(m_ProxyContext->GetIndex(), vector != NULL);
+   GetVectorBuffer()->GetValidityProvider()->SetValid(m_ProxyContext->GetIndex(), vector != NULL);
 }
 
-OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
+void ISO5436_2Container::GetMatrixPoint(
    const unsigned long u,
    const unsigned long v,
    const unsigned long w,
-   PointVector& vector)
+   PointVector& vector) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(IsMatrix());
@@ -306,7 +303,7 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
    // TODO: cast entfernen?
    ((PointVectorProxyContextMatrix*)m_ProxyContext.get())->SetIndex(u, v, w);
 
-   const OGPS_Boolean retval = m_PointVector->Get(vector);
+   m_PointVector->Get(vector);
 
    if(IsIncrementalX())
    {
@@ -321,13 +318,11 @@ OGPS_Boolean ISO5436_2Container::GetMatrixPoint(
 
       vector.SetY(ConvertULongToInt32(v));
    }
-
-   return retval;
 }
 
-OGPS_Boolean ISO5436_2Container::SetListPoint(
+void ISO5436_2Container::SetListPoint(
    const unsigned long index,
-   const PointVector& vector)
+   const PointVector& vector) throw(...)
 {   
    _ASSERT(HasDocument());
    _ASSERT(!IsMatrix());
@@ -341,12 +336,12 @@ OGPS_Boolean ISO5436_2Container::SetListPoint(
    // TODO: cast entfernen?
    ((PointVectorProxyContextList*)m_ProxyContext.get())->SetIndex(index);
 
-   return m_PointVector->Set(vector);
+   m_PointVector->Set(vector);
 }
 
-OGPS_Boolean ISO5436_2Container::GetListPoint(
+void ISO5436_2Container::GetListPoint(
    const unsigned long index,
-   PointVector& vector)
+   PointVector& vector) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(!IsMatrix());
@@ -356,7 +351,7 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
    // TODO: cast entfernen?
    ((PointVectorProxyContextList*)m_ProxyContext.get())->SetIndex(index);
 
-   const OGPS_Boolean retval = m_PointVector->Get(vector);
+   m_PointVector->Get(vector);
 
    if(IsIncrementalX())
    {
@@ -371,29 +366,28 @@ OGPS_Boolean ISO5436_2Container::GetListPoint(
 
       vector.SetY(ConvertULongToInt32(index));
    }
-
-   return retval;
 }
 
-OGPS_Boolean ISO5436_2Container::GetMatrixCoord(
+void ISO5436_2Container::GetMatrixCoord(
    const unsigned long u,
    const unsigned long v,
    const unsigned long w,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z)
+   OGPS_Double* const z) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(IsMatrix());
 
    PointVector vector;
-   return (GetMatrixPoint(u, v, w, vector) && ConvertPointToCoord(vector, x, y, z));
+   GetMatrixPoint(u, v, w, vector);
+   ConvertPointToCoord(vector, x, y, z);
 }
 
 OGPS_Boolean ISO5436_2Container::IsMatrixCoordValid(
    unsigned long u,
    unsigned long v,
-   unsigned long w)
+   unsigned long w) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(IsMatrix());
@@ -404,24 +398,25 @@ OGPS_Boolean ISO5436_2Container::IsMatrixCoordValid(
    return GetVectorBuffer()->GetValidityProvider()->IsValid(m_ProxyContext->GetIndex());
 }
 
-OGPS_Boolean ISO5436_2Container::GetListCoord(
+void ISO5436_2Container::GetListCoord(
    const unsigned long index,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z)
+   OGPS_Double* const z) throw(...)
 {
    _ASSERT(HasDocument());
    _ASSERT(!IsMatrix());
 
    PointVector vector;
-   return (GetListPoint(index, vector) && ConvertPointToCoord(vector, x, y, z));
+   GetListPoint(index, vector);
+   ConvertPointToCoord(vector, x, y, z);
 }
 
-OGPS_Boolean ISO5436_2Container::ConvertPointToCoord(
+void ISO5436_2Container::ConvertPointToCoord(
    const  PointVector& vector,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z)
+   OGPS_Double* const z) throw(...)
 {
    vector.GetXYZ(x, y, z);
 
@@ -442,8 +437,6 @@ OGPS_Boolean ISO5436_2Container::ConvertPointToCoord(
    {
       *z += GetOffsetZ();
    }
-
-   return TRUE;
 }
 
 ISO5436_2TypeAutoPtr& ISO5436_2Container::GetDocument()
@@ -672,7 +665,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
                         binaryTarget.write((OpenGPS::UnsignedBytePtr)buffer, bytesCopied);
                      }
 
-                     free(buffer);
+                     _OPENGPS_FREE(buffer);
 
                      if(bytesCopied != size || binaryTarget.fail())
                      {
@@ -910,11 +903,7 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
                   {
                      if(context->IsValid())
                      {
-                        if(!parser->Read(*context.get(), *vector))
-                        {
-                           success = FALSE;
-                           break;
-                        }
+                        parser->Read(*context.get(), *vector);
                      }
                      else
                      {
@@ -922,19 +911,11 @@ OGPS_Boolean ISO5436_2Container::CreatePointBuffer()
                         {
                            if(!vectorBuffer->GetValidityBuffer()->IsAllocated())
                            {
-                              if(!vectorBuffer->GetValidityBuffer()->Allocate())
-                              {
-                                 success = FALSE;
-                                 break;
-                              }
+                              vectorBuffer->GetValidityBuffer()->Allocate();
                            }
                         }
 
-                        if(!vectorBuffer->GetValidityProvider()->SetValid(index, FALSE))
-                        {
-                           success = FALSE;
-                           break;
-                        }
+                        vectorBuffer->GetValidityProvider()->SetValid(index, FALSE);
                      }
 
                      ++index;
@@ -1247,21 +1228,18 @@ OGPS_Boolean ISO5436_2Container::SavePointBuffer(zipFile handle)
                      {
                         if(isBinary || vectorBuffer->GetValidityProvider()->IsValid(index))
                         {
-                           if(!parser->Write(*context.get(), *vector))
-                           {
-                              success = FALSE;
-                              break;
-                           }
+                           parser->Write(*context.get(), *vector);
                         }
 
-                        if(!context->MoveNext())
+                        context->MoveNext();
+                        /*if(!context->MoveNext())
                         {
                            if(index + 1 != count)
                            {
                               success = FALSE;
                               break;
                            }
-                        }                     
+                        }*/                    
 
                         ++index;
 
@@ -1749,7 +1727,8 @@ OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long long valu
    {
       throw OpenGPS::Exception(OGPS_ExOverflow,
          _EX_T("An integer overflow occured."),
-         _EX_T("Point data of implicit axes is derived from the current point index. Since point indexes are of unsigned type, very large values can not be converted into a signed integer. But within a point vector the components are of signed integer and therefore the current index value could not be saved in a point vector. In other words: reduce the amount of point data stored to be able to fit the upper bound of a signed integer data type."));
+         _EX_T("Point data of implicit axes is derived from the current point index. Since point indexes are of unsigned type, very large values can not be converted into a signed integer. But within a point vector the components are of signed integer and therefore the current index value could not be saved in a point vector. In other words: reduce the amount of point data stored to be able to fit the upper bound of a signed integer data type."),
+         _EX_T("OpenGPS::ISO5436_2Container::ConvertULongToInt32"));
    }
 
    return (OGPS_Int32)value;
@@ -1761,7 +1740,8 @@ unsigned long ISO5436_2Container::ConvertULongLongToULong(const unsigned long lo
    {
       throw OpenGPS::Exception(OGPS_ExOverflow,
          _EX_T("An integer overflow occured."),
-         _EX_T("The amount of point data stored as a list of points or at least one of the dimensions of the topology matrix did exceed the maximum value that could be handled by an unsigned long data type. To avoid this problem either reduce the amount of point data stored or the dimensions of the matrix topology to be able to fit the upper bound of an unsigned long data type."));
+         _EX_T("The amount of point data stored as a list of points or at least one of the dimensions of the topology matrix did exceed the maximum value that could be handled by an unsigned long data type. To avoid this problem either reduce the amount of point data stored or the dimensions of the matrix topology to be able to fit the upper bound of an unsigned long data type."),
+         _EX_T("OpenGPS::ISO5436_2Container::ConvertULongLongToULong"));
    }
 
    return (unsigned long)value;
@@ -1773,7 +1753,8 @@ unsigned long ISO5436_2Container::SafeMultipilcation(const unsigned long long va
    {
       throw OpenGPS::Exception(OGPS_ExOverflow,
          _EX_T("An integer overflow occured due to a multiplication operation."),
-         _EX_T("Two values of the same data type were multiplied with each other, but the result is too large to fit the same data type. Your point data is layed out by a matrix topology. Then every data point of a single axis may be indexed successfully of their own, but a single index might not be sufficient to be able of indexing all three axes components at once. Since this is a required property of the current implementation, the amount of point data needs to be reduced, so that indexing of all axes components with a single index becomes possible again."));
+         _EX_T("Two values of the same data type were multiplied with each other, but the result is too large to fit the same data type. Your point data is layed out by a matrix topology. Then every data point of a single axis may be indexed successfully of their own, but a single index might not be sufficient to be able of indexing all three axes components at once. Since this is a required property of the current implementation, the amount of point data needs to be reduced, so that indexing of all axes components with a single index becomes possible again."),
+         _EX_T("OpenGPS::ISO5436_2Container::SafeMultipilcation"));
    }
 
    return ((unsigned long)(value1 * value2));

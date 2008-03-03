@@ -34,6 +34,30 @@
 #include "stdafx.hxx"
 
 #include <opengps/cxx/string.hxx>
+#include <opengps/cxx/exceptions.hxx>
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_STREAM_AND_THROW_EXCEPTION \
+   if(!m_Stream) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("No stream object available."), \
+      _EX_T("The operation on the stream object failed, because the stream has been released already."), \
+      _EX_T("OpenGPS::XmlPointVectorWriterContext")); \
+   }
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_ISGOOD_AND_THROW_EXCEPTION \
+   if(!IsGood()) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("The underlying stream object became invalid."), \
+      _EX_T("A read/write error occured."), \
+      _EX_T("OpenGPS::XmlPointVectorWriterContext")); \
+   }
+
 
 PointVectorWriterContext::PointVectorWriterContext()
 {
@@ -57,10 +81,7 @@ XmlPointVectorWriterContext::XmlPointVectorWriterContext(StringList* const point
 
 XmlPointVectorWriterContext::~XmlPointVectorWriterContext()
 {
-   if(m_Stream)
-   {
-   delete m_Stream;
-   }
+   _OPENGPS_DELETE(m_Stream);
 }
 
 void XmlPointVectorWriterContext::Get(OpenGPS::String* const value) const
@@ -81,88 +102,72 @@ void XmlPointVectorWriterContext::Reset()
 {
    if(m_Stream)
    {
-   m_Stream->str(_T(""));
+      m_Stream->str(_T(""));
    }
 
    m_NeedsSeparator = FALSE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Int16* const value)
+void XmlPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      AppendSeparator();
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-      *m_Stream << *value;
-      return IsGood();
-   }
+   AppendSeparator();
+   *m_Stream << *value;
 
-   return FALSE;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Int32* const value)
+void XmlPointVectorWriterContext::Write(const OGPS_Int32* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      AppendSeparator();
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-      *m_Stream << *value;
-      return IsGood();
-   }
+   AppendSeparator();
+   *m_Stream << *value;
 
-   return FALSE;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Float* const value)
+void XmlPointVectorWriterContext::Write(const OGPS_Float* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      AppendSeparator();
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-      *m_Stream << *value;
-      return IsGood();
-   }
+   AppendSeparator();
+   *m_Stream << *value;
 
-   return FALSE;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Write(const OGPS_Double* const value)
+void XmlPointVectorWriterContext::Write(const OGPS_Double* const value) throw(...)
 {
    _ASSERT(value);
 
-   if(m_Stream)
-   {
-      AppendSeparator();
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-      *m_Stream << *value;
-      return IsGood();
-   }
+   AppendSeparator();
+   *m_Stream << *value;
 
-   return FALSE;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::Skip()
+void XmlPointVectorWriterContext::Skip() throw(...)
 {
-   if(m_Stream)
-   {
-      return IsGood();
-   }
-
-   return FALSE;
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
 OGPS_Boolean XmlPointVectorWriterContext::IsGood() const
 {
    _ASSERT(m_Stream);
 
-      const std::ios_base::io_state state = m_Stream->rdstate();
-      return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
+   const std::ios_base::io_state state = m_Stream->rdstate();
+   return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
 }
 
 void XmlPointVectorWriterContext::AppendSeparator()
@@ -177,19 +182,14 @@ void XmlPointVectorWriterContext::AppendSeparator()
    m_NeedsSeparator = TRUE;
 }
 
-OGPS_Boolean XmlPointVectorWriterContext::MoveNext()
+void XmlPointVectorWriterContext::MoveNext() throw(...)
 {
-   if(m_Stream && m_PointVectorList)
-   {
-      OpenGPS::String vector;
-      Get(&vector);
-      Schemas::ISO5436_2::DataListType::Datum_type datum(vector);
-      m_PointVectorList->push_back(datum);
+   _ASSERT(m_Stream && m_PointVectorList);
 
-      Reset();
-      
-      return TRUE;
-   }
+   OpenGPS::String vector;
+   Get(&vector);
+   Schemas::ISO5436_2::DataListType::Datum_type datum(vector);
+   m_PointVectorList->push_back(datum);
 
-   return FALSE;
+   Reset();
 }

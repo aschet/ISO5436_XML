@@ -44,23 +44,16 @@ MissingDataPointParser::~MissingDataPointParser()
 {
 }
     
-OGPS_Boolean MissingDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
+void MissingDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
 {
-   if(context.Skip())
-   {
-      value.Reset();
-      return TRUE;
-   }
-
-   return FALSE;
+   context.Skip();
+   value.Reset();   
 }
 
-OGPS_Boolean MissingDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
+void MissingDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
 {
    if(!value.IsValid())
    {
-      return context.Skip();
+      context.Skip();
    }
-
-   return FALSE;
 }

@@ -29,8 +29,8 @@
  ***************************************************************************/
 
 /*! @file
- * Handle mechanism which makes a C++ OpenGPS::DataPoint object accessible
- * through the corresponding C interface of a data point.
+ * Handle mechanism that makes a C++ OpenGPS::DataPoint object accessible
+ * through its corresponding C interface.
  */
 
 #ifndef _OPENGPS_C_DATA_POINT_HXX
@@ -42,15 +42,15 @@ namespace OpenGPS
 }
 
 /*!
- * Encapsulates the internal C++ structure of a data point handle used within
+ * Encapsulates the C++ structure of a data point handle used internally within
  * the C interface. This fact is hidden from the public because ::OGPS_DataPointPtr
- * is defined as an incomplete data type.
+ * is previously introduced as an incomplete data type.
  */
 typedef struct _OGPS_DATA_POINT
 {
-   /*! Gets/Sets the pointer to the internal C++ object behind the scenes. */
+   /*! Gets/Sets the pointer to the internal C++ object acting behind the scenes. */
    OpenGPS::DataPoint* instance;
-} OGPS_DataPoint, *OGPS_DataPointPtr; /*! Encapsulates the internal C++ structure
- * of a data point handle used within the C interface. */
+} OGPS_DataPoint, *OGPS_DataPointPtr; /*! Encapsulates the C++ structure
+ * of a data point handle used as a backend of its corresponding C interface. */
 
 #endif /* _OPENGPS_C_DATA_POINT_HXX */

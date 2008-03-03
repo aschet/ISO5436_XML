@@ -96,20 +96,24 @@ namespace OpenGPS
       /*!
        * Reads point vector data from arbitrary media.
        *
+       * Throws an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
+       *
        * @param context Methods to read point data from the media.
        * @param value Holds the point data read assembled as a three-vector.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Read(PointVectorReaderContext& context, PointVectorBase& value);
+      virtual void Read(PointVectorReaderContext& context, PointVectorBase& value) throw(...);
       
       /*!
-       * Write point vector data to arbitrary media.
+       * Writes point vector data to arbitrary media.
+       *
+       * Throws an OpenGPS::Exception if this operation
+       * is not permitted due to the current state of the object instance.
        *
        * @param context Methods to write point data to the media.
        * @param value Holds the vector to be written.
-       * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const PointVectorBase& value);
+      virtual void Write(PointVectorWriterContext& context, const PointVectorBase& value) throw(...);
 
       /*!
        * Creates the appropriate point parser corresponding to an axis data type.

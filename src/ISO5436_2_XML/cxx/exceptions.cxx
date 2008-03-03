@@ -34,19 +34,23 @@
 
 Exception::Exception(const OGPS_ExceptionId id,
                      const OGPS_ExceptionChar *text,
-                     const OGPS_ExceptionChar *details) throw()
+                     const OGPS_ExceptionChar *details,
+                     const OGPS_ExceptionChar *method) throw()
    : std::exception(text)
 {
    _ASSERT(text && details);
 
    m_Id = id;
    m_Details.FromChar(details);
+   m_Method.FromChar(method);
 }
 
 Exception::Exception(const Exception& rhs) throw()
    : std::exception(rhs)
 {
    m_Id = rhs.m_Id;
+   m_Details = rhs.m_Details;
+   m_Method = rhs.m_Method;
 }
 
 Exception::~Exception() throw()
@@ -61,4 +65,9 @@ OGPS_ExceptionId Exception::id() const throw()
 const OpenGPS::String& Exception::details() const throw()
 {
    return m_Details;
+}
+
+const OpenGPS::String& Exception::method() const throw()
+{
+   return m_Method;
 }

@@ -68,122 +68,152 @@ namespace OpenGPS
       /*!
       * Gets type information of the current value stored within this data point.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @returns Returns ::OGPS_MissingPointType if this instance does not store any value at all.
       */
-      virtual OGPS_DataPointType GetType() const = 0;
+      virtual OGPS_DataPointType GetType() const throw(...) = 0;
 
       /*!
       * Gets the stored value.
       *
-      * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value FALSE and does nothing at all.
+      * @remarks If the current type does not equal ::OGPS_Int16, the behavior is undefined.
       * @see DataPoint::GetType
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value Destination for the currently stored value.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Get(OGPS_Int16* const value) const = 0;
+      virtual void Get(OGPS_Int16* const value) const throw(...) = 0;
 
       /*!
       * Gets the stored value.
       *
-      * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value FALSE and does nothing at all.
+      * @remarks If the current type does not equal ::OGPS_Int32, the behavior is undefined.
       * @see DataPoint::GetType
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value Destination for the currently stored value.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Get(OGPS_Int32* const value) const = 0;
+      virtual void Get(OGPS_Int32* const value) const throw(...) = 0;
 
       /*!
       * Gets the stored value.
       *
-      * @remarks If the current type does not equal ::OGPS_Float, this function returns the value FALSE and does nothing at all.
+      * @remarks If the current type does not equal ::OGPS_Float, the behavior is undefined.
       * @see DataPoint::GetType
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value Destination for the currently stored value.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Get(OGPS_Float* const value) const = 0;
+      virtual void Get(OGPS_Float* const value) const throw(...) = 0;
 
       /*!
       * Gets the stored value.
       *
-      * @remarks If the current type does not equal ::OGPS_Double, this function returns the value FALSE and does nothing at all.
+      * @remarks If the current type does not equal ::OGPS_Double, the behavior is undefined.
       * @see DataPoint::GetType
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value Destination for the currently stored value.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Get(OGPS_Double* const value) const = 0;
+      virtual void Get(OGPS_Double* const value) const throw(...) = 0;
 
       /*!
       * Gets the stored value.
+      *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
       *
       * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetType returns ::OGPS_MissingPointType in this case).
       */
-      virtual OGPS_Double Get() const = 0;
+      virtual OGPS_Double Get() const throw(...) = 0;
 
       /*!
-      * Asks if there is currently a stored value.
+      * Asks whether there is a point value stored within this instance currently.
       *
       * @see DataPoint::GetType
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @returns Returns TRUE if a value is stored, FALSE otherwise.
       */
-      virtual OGPS_Boolean IsValid() const = 0;
+      virtual OGPS_Boolean IsValid() const throw(...) = 0;
 
       /*!
       * Stores a new value.
       *
       * Also adjusts the current type information reflecting this set operation, if necessary.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value The new value to be stored.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Set(const OGPS_Int16 value) = 0;
+      virtual void Set(const OGPS_Int16 value) throw(...) = 0;
 
       /*!
       * Stores a new value.
       *
       * Also adjusts the current type information reflecting this set operation, if necessary.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value The new value to be stored.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Set(const OGPS_Int32 value) = 0;
+      virtual void Set(const OGPS_Int32 value) throw(...) = 0;
 
       /*!
       * Stores a new value.
       *
       * Also adjusts the current type information reflecting this set operation, if necessary.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value The new value to be stored.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Set(const OGPS_Float value) = 0;
+      virtual void Set(const OGPS_Float value) throw(...) = 0;
 
       /*!
       * Stores a new value.
       *
       * Also adjusts the current type information reflecting this set operation, if necessary.
       *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
       * @param value The new value to be stored.
-      * @returns Returns TRUE on success, FALSE otherwise.
       */
-      virtual OGPS_Boolean Set(const OGPS_Double value) = 0;
+      virtual void Set(const OGPS_Double value) throw(...) = 0;
 
       /*!
-      * Stores a new value. Copies from an existing ::DataPoint instance.
+      * Stores a new value. Copies its new entry from another ::DataPoint instance.
       *
-      * @param src Object from which to copy.
-      * @returns Returns TRUE on success, FALSE otherwise.
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
+      *
+      * @param src Object to copy from.
       */
-      virtual OGPS_Boolean Set(const DataPoint& src) = 0;
+      virtual void Set(const DataPoint& src) throw(...) = 0;
 
       /*!
       * Resets this instance to its initial state.
+      *
+      * A specific implementation may throw an OpenGPS::Exception if this operation
+      * is not permitted due to the current state of the object instance.
       */
-      virtual void Reset() = 0;
+      virtual void Reset() throw(...) = 0;
 
    private:
       /*! The copy-ctor is not implemented. This prevents its usage. */

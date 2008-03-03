@@ -53,8 +53,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~MissingDataPointParser();
 
-      virtual OGPS_Boolean Read(PointVectorReaderContext& context, DataPoint& value);
-      virtual OGPS_Boolean Write(PointVectorWriterContext& context, const DataPoint& value);
+      virtual void Read(PointVectorReaderContext& context, DataPoint& value) throw(...);
+      virtual void Write(PointVectorWriterContext& context, const DataPoint& value) throw(...);
    };
 }
 

@@ -51,10 +51,7 @@ ZipStreamBuffer::ZipStreamBuffer(zipFile handle, const OGPS_Boolean enable_md5)
 
 ZipStreamBuffer::~ZipStreamBuffer()
 {
-   if(m_Md5Context)
-   {
-      delete m_Md5Context;
-   }
+   _OPENGPS_DELETE(m_Md5Context);
 }
 
 std::streamsize ZipStreamBuffer::xsputn(const char * const s, std::streamsize n )

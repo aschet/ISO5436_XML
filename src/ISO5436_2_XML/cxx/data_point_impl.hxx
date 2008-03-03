@@ -30,7 +30,7 @@
 
 /*! @file
  * An implementation of a data point to be used for typesafe storage
- * of point data internally.
+ * and access of point data.
  */
 
 #ifndef _OPENGPS_DATA_POINT_IMPL_HXX
@@ -43,7 +43,7 @@ namespace OpenGPS
    /*!
     * A straightforward implementation of OpenGPS::DataPoint. This mainly
     * supports OpenGPS::PointVector where typesafe storage
-    * of arbitrary point data must be maintained for its components internally.
+    * of arbitrary point data must be maintained for its vector components.
     */
    class DataPointImpl : public DataPoint
    {
@@ -54,51 +54,51 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~DataPointImpl();
 
-      virtual OGPS_DataPointType GetType() const;
+      virtual OGPS_DataPointType GetType() const throw(...);
 
-      virtual OGPS_Boolean Get(OGPS_Int16* const value) const;
-      virtual OGPS_Boolean Get(OGPS_Int32* const value) const;
-      virtual OGPS_Boolean Get(OGPS_Float* const value) const;
-      virtual OGPS_Boolean Get(OGPS_Double* const value) const;
+      virtual void Get(OGPS_Int16* const value) const throw(...);
+      virtual void Get(OGPS_Int32* const value) const throw(...);
+      virtual void Get(OGPS_Float* const value) const throw(...);
+      virtual void Get(OGPS_Double* const value) const throw(...);
 
-      virtual OGPS_Double Get() const;
+      virtual OGPS_Double Get() const throw(...);
 
-      virtual OGPS_Boolean IsValid() const;
+      virtual OGPS_Boolean IsValid() const throw(...);
 
-      virtual OGPS_Boolean Set(const OGPS_Int16 value);
-      virtual OGPS_Boolean Set(const OGPS_Int32 value);
-      virtual OGPS_Boolean Set(const OGPS_Float value);
-      virtual OGPS_Boolean Set(const OGPS_Double value);
+      virtual void Set(const OGPS_Int16 value) throw(...);
+      virtual void Set(const OGPS_Int32 value) throw(...);
+      virtual void Set(const OGPS_Float value) throw(...);
+      virtual void Set(const OGPS_Double value) throw(...);
 
-      virtual OGPS_Boolean Set(const DataPoint& src);
+      virtual void Set(const DataPoint& src) throw(...);
 
    protected:
-      virtual void Reset();
+      virtual void Reset() throw(...);
 
    private:
-      /*! This tag defines which value type is valid within DataPointImpl::m_Value.
-       * This restricts access to the currently safe element of DataPointImpl::m_Value. */
+      /*! This tag defines which value type is currently valid within DataPointImpl::m_Value.
+       * This restricts access to the only safe element of DataPointImpl::m_Value. */
       OGPS_DataPointType m_Type;
 
-      /*! Typesafe storage for every possible data type of point data. */
+      /*! Typesafe storage for every possible type of point data. */
       typedef union _OGPS_DATA_POINT_VALUE
       {
-         /*! Stores a value of ::OGPS_Int16 data type. The value is undefined if
+         /*! Stores a value of type ::OGPS_Int16. It is undefined if
          DataPointImpl::m_Type does not equal ::OGPS_Int16PointType. */
          OGPS_Int16 int16Value;
 
-         /*! Stores a value of ::OGPS_Int32 data type. The value is undefined if
+         /*! Stores a value of type ::OGPS_Int32. It is undefined if
          DataPointImpl::m_Type does not equal ::OGPS_Int32PointType. */
          OGPS_Int32 int32Value;
 
-         /*! Stores a value of ::OGPS_Float data type. The value is undefined if
+         /*! Stores a value of type ::OGPS_Float. It is undefined if
          DataPointImpl::m_Type does not equal ::OGPS_FloatPointType. */
          OGPS_Float floatValue;
 
-         /*! Stores a value of ::OGPS_Double data type. The value is undefined if
+         /*! Stores a value of type ::OGPS_Double. It is undefined if
          DataPointImpl::m_Type does not equal ::OGPS_DoublePointType. */
          OGPS_Double doubleValue;
-      } OGPS_DataPointValue;/*! Typesafe storage for every data type possible. */
+      } OGPS_DataPointValue;/*! Typesafe storage for every possible data type. */
 
       /*! The stored value of this data point. @see DataPointImpl::m_Type */
       OGPS_DataPointValue m_Value;

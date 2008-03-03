@@ -50,7 +50,7 @@ OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
 
    OGPS_ISO5436_2Handle h = NULL;
    
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(
 
       /* Statement within try-block */ \
       h = new OGPS_ISO5436_2; \
@@ -61,18 +61,12 @@ OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
       \
       if(!h->instance->Open(readOnly)) \
       { \
-         delete h; \
-         h = NULL; \
+         _OPENGPS_DELETE(h); \
       } \
       , \
       \
       /* Statement within catch-block */ \
-      if(h) \
-      { \
-         delete h; \
-         h = NULL; \
-      }
-      
+      _OPENGPS_DELETE(h); \
    );
 
    return h;
@@ -90,7 +84,7 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
 
    OGPS_ISO5436_2Handle h = NULL;
    
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(
 
       /* Statement within try-block */ \
       h = new OGPS_ISO5436_2; \
@@ -105,17 +99,12 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
          matrixDimension, \
          useBinaryData)) \
       { \
-         delete h; \
-         h = NULL; \
+         _OPENGPS_DELETE(h); \
       } \
       , \
       \
       /* Statement within catch-block */ \
-      if(h) \
-      { \
-         delete h; \
-         h = NULL; \
-      }
+      _OPENGPS_DELETE(h); \
       
    );
 
@@ -134,7 +123,7 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
 
    OGPS_ISO5436_2Handle h = NULL;
    
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(
 
       /* Statement within try-block */ \
       h = new OGPS_ISO5436_2; \
@@ -149,17 +138,12 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
          listDimension, \
          useBinaryData)) \
       { \
-         delete h; \
-         h = NULL; \
+         _OPENGPS_DELETE(h); \
       } \
       , \
       \
       /* Statement within catch-block */ \
-      if(h) \
-      { \
-         delete h; \
-         h = NULL; \
-      }
+      _OPENGPS_DELETE(h); \
       
    );
 
@@ -180,7 +164,7 @@ OGPS_Boolean ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int co
    _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->Write(compressionLevel));
 }
 
-OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle)
+OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle) throw()
 {
    _ASSERT(handle);
 
@@ -190,21 +174,13 @@ OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle)
    {
       _ASSERT(h->instance);
 
-      OGPS_Boolean closed;
-      
-      _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+      OGPS_Boolean closed = FALSE;
 
-         /* Statement within try-block */ \
+      _OPENGPS_GENERIC_EXCEPTION_HANDLER( \
          closed = h->instance->Close(); \
-         , \
-         /* Statement within catch-block */ \
-         closed = FALSE;
-      );
-
-      delete h->instance;
-
-      delete h;
-      h = NULL;
+         _OPENGPS_DELETE(h->instance); \
+         _OPENGPS_DELETE(h); \
+         );
 
       return closed;
    }
@@ -212,53 +188,45 @@ OGPS_Boolean ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle)
    return TRUE;
 }
 
-OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle)
+OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle handle) throw()
 {
    _ASSERT(handle && handle->instance);
 
    OGPS_PointIteratorPtr iter = NULL;
    
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(
 
          /* Statement within try-block */ \
          iter = new OGPS_PointIterator(); \
          iter->instance = handle->instance->CreateNextPointIterator().release(); \
          , \
          /* Statement within catch-block */ \
-         if(iter) \
-         { \
-            delete iter; \
-            iter = NULL; \
-         }
+         _OPENGPS_DELETE(iter); \
       );
 
    return iter;
 }
 
-OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle handle)
+OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle handle) throw()
 {
    _ASSERT(handle && handle->instance);
 
    OGPS_PointIteratorPtr iter = NULL;
    
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER_CLEANUP(
 
          /* Statement within try-block */ \
          iter = new OGPS_PointIterator(); \
          iter->instance = handle->instance->CreatePrevPointIterator().release(); \
          , \
          /* Statement within catch-block */ \
-         if(iter) \
-         { \
-            delete iter; \
-            iter = NULL; \
-         }
+         _OPENGPS_DELETE(iter); \
       );
 
    return iter;
 }
 
-OGPS_Boolean ogps_SetMatrixPoint(
+void ogps_SetMatrixPoint(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long u,
         const unsigned long v,
@@ -267,10 +235,10 @@ OGPS_Boolean ogps_SetMatrixPoint(
 {
    _ASSERT(handle && handle->instance);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->SetMatrixPoint(u, v, w, vector ? &vector->instance : NULL));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->SetMatrixPoint(u, v, w, vector ? &vector->instance : NULL));
 }
 
-OGPS_Boolean ogps_GetMatrixPoint(
+void ogps_GetMatrixPoint(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long u,
         const unsigned long v,
@@ -279,30 +247,30 @@ OGPS_Boolean ogps_GetMatrixPoint(
 {
    _ASSERT(handle && handle->instance && vector);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetMatrixPoint(u, v, w, vector->instance));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetMatrixPoint(u, v, w, vector->instance));
 }
 
-OGPS_Boolean ogps_SetListPoint(
+void ogps_SetListPoint(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long index,
         const OGPS_PointVectorPtr vector) throw()
 {
    _ASSERT(handle && handle->instance && vector);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->SetListPoint(index, vector->instance));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->SetListPoint(index, vector->instance));
 }
 
-OGPS_Boolean ogps_GetListPoint(
+void ogps_GetListPoint(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long index,
         OGPS_PointVectorPtr const vector) throw()
 {
    _ASSERT(handle && handle->instance && vector);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetListPoint(index, vector->instance));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetListPoint(index, vector->instance));
 }
 
-OGPS_Boolean ogps_GetMatrixCoord(
+void ogps_GetMatrixCoord(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long u,
         const unsigned long v,
@@ -313,7 +281,7 @@ OGPS_Boolean ogps_GetMatrixCoord(
 {
    _ASSERT(handle && handle->instance);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetMatrixCoord(u, v, w, x, y, z));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetMatrixCoord(u, v, w, x, y, z));
 }
 
 OGPS_Boolean ogps_IsMatrixCoordValid(
@@ -327,7 +295,7 @@ OGPS_Boolean ogps_IsMatrixCoordValid(
    _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->IsMatrixCoordValid(u, v, w));
 }
 
-OGPS_Boolean ogps_GetListCoord(
+void ogps_GetListCoord(
         const OGPS_ISO5436_2Handle handle,
         const unsigned long index,
         OGPS_Double* const x,
@@ -336,5 +304,5 @@ OGPS_Boolean ogps_GetListCoord(
 {
    _ASSERT(handle && handle->instance);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetListCoord(index, x, y, z));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetListCoord(index, x, y, z));
 }

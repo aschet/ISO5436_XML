@@ -132,11 +132,12 @@ extern "C" {
     *
     * @see ::ogps_MoveNext
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param iterator Operate on this iterator handle.
     * @param vector Gets a copy of the vector at the current iterator position.
-    * @returns Returns TRUE on success, FALSE otherwise.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetCurrentPoint(
+   _OPENGPS_EXPORT void ogps_GetCurrentPoint(
       const OGPS_PointIteratorPtr iterator,
       OGPS_PointVectorPtr const vector);
 
@@ -145,11 +146,12 @@ extern "C" {
     *
     * @see ::ogps_MoveNext
     *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
     * @param iterator Operate on this iterator handle.
     * @param vector New value of the current point vector. May be NULL to indicate an invalid point.
-    * @returns Returns TRUE on success, FALSE otherwise.
     */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_SetCurrentPoint(
+   _OPENGPS_EXPORT void ogps_SetCurrentPoint(
       const OGPS_PointIteratorPtr iterator,
       const OGPS_PointVectorPtr vector);
 

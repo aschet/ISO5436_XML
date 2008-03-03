@@ -31,7 +31,21 @@
 #include "binary_point_vector_reader_context.hxx"
 #include "point_vector_iostream.hxx"
 
+#include <opengps/cxx/exceptions.hxx>
+
 #include "stdafx.hxx"
+
+/*! Checks whether the underlying stream is valid. Throws an exception if this is not the case. */
+#define _CHECK_STREAM_AND_THROW_EXCEPTION \
+   if(!m_Stream) \
+   { \
+   throw OpenGPS::Exception( \
+      OGPS_ExInvalidOperation, \
+      _EX_T("No binary file stream available."), \
+      _EX_T("The operation on the binary file stream failed, because the stream has been closed already."), \
+      _EX_T("OpenGPS::BinaryPointVectorReaderContext")); \
+   }
+
 
 BinaryPointVectorReaderContext::BinaryPointVectorReaderContext(const OpenGPS::String& filePath)
 : PointVectorReaderContext()
@@ -44,44 +58,40 @@ BinaryPointVectorReaderContext::~BinaryPointVectorReaderContext()
    Close();
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::Close()
+void BinaryPointVectorReaderContext::Close()
 {
    if(m_Stream)
    {
       m_Stream->close();
-      delete m_Stream;
-      m_Stream = NULL;
-
-      return TRUE;
+      _OPENGPS_DELETE(m_Stream);
    }
-
-   return FALSE;
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::MoveNext()
+OGPS_Boolean BinaryPointVectorReaderContext::MoveNext() throw(...)
 {
-   if(m_Stream)
-   {
-      m_Stream->peek();
-      return !m_Stream->eof();
-   }
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   return FALSE;
+   m_Stream->peek();
+   return !m_Stream->eof();
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const
+OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const throw(...)
 {
    return TRUE; // TODO: parse invalid file here!
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::Skip()
+void BinaryPointVectorReaderContext::Skip() throw(...)
 {
-   if(m_Stream)
+   _CHECK_STREAM_AND_THROW_EXCEPTION;
+   
+   if(!IsGood())
    {
-      return IsGood();
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("The underlying binary stream object became invalid."),
+         _EX_T("A read/write error occured."),
+         _EX_T("OpenGPS::BinaryPointVectorReaderContext::Skip"));
    }
-
-   return FALSE;
 }
 
 OGPS_Boolean BinaryPointVectorReaderContext::IsGood() const

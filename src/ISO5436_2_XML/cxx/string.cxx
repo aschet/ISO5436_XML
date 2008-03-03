@@ -55,10 +55,7 @@ String::String(const OGPS_Character* const s) : BaseType(s)
 String::~String()
 {
 #ifdef _UNICODE
-   if(m_Chars)
-   {
-      delete[] m_Chars;
-   }
+   _OPENGPS_DELETE_ARRAY(m_Chars);
 #endif
 }
 
@@ -66,10 +63,7 @@ const char* String::ToChar()
 {
 
 #ifdef _UNICODE
-   if(m_Chars)
-   {
-      delete[] m_Chars;
-   }
+   _OPENGPS_DELETE_ARRAY(m_Chars);
 
    const size_t len = length();
    m_Chars = new char[len + 1];
@@ -95,7 +89,7 @@ void String::FromChar(const char* const s)
 
       *this = chars;
 
-      delete[] chars;
+      _OPENGPS_DELETE_ARRAY(chars);
 #else
       *this = s;
 #endif

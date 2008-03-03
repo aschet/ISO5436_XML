@@ -49,25 +49,11 @@ VectorBuffer::~VectorBuffer()
    // TODO: maybe we should overload following
    // delete operators, since memory is not
    // allocated within the current class scope?
-   if(m_X)
-   {
-      delete m_X;
-   }
+   _OPENGPS_DELETE(m_X);
+   _OPENGPS_DELETE(m_Y);
+   _OPENGPS_DELETE(m_Z);
 
-   if(m_Y)
-   {
-      delete m_Y;
-   }
-
-   if(m_Z)
-   {
-      delete m_Z;
-   }
-
-   if(m_ValidityProvider)
-   {
-      delete m_ValidityProvider;
-   }
+   _OPENGPS_DELETE(m_ValidityProvider);
 }
 
 void VectorBuffer::SetX(PointBuffer* const value)
