@@ -63,6 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
@@ -123,7 +124,7 @@
 				PreprocessorDefinitions="_UNICODE; _USE_OPENGPS_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
@@ -141,7 +142,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_D.lib"
+				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_DS.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_DS.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
@@ -204,7 +206,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -220,7 +222,7 @@
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML.lib"
 				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(SolutionDir)\..\..\install\lib\"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -281,11 +283,11 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;"
 				PreprocessorDefinitions="_UNICODE; _USE_OPENGPS_LIBRARY"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -298,10 +300,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML.lib"
-				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName).exe"
+				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_S.lib"
+				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName)_S.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(SolutionDir)\..\..\install\lib\"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -364,7 +366,7 @@
 				PreprocessorDefinitions="_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
@@ -383,8 +385,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_D.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/Debug"
+				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

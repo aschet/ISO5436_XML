@@ -662,7 +662,7 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
    tmp = path; tmp += _T("ISO5436-sample2.x3p");
    readonlyExample4(tmp);
 
-   //simpleExample(path + _T("simple.x3p"));
+   simpleExample(path + _T("simple.x3p"));
 
    return 0;
 }

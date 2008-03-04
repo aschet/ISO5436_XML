@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="xerces-c_2.lib"
-				OutputFile="$(OutDir)\$(ProjectName).lib"
+				OutputFile="$(SolutionDir)\..\..\install\lib\$(ProjectName).lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -209,7 +209,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.dll"
+				OutputFile="$(OutDir)\$(ProjectName)_DS.dll"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				TargetMachine="1"
@@ -296,6 +296,7 @@
 				GenerateDebugInformation="false"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				ImportLibrary="$(TargetDir)..\lib\$(TargetName)_S.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -375,6 +376,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="xerces-c_2D.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
 				AdditionalLibraryDirectories=""
 			/>

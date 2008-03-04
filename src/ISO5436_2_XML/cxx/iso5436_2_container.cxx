@@ -716,7 +716,7 @@ void ISO5436_2Container::Decompress(const OpenGPS::String& src, const OpenGPS::S
       throw OpenGPS::Exception(
          OGPS_ExGeneral,
          _EX_T("The X3P archive to be decompressed could not be opened."),
-         _EX_T("Zlib compression library could not open the targeted file."),
+         _EX_T("Verify whether the file exists and if you have sufficient access privilegs."),
          _EX_T("OpenGPS::ISO5436_2Container::Decompress"));
    }
 
@@ -939,8 +939,11 @@ void ISO5436_2Container::CreateDocument(
    try
    {
       Schemas::ISO5436_2::Record3Type record3;
+      record3.MatrixDimension(*matrixDimension);
       Schemas::ISO5436_2::Record4Type record4(_OPENGPS_XSD_ISO5436_MAIN_CHECKSUM_PATH);
       m_Document = new Schemas::ISO5436_2::ISO5436_2Type(*record1, record3, record4);
+
+      _ASSERT(m_Document->Record3().MatrixDimension().present());
 
       if(record2)
       {         
