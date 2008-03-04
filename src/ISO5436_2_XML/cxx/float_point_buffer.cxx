@@ -62,7 +62,7 @@ void FloatPointBuffer::Get(const unsigned long index, OGPS_Float& value) const t
    value = m_Buffer[index];
 }
 
-OGPS_DataPointType FloatPointBuffer::GetType() const
+OGPS_DataPointType FloatPointBuffer::GetPointType() const
 {
    return OGPS_FloatPointType;
 }

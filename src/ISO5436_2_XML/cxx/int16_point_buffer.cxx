@@ -62,7 +62,7 @@ void Int16PointBuffer::Get(const unsigned long index, OGPS_Int16& value) const t
    value = m_Buffer[index];
 }
 
-OGPS_DataPointType Int16PointBuffer::GetType() const
+OGPS_DataPointType Int16PointBuffer::GetPointType() const
 {
    return OGPS_Int16PointType;
 }

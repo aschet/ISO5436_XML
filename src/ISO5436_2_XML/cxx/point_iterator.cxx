@@ -265,8 +265,10 @@ void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector) thro
    {
       m_Handle->GetMatrixPoint(m_U, m_V, m_W, vector);
    }
-
-   m_Handle->GetListPoint(m_U, vector);
+   else
+   {
+      m_Handle->GetListPoint(m_U, vector);
+   }
 }
 
 void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector) throw(...)
@@ -277,11 +279,13 @@ void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const 
    {
       m_Handle->SetMatrixPoint(m_U, m_V, m_W, vector);
    }
+   else
+   {
+      // NULL vector (invalid point) makes no sense in list type
+      _ASSERT(vector);
 
-   // NULL vector (invalid point) makes no sense in list type
-   _ASSERT(vector);
-
-   m_Handle->SetListPoint(m_U, *vector);
+      m_Handle->SetListPoint(m_U, *vector);
+   }
 }
 
 OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(unsigned long* const index) const

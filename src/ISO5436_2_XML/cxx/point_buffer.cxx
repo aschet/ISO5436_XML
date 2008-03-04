@@ -155,7 +155,7 @@ void PointBuffer::Allocate(const unsigned long size) throw(...)
       _EX_T("OpenGPS::PointBuffer::Allocate"));
 }
 
-OGPS_DataPointType PointBuffer::GetType() const
+OGPS_DataPointType PointBuffer::GetPointType() const
 {
    return OGPS_MissingPointType;
 }

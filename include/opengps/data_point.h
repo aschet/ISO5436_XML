@@ -73,7 +73,7 @@ extern "C" {
     *
     * @param dataPoint Operate on this data point instance.
     */
-   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint);
+   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetPointType(const OGPS_DataPointPtr dataPoint);
 
    /*!
     * Gets the stored value of type ::OGPS_Int16 out of a given data point instance.
@@ -81,7 +81,7 @@ extern "C" {
     * @remarks If the current type does not equal ::OGPS_Int16, this function returns the value 0.
     * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
-    * @see ::ogps_GetDataType
+    * @see ::ogps_GetPointType
     *
     * @param dataPoint Operate on this data point instance.
     */
@@ -93,7 +93,7 @@ extern "C" {
     * @remarks If the current type does not equal ::OGPS_Int32, this function returns the value 0.
     * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
-    * @see ::ogps_GetDataType
+    * @see ::ogps_GetPointType
     *
     * @param dataPoint Operate on this data point instance.
     */
@@ -105,7 +105,7 @@ extern "C" {
     * @remarks If the current type does not equal ::OGPS_Float, this function returns the value 0.0.
     * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
-    * @see ::ogps_GetDataType
+    * @see ::ogps_GetPointType
     *
     * @param dataPoint Operate on this data point instance.
     */
@@ -117,7 +117,7 @@ extern "C" {
     * @remarks If the current type does not equal ::OGPS_Double, this function returns the value 0.0.
     * You may check ::ogps_HasError whether this operation has been successfully executed.
     *
-    * @see ::ogps_GetDataType
+    * @see ::ogps_GetPointType
     *
     * @param dataPoint Operate on this data point instance.
     */

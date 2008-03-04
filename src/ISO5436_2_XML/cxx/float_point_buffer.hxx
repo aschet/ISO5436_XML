@@ -59,7 +59,7 @@ namespace OpenGPS
       virtual void Set(const unsigned long index, const OGPS_Float value) throw(...);
       virtual void Get(const unsigned long index, OGPS_Float& value) const throw(...);
 
-      virtual OGPS_DataPointType GetType() const;
+      virtual OGPS_DataPointType GetPointType() const;
 
    private:
       /*! Pointer to internal memory. */

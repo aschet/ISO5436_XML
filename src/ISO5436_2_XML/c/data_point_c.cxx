@@ -36,12 +36,12 @@
 #include "../cxx/data_point_impl.hxx"
 #include "../cxx/stdafx.hxx"
 
-OGPS_DataPointType ogps_GetDataType(const OGPS_DataPointPtr dataPoint) throw()
+OGPS_DataPointType ogps_GetPointType(const OGPS_DataPointPtr dataPoint) throw()
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
    OGPS_DataPointType retval = OGPS_MissingPointType;
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(retval = dataPoint->instance->GetType());
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(retval = dataPoint->instance->GetPointType());
    return retval;
 }
 

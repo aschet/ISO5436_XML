@@ -50,6 +50,10 @@
 #  include <opengps/cxx/string.hxx>
 #endif
 
+#if defined(_USE_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL)
+   class _OPENGPS_EXPORT std::exception;
+#endif /* defined(_USE_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL) */
+
 namespace OpenGPS
 {
    /*!

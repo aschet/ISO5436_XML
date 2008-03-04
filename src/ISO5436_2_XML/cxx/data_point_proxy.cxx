@@ -77,11 +77,11 @@ PointVectorProxy::DataPointProxy::~DataPointProxy()
 {
 }
 
-OGPS_DataPointType PointVectorProxy::DataPointProxy::GetType() const throw(...)
+OGPS_DataPointType PointVectorProxy::DataPointProxy::GetPointType() const throw(...)
 {
    if(m_Buffer)
    {
-      return m_Buffer->GetType();
+      return m_Buffer->GetPointType();
    }
 
    return OGPS_MissingPointType;
@@ -173,12 +173,12 @@ void PointVectorProxy::DataPointProxy::Reset() throw(...)
    // But this is exacly the case, when no explicit point data needs
    // to entered. So this instance should not contain a buffer, because
    // nothing will be there to get stored herein.
-   if(!m_Buffer)
+   if(m_Buffer)
    {
       throw OpenGPS::Exception(
          OGPS_ExInvalidOperation,
          _EX_T("Failed to reset point data."),
-         _EX_T("Failed to reset proxied point data. This method is not supported in this context."),
+         _EX_T("Failed to reset proxied point data. Most likely there is an attempt to reset a data point although its corresponding axis specifies data points on it as implicit. So there is no need to reset such a point in that context."),
          _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Reset"));
    }
 }
@@ -187,8 +187,8 @@ void PointVectorProxy::DataPointProxy::Set(const DataPoint& src) throw(...)
 {
    _ASSERT(m_Context);
 
-   const OGPS_DataPointType srcType = src.GetType();
-   const OGPS_DataPointType thisType = GetType();
+   const OGPS_DataPointType srcType = src.GetPointType();
+   const OGPS_DataPointType thisType = GetPointType();
 
    if(srcType != thisType)
    {

@@ -98,7 +98,7 @@ OGPS_Boolean VectorBufferBuilder::BuildValidityProvider()
    ValidBuffer* validBuffer = NULL;
 
    PointBuffer * const zBuffer = m_Buffer->GetZ();
-   const OGPS_DataPointType dataType = zBuffer->GetType();
+   const OGPS_DataPointType dataType = zBuffer->GetPointType();
 
    switch(dataType)
    {

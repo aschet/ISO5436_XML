@@ -649,6 +649,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cxx\iso5436_2_handle.cxx"
+					>
+				</File>
+				<File
 					RelativePath=".\cxx\missing_data_point_parser.cxx"
 					>
 				</File>
@@ -746,11 +750,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\c\iso5436_2_handle.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\c\iso5436_2_handle.hxx"
+					RelativePath=".\c\iso5436_2_handle_c.hxx"
 					>
 				</File>
 				<File

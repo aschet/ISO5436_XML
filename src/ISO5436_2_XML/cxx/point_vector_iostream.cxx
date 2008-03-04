@@ -52,8 +52,6 @@ bool PointVectorWhitespaceFacet::do_is(mask msk, OGPS_Character ch) const
    return BaseType::do_is(msk, ch);
 }
 
-PointVectorInvariantLocale PointVectorInvariantLocale::m_Instance;
-
 PointVectorInvariantLocale::PointVectorInvariantLocale()
 : BaseType(std::locale::classic(), new PointVectorWhitespaceFacet())
 {
@@ -63,21 +61,16 @@ PointVectorInvariantLocale::~PointVectorInvariantLocale()
 {
 }
 
-const PointVectorInvariantLocale& PointVectorInvariantLocale::GetInstance()
-{
-   return m_Instance;
-}
-
 PointVectorInputStringStream::PointVectorInputStringStream()
 : BaseType(std::ios_base::in)
 {
-   imbue(PointVectorInvariantLocale::GetInstance());
+   imbue(m_Locale);
 }
 
 PointVectorInputStringStream::PointVectorInputStringStream(const OpenGPS::String& s)
 : BaseType(std::ios_base::in)
 {
-   imbue(PointVectorInvariantLocale::GetInstance());
+   imbue(m_Locale);
    str(s);
 }
 
@@ -88,7 +81,7 @@ PointVectorInputStringStream::~PointVectorInputStringStream()
 PointVectorOutputStringStream::PointVectorOutputStringStream()
 : BaseType(std::ios_base::out)
 {
-   imbue(PointVectorInvariantLocale::GetInstance());
+   imbue(m_Locale);
 }
 
 PointVectorOutputStringStream::~PointVectorOutputStringStream()
@@ -98,7 +91,7 @@ PointVectorOutputStringStream::~PointVectorOutputStringStream()
 InputBinaryFileStream::InputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
-   imbue(PointVectorInvariantLocale::GetInstance());
+   imbue(m_Locale);
 
    OpenGPS::String buf(filePath);
    open(buf.ToChar(), std::ios_base::in | std::ios_base::binary);
@@ -111,7 +104,7 @@ InputBinaryFileStream::~InputBinaryFileStream()
 OutputBinaryFileStream::OutputBinaryFileStream(const OpenGPS::String& filePath)
 : BaseType()
 {
-   imbue(PointVectorInvariantLocale::GetInstance());
+   imbue(m_Locale);
 
    OpenGPS::String buf(filePath);
    open(buf.ToChar(), std::ios_base::out | std::ios_base::binary);

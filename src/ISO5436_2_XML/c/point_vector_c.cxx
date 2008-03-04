@@ -30,6 +30,7 @@
 
 #include <opengps/point_vector.h>
 #include <opengps/cxx/point_vector.hxx>
+#include <opengps/cxx/data_point.hxx>
 
 #include "data_point_c.hxx"
 #include "point_vector_c.hxx"
@@ -247,6 +248,15 @@ OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector) throw()
    return retval;
 }
 
+OGPS_DataPointType ogps_GetPointTypeX(const OGPS_PointVectorPtr vector) throw()
+{
+   _ASSERT(vector);
+
+   OGPS_DataPointType value = OGPS_MissingPointType;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(value = vector->instance.GetX()->GetPointType());
+   return value;
+}
+
 OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector) throw()
 {
    _ASSERT(vector);
@@ -283,6 +293,14 @@ OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
+OGPS_DataPointType ogps_GetPointTypeY(const OGPS_PointVectorPtr vector) throw()
+{
+   _ASSERT(vector);
+
+   OGPS_DataPointType value = OGPS_MissingPointType;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(value = vector->instance.GetY()->GetPointType());
+   return value;
+}
 
 OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector) throw()
 {
@@ -317,6 +335,15 @@ OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector) throw()
 
    OGPS_Double value = 0.0;
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(vector->instance.GetY(&value));
+   return value;
+}
+
+OGPS_DataPointType ogps_GetPointTypeZ(const OGPS_PointVectorPtr vector) throw()
+{
+   _ASSERT(vector);
+
+   OGPS_DataPointType value = OGPS_MissingPointType;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(value = vector->instance.GetZ()->GetPointType());
    return value;
 }
 

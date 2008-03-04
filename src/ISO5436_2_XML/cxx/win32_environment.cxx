@@ -341,21 +341,21 @@ OGPS_Boolean Win32Environment::RenameFile(const OpenGPS::String& src, const Open
 
 OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const
 {
-   const size_t bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0) - 1;
+   const size_t bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0);
    
-   if(bufferLength < 0)
+   if(bufferLength == 0)
    {
       _ASSERT(GetLastError() == ERROR_ENVVAR_NOT_FOUND);
 
       return FALSE;
    }
 
-   value.resize(bufferLength);
-   _ASSERT(value.size() == bufferLength);
+   value.resize(bufferLength - 1);
+   _ASSERT(value.size() == bufferLength - 1);
 
    /* This readonly->read/write cast should be safe here. GetEnvironmentVariable is not supposed
    to vary buffer size nor its location. Just new content should be copied in. */
-   if(GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), bufferLength + 1) != bufferLength)
+   if(GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), bufferLength) != bufferLength - 1)
    {
       value.erase();
       return FALSE;
@@ -365,21 +365,21 @@ OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenG
        OpenGPS::String unescaped;
       unescaped.assign(value);
       
-      const size_t bufferLength2 = ExpandEnvironmentStrings(unescaped.c_str(), NULL, 0) - 1;
+      const size_t bufferLength2 = ExpandEnvironmentStrings(unescaped.c_str(), NULL, 0);
 
-      if(bufferLength2 < 0)
+      if(bufferLength2 == 0)
       {
          _ASSERT(GetLastError() == ERROR_ENVVAR_NOT_FOUND);
 
          return FALSE;
       }
 
-      value.resize(bufferLength2);
-      _ASSERT(value.size() == bufferLength2);
+      value.resize(bufferLength2 - 1);
+      _ASSERT(value.size() == bufferLength2 - 1);
 
       /* Wired cast should be safe here. Same as above. */
       /* This assumes we use Unicode here. See API for ExpandEnvironmentStrings. */
-      if(ExpandEnvironmentStrings(unescaped.c_str(), (LPTSTR)value.c_str(), bufferLength2 + 1) - 1 != bufferLength2)
+      if(ExpandEnvironmentStrings(unescaped.c_str(), (LPTSTR)value.c_str(), bufferLength2) != bufferLength2)
       {
          value.erase();
          return FALSE;

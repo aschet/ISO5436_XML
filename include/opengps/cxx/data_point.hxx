@@ -73,13 +73,13 @@ namespace OpenGPS
       *
       * @returns Returns ::OGPS_MissingPointType if this instance does not store any value at all.
       */
-      virtual OGPS_DataPointType GetType() const throw(...) = 0;
+      virtual OGPS_DataPointType GetPointType() const throw(...) = 0;
 
       /*!
       * Gets the stored value.
       *
       * @remarks If the current type does not equal ::OGPS_Int16, the behavior is undefined.
-      * @see DataPoint::GetType
+      * @see DataPoint::GetPointType
       *
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
@@ -92,7 +92,7 @@ namespace OpenGPS
       * Gets the stored value.
       *
       * @remarks If the current type does not equal ::OGPS_Int32, the behavior is undefined.
-      * @see DataPoint::GetType
+      * @see DataPoint::GetPointType
       *
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
@@ -105,7 +105,7 @@ namespace OpenGPS
       * Gets the stored value.
       *
       * @remarks If the current type does not equal ::OGPS_Float, the behavior is undefined.
-      * @see DataPoint::GetType
+      * @see DataPoint::GetPointType
       *
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
@@ -118,7 +118,7 @@ namespace OpenGPS
       * Gets the stored value.
       *
       * @remarks If the current type does not equal ::OGPS_Double, the behavior is undefined.
-      * @see DataPoint::GetType
+      * @see DataPoint::GetPointType
       *
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
@@ -133,14 +133,14 @@ namespace OpenGPS
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
       *
-      * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetType returns ::OGPS_MissingPointType in this case).
+      * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetPointType returns ::OGPS_MissingPointType in this case).
       */
       virtual OGPS_Double Get() const throw(...) = 0;
 
       /*!
       * Asks whether there is a point value stored within this instance currently.
       *
-      * @see DataPoint::GetType
+      * @see DataPoint::GetPointType
       *
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.

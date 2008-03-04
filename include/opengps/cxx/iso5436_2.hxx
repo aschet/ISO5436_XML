@@ -49,6 +49,7 @@
 
 #include <memory>
 
+
 namespace OpenGPS
 {
    namespace Schemas

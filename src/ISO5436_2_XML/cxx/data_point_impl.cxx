@@ -44,13 +44,14 @@ DataPointImpl::DataPointImpl()
 : DataPoint()
 {
    m_Type = OGPS_MissingPointType;
+   m_Value.doubleValue = 0.0;
 }
 
 DataPointImpl::~DataPointImpl()
 {
 }
 
-OGPS_DataPointType DataPointImpl::GetType() const throw(...)
+OGPS_DataPointType DataPointImpl::GetPointType() const throw(...)
 {
    return m_Type;
 }
@@ -186,7 +187,7 @@ void DataPointImpl::Set(const DataPoint& src) throw(...)
    implemented by different combinations of compiler/architecture concerning the union data type,
    allowing the compiler to allocate the size of unions dynamically. Therefore a simple but
    efficient memcpy might lead to unexpected results. */
-   switch(src.GetType())
+   switch(src.GetPointType())
    {
    case OGPS_Int16PointType:
       OGPS_Int16 vs;

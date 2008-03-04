@@ -62,7 +62,7 @@ void DoublePointBuffer::Get(const unsigned long index, OGPS_Double& value) const
    value = m_Buffer[index];
 }
 
-OGPS_DataPointType DoublePointBuffer::GetType() const
+OGPS_DataPointType DoublePointBuffer::GetPointType() const
 {
    return OGPS_DoublePointType;
 }

@@ -173,7 +173,7 @@ namespace OpenGPS
       /*!
        * Gets the type of point data that can be stored within this instance.
        */
-      virtual OGPS_DataPointType GetType() const;
+      virtual OGPS_DataPointType GetPointType() const;
 
    protected:
       /*!

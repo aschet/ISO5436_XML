@@ -237,6 +237,13 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector);
 
    /*!
+    * Gets the type of points of the x component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
+   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetPointTypeX(const OGPS_PointVectorPtr vector);
+
+   /*!
     * Gets the value of the x component of the given vector.
     *
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
@@ -285,6 +292,13 @@ extern "C" {
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector);
 
    /*!
+    * Gets the type of points of the y component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
+   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetPointTypeY(const OGPS_PointVectorPtr vector);
+
+   /*!
     * Gets the value of the y component of the given vector.
     *
     * @remarks Returns 0 if there is a type mismatch and the value of the component is stored as a
@@ -331,6 +345,13 @@ extern "C" {
     * @param vector Operate on this point vector instance.
     */
    _OPENGPS_EXPORT OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector);
+
+   /*!
+    * Gets the type of points of the z component of the given vector.
+    *
+    * @param vector Operate on this point vector instance.
+    */
+   _OPENGPS_EXPORT OGPS_DataPointType ogps_GetPointTypeZ(const OGPS_PointVectorPtr vector);
 
    /*!
     * Gets the value of the z component of the given vector.

@@ -164,11 +164,11 @@ OGPS_Boolean XmlPointVectorReaderContext::MoveNext() throw(...)
    // non-empty vector list
    if(m_PointVectorList->size() > 0)
    {
-   _ASSERT(!m_Stream);
+      _ASSERT(!m_Stream);
 
-   m_Stream = new PointVectorInputStringStream(m_PointVectorList->at(m_Next++));
+      m_Stream = new PointVectorInputStringStream(m_PointVectorList->at(m_Next++));
 
-   return TRUE;
+      return TRUE;
    }
 
    return FALSE;

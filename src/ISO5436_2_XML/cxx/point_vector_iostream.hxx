@@ -94,13 +94,6 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       ~PointVectorInvariantLocale();
-
-      /*! Gets a buffered instance of the invariant locale. */
-      static const PointVectorInvariantLocale& GetInstance();
-
-   private:
-      /*! Buffered instance of the invariant locale. */
-      static PointVectorInvariantLocale m_Instance;
    };
 
    /*! A string stream used for parsing a point vector as defined in ISO5436-2 XML. */
@@ -121,6 +114,10 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       ~PointVectorInputStringStream();
+
+   private:
+      /*! Invariant locale. */
+      PointVectorInvariantLocale m_Locale;
    };
 
    /*! A locale invariant string stream used to convert a point vector object to its
@@ -136,6 +133,10 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       ~PointVectorOutputStringStream();
+
+   private:
+      /*! Invariant locale. */
+      PointVectorInvariantLocale m_Locale;
    };
 
    /*! A binary stream class used for reading from binary files. */
@@ -153,6 +154,10 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       ~InputBinaryFileStream();
+
+   private:
+      /*! Invariant locale. */
+      PointVectorInvariantLocale m_Locale;
    };
 
    /*! A binary stream class used for writing to binary files. */
@@ -170,6 +175,10 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       ~OutputBinaryFileStream();
+
+   private:
+      /*! Invariant locale. */
+      PointVectorInvariantLocale m_Locale;
    };
 }
 

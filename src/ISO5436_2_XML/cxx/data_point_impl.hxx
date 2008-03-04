@@ -54,7 +54,7 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~DataPointImpl();
 
-      virtual OGPS_DataPointType GetType() const throw(...);
+      virtual OGPS_DataPointType GetPointType() const throw(...);
 
       virtual void Get(OGPS_Int16* const value) const throw(...);
       virtual void Get(OGPS_Int32* const value) const throw(...);
