@@ -53,6 +53,9 @@ namespace OpenGPS
       /*! Gets the current index. */
       virtual unsigned long GetIndex() const;
 
+      /*! Can the current index be incremented? */
+      virtual OGPS_Boolean CanIncrementIndex() const;
+
       /*! Increments the current index by one. */
       virtual OGPS_Boolean IncrementIndex();
 

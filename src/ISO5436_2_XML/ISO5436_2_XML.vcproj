@@ -549,6 +549,10 @@
 					RelativePath=".\iso5436_2.h"
 					>
 				</File>
+				<File
+					RelativePath=".\iso5436_2.xsx"
+					>
+				</File>
 			</File>
 			<File
 				RelativePath=".\iso5436_2_xsd.cxx"
@@ -651,10 +655,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\cxx\iso5436_2_handle.cxx"
-					>
-				</File>
-				<File
 					RelativePath=".\cxx\missing_data_point_parser.cxx"
 					>
 				</File>
@@ -749,6 +749,10 @@
 				</File>
 				<File
 					RelativePath=".\c\info_c.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\c\iso5436_2_c.cxx"
 					>
 				</File>
 				<File

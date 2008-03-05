@@ -45,6 +45,11 @@ unsigned long PointVectorProxyContext::GetIndex() const
    return 0;
 }
 
+OGPS_Boolean PointVectorProxyContext::CanIncrementIndex() const
+{
+   return FALSE;
+}
+
 OGPS_Boolean PointVectorProxyContext::IncrementIndex()
 {
    return FALSE;

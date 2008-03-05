@@ -108,6 +108,6 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
  * @param handle Handle object to operate on.
  * @returns Returns ISO5436_2 XML document handle or NULL on failure.
  */
-_OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw();
+_OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw();
 
 #endif /* _OPENGPS_CXX_ISO5436_2_HANDLE_HXX */

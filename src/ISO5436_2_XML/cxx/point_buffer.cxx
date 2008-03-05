@@ -136,6 +136,8 @@ OpenGPS::UnsignedBytePtr PointBuffer::Allocate(const unsigned long size, const s
          _EX_T("OpenGPS::PointBuffer::Allocate"));
    }
 
+   memset(buffer, 0, size * typeSize);
+
    m_Size = size;
 
    return buffer;

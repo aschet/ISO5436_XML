@@ -105,6 +105,7 @@ void simpleExample(OpenGPS::String fileName)
    /* Create MATRIX */
    MatrixDimensionType matrix(1, 1, 2);
 
+
    /* Create ISO5436_2 container */
    OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, record2, matrix, FALSE);
 
@@ -128,7 +129,7 @@ void simpleExample(OpenGPS::String fileName)
    /* Loop all data points we want to add... */
 
    /* 2b/3b. We have missing point data, here. */
-   ogps_SetMatrixPoint(handle, u , v, w, NULL);
+   ogps_SetMatrixPoint(handle, u , v, w + 3, NULL);
 
    /* The above will show up in xml like this: */
    /*
@@ -336,7 +337,7 @@ void readonlyExample2(OpenGPS::String fileName)
       return;
 
    /* Obtain handle to xml document. */
-   ISO5436_2Type * document = ogps_GetDocument(handle);
+   ISO5436_2Type * const document = ogps_GetDocument(handle);
 
    /* Z axis data type must be present (even if it is an incremental axis). */
    _ASSERT(document->Record1().Axes().CZ().DataType().present());
@@ -461,9 +462,9 @@ void readonlyExample3(OpenGPS::String fileName)
    iso5436_2.Open(TRUE);
 
    /* Obtain handle to xml document. */
-   const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();
+   const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const document = iso5436_2.GetDocument();
 
-   if(document.get())
+   if(document)
    {
 
       /* Is data list? / Is matrix? - don't care; we use point iterator. */
@@ -595,8 +596,8 @@ void readonlyExample4(OpenGPS::String fileName)
    if(!ogps_HasError())
    {
       /* Obtain handle to xml document. */
-      const OpenGPS::ISO5436_2TypeAutoPtr& document = iso5436_2.GetDocument();
-      if(document.get())
+      const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const document = iso5436_2.GetDocument();
+      if(document)
       {
          /* Is data list? / Is matrix? */
          if(document->Record3().ListDimension().present())

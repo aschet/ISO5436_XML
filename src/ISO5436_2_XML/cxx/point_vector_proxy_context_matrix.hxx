@@ -74,19 +74,17 @@ namespace OpenGPS
        * @param w The new arbitrary index in Z direction of the topology mapping.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      OGPS_Boolean SetIndex(
+      void SetIndex(
          const unsigned long u,
          const unsigned long v,
-         const unsigned long w);
+         const unsigned long w) throw(...);
 
       virtual unsigned long GetIndex() const;
+      virtual OGPS_Boolean CanIncrementIndex() const;
       virtual OGPS_Boolean IncrementIndex();
       virtual OGPS_Boolean IsMatrix() const;
 
    private:
-      /*! Returns FALSE if the maximum possible index is reached, TRUE otherwise. */
-      OGPS_Boolean HasNext() const;
-
       /*! The current index in X direction of the topology mapping. */
       unsigned long m_U;
 

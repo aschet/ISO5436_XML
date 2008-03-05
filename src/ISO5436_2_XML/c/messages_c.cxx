@@ -99,7 +99,7 @@ void OpenGPS::ExceptionHistory::DumpIt()
 {
 #ifdef _DEBUG
    OpenGPS::String title(_T("Exception:")), brief(_T("Brief: ")), detail(_T("Details: ")), method(_T("In method: "));
-   std::cerr << title.ToChar() << std::endl <<
+   std::cerr << std::endl << title.ToChar() << std::endl <<
       brief.ToChar() << m_LastErrorMessage.ToChar() << std::endl <<
       detail.ToChar() << m_LastErrorDescription.ToChar() << std::endl <<
       method.ToChar() << m_LastErrorSource.ToChar() << std::endl << std::endl;

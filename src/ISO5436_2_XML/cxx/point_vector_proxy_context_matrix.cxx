@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 #include "point_vector_proxy_context_matrix.hxx"
-
+#include <opengps/cxx/exceptions.hxx>
 #include "stdafx.hxx"
 
 PointVectorProxyContextMatrix::PointVectorProxyContextMatrix(
@@ -51,31 +51,40 @@ PointVectorProxyContextMatrix::~PointVectorProxyContextMatrix()
 {
 }
 
-OGPS_Boolean PointVectorProxyContextMatrix::SetIndex(
+void PointVectorProxyContextMatrix::SetIndex(
          const unsigned long u,
          const unsigned long v,
-         const unsigned long w)
+         const unsigned long w) throw(...)
 {
    if(u < m_MaxU && v < m_MaxV && w < m_MaxW)
    {
       m_U = u;
       m_V = v;
       m_W = w;
-
-      return TRUE;
    }
-
-   return FALSE;
+   else
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Index out of range."),
+         _EX_T("The data point addressed lies outside the scope of the current matrix topology."),
+         _EX_T("OpenGPS::PointVectorProxyContextMatrix::SetIndex"));
+   }
 }
 
 unsigned long PointVectorProxyContextMatrix::GetIndex() const
 {
-   return ((m_U * m_MaxV * (m_W + 1)) + m_V);
+   return (m_W * m_MaxV + m_V) * (m_U + 1);
+}
+
+OGPS_Boolean PointVectorProxyContextMatrix::CanIncrementIndex() const
+{
+   return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
 }
 
 OGPS_Boolean PointVectorProxyContextMatrix::IncrementIndex()
 {
-   if(HasNext())
+   if(CanIncrementIndex())
    {
       if(m_U + 1 < m_MaxU)
       {
@@ -103,11 +112,6 @@ OGPS_Boolean PointVectorProxyContextMatrix::IncrementIndex()
    }
 
    return FALSE;
-}
-
-OGPS_Boolean PointVectorProxyContextMatrix::HasNext() const
-{
-   return ((m_W + 1) * (m_V + 1) * (m_U + 1) < m_MaxU * m_MaxV * m_MaxW);
 }
 
 OGPS_Boolean PointVectorProxyContextMatrix::IsMatrix() const

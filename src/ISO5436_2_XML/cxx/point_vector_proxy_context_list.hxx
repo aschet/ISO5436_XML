@@ -68,9 +68,10 @@ namespace OpenGPS
        * @param index The new arbitrary index.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean SetIndex(const unsigned long index);
+      virtual void SetIndex(const unsigned long index) throw(...);
 
       virtual unsigned long GetIndex() const;
+      virtual OGPS_Boolean CanIncrementIndex() const;
       virtual OGPS_Boolean IncrementIndex();
       virtual OGPS_Boolean IsMatrix() const;
 

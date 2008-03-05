@@ -91,7 +91,13 @@ ZipOutputStream::~ZipOutputStream()
 {
 }
 
-ZipOutputStream::BaseType& ZipOutputStream::write(const OpenGPS::String& s)
+ZipOutputStream::BaseType& ZipOutputStream::write(const char *s)
 {
-   return BaseType::write((const char*)s.c_str(), s.size() * sizeof(OpenGPS::String::ElementType));
+   if(s)
+   {
+      const size_t size = strlen(s);
+      return BaseType::write(s, size);
+   }
+
+   return *this;
 }

@@ -114,7 +114,7 @@ namespace OpenGPS
        * Appends a string to the stream.
        * @param s The string to append.
        */
-      ZipOutputStream::BaseType& write(const OpenGPS::String& s);
+      ZipOutputStream::BaseType& write(const char *s);
    };
 }
 

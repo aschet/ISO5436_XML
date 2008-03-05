@@ -194,7 +194,7 @@ void ISO5436_2::GetListCoord(
    m_Instance->GetListCoord(index, x, y, z);
 }
 
-ISO5436_2TypeAutoPtr& ISO5436_2::GetDocument()
+OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ISO5436_2::GetDocument()
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -213,4 +213,18 @@ void ISO5436_2::Close()
    _ASSERT(m_Instance && m_Instance != this);
 
    m_Instance->Close();
+}
+
+void ISO5436_2::AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath)
+{
+   _ASSERT(m_Instance && m_Instance != this);
+
+   m_Instance->AddVendorSpecific(vendorURI, filePath);
+}
+
+OGPS_Boolean ISO5436_2::GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath)
+{
+   _ASSERT(m_Instance && m_Instance != this);
+
+   return m_Instance->GetVendorSpecific(vendorURI, fileName, targetPath);
 }

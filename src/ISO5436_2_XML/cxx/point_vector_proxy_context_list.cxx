@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 #include "point_vector_proxy_context_list.hxx"
-
+#include <opengps/cxx/exceptions.hxx>
 #include "stdafx.hxx"
 
 PointVectorProxyContextList::PointVectorProxyContextList(const unsigned long maxIndex)
@@ -43,16 +43,20 @@ PointVectorProxyContextList::~PointVectorProxyContextList()
 {
 }
 
-OGPS_Boolean PointVectorProxyContextList::SetIndex(const unsigned long index)
+void PointVectorProxyContextList::SetIndex(const unsigned long index) throw(...)
 {
    if(index < m_MaxIndex)
    {
       m_Index = index;
-
-      return TRUE;
    }
-
-   return FALSE;
+   else
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("Index out of range."),
+         _EX_T("The data point addessed lies outside the point list."),
+         _EX_T("OpenGPS::PointVectorProxyContextList::SetIndex"));
+   }
 }
 
 unsigned long PointVectorProxyContextList::GetIndex() const
@@ -60,12 +64,16 @@ unsigned long PointVectorProxyContextList::GetIndex() const
    return m_Index;
 }
 
+OGPS_Boolean PointVectorProxyContextList::CanIncrementIndex() const
+{
+   return (m_Index < m_MaxIndex);
+}
+
 OGPS_Boolean PointVectorProxyContextList::IncrementIndex()
 {
-   if(m_Index < m_MaxIndex)
+   if(CanIncrementIndex())
    {
       ++m_Index;
-
       return TRUE;
    }
 

@@ -78,7 +78,7 @@ namespace OpenGPS
    typedef std::auto_ptr<PointIterator> PointIteratorAutoPtr;
    
    /*! std::auto_ptr for usage with OpenGPS::Schemas::ISO5436_2::ISO5436_2Type type. */
-   typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
+   //typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
 
    /*! std::auto_ptr for usage with OpenGPS::VectorBuffer type. */
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
@@ -406,7 +406,7 @@ namespace OpenGPS
       /*!
        * Gets access to the ISO5436_2 XML document.
        */
-      virtual ISO5436_2TypeAutoPtr& GetDocument();
+      virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
 
       /*!
        * Writes any changes back to the X3P file.
@@ -430,7 +430,38 @@ namespace OpenGPS
        */
       virtual void Close();
 
+      /*!
+       * Add vendorspecific file content to the X3P archive.
+       *
+       * Call this before ISO5436_2::Write and the content of a file will be added to the X3P file when written.
+       * This can be called multiple times to add more than one file of your choice. These files must exist at the
+       * time when ISO5436_2::Write is being executed. The file will be added to the root of the archive with
+       * the given file name from the full path specified.
+       *
+       * @see ISO5436_2::GetVendorSpecific
+       *
+       * @param vendorURI Your very own vendor specifier in a URI conformant format.
+       * @param filePath The absolute path to the file to be added to the document container.
+       */
+      virtual void AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
+
+      /*!
+       * Extracts vendorspecific data from the current archive to a given file location.
+       *
+       * If the current X3P archive contains vendorspecific data registered for a vendorURI under the given filename in
+       * the root directory of the archive, the compressed file will be extracted to the given location.
+       *
+       * @see ISO5436_2::AddVendorSpecific
+       *
+       * @param vendorURI Your very own vendor specifier in a URI conformant format.
+       * @param fileName The name of the file to be expected in the root of the archive which is to be decompressed.
+       * @param targetPath The file in the archive will get extracted here.
+       * @retval FALSE if there is no file registered for the given vendorURI within the archive, TRUE if the file has been found and extracted.
+       */
+      virtual OGPS_Boolean GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath);
+
    private:
+      /*! When TRUE: do not allow any modifications to the data points. */
       const OGPS_Boolean m_IsProtected;
 
       /*! Internal object instance. Either "this" or ISO5436_2::ISO5436_2Container instance. */

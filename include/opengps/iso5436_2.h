@@ -111,6 +111,38 @@ extern "C" {
    _OPENGPS_EXPORT void ogps_CloseISO5436_2(OGPS_ISO5436_2Handle* handle);
 
    /*!
+    * Add vendorspecific file content to the X3P archive.
+    *
+    * Call this before ::ogps_WriteISO5436_2 and the content of a file will be added to the X3P file when written.
+    * This can be called multiple times to add more than one file of your choice. These files must exist at the
+    * time when ::ogps_WriteISO5436_2 is being executed. The file will be added to the root of the archive with
+    * the given file name from the full path specified.
+    *
+    * @see ::ogps_GetVendorSpecific
+    *
+    * @param handle Operate on this handle object.
+    * @param vendorURI Your very own vendor specifier in a URI conformant format.
+    * @param filePath The absolute path to the file to be added to the document container.
+    */
+   _OPENGPS_EXPORT void ogps_AddVendorSpecific(const OGPS_ISO5436_2Handle handle, const OGPS_Character* vendorURI, const OGPS_Character* filePath);
+
+   /*!
+    * Extracts vendorspecific data from the current archive to a given file location.
+    *
+    * If the current X3P archive contains vendorspecific data registered for a vendorURI under the given filename in
+    * the root directory of the archive, the compressed file will be extracted to the given location.
+    *
+    * @see ::ogps_AddVendorSpecific
+    *
+    * @param handle Operate on this handle object.
+    * @param vendorURI Your very own vendor specifier in a URI conformant format.
+    * @param fileName The name of the file to be expected in the root of the archive which is to be decompressed.
+    * @param targetPath The file in the archive will get extracted here.
+    * @retval FALSE if there is no file registered for the given vendorURI within the archive, TRUE if the file has been found and extracted.
+    */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetVendorSpecific(const OGPS_ISO5436_2Handle handle, const OGPS_Character* vendorURI, const OGPS_Character* fileName, const OGPS_Character* targetPath);
+
+   /*!
     * Creates an iterator to access point data contained in an ISO5436-2 X3P file.
     *
     * Iterates the point data in forward direction.

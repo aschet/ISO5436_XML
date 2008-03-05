@@ -161,11 +161,14 @@ namespace OpenGPS
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
 
-      virtual ISO5436_2TypeAutoPtr& GetDocument();
+      virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
 
       virtual void Write(const int compressionLevel = -1) throw(...);
 
       virtual void Close();
+
+      virtual void AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
+      virtual OGPS_Boolean GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath);
 
    protected:
 
@@ -489,7 +492,7 @@ namespace OpenGPS
       int m_CompressionLevel;
 
       /*! The handle to a tree strucure corresponding to an ISO5436-2 XML document file. */
-      ISO5436_2TypeAutoPtr m_Document;
+      Schemas::ISO5436_2::ISO5436_2Type* m_Document;
 
       /*! The builder used to assemble the current vector buffer. */
       VectorBufferBuilderAutoPtr m_VectorBufferBuilder;
@@ -520,6 +523,21 @@ namespace OpenGPS
 
       /*! FALSE, if the md5 checksum could not be verified after reading. */
       OGPS_Boolean m_ValidBinChecksum;
+
+      /*! ID of vendorspecific data or empty. @see ISO5436_2Container::m_VendorSpecific. */
+      OpenGPS::String m_VendorURI;
+
+      typedef std::vector<OpenGPS::String> StringList;
+
+      /*! Vendorspecific file names to be added to the container registered with one single vendor id. @see ISO5436_2Container::m_VendorURI */
+      StringList m_VendorSpecific;
+
+      /*!
+       * Writes vendorspecific files to the zip container if any.
+       *
+       * @param handle Handle of the target zip archive.
+       */
+      void WriteVendorSpecific(zipFile handle);
 
       /*!
        * Sets a valid namespace mapping for writing the ISO5436-2 XML document. 

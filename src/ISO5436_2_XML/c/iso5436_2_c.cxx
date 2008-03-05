@@ -32,14 +32,14 @@
 #include <opengps/cxx/iso5436_2.hxx>
 #include <opengps/cxx/iso5436_2_handle.hxx>
 
-#include "../c/iso5436_2_handle_c.hxx"
-#include "../c/point_iterator_c.hxx"
-#include "../c/point_vector_c.hxx"
+#include "iso5436_2_handle_c.hxx"
+#include "point_iterator_c.hxx"
+#include "point_vector_c.hxx"
 
-#include "../c/messages_c.hxx"
+#include "messages_c.hxx"
 
-#include "iso5436_2_container.hxx"
-#include "stdafx.hxx"
+#include "../cxx/iso5436_2_container.hxx"
+#include "../cxx/stdafx.hxx"
 
 OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
         const OGPS_Character* const file,
@@ -141,11 +141,13 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    return h;
 }
 
-Schemas::ISO5436_2::ISO5436_2Type* ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw()
+Schemas::ISO5436_2::ISO5436_2Type* const ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw()
 {
    _ASSERT(handle && handle->instance);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER_RETVALBOOL(handle->instance->GetDocument().get());
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetDocument());
+
+   return NULL;
 }
 
 void ogps_WriteISO5436_2(const OGPS_ISO5436_2Handle handle, const int compressionLevel) throw()
@@ -290,4 +292,29 @@ void ogps_GetListCoord(
    _ASSERT(handle && handle->instance);
 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetListCoord(index, x, y, z));
+}
+
+void ogps_AddVendorSpecific(
+                            const OGPS_ISO5436_2Handle handle,
+                            const OGPS_Character* vendorURI,
+                            const OGPS_Character* filePath) throw()
+{
+   _ASSERT(handle && handle->instance);
+   _ASSERT(vendorURI && filePath);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->AddVendorSpecific(vendorURI, filePath));
+}
+
+OGPS_Boolean ogps_GetVendorSpecific(
+                                    const OGPS_ISO5436_2Handle handle,
+                                    const OGPS_Character* vendorURI,
+                                    const OGPS_Character* fileName,
+                                    const OGPS_Character* targetPath) throw()
+{
+   _ASSERT(handle && handle->instance);
+   _ASSERT(vendorURI && fileName && targetPath);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetVendorSpecific(vendorURI, fileName, targetPath));
+
+   return FALSE;
 }
