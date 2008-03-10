@@ -76,9 +76,6 @@ namespace OpenGPS
 
    /*! std::auto_ptr for usage with OpenGPS::PointIterator type. */
    typedef std::auto_ptr<PointIterator> PointIteratorAutoPtr;
-   
-   /*! std::auto_ptr for usage with OpenGPS::Schemas::ISO5436_2::ISO5436_2Type type. */
-   //typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
 
    /*! std::auto_ptr for usage with OpenGPS::VectorBuffer type. */
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
@@ -127,7 +124,7 @@ namespace OpenGPS
       * @remarks Use either ISO5436_2::Open or ISO5436_2::Create to work on the ISO5436-2 XML X3P file container.
       *
       * @param file Full path to the ISO5436-2 XML X3P to operate on. This file does not need to exist.
-      * @param temp Specifies a path to the directory where unpacked X3P data gets stored temporarily.
+      * @param temp Specifies a new absolute path to the directory where unpacked X3P data gets stored temporarily.
       */
       ISO5436_2(
          const OpenGPS::String& file,
@@ -443,7 +440,7 @@ namespace OpenGPS
        * @param vendorURI Your very own vendor specifier in a URI conformant format.
        * @param filePath The absolute path to the file to be added to the document container.
        */
-      virtual void AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
+      virtual void AppendVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
 
       /*!
        * Extracts vendorspecific data from the current archive to a given file location.
@@ -451,7 +448,7 @@ namespace OpenGPS
        * If the current X3P archive contains vendorspecific data registered for a vendorURI under the given filename in
        * the root directory of the archive, the compressed file will be extracted to the given location.
        *
-       * @see ISO5436_2::AddVendorSpecific
+       * @see ISO5436_2::AppendVendorSpecific
        *
        * @param vendorURI Your very own vendor specifier in a URI conformant format.
        * @param fileName The name of the file to be expected in the root of the archive which is to be decompressed.

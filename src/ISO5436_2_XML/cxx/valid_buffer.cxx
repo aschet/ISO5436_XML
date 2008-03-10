@@ -80,7 +80,7 @@ void ValidBuffer::AllocateRaw(const unsigned int rawSize) throw(...)
          _EX_T("ValidBuffer::AllocateRaw"));
    }
 
-   _VERIFY(memset(m_ValidityBuffer, 255, rawSize));
+   memset(m_ValidityBuffer, 255, rawSize);
    m_RawSize = rawSize;
 }
 

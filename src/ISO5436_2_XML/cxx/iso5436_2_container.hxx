@@ -167,7 +167,7 @@ namespace OpenGPS
 
       virtual void Close();
 
-      virtual void AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
+      virtual void AppendVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath);
       virtual OGPS_Boolean GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath);
 
    protected:
@@ -283,8 +283,12 @@ namespace OpenGPS
        * @param src The name of the file to be decompressed. This is the relative path with
        * the archive itself set as the root element.
        * @param dst The absolute(!) target path where uncompressed data gets stored on the media.
+       * @param fileNotFoundAllowed True if it is OK if a file could not be found within the archive.
+       * This method proceeds without throwing an exception then and its return value is FALSE.
+       * @returns Returns FALSE if a file could not be found in the archive (see the discussion above),
+       * TRUE in all other cases.
        */
-      void Decompress(const OpenGPS::String& src, const OpenGPS::String& dst) const throw(...);
+      OGPS_Boolean Decompress(const OpenGPS::String& src, const OpenGPS::String& dst, const OGPS_Boolean fileNotFoundAllowed = FALSE) const throw(...);
 
       /*!
        * Decompresses the main xml document contained within the X3P archive.
@@ -482,6 +486,11 @@ namespace OpenGPS
       /*! TRUE if the user wants readonly access to the X3P file only. FALSE otherwise. */
       OGPS_Boolean m_IsReadOnly;
 
+      /*! TRUE if an X3P archive is to be created, FALSE if an existing archive has been opened.
+       * The value is undefined if nothing happened so far.
+       */
+      OGPS_Boolean m_IsCreating;
+
       /*! The temporary target path of the uncompressed binary point data file. */
       OpenGPS::String m_PointDataFileName;
 
@@ -536,8 +545,9 @@ namespace OpenGPS
        * Writes vendorspecific files to the zip container if any.
        *
        * @param handle Handle of the target zip archive.
+       * @returns Returns FALSE if not all of the files could be written. TRUE otherwise.
        */
-      void WriteVendorSpecific(zipFile handle);
+      OGPS_Boolean WriteVendorSpecific(zipFile handle);
 
       /*!
        * Sets a valid namespace mapping for writing the ISO5436-2 XML document. 

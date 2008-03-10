@@ -66,7 +66,7 @@ using namespace OpenGPS;
 #endif
 
 #ifndef _VERIFY
-#  define _VERIFY(x) _ASSERT(x)
+#  define _VERIFY(func, retval) _ASSERT(func == retval)
 #endif
 
 #else /* _DEBUG */
@@ -76,7 +76,7 @@ using namespace OpenGPS;
 #endif
 
 #ifndef _VERIFY
-#  define _VERIFY(x) x
+#  define _VERIFY(func, retval) func
 #endif
 
 #endif /* _DEBUG */

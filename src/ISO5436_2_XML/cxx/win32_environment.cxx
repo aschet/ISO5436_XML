@@ -164,6 +164,22 @@ OGPS_Boolean Win32Environment::GetPathName(const OpenGPS::String& path, OpenGPS:
    return !hasDroppedChars;
 }
 
+OpenGPS::String Win32Environment::GetFileName(const OpenGPS::String& path) const
+{
+   OpenGPS::String pattern;
+   pattern.append(1, GetDirectorySeparator());
+   pattern.append(1, GetAltDirectorySeparator());
+
+   const size_t found = path.find_last_of(pattern);
+   
+   if(found != OpenGPS::String::npos)
+   {
+      return path.substr(found + 1);
+   }
+
+   return path;
+}
+
 OpenGPS::String Win32Environment::ConcatPathes(const OpenGPS::String& path1, const OpenGPS::String& path2) const
 {
    _ASSERT(path1.length() > 0 || path2.length() > 0);
@@ -354,7 +370,7 @@ OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenG
    _ASSERT(value.size() == bufferLength - 1);
 
    /* This readonly->read/write cast should be safe here. GetEnvironmentVariable is not supposed
-   to vary buffer size nor its location. Just new content should be copied in. */
+   to vary buffer size nor its location. Only new content should be copied in. */
    if(GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), bufferLength) != bufferLength - 1)
    {
       value.erase();

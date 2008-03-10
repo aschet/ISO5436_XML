@@ -91,6 +91,14 @@ namespace OpenGPS
       virtual OGPS_Boolean GetPathName(const OpenGPS::String& path, OpenGPS::String& clean_path) const = 0;
 
       /*!
+       * Gets the file name including its extension from a full path.
+       *
+       * @param The full path of a file.
+       * @returns Returns just the filename.
+       */
+      virtual OpenGPS::String GetFileName(const OpenGPS::String& path) const = 0;
+
+      /*!
        * Concatenates two distinct path names.
        *
        * @param path1 The first part of the path.

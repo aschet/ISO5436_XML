@@ -41,6 +41,10 @@
 #include <string>
 #include <iostream>
 #include <ostream>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <limits>
 
 #include <tchar.h>
 
@@ -129,7 +133,7 @@ void simpleExample(OpenGPS::String fileName)
    /* Loop all data points we want to add... */
 
    /* 2b/3b. We have missing point data, here. */
-   ogps_SetMatrixPoint(handle, u , v, w + 3, NULL);
+   ogps_SetMatrixPoint(handle, u , v, w + 1, NULL);
 
    /* The above will show up in xml like this: */
    /*
@@ -145,6 +149,15 @@ void simpleExample(OpenGPS::String fileName)
 
    /* Free buffer */
    ogps_FreePointVector(&vector);
+
+   /* Create vendorspecific data. */
+   OpenGPS::String vname(fileName.substr(0, fileName.find_last_of(_T("/\\")) + 1));
+   vname.append(_T("vendor.tmp"));
+   std::wofstream vendor_dat(vname.ToChar(), std::ios::trunc);
+   vendor_dat << _T("Vendorspecific data.") << std::endl;
+   vendor_dat.close();
+
+   ogps_AppendVendorSpecific(handle, _T("http://www.example.com/format/version1"), vname.c_str());
 
    /* Finally: write container to disk. */
    ogps_WriteISO5436_2(handle);
@@ -638,6 +651,174 @@ void readonlyExample4(OpenGPS::String fileName)
    }
 }
 
+void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
+{
+   // Timer
+   clock_t start = clock();
+
+   /* Simple example where we have two incremental and one absolute axis (the z-axis). */
+
+   /* Create RECORD1 */
+   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
+   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here. */
+
+   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
+   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CX_type xaxis(xaxisType);
+   xaxis.DataType(xdataType);
+
+   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
+   Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CY_type yaxis(yaxisType);
+   yaxis.DataType(ydataType);
+
+   Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
+   Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CZ_type zaxis(zaxisType);
+   zaxis.DataType(zdataType);
+
+   Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
+
+   Record1Type record1(revision, featureType, axis);
+
+   /* Create RECORD2 */
+   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+
+   Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
+   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
+   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
+   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
+
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type probingSystem(type, id);
+
+   Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
+
+   Record2Type record2(date, instrument, calibrationDate, probingSystem);
+   record2.Comment(comment);
+
+   /* Create ISO5436_2 container */
+   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, record2, dimension, binary);
+
+   /* Add data points */
+
+   /* Create point vector buffer for three points. */
+   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+   /* Create/write random number. */
+   srand((unsigned)time(0));
+
+   for(unsigned long n = 0; n < dimension; ++n)
+   {
+      /* Generate random number */
+      short random = (short)(rand() % std::numeric_limits<short>::max());
+      ogps_SetInt16Z(vector, random);
+
+      /* Write into document */
+      ogps_SetListPoint(handle, n, vector);
+   }
+
+   /* Free buffer */
+   ogps_FreePointVector(&vector);
+
+   /* Finally: write container to disk. */
+   ogps_WriteISO5436_2(handle);
+   ogps_CloseISO5436_2(&handle);
+
+   // Timer
+   clock_t stop = clock();
+
+   std::cout << std::endl << "Writing an X3P file containing " << dimension << " points in int16 " << (binary ? "binary" : "xml") << " format took " << ((stop - start)/CLOCKS_PER_SEC) << " seconds." << std::endl;
+}
+
+void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
+{
+   // Timer
+   clock_t start = clock();
+
+   /* Simple example where we have two incremental and one absolute axis (the z-axis). */
+
+   /* Create RECORD1 */
+   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
+   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here. */
+
+   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
+   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CX_type xaxis(xaxisType);
+   xaxis.DataType(xdataType);
+
+   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
+   Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CY_type yaxis(yaxisType);
+   yaxis.DataType(ydataType);
+
+   Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
+   Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D); /* double */
+   Record1Type::Axes_type::CZ_type zaxis(zaxisType);
+   zaxis.DataType(zdataType);
+
+   Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
+
+   Record1Type record1(revision, featureType, axis);
+
+   /* Create RECORD2 */
+   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+
+   Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
+   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
+   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
+   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
+
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type probingSystem(type, id);
+
+   Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
+
+   Record2Type record2(date, instrument, calibrationDate, probingSystem);
+   record2.Comment(comment);
+
+   /* Create ISO5436_2 container */
+   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, record2, dimension, binary);
+
+   /* Add data points */
+
+   /* Create point vector buffer for three points. */
+   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+   /* Create/write random number. */
+   srand((unsigned)time(0));
+
+   for(unsigned long n = 0; n < dimension; ++n)
+   {
+      /* Generate random number */
+      double random = rand() * (std::numeric_limits<double>::max() / RAND_MAX);
+      ogps_SetDoubleZ(vector, random);
+
+      /* Write into document */
+      ogps_SetListPoint(handle, n, vector);
+   }
+
+   /* Free buffer */
+   ogps_FreePointVector(&vector);
+
+   /* Finally: write container to disk. */
+   ogps_WriteISO5436_2(handle);
+   ogps_CloseISO5436_2(&handle);
+
+   // Timer
+   clock_t stop = clock();
+
+   std::cout << std::endl << "Writing an X3P file containing " << dimension << " points in double " << (binary ? "binary" : "xml") << " format took " << ((stop - start)/CLOCKS_PER_SEC) << " seconds." << std::endl;
+}
+
 int _cdecl _tmain(int argc, _TCHAR* argv[])
 {
    if(argc != 2)
@@ -651,11 +832,11 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
    std::wstring path = argv[1];
    std::wstring tmp;
    
-   tmp = path; tmp += _T("ISO5436-sample1_bin.x3p");
-   readonlyExample(tmp); /*_T("ISO5436_2-sample1.x3p")*/
+   tmp = path; tmp += _T("ISO5436-sample1.x3p");
+   readonlyExample(tmp);
 
-   tmp = path; tmp += _T("ISO5436-sample3.x3p");
-   readonlyExample2(tmp); /*_T("ISO5436_2-sample4_bin.x3p")*/
+   tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
+   readonlyExample2(tmp);
 
    tmp = path; tmp += _T("ISO5436-sample3.x3p");
    readonlyExample3(tmp);
@@ -663,7 +844,25 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
    tmp = path; tmp += _T("ISO5436-sample2.x3p");
    readonlyExample4(tmp);
 
-   simpleExample(path + _T("simple.x3p"));
+   tmp = path; tmp += _T("simple.x3p");
+   simpleExample(tmp);
+
+   tmp = path; tmp += _T("medium.x3p");
+   mediumComplexExample(tmp);
+
+   std::cout << std::endl << "Starting performance tests..." << std::endl;
+
+   tmp = path; tmp += _T("performance_int16.x3p"); 
+   performanceInt16(tmp, 1000000, FALSE);
+
+   tmp = path; tmp += _T("performance_int16_bin.x3p"); 
+   performanceInt16(tmp, 1000000, TRUE);
+
+   tmp = path; tmp += _T("performance_double.x3p"); 
+   performanceDouble(tmp, 1000000, FALSE);
+
+   tmp = path; tmp += _T("performance_double_bin.x3p"); 
+   performanceDouble(tmp, 1000000, TRUE);
 
    return 0;
 }

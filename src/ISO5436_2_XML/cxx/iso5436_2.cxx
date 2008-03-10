@@ -215,11 +215,11 @@ void ISO5436_2::Close()
    m_Instance->Close();
 }
 
-void ISO5436_2::AddVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath)
+void ISO5436_2::AppendVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& filePath)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   m_Instance->AddVendorSpecific(vendorURI, filePath);
+   m_Instance->AppendVendorSpecific(vendorURI, filePath);
 }
 
 OGPS_Boolean ISO5436_2::GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath)

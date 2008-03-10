@@ -66,7 +66,7 @@ unsigned long PointVectorProxyContextList::GetIndex() const
 
 OGPS_Boolean PointVectorProxyContextList::CanIncrementIndex() const
 {
-   return (m_Index < m_MaxIndex);
+   return (m_Index + 1 < m_MaxIndex);
 }
 
 OGPS_Boolean PointVectorProxyContextList::IncrementIndex()

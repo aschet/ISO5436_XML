@@ -54,7 +54,6 @@ namespace OpenGPS
    class PointIterator;
    class PointVectorProxyContext;
 
-   typedef std::auto_ptr<Schemas::ISO5436_2::ISO5436_2Type> ISO5436_2TypeAutoPtr;
    typedef std::auto_ptr<VectorBuffer> VectorBufferAutoPtr;
    typedef std::auto_ptr<VectorBufferBuilder> VectorBufferBuilderAutoPtr;
    typedef std::auto_ptr<PointVectorParserBuilder> PointVectorParserBuilderAutoPtr;

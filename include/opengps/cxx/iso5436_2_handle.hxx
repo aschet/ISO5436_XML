@@ -64,7 +64,7 @@ namespace OpenGPS
  * @remarks You must release the returned handle object with ::gps_CloseISO5436_2 when done with it.
  *
  * @param file Full path to the ISO5436-2 XML X3P to be created.
- * @param temp Specifies a path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
+ * @param temp Specifies the new absolute path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
  * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
  * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
  * @param matrixDimension Specifies the topology for which point measurement data will be processed.
@@ -87,7 +87,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
  * @remarks You must release the returned handle object with ::gps_CloseISO5436_2 when done with it.
  *
  * @param file Full path to the ISO5436-2 XML X3P to be created.
- * @param temp Specifies a path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
+ * @param temp Specifies the new absolute path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
  * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
  * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
  * @param listDimension Specifies the size of point measurement data that will be processed.

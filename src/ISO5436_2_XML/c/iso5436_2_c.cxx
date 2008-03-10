@@ -294,7 +294,7 @@ void ogps_GetListCoord(
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetListCoord(index, x, y, z));
 }
 
-void ogps_AddVendorSpecific(
+void ogps_AppendVendorSpecific(
                             const OGPS_ISO5436_2Handle handle,
                             const OGPS_Character* vendorURI,
                             const OGPS_Character* filePath) throw()
@@ -302,7 +302,7 @@ void ogps_AddVendorSpecific(
    _ASSERT(handle && handle->instance);
    _ASSERT(vendorURI && filePath);
 
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->AddVendorSpecific(vendorURI, filePath));
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->AppendVendorSpecific(vendorURI, filePath));
 }
 
 OGPS_Boolean ogps_GetVendorSpecific(

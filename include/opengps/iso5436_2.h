@@ -77,7 +77,7 @@ extern "C" {
     * @see ::ogps_CloseISO5436_2
     *
     * @param file Full path to the ISO5436-2 XML X3P to open.
-    * @param temp Optionally specifies a path to the directory where unpacked X3P data gets stored temporarily. If this parameter is set to NULL the default directory for temporary files will be used as specified by your system.
+    * @param temp Optionally specifies the new absolute path to the directory where unpacked X3P data gets stored temporarily. If this parameter is set to NULL the default directory for temporary files will be used as specified by your system.
     * @param readOnly If set to TRUE subsequend operations on the returned handle object assume that you will access any obtained data as read-only and won't make any changes. This may speed up some operations. If unsure set this parameter to FALSE.
     * @returns On success returns the handle object to the opened file, otherwise a NULL pointer is returned. You may get further information about the failure by calling ::ogps_GetErrorMessage hereafter.
     */
@@ -124,7 +124,7 @@ extern "C" {
     * @param vendorURI Your very own vendor specifier in a URI conformant format.
     * @param filePath The absolute path to the file to be added to the document container.
     */
-   _OPENGPS_EXPORT void ogps_AddVendorSpecific(const OGPS_ISO5436_2Handle handle, const OGPS_Character* vendorURI, const OGPS_Character* filePath);
+   _OPENGPS_EXPORT void ogps_AppendVendorSpecific(const OGPS_ISO5436_2Handle handle, const OGPS_Character* vendorURI, const OGPS_Character* filePath);
 
    /*!
     * Extracts vendorspecific data from the current archive to a given file location.
@@ -132,7 +132,7 @@ extern "C" {
     * If the current X3P archive contains vendorspecific data registered for a vendorURI under the given filename in
     * the root directory of the archive, the compressed file will be extracted to the given location.
     *
-    * @see ::ogps_AddVendorSpecific
+    * @see ::ogps_AppendVendorSpecific
     *
     * @param handle Operate on this handle object.
     * @param vendorURI Your very own vendor specifier in a URI conformant format.

@@ -59,6 +59,7 @@ namespace OpenGPS
       virtual OGPS_Character GetDirectorySeparator() const;
       virtual OGPS_Character GetAltDirectorySeparator() const;
       virtual OGPS_Boolean GetPathName(const OpenGPS::String& path, OpenGPS::String& clean_path) const;
+      virtual OpenGPS::String GetFileName(const OpenGPS::String& path) const;
       virtual OpenGPS::String ConcatPathes(const OpenGPS::String& path1, const OpenGPS::String& path2) const;
       virtual OGPS_Boolean PathExists(const OpenGPS::String& file) const;
       virtual OGPS_Boolean RemoveFile(const OpenGPS::String& file) const;
