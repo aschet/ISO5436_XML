@@ -732,7 +732,10 @@ void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Bo
    // Timer
    clock_t stop = clock();
 
-   std::cout << std::endl << "Writing an X3P file containing " << dimension << " points in int16 " << (binary ? "binary" : "xml") << " format took " << ((stop - start)/CLOCKS_PER_SEC) << " seconds." << std::endl;
+   std::cout << std::endl << "Writing an X3P file containing " << dimension
+             << " points in int16 " << (binary ? "binary" : "xml")
+             << " format took " << (((double)(stop - start))/CLOCKS_PER_SEC)
+             << " seconds." << std::endl;
 }
 
 void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
@@ -816,7 +819,10 @@ void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_B
    // Timer
    clock_t stop = clock();
 
-   std::cout << std::endl << "Writing an X3P file containing " << dimension << " points in double " << (binary ? "binary" : "xml") << " format took " << ((stop - start)/CLOCKS_PER_SEC) << " seconds." << std::endl;
+   std::cout << std::endl << "Writing an X3P file containing " << dimension
+             << " points in double " << (binary ? "binary" : "xml")
+             << " format took " << (((double)(stop - start))/CLOCKS_PER_SEC)
+             << " seconds." << std::endl;
 }
 
 int _cdecl _tmain(int argc, _TCHAR* argv[])
