@@ -121,7 +121,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;"
-				PreprocessorDefinitions="_UNICODE; _USE_OPENGPS_LIBRARY"
+				PreprocessorDefinitions="_UNICODE; SHARED_OPENGPS_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -282,7 +282,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;"
-				PreprocessorDefinitions="_UNICODE; _USE_OPENGPS_LIBRARY"
+				PreprocessorDefinitions="_UNICODE; SHARED_OPENGPS_LIBRARY"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
