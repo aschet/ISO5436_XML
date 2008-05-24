@@ -209,9 +209,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_DS.dll"
+				OutputFile="$(OutDir)\$(ProjectName)_D.dll"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
+				ImportLibrary="$(TargetDir)$(TargetName)S.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -327,7 +328,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug Demo|Win32"
+			Name="Debug Demo (Without Lib)|Win32"
 			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
@@ -535,7 +536,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Demo|Win32"
+					Name="Debug Demo (Without Lib)|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"

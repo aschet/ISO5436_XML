@@ -338,7 +338,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug Demo|Win32"
+			Name="Debug Demo (Without Lib)|Win32"
 			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
