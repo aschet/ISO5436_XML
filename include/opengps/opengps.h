@@ -41,7 +41,7 @@
 /*!
  * Manages export and import of symbols when used as shared library.
  * @remarks If you use openGPS as a shared library within you project
- * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ * you must set the SHARED_OPENGPS_LIBRARY flag when compiling your source code!
  */
 #     define _OPENGPS_EXPORT __declspec(dllexport)
 #  else
@@ -49,37 +49,37 @@
 /*!
  * Manages export and import of symbols when used as shared library.
  * @remarks If you use openGPS as a shared library within you project
- * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ * you must set the SHARED_OPENGPS_LIBRARY flag when compiling your source code!
  */
 #        define _OPENGPS_EXPORT
 #    else
-/* _USE_OPENGPS_LIBRARY must be specified by the
+/* SHARED_OPENGPS_LIBRARY must be specified by the
 user of a shared library version of openGPS.
 Otherwise no symbols will be imported. This is
 needed to distinguish between includes for
 static and shared library usage scenarios. */
-#        ifdef _USE_OPENGPS_LIBRARY
+#        ifdef SHARED_OPENGPS_LIBRARY
 /*!
  * Manages export and import of symbols when used as shared library.
  * @remarks If you use openGPS as a shared library within you project
- * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ * you must set the SHARED_OPENGPS_LIBRARY flag when compiling your source code!
  */
 #          define _OPENGPS_EXPORT __declspec(dllimport)
 #        else
 /*!
  * Manages export and import of symbols when used as shared library.
  * @remarks If you use openGPS as a shared library within you project
- * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ * you must set the SHARED_OPENGPS_LIBRARY flag when compiling your source code!
  */
 #          define _OPENGPS_EXPORT
-#        endif /* _USE_OPENGPS_LIBRARY */
+#        endif /* SHARED_OPENGPS_LIBRARY */
 #     endif /* BUILD_ISO5436_2_XML */
 #  endif /* BUILD_ISO5436_2_XML_DLL */
 #else
 /*!
  * Manages export and import of symbols when used as shared library.
  * @remarks If you use openGPS as a shared library within you project
- * you must set the _USE_OPENGPS_LIBRARY flag when compiling your source code!
+ * you must set the SHARED_OPENGPS_LIBRARY flag when compiling your source code!
  */
 #  define _OPENGPS_EXPORT
 #endif /* _WIN32 */

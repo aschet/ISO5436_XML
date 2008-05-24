@@ -41,7 +41,8 @@
 
 #include <string>
 
-#if defined(_USE_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL)
+#if defined(SHARED_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL)
+
 // Export std::wstring for use with Visual Studio VC8 compiler
 #  if _MSC_VER >= 1400
       class _OPENGPS_EXPORT std::_String_base;
@@ -52,7 +53,7 @@
 
 // TODO: other versions and compilers go here...
 
-#endif /* defined(_USE_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL) */
+#endif /* defined(SHARED_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL) */
 
 namespace OpenGPS
 {
