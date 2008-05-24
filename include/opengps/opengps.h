@@ -139,4 +139,16 @@ typedef double OGPS_Double;
 /*! Comprises text used to describe raised exceptions, that might be localized. */
 #define _EX_T(x) (x)
 
+/*! Gives the revision name of an ISO 5436-2 document.
+    The xerces tool does not generate an appropriate enum value here. */
+#define OGPS_ISO5436_2000_REVISION_NAME _T("ISO5436 - 2000")
+
+/*! Gives the name of the surface feature type in an ISO 5436-2 document.
+    The xerces tool does not generate an appropriate enum value here. */
+#define OGPS_FEATURE_TYPE_SURFACE_NAME _T("SUR")
+
+/*! Gives the name of the profile feature type in an ISO 5436-2 document.
+    The xerces tool does not generate an appropriate enum value here. */
+#define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRO")
+
 #endif	/* _OPENGPS_H */

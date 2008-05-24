@@ -56,8 +56,8 @@ void simpleExample(OpenGPS::String fileName)
    /* Simple example where we have two incremental and one absolute axis (the z-axis). */
 
    /* Create RECORD1 */
-   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
-   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here. */
+   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_SURFACE_NAME);
 
    Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::D); /* double */
@@ -170,8 +170,8 @@ void mediumComplexExample(OpenGPS::String fileName)
    /* More complex example where we have three absolute axis. */
 
    /* Create RECORD1 */
-   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
-   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here? */
+   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_SURFACE_NAME);
 
    Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
@@ -659,8 +659,8 @@ void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Bo
    /* Simple example where we have two incremental and one absolute axis (the z-axis). */
 
    /* Create RECORD1 */
-   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
-   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here. */
+   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_PROFILE_NAME);
 
    Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
@@ -746,8 +746,8 @@ void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_B
    /* Simple example where we have two incremental and one absolute axis (the z-axis). */
 
    /* Create RECORD1 */
-   Record1Type::Revision_type revision(_T("ISO5436 - 2000"));
-   Record1Type::FeatureType_type featureType(_T("SUR")); /* Can't find an enum, here. */
+   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_PROFILE_NAME);
 
    Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
