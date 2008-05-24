@@ -149,7 +149,7 @@ namespace OpenGPS
       *
       * @param readOnly If set to TRUE subsequend operations on the current object assume that you will access any obtained data as read-only and won't make any changes. This may speed up some operations. If unsure set this parameter to FALSE.
       */
-      virtual void Open(const OGPS_Boolean readOnly = TRUE) throw(...);
+      virtual void Open(const OGPS_Boolean readOnly = FALSE) throw(...);
 
       /*!
        * Creates a new ISO5436-2 XML X3P file.
@@ -420,6 +420,7 @@ namespace OpenGPS
 
       /*!
        * Closes an open file handle and frees its resources.
+       * An explicit call of this method is optional. It is executed implicitly when the object of the current instance gets out of scope.
        *
        * @remarks This does not save any changes you made! You must call ISO5436_2::Write before if your changes should be saved.
        *
