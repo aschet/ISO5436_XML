@@ -651,6 +651,10 @@ void readonlyExample4(OpenGPS::String fileName)
    }
 }
 
+
+/** Performance test using Int16 z-Data.
+    
+**/
 void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
 {
    // Timer
