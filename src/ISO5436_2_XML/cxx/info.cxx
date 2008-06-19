@@ -133,7 +133,6 @@ void Info::PrintLicense()
    OpenGPS::String text;
    GetLicense(&text);
 
-   // BUG: Wrong conversion: Should be a string not a single character.
    std::cout << text.ToChar() << std::endl;
 }
 

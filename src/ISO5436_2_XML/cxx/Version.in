@@ -39,10 +39,10 @@
 #define _OPENGPS_VERSION 0
 /// Minor program revision. This is increased manually in the release process
 #define _OPENGPS_MINVERSION 1
+/// \todo Build number. Should be an automatic count.
+#define _OPENGPS_BUILD "0"
 /// Version or Version range, automatically extracted from SVN repository
-#define _OPENGPS_BUILD "$WCRANGE$"
-/// Highest Revision in working copy 
-#define _OPENGPS_REVISION "$WCREV$"
+#define _OPENGPS_REVISION "$WCRANGE$"
 
 /// Date of highest revision
 #define _OPENGPS_REVISION_DATE "$WCDATE$"
@@ -54,6 +54,11 @@
 #define _OPENGPS_CLEAN_BUILD $WCMODS?"Warning! Contains locally modified code!":$
 /// Warning message if it contains mixed revisions, empty otherwise
 #define _OPENGPS_CLEAN_REVISION $WCMIXED?"Warning! Contains mixed revisions!":$
+
+/// 0 if locally modified sources, 1 otherwise
+#define _OPENGPS_CLEAN_BUILD_FLAG $WCMODS?0:1$
+/// 0 if it contains mixed revisions, 1 otherwise
+#define _OPENGPS_CLEAN_REVISION_FLAG $WCMIXED?0:1$
 
 // End ifdef _OPENGPS_VERSION_H
 #endif

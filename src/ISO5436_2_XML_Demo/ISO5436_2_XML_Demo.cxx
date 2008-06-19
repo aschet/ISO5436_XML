@@ -37,6 +37,7 @@
 #include <opengps/cxx/point_vector.hxx>
 #include <opengps/cxx/data_point.hxx>
 #include <opengps/cxx/string.hxx>
+#include <opengps/cxx/info.hxx>
 
 #include <string>
 #include <iostream>
@@ -838,6 +839,24 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
          "This simple demo program parses the sample files and prints its contents onto the console. Do not change the names of the sample files, since these are hard coded herein. The purpose of the demo is to get you familiar with the openGPS(R) API." << std::endl;
       return 1;
    }
+
+   // Print version and copyright information
+   OpenGPS::String LibName;
+   OpenGPS::String LibVersion;
+   OpenGPS::String LibAbout;
+
+   // get Info strings from Library
+   OpenGPS::Info::GetName(&LibName);
+   OpenGPS::Info::GetVersion(&LibVersion);
+   OpenGPS::Info::GetAbout(&LibAbout);
+
+   std::cout << "This programm uses the Library \"" << LibName.ToChar() 
+             << "\" Version " << LibVersion.ToChar() << endl
+             << LibAbout.ToChar() << endl;
+   OpenGPS::Info::PrintVersion();
+   OpenGPS::Info::PrintCopyright();
+   OpenGPS::Info::PrintLicense();
+
 
    std::wstring path = argv[1];
    std::wstring tmp;

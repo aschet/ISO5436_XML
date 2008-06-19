@@ -85,11 +85,20 @@ using namespace OpenGPS;
 
 #define _OPENGPS_EXCEPTION_MESG(x) x
 
-/// Version definition for the openGPS library
-// TODO: extracted the build number and version from the SVN repository automatically
+#if !_OPENGPS_CLEAN_BUILD_FLAG
+  #define _OPENGPS_EXPERIMENTAL _T(" (Experimental Version!)")
+#else
+  #if !_OPENGPS_CLEAN_REVISION_FLAG
+    #define _OPENGPS_EXPERIMENTAL _T(" (Experimental Version!)")
+  #endif
+#endif
+
+#ifndef _OPENGPS_EXPERIMENTAL
+  #define _OPENGPS_EXPERIMENTAL
+#endif
 
 /// Name of the program
-#define _OPENGPS_NAME _T("openGPS ISO 5436-2 XML")
+#define _OPENGPS_NAME _T("openGPS ISO 5436-2 XML") _OPENGPS_EXPERIMENTAL
 /// Short description of the library
 #define _OPENGPS_DESCRIPTION _T("openGPS class library implementing an xml-version of ISO 5436-2 file format.")
 
@@ -102,7 +111,7 @@ using namespace OpenGPS;
 #  define _OPENGPS_MSTR(x) #x
 #endif /* _UNICODE */
 
-#define _OPENGPS_VERSIONSTRING_M(ver,mver,build,rev) _OPENGPS_MSTR(ver) _T(".") _OPENGPS_MSTR(mver) _T(".") _OPENGPS_MSTR(build) _T(".") _OPENGPS_MSTR(rev)
+#define _OPENGPS_VERSIONSTRING_M(ver,mver,build,rev) _OPENGPS_MSTR(ver) _T(".") _OPENGPS_MSTR(mver) _T(".") _T(build) _T(".") _T(rev)
 
 /// Build a version string
 #define _OPENGPS_VERSIONSTRING _OPENGPS_VERSIONSTRING_M(_OPENGPS_VERSION, _OPENGPS_MINVERSION, _OPENGPS_BUILD, _OPENGPS_REVISION)
