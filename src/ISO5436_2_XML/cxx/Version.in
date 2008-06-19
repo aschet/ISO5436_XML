@@ -50,9 +50,9 @@
 #define _OPENGPS_BUILD_DATE "$WCNOW$"
 /// URL of project archive
 #define _OPENGPS_REPOSITORY_URL "$WCURL$"
-/// Contains locally modified sources
+/// Warning message if project contains locally modified sources, empty otherwise
 #define _OPENGPS_CLEAN_BUILD $WCMODS?"Warning! Contains locally modified code!":$
-/// Contains mixed revisions
+/// Warning message if it contains mixed revisions, empty otherwise
 #define _OPENGPS_CLEAN_REVISION $WCMIXED?"Warning! Contains mixed revisions!":$
 
 // End ifdef _OPENGPS_VERSION_H
