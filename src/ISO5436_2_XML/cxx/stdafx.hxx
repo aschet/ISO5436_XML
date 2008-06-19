@@ -37,6 +37,8 @@
 
 #include <tchar.h>
 
+#include "version.h"
+
 using namespace OpenGPS;
 
 #define _OPENGPS_BINFORMAT_INT16_SIZE 2
@@ -90,16 +92,6 @@ using namespace OpenGPS;
 #define _OPENGPS_NAME _T("openGPS ISO 5436-2 XML")
 /// Short description of the library
 #define _OPENGPS_DESCRIPTION _T("openGPS class library implementing an xml-version of ISO 5436-2 file format.")
-
-
-/// Major program version. This is increased manually in the release process
-#define _OPENGPS_VERSION 0
-/// Minor program revision. This is increased manually in the release process
-#define _OPENGPS_MINVERSION 1
-/// Build number, automatically extracted from SVN repository
-#define _OPENGPS_BUILD 1
-/// openGPS revision (currently unused)
-#define _OPENGPS_REVISION 0
 
 
 /// Build a version string from version numbers

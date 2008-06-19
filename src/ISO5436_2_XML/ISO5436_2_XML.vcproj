@@ -483,6 +483,64 @@
 					RelativePath="..\..\include\opengps\cxx\string.hxx"
 					>
 				</File>
+				<File
+					RelativePath=".\cxx\Version.h"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\Version.in"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Generate Version info File"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Generate Version info File"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug-Shared|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Generate Version info File"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release-Shared|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Generate Version info File"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Demo (Without Lib)|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Generate Version info File"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
