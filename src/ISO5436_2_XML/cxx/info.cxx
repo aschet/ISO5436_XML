@@ -125,7 +125,7 @@ void Info::PrintCopyright()
    OpenGPS::String text;
    GetCopyright(&text);
 
-   std::cout << *text.ToChar() << std::endl;
+   std::cout << text.ToChar() << std::endl;
 }
 
 void Info::PrintLicense()
@@ -133,7 +133,8 @@ void Info::PrintLicense()
    OpenGPS::String text;
    GetLicense(&text);
 
-   std::cout << *text.ToChar() << std::endl;
+   // BUG: Wrong conversion: Should be a string not a single character.
+   std::cout << text.ToChar() << std::endl;
 }
 
 void Info::GetName(OpenGPS::String* const text)
