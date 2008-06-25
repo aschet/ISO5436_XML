@@ -67,6 +67,8 @@ const char* String::ToChar()
 
    const size_t len = length();
    m_Chars = new char[len + 1];
+   /// @bug: It would be safer to use wcstomb_s on windows systems but this function is not ANSI-standard.
+#pragma warning(suppress: 4996)
    wcstombs(m_Chars, c_str(), len);
    m_Chars[len] = 0;
 
@@ -84,6 +86,8 @@ void String::FromChar(const char* const s)
 #ifdef _UNICODE
       const size_t len = strlen(s);
       wchar_t* chars = new wchar_t[len + 1];
+      /// @bug: It would be safer to use wcstomb_s on windows systems but this function is not ANSI-standard.
+#pragma warning(suppress: 4996)
       mbstowcs(chars, s, len);
       chars[len] = 0;
 
