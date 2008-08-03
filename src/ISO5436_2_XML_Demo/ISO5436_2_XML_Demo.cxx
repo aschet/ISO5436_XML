@@ -112,7 +112,7 @@ void simpleExample(OpenGPS::String fileName)
 
 
    /* Create ISO5436_2 container */
-   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, record2, matrix, FALSE);
+   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, FALSE);
 
    /* Add data points */
    /* 1. Create point vector buffer for three points. */
@@ -217,7 +217,7 @@ void mediumComplexExample(OpenGPS::String fileName)
    MatrixDimensionType matrix(4, 2, 2);
 
    /* Create ISO5436_2 container */
-   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, record2, matrix, TRUE);
+   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, TRUE);
 
    /* Add data points */
    /* 1. Create point vector buffer for three points. */
@@ -282,6 +282,65 @@ void readonlyExample(OpenGPS::String fileName)
       return;
 
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
+
+   /* Create point buffer. */
+   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+   /* Use iterator to create points in this example. */
+   OGPS_PointIteratorPtr iterator = ogps_CreateNextPointIterator(handle);
+
+   /* Iterate point data (ignoring the fact whether they were stored
+    * in xml directly or in external binary file). */
+   while(ogps_MoveNextPoint(iterator))
+   {
+      /* Get points at current position. */
+      ogps_GetCurrentPoint(iterator, vector);
+
+      if(ogps_HasError())
+      {
+         break;
+      }
+
+      /* Valid data point (not missing)?  */
+      if(ogps_IsValidPoint(vector))
+      {
+         double x, y, z;
+         ogps_GetXYZ(vector, &x, &y, &z);
+
+         // Write point to console
+         std::cout << ("X: ") << x << ("; Y: ") << y << ("; Z: ") << z <<std::endl;
+      }    
+      else
+      {
+         std::cout << ("Invalid point") <<std::endl;
+      }
+
+   }
+
+   std::cout << std::endl;
+
+   // Failed?
+   assert(!ogps_HasNextPoint(iterator));
+
+   /* Free iterator/buffer */
+   ogps_FreePointIterator(&iterator);
+   ogps_FreePointVector(&vector);
+
+   /* Close file */
+   ogps_CloseISO5436_2(&handle);
+}
+
+void readonlyExampleMatrix(OpenGPS::String fileName)
+{
+   /* Same as above, but here matrix format is assumed to provide indices within the output. */
+
+   /* Open the file, hopefully everything went well... */
+   OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
+
+   if(!handle)
+      return;
+
+   /* Assume matrix format. */
 
    /* Create point buffer. */
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();
@@ -707,7 +766,7 @@ void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Bo
    record2.Comment(comment);
 
    /* Create ISO5436_2 container */
-   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, record2, dimension, binary);
+   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, &record2, dimension, binary);
 
    /* Add data points */
 
@@ -794,7 +853,7 @@ void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_B
    record2.Comment(comment);
 
    /* Create ISO5436_2 container */
-   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, record2, dimension, binary);
+   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, &record2, dimension, binary);
 
    /* Add data points */
 
@@ -830,6 +889,83 @@ void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_B
              << " seconds." << std::endl;
 }
 
+/* Converts a given X3P file either to binary or text format (if dstFormatIsBinary parameter equals FALSE). */
+void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, const OGPS_Boolean dstFormatIsBinary)
+{
+   /* We want to read in some file regardless whether it was written
+   in text or binary format and then copy its contents into
+   a newly created file to ensure binary format of X3P.
+   The original file will be overwritten! */
+
+   /* Open the file, hopefully everything went well... */
+   OGPS_ISO5436_2Handle src_handle = ogps_OpenISO5436_2(srcFileName.c_str(), NULL, TRUE);
+
+   if(!src_handle)
+      return;
+
+   /* Obtain handle to xml document for reading. */
+   const ISO5436_2Type * const document = ogps_GetDocument(src_handle);
+
+   /* Check whether it is matrix or list format and allocate the new file handle accordingly. */
+   OGPS_ISO5436_2Handle dst_handle = NULL;
+   if(ogps_IsMatrix(src_handle) && !ogps_HasError())
+   {
+      dst_handle = ogps_CreateMatrixISO5436_2(dstFileName.c_str(), NULL, document->Record1(), document->Record2().present() ? &*document->Record2() : NULL, *document->Record3().MatrixDimension(), dstFormatIsBinary);
+   }
+   else
+   {
+      dst_handle = ogps_CreateListISO5436_2(dstFileName.c_str(), NULL, document->Record1(), document->Record2().present() ? &*document->Record2() : NULL, *document->Record3().ListDimension(), dstFormatIsBinary);
+   }
+
+   if(dst_handle)
+   {
+      /* Create point buffer. */
+      OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+      /* Use iterator to copy point vectors. */
+      OGPS_PointIteratorPtr src = ogps_CreateNextPointIterator(src_handle);
+      OGPS_PointIteratorPtr dst = ogps_CreateNextPointIterator(dst_handle);
+
+      /* Iterate point data and copy. */
+      while(ogps_MoveNextPoint(src) && ogps_MoveNextPoint(dst))
+      {
+         /* Get vector at current position from source. */
+         ogps_GetCurrentPoint(src, vector);
+
+         if(!ogps_HasError())
+         {
+            /* Copy vector to destination. */
+            ogps_SetCurrentPoint(dst, (!ogps_IsValidPoint(vector) || ogps_HasError()) ? NULL : vector);
+         }
+
+         /* Errors? */
+         if(ogps_HasError())
+         {
+            break;
+         }
+      }
+
+      // Failed?
+      assert(!ogps_HasNextPoint(src));
+      assert(!ogps_HasNextPoint(dst));
+
+      /* Free iterator/buffer */
+      ogps_FreePointIterator(&src);
+      ogps_FreePointIterator(&dst);
+      ogps_FreePointVector(&vector);
+   }
+
+   /* Close source file */
+   ogps_CloseISO5436_2(&src_handle);
+
+   if(dst_handle)
+   {
+      /* Write new file. */
+      ogps_WriteISO5436_2(dst_handle);
+      ogps_CloseISO5436_2(&dst_handle);
+   }
+}
+
 int _cdecl _tmain(int argc, _TCHAR* argv[])
 {
    if(argc != 2)
@@ -856,7 +992,6 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
    OpenGPS::Info::PrintVersion();
    OpenGPS::Info::PrintCopyright();
    OpenGPS::Info::PrintLicense();
-
 
    std::wstring path = argv[1];
    std::wstring tmp;
