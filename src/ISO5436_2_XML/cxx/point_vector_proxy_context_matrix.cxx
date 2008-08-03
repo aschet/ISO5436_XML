@@ -74,7 +74,7 @@ void PointVectorProxyContextMatrix::SetIndex(
 
 unsigned long PointVectorProxyContextMatrix::GetIndex() const
 {
-   return (m_W * m_MaxV + m_V) * (m_U + 1);
+   return m_V * m_MaxU * m_MaxW + m_U * m_MaxW + m_W;
 }
 
 OGPS_Boolean PointVectorProxyContextMatrix::CanIncrementIndex() const
