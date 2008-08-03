@@ -77,7 +77,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
        */
-      virtual OGPS_Boolean HasNext() const = 0;
+      virtual OGPS_Boolean HasNext() const throw(...) = 0;
       
       /*!
        * Asks if there is another point available to iterate.
@@ -88,7 +88,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
        */
-      virtual OGPS_Boolean HasPrev() const = 0;
+      virtual OGPS_Boolean HasPrev() const throw(...) = 0;
 
       /*!
        * Moves the iterator forward.
@@ -100,7 +100,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean MoveNext() = 0;
+      virtual OGPS_Boolean MoveNext() throw(...) = 0;
       
       /*!
        * Moves the iterator backward.
@@ -112,7 +112,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean MovePrev() = 0;
+      virtual OGPS_Boolean MovePrev() throw(...) = 0;
 
       /*!
        * Resets the iterator to the beginning and turns this iterator instance into a forward iterator.

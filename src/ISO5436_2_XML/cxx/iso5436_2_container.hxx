@@ -109,18 +109,18 @@ namespace OpenGPS
 
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
-         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::Record2Type* record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
-         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::Record2Type* record2,
          const unsigned long listDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
-      virtual PointIteratorAutoPtr CreateNextPointIterator();
-      virtual PointIteratorAutoPtr CreatePrevPointIterator();
+      virtual PointIteratorAutoPtr CreateNextPointIterator() throw(...);
+      virtual PointIteratorAutoPtr CreatePrevPointIterator() throw(...);
 
       virtual void SetMatrixPoint(
          const unsigned long u,
@@ -163,6 +163,8 @@ namespace OpenGPS
 
       virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
 
+      virtual OGPS_Boolean IsMatrix() const throw(...);
+
       virtual void Write(const int compressionLevel = -1) throw(...);
 
       virtual void Close();
@@ -171,15 +173,6 @@ namespace OpenGPS
       virtual OGPS_Boolean GetVendorSpecific(const OpenGPS::String& vendorURI, const OpenGPS::String& fileName, const OpenGPS::String& targetPath);
 
    protected:
-
-      /*!
-       * Gets information on the structure with which the point
-       * measurement data is stored.
-       * @returns Returns TRUE if point vectors are stored as a
-       * matrix structure preserving topology information, or FALSE
-       * when point vectors are stored sequentially within a simple list.
-       */
-      OGPS_Boolean IsMatrix() const;
 
       /*!
        * Checks whether points are sotred as separate binary files
@@ -210,7 +203,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxU() const;
+      unsigned long GetMaxU() const throw(...);
       
       /*!
        * Gets the maximum index value possible in Y direction.
@@ -221,7 +214,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxV() const;
+      unsigned long GetMaxV() const throw(...);
       
       /*!
        * Gets the maximum index value possible in Z direction.
@@ -232,7 +225,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxW() const;
+      unsigned long GetMaxW() const throw(...);
 
       /*! Gets the file path to the X3P archive the current instance is an interface for. */
       const OpenGPS::String& GetFilePath() const;
@@ -470,7 +463,7 @@ namespace OpenGPS
        * information necessary for that task.
        * @returns A new instance of a vector proxy context. The caller ist responsible of releasing this resource.
        */
-      virtual PointVectorProxyContext* CreatePointVectorProxyContext() const;
+      virtual PointVectorProxyContext* CreatePointVectorProxyContext() const throw(...);
 
 
    private:
@@ -688,11 +681,11 @@ namespace OpenGPS
 
          /* Implements the public PointIterator interface. */
 
-         virtual OGPS_Boolean HasNext() const;
-         virtual OGPS_Boolean HasPrev() const;
+         virtual OGPS_Boolean HasNext() const throw(...);
+         virtual OGPS_Boolean HasPrev() const throw(...);
 
-         virtual OGPS_Boolean MoveNext();
-         virtual OGPS_Boolean MovePrev();
+         virtual OGPS_Boolean MoveNext() throw(...);
+         virtual OGPS_Boolean MovePrev() throw(...);
 
          virtual void ResetNext();
          virtual void ResetPrev();

@@ -362,6 +362,21 @@ extern "C" {
       OGPS_Double* const y,
       OGPS_Double* const z);
 
+   /*!
+   * Gets information on the structure with which the point
+   * measurement data is stored.
+   * @returns Returns TRUE if point vectors are stored as a
+   * matrix structure preserving topology information, or FALSE
+   * when point vectors are stored sequentially within a simple list.
+   * @param handle Operate on this handle object.
+   * @return Retruns TRUE if the underlying document structure represents
+   * the matrix topology, otherwise FALSE, which corresponds to unordered list structure.
+   * Also see remarks.
+   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * processed correctly, otherwise futurue behavior of your program is undefined!
+   */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle);
+
 #ifdef __cplusplus
 }
 #endif

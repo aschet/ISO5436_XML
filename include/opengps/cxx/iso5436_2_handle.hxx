@@ -66,7 +66,7 @@ namespace OpenGPS
  * @param file Full path to the ISO5436-2 XML X3P to be created.
  * @param temp Specifies the new absolute path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
  * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
- * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
+ * @param record2 The Record2 object defined in the ISO5436_2 XML specification. This is optional, so the parameter can be NULL. But if set, it must point to a valid instance.
  * @param matrixDimension Specifies the topology for which point measurement data will be processed.
  * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
  * @returns Returns the file handle or NULL on failure.
@@ -75,7 +75,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    const OGPS_Character* const file,
    const OGPS_Character* const temp,
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
-   const OpenGPS::Schemas::ISO5436_2::Record2Type& record2,
+   const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
    const OpenGPS::Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
    const OGPS_Boolean useBinaryData = TRUE) throw();
 
@@ -89,7 +89,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
  * @param file Full path to the ISO5436-2 XML X3P to be created.
  * @param temp Specifies the new absolute path to the directory where unpacked X3P data gets stored temporarily. If set to NULL the default directory for  temporary files specified by your system is used.
  * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
- * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
+ * @param record2 The Record2 object defined in the ISO5436_2 XML specification. This is optional, so the parameter can be NULL. But if set, it must point to a valid instance.
  * @param listDimension Specifies the size of point measurement data that will be processed.
  * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
  * @returns Returns the file handle or NULL on failure.
@@ -98,7 +98,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    const OGPS_Character* const file,
    const OGPS_Character* const temp,
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
-   const OpenGPS::Schemas::ISO5436_2::Record2Type& record2,
+   const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
    const unsigned long listDimension,
    const OGPS_Boolean useBinaryData = TRUE) throw();
 

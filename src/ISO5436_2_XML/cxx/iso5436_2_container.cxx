@@ -258,7 +258,7 @@ OGPS_Boolean ISO5436_2Container::ReadMd5FromFile(const OpenGPS::String& fileName
 
 void ISO5436_2Container::Create(
                                         const Schemas::ISO5436_2::Record1Type& record1,
-                                        const Schemas::ISO5436_2::Record2Type& record2,
+                                        const Schemas::ISO5436_2::Record2Type* record2,
                                         const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
                                         const OGPS_Boolean useBinaryData) throw(...)
 {
@@ -271,12 +271,12 @@ void ISO5436_2Container::Create(
          _EX_T("OpenGPS::ISO5436_2Container::Create"));
    }
 
-   CreateDocument(&record1, &record2, &matrixDimension, 0, useBinaryData);
+   CreateDocument(&record1, record2, &matrixDimension, 0, useBinaryData);
 }
 
 void ISO5436_2Container::Create(
                                         const Schemas::ISO5436_2::Record1Type& record1,
-                                        const Schemas::ISO5436_2::Record2Type& record2,
+                                        const Schemas::ISO5436_2::Record2Type* record2,
                                         const unsigned long listDimension,
                                         const OGPS_Boolean useBinaryData) throw(...)
 {
@@ -289,15 +289,15 @@ void ISO5436_2Container::Create(
          _EX_T("OpenGPS::ISO5436_2Container::Create"));
    }
 
-   CreateDocument(&record1, &record2, NULL, listDimension, useBinaryData);
+   CreateDocument(&record1, record2, NULL, listDimension, useBinaryData);
 }
 
-PointIteratorAutoPtr ISO5436_2Container::CreateNextPointIterator()
+PointIteratorAutoPtr ISO5436_2Container::CreateNextPointIterator() throw(...)
 {
    return PointIteratorAutoPtr(new PointIteratorImpl(this, TRUE, IsMatrix()));
 }
 
-PointIteratorAutoPtr ISO5436_2Container::CreatePrevPointIterator()
+PointIteratorAutoPtr ISO5436_2Container::CreatePrevPointIterator() throw(...)
 {
    return PointIteratorAutoPtr(new PointIteratorImpl(this, FALSE, IsMatrix()));
 }
@@ -312,9 +312,22 @@ void ISO5436_2Container::SetMatrixPoint(
    _ASSERT(IsMatrix());
    _ASSERT(m_PointVector.get());
    _ASSERT(m_ProxyContext.get());
-
-   _ASSERT(!vector || (IsIncrementalX() && vector->GetX()->GetPointType() == OGPS_MissingPointType) || (!IsIncrementalX() && vector->GetX()->GetPointType() != OGPS_MissingPointType));
-   _ASSERT(!vector || (IsIncrementalY() && vector->GetY()->GetPointType() == OGPS_MissingPointType) || (!IsIncrementalY() && vector->GetY()->GetPointType() != OGPS_MissingPointType));
+#ifdef _DEBUG
+   OGPS_Int32 value_x = -1, value_y = -1;
+   if(vector != NULL)
+   {
+      if(vector->GetX()->GetPointType() == OGPS_Int32PointType)
+      {
+         vector->GetX()->Get(&value_x);
+      }
+      if(vector->GetY()->GetPointType() == OGPS_Int32PointType)
+      {
+         vector->GetY()->Get(&value_y);
+      }
+   }
+#endif
+   _ASSERT(!vector || (IsIncrementalX() && vector->GetX()->GetPointType() == OGPS_MissingPointType || (value_x >= 0 && u == (unsigned long)value_x)) || (!IsIncrementalX() && vector->GetX()->GetPointType() != OGPS_MissingPointType));
+   _ASSERT(!vector || (IsIncrementalY() && vector->GetY()->GetPointType() == OGPS_MissingPointType || (value_y >= 0 && v == (unsigned long)value_y)) || (!IsIncrementalY() && vector->GetY()->GetPointType() != OGPS_MissingPointType));
    _ASSERT(!vector || vector->GetZ()->GetPointType() != OGPS_MissingPointType);
 
    if(!m_ProxyContext->IsMatrix())
@@ -573,7 +586,7 @@ void ISO5436_2Container::Close()
    RemoveTempDir();
 }
 
-OGPS_Boolean ISO5436_2Container::IsMatrix() const
+OGPS_Boolean ISO5436_2Container::IsMatrix() const throw(...)
 {
    _ASSERT(HasDocument());
 
@@ -587,7 +600,14 @@ OGPS_Boolean ISO5436_2Container::IsMatrix() const
    }
 
    // the point list should be present instead
-   _ASSERT(m_Document->Record3().ListDimension().present());
+   if(!m_Document->Record3().ListDimension().present())
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExInvalidOperation,
+         _EX_T("It could not be decided whether the X3P instance is of either matrix or list type."),
+         _EX_T("Point vectors can be either seen as topologically ordered matrix space or unordered sets. Make your decision within the XML document before using this method."),
+         _EX_T("ISO5436_2Container::IsMatrix"));
+   }
 
    return FALSE;
 }
@@ -955,7 +975,7 @@ void ISO5436_2Container::CreateDocument(
    const OGPS_Boolean useBinaryData) throw(...)
 {
    _ASSERT(!HasDocument());
-   _ASSERT(record1 && record2);
+   _ASSERT(record1);
    _ASSERT(matrixDimension != NULL && listDimension == 0 || matrixDimension == NULL && listDimension > 0);
 
    try
@@ -1626,7 +1646,7 @@ unsigned long ISO5436_2Container::GetPointCount() const throw(...)
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-unsigned long ISO5436_2Container::GetMaxU() const
+unsigned long ISO5436_2Container::GetMaxU() const throw(...)
 {
    _ASSERT(HasDocument());
 
@@ -1638,7 +1658,7 @@ unsigned long ISO5436_2Container::GetMaxU() const
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-unsigned long ISO5436_2Container::GetMaxV() const
+unsigned long ISO5436_2Container::GetMaxV() const throw(...)
 {
    _ASSERT(HasDocument());
 
@@ -1650,7 +1670,7 @@ unsigned long ISO5436_2Container::GetMaxV() const
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-unsigned long ISO5436_2Container::GetMaxW() const
+unsigned long ISO5436_2Container::GetMaxW() const throw(...)
 {
    _ASSERT(HasDocument());
 
@@ -1872,7 +1892,7 @@ double ISO5436_2Container::GetOffsetZ() const
    return (0.0);
 }
 
-PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() const
+PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() const throw(...)
 {
    _ASSERT(HasDocument());
 

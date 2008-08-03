@@ -59,7 +59,7 @@ ISO5436_2Container::PointIteratorImpl::~PointIteratorImpl()
 {
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -87,7 +87,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -115,7 +115,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext()
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext() throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -167,7 +167,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext()
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MovePrev()
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MovePrev() throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 

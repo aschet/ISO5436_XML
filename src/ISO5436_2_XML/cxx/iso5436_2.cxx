@@ -85,7 +85,7 @@ void ISO5436_2::Open(const OGPS_Boolean readOnly) throw(...)
     /* Create matrix. */
 void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
-            const Schemas::ISO5436_2::Record2Type& record2,
+            const Schemas::ISO5436_2::Record2Type* record2,
             const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
             const OGPS_Boolean useBinaryData) throw(...)
 {
@@ -97,7 +97,7 @@ void ISO5436_2::Create(
     /* Create list. */
 void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
-            const Schemas::ISO5436_2::Record2Type& record2,
+            const Schemas::ISO5436_2::Record2Type* record2,
             const unsigned long listDimension,
             const OGPS_Boolean useBinaryData) throw(...)
 {
@@ -106,14 +106,14 @@ void ISO5436_2::Create(
    m_Instance->Create(record1, record2, listDimension, useBinaryData);
 }
 
-PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator()
+PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator() throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->CreateNextPointIterator();
 }
 
-PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator()
+PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator() throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -199,6 +199,13 @@ OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ISO5436_2::GetDocument()
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->GetDocument();
+}
+
+OGPS_Boolean ISO5436_2::IsMatrix() const throw(...)
+{
+   _ASSERT(m_Instance && m_Instance != this);
+
+   return m_Instance->IsMatrix();
 }
 
 void ISO5436_2::Write(const int compressionLevel) throw(...)

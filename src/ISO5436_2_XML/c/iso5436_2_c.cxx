@@ -73,7 +73,7 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    const OGPS_Character* const file,
    const OGPS_Character* const temp,
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
-   const OpenGPS::Schemas::ISO5436_2::Record2Type& record2,
+   const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
    const OpenGPS::Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
    const OGPS_Boolean useBinaryData) throw()
 {
@@ -109,7 +109,7 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
         const OGPS_Character* file,
         const OGPS_Character* temp,
         const Schemas::ISO5436_2::Record1Type& record1,
-        const Schemas::ISO5436_2::Record2Type& record2,
+        const Schemas::ISO5436_2::Record2Type* record2,
         const unsigned long listDimension,
         const OGPS_Boolean useBinaryData) throw()
 {
@@ -315,6 +315,15 @@ OGPS_Boolean ogps_GetVendorSpecific(
    _ASSERT(vendorURI && fileName && targetPath);
 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetVendorSpecific(vendorURI, fileName, targetPath));
+
+   return FALSE;
+}
+
+OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle) throw()
+{
+   _ASSERT(handle && handle->instance);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->IsMatrix());
 
    return FALSE;
 }

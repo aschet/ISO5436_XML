@@ -159,13 +159,13 @@ namespace OpenGPS
        * Specific implementations may raise an exception.
        *
        * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
-       * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
+       * @param record2 The Record2 object defined in the ISO5436_2 XML specification. This is optional, so the parameter can be NULL. But if set, it must point to a valid instance.
        * @param matrixDimension Specifies the topology for which point measurement data will be processed.
        * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
        */
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
-         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::Record2Type* record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
@@ -177,13 +177,13 @@ namespace OpenGPS
        * Specific implementations may raise an exception.
        *
        * @param record1 The Record1 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
-       * @param record2 The Record2 object defined in the ISO5436_2 XML specification. The given object instance must be valid.
+       * @param record2 The Record2 object defined in the ISO5436_2 XML specification. This is optional, so the parameter can be NULL. But if set, it must point to a valid instance.
        * @param listDimension Specifies the size of point measurement data that will be processed.
        * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
        */
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
-         const Schemas::ISO5436_2::Record2Type& record2,
+         const Schemas::ISO5436_2::Record2Type* record2,
          const unsigned long listDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
@@ -197,7 +197,7 @@ namespace OpenGPS
        *
        * @returns Returns an iterator handle on success.
        */
-      virtual PointIteratorAutoPtr CreateNextPointIterator();
+      virtual PointIteratorAutoPtr CreateNextPointIterator() throw(...);
 
       /*!
        * Creates an iterator to access point data contained in an ISO5436-2 X3P file.
@@ -206,7 +206,7 @@ namespace OpenGPS
        *
        * @returns Returns an iterator handle on success.
        */
-      virtual PointIteratorAutoPtr CreatePrevPointIterator();
+      virtual PointIteratorAutoPtr CreatePrevPointIterator() throw(...);
 
       /*!
       * Sets the value of a three-dimensional data point vector at a given surface position.
@@ -404,6 +404,15 @@ namespace OpenGPS
        * Gets access to the ISO5436_2 XML document.
        */
       virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
+
+      /*!
+       * Gets information on the structure with which the point
+       * measurement data is stored.
+       * @returns Returns TRUE if point vectors are stored as a
+       * matrix structure preserving topology information, or FALSE
+       * when point vectors are stored sequentially within a simple list.
+       */
+      virtual OGPS_Boolean IsMatrix() const throw(...);
 
       /*!
        * Writes any changes back to the X3P file.
