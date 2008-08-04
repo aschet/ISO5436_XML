@@ -35,6 +35,11 @@
 
 #include <opengps/cxx/exceptions.hxx>
 
+// Ignore warnings for unreferenced arguments.
+#ifdef _WIN32
+  #pragma warning(disable: 4100)
+#endif
+
 PointBuffer::PointBuffer()
 {
    m_Size = 0;
@@ -161,3 +166,7 @@ OGPS_DataPointType PointBuffer::GetPointType() const
 {
    return OGPS_MissingPointType;
 }
+
+#ifdef _WIN32
+  #pragma warning(default: 4100)
+#endif
