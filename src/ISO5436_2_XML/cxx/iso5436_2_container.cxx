@@ -739,6 +739,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
 
    if(!handle)
    {
+     /* Todo: Wiora: Should provide information about filename */
       throw OpenGPS::Exception(
          OGPS_ExGeneral,
          _EX_T("The X3P archive to be decompressed could not be opened."),
