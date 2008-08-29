@@ -157,7 +157,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Publishing include directory."
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include"
+				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps"
 			/>
 		</Configuration>
 		<Configuration
@@ -324,7 +324,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Publishing include directory."
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include"
+				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps"
 			/>
 		</Configuration>
 		<Configuration
@@ -496,7 +496,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
 							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -506,7 +506,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
 							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -516,7 +516,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
 							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -526,7 +526,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
 							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
@@ -536,7 +536,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h"
+							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
 							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
 						/>
 					</FileConfiguration>
