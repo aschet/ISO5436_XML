@@ -327,3 +327,40 @@ OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle) throw()
 
    return FALSE;
 }
+
+OGPS_Boolean ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
+                                                         unsigned long * const size_u,
+                                                         unsigned long * const size_v,
+                                                         unsigned long * const size_w)
+{
+  // assert Handle and instance
+  _ASSERT(handle && handle->instance);
+  // Assert result pointers
+  _ASSERT(size_u);
+  _ASSERT(size_v);
+  _ASSERT(size_w);
+
+  // Pointer to the XML-Document
+  OpenGPS::Schemas::ISO5436_2::ISO5436_2Type *const doc = ogps_GetDocument(handle);
+
+  // Check if document contains a matrix
+  if (! ogps_IsMatrix(handle))
+  {
+    // This is not a matrix
+    // Set dimensions to 0
+    *size_u = 0;
+    *size_v = 0;
+    *size_w = 0;
+    // Return FALSE
+    return FALSE;
+  }
+  
+  // Extract dimensions
+  *size_u = doc->Record3().MatrixDimension()->SizeX();
+  *size_v = doc->Record3().MatrixDimension()->SizeY();
+  *size_w = doc->Record3().MatrixDimension()->SizeZ();
+
+  // This is a matrix
+  return TRUE;
+}
+

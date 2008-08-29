@@ -365,17 +365,34 @@ extern "C" {
    /*!
    * Gets information on the structure with which the point
    * measurement data is stored.
-   * @returns Returns TRUE if point vectors are stored as a
-   * matrix structure preserving topology information, or FALSE
-   * when point vectors are stored sequentially within a simple list.
    * @param handle Operate on this handle object.
-   * @return Retruns TRUE if the underlying document structure represents
+   * @returns Returns TRUE if the underlying document structure represents
    * the matrix topology, otherwise FALSE, which corresponds to unordered list structure.
    * Also see remarks.
    * @remarks Important: After execution check with ogps_Error() whether the request was
    * processed correctly, otherwise futurue behavior of your program is undefined!
    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle);
+
+
+   /*!
+   * Gets information on the matrix dimensions of the current data structure
+   * @returns Returns TRUE if handle points to a matrix. The dimensions are
+   *          written to the arguments size_u, size_v, size_w.
+   * Returns FALSE if handle points to a list structure.
+   * @param handle Operate on this handle object.
+   * @param size_u Pointer to the return value of the matrix dimension in u-direction
+   * @param size_v Pointer to the return value of the matrix dimension in v-direction
+   * @param size_w Pointer to the return value of the matrix dimension in w-direction
+   * Also see remarks.
+   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * processed correctly, otherwise futurue behavior of your program is undefined!
+   */
+   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
+                                                         unsigned long * const size_u,
+                                                         unsigned long * const size_v,
+                                                         unsigned long * const size_w);
+
 
 #ifdef __cplusplus
 }

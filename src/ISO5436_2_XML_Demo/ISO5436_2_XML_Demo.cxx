@@ -27,6 +27,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @file
+ *  Example programm demonstrating some of the features of the X3P-data format.
+ */
+
 #include <opengps/cxx/opengps.hxx>
 
 #include <opengps/iso5436_2.h>
@@ -52,6 +56,12 @@
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
 
+ /*!
+    * @brief Creates and writes a simple ISO5436-2 XML X3P file
+    * with two incremental and one absolute axis (the z-axis).
+    *
+    * @param fileName Full path to the ISO5436-2 XML X3P to write.
+    */
 void simpleExample(OpenGPS::String fileName)
 {
    /* Simple example where we have two incremental and one absolute axis (the z-axis). */
@@ -219,6 +229,13 @@ void mediumComplexExample(OpenGPS::String fileName)
    /* Create ISO5436_2 container */
    OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, TRUE);
 
+   /* Get Matrix dimensions */
+   unsigned long sx,sy,sz;
+   if (ogps_GetMatrixDimensions(handle,&sx,&sy,&sz))
+     cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
+   else
+     cout << "This is not a matrix but a list" << endl;
+
    /* Add data points */
    /* 1. Create point vector buffer for three points. */
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();
@@ -282,6 +299,12 @@ void readonlyExample(OpenGPS::String fileName)
       return;
 
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
+   /* Get Matrix dimensions */
+   unsigned long sx,sy,sz;
+   if (ogps_GetMatrixDimensions(handle,&sx,&sy,&sz))
+     cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
+   else
+     cout << "This is not a matrix but a list" << endl;
 
    /* Create point buffer. */
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();

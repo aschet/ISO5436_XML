@@ -175,7 +175,7 @@ namespace OpenGPS
    protected:
 
       /*!
-       * Checks whether points are sotred as separate binary files
+       * Checks whether points are stored as separate binary files
        * or directly within the main ISO5436-2 XML document.
        * @returns Returns TRUE if there exist an external binary
        * file for point data within the archive, otherwise FALSE is
