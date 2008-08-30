@@ -77,7 +77,12 @@ OGPS_Boolean BinaryPointVectorReaderContext::MoveNext() throw(...)
 
 OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const throw(...)
 {
-   return TRUE; // TODO: parse invalid file here!
+   // If point data is read from a binary file, anytime - even if point data
+   // at the current position is invalid - a value itself is still available.
+   // Integer type default to null; floating point types here have set
+   // a special value indicating taht current point data is invalid, but
+   // it can safely be read though.
+   return TRUE;
 }
 
 void BinaryPointVectorReaderContext::Skip() throw(...)

@@ -92,6 +92,9 @@ namespace OpenGPS
       PointBuffer* GetPointBuffer();
 
    private:
+      /*! Not to be publicly used ctor. */
+      PointValidityProvider();
+
       /*! Point buffer of the Z axis. */
       PointBuffer* m_PointBuffer;
    };

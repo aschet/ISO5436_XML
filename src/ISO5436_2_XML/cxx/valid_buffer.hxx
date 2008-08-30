@@ -61,10 +61,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~ValidBuffer();
 
-      /*! Allocates the internal bit array. Initially all point vectors are assumed to be valid. */
-      virtual void Allocate() throw(...);
 
-      /*! Returns wheter the bit buffer has been allocated already. */
+      /*! Returns wheter the bit buffer has already been allocated. */
       virtual OGPS_Boolean IsAllocated() const;
 
       /*!
@@ -80,6 +78,12 @@ namespace OpenGPS
        */
       virtual void Write(std::ostream& stream) throw(...);
 
+      /*!
+       * Checks whether the current instance serves any point data that is marked as invalid.
+       * @returns FALSE if none of the referenced point data is marked as invalid here, otherwise TRUE.
+       */
+      virtual OGPS_Boolean HasInvalidMarks() const;
+
       virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
       virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
 
@@ -90,6 +94,16 @@ namespace OpenGPS
        */
       ValidBuffer(PointBuffer* const value);
 
+      /*! Allocates the internal bit array. Initially all point vectors are assumed to be valid. */
+      virtual void Allocate() throw(...);
+
+      /*! Frees allocated resources. */
+      virtual void Reset();
+
+   private:
+      /*! Not to be publicly used ctor. */
+      ValidBuffer();
+
       /*!
        * Allocates the internal bit array. Initially all point vectors are assumed to be valid.
        * @param rawSize Amount of memory to be allocated in bytes.
@@ -97,10 +111,6 @@ namespace OpenGPS
        */
       virtual void AllocateRaw(const unsigned int rawSize) throw(...);
 
-      /*! Frees allocated resources. */
-      virtual void Reset();
-
-   private:
       /*! Pointer to the internal bit array. */
       OpenGPS::UnsignedBytePtr m_ValidityBuffer;
 

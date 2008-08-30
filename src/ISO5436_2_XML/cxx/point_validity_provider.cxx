@@ -39,6 +39,12 @@ PointValidityProvider::PointValidityProvider(PointBuffer* const value)
    m_PointBuffer = value;
 }
 
+PointValidityProvider::PointValidityProvider()
+{
+   _ASSERT(FALSE);
+   m_PointBuffer = NULL;
+}
+
 PointValidityProvider::~PointValidityProvider()
 {
 }

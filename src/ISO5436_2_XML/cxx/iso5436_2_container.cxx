@@ -1120,14 +1120,9 @@ void ISO5436_2Container::CreatePointBuffer() throw(...)
       }
       else
       {
-         if(vectorBuffer->HasValidityBuffer())
-         {
-            if(!vectorBuffer->GetValidityBuffer()->IsAllocated())
-            {
-               vectorBuffer->GetValidityBuffer()->Allocate();
-            }
-         }
-
+         // For integer types the point buffer should have already been read from a file (see above).
+         // Otherwise no such buffer is needed, because floating point types have special values set for beeing "invalid".
+         _ASSERT(!vectorBuffer->HasValidityBuffer() || vectorBuffer->GetValidityBuffer()->IsAllocated());
          vectorBuffer->GetValidityProvider()->SetValid(proxy_context->GetIndex(), FALSE);
       }
 
@@ -1158,7 +1153,7 @@ void ISO5436_2Container::ResetValidPointsLink()
 {
    _ASSERT(HasDocument());
 
-   if(!IsBinary() || !GetVectorBuffer()->HasValidityBuffer() || !GetVectorBuffer()->GetValidityBuffer()->IsAllocated())
+   if(!IsBinary() || !GetVectorBuffer()->HasValidityBuffer() || !GetVectorBuffer()->GetValidityBuffer()->IsAllocated() || !GetVectorBuffer()->GetValidityBuffer()->HasInvalidMarks())
    {
       // no, we do not need an external validity file
       if(m_Document->Record3().DataLink().present() && m_Document->Record3().DataLink()->ValidPointsLink().present())
