@@ -40,11 +40,23 @@
   The openGPS ISO5436-2 XML Library contains an implementation of the X3P
   file format according to the ISO 5436-2 standard.
 
-  The homepage of openGPS is @link http://www.opengps.eu www.opengps.eu@endlink.
+  The homepage of openGPS is @link http://www.opengps.eu/ www.opengps.eu@endlink.
 */
 
 
 
 /** @namespace std
-    @brief The Standard namespace for the C++ library
+    @brief The standard namespace for the C++ library
+*/
+
+/** @namespace OpenGPS
+    @brief The main namespace of this library
+*/
+
+/** @namespace OpenGPS::Schemas
+    @brief The schema namespace for the XML-implementation
+*/
+
+/** @namespace xml_schema
+    @brief The namespace for basic XML schemas
 */
