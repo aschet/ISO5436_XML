@@ -16,18 +16,18 @@
     <Axes>
       <CX>
         <!-- "I" for Incremental, "A" for Absolute -->
-        <AxisType>I</AxisType>
+        <AxisType>A</AxisType>
         <!-- Datatype: "I" for int16, "L" for int32, "F" for float32, "D" for float64-->
         <DataType>D</DataType>
         <!-- Increment is the length of one increment in Meter -->
-        <Increment>1.60160000000000E-0002</Increment>
+        <Increment>1</Increment>
         <!-- The offset of the incremental axis -->
         <Offset>0.1000000000000E+0000</Offset>
       </CX>
       <CY>
-        <AxisType>I</AxisType>
+        <AxisType>A</AxisType>
         <DataType>D</DataType>
-        <Increment>1.60160000000000E-0002</Increment>
+        <Increment>1</Increment>
         <Offset>2.00000000000000E+0000</Offset>
       </CY>
       <CZ>
@@ -58,7 +58,6 @@
       <!-- Vendor specific -->
     </ProbingSystem>
     <Comment>This is a user comment specific to this dataset</Comment>
-    <!-- Optional -->
   </Record2>
   <!-- Record 3 contains one set of measurement data in a Data-Tag. -->
   <Record3>
@@ -69,22 +68,22 @@
     <!-- Optional:Relative URN to Binary File with data triples. Data types in binary files are described in axis definitions -->
     <!-- Data list is sorted in list order -->
     <DataList>
-      <Datum>4.86219120804151E-0001</Datum>
-      <Datum>3.46341436648013E-0003</Datum>
-      <Datum>-8.08368571682830E-0001</Datum>
-      <Datum>-5.79793099037002E-0001</Datum>
-      <Datum>8.57622027393310E-0001</Datum>
-      <Datum>1.04759602566142E+0000</Datum>
-      <Datum>1.01879225277798E+0000</Datum>
-      <Datum>3.46341436648013E-0003</Datum>
-      <Datum>8.23683772970184E-0001</Datum>
-      <Datum>7.97872489327661E-0001</Datum>
-      <Datum>-5.57459388341694E-0001</Datum>
-      <Datum>-2.33247858849220E-0001</Datum>
-      <Datum>6.75397146760858E-0001</Datum>
-      <Datum>4.20737549074718E-0001</Datum>
-      <Datum>6.42069248110950E-0001</Datum>
-      <Datum>-2.15696638464903E-0001</Datum>
+      <Datum>0e-6, 0e-6, 4.86219120804151E-0001</Datum>
+      <Datum>1e-6, 0e-6, 3.46341436648013E-0003</Datum>
+      <Datum>2e-6, 0e-6, -8.08368571682830E-0001</Datum>
+      <Datum>3e-6, 0e-6, -5.79793099037002E-0001</Datum>
+      <Datum>0e-6, 1e-6, 8.57622027393310E-0001</Datum>
+      <Datum>1e-6, 1e-6, 1.04759602566142E+0000</Datum>
+      <Datum>2e-6, 1e-6, 1.01879225277798E+0000</Datum>
+      <Datum>3e-6, 1e-6, 3.46341436648013E-0003</Datum>
+      <Datum>0e-6, 2e-6, 8.23683772970184E-0001</Datum>
+      <Datum>1e-6, 2e-6, 7.97872489327661E-0001</Datum>
+      <Datum>2e-6, 2e-6, -5.57459388341694E-0001</Datum>
+      <Datum>3e-6, 2e-6, -2.33247858849220E-0001</Datum>
+      <Datum>0e-6, 3e-6, 6.75397146760858E-0001</Datum>
+      <Datum>1e-6, 3e-6, 4.20737549074718E-0001</Datum>
+      <Datum>2e-6, 3e-6, 6.42069248110950E-0001</Datum>
+      <Datum>3e-6, 3e-6, -2.15696638464903E-0001</Datum>
     </DataList>
   </Record3>
   <Record4>
