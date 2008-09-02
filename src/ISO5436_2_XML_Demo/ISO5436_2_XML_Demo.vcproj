@@ -487,6 +487,10 @@
 				RelativePath=".\samplefiles\ISO5436-sample4_bin.xml"
 				>
 			</File>
+			<File
+				RelativePath=".\samplefiles\Sample_Files_Description_for_Doxygen.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ISO5436_2_XML_Demo.cxx"

@@ -295,6 +295,14 @@ void readonlyExample(OpenGPS::String fileName)
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
 
+   // Check for error
+   if (ogps_HasError())
+   {
+     // Print full description
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     return;
+   }
+
    if(!handle)
       return;
 
@@ -688,7 +696,26 @@ void readonlyExample4(OpenGPS::String fileName)
 
    /* Open the file, hopefully everything went well... */
    OpenGPS::ISO5436_2 iso5436_2(fileName);
-   iso5436_2.Open(TRUE);
+   // Check for error opening
+   if(ogps_HasError())
+   {
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     return;
+   }
+
+   // Try to open in read only mode
+   try
+   {
+     iso5436_2.Open(TRUE);
+   }
+   catch(OpenGPS::Exception &e)
+   {
+     OpenGPS::String err=e.details();
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl
+               << err.ToChar() << endl;
+     return;
+   }
+   
    if(!ogps_HasError())
    {
       /* Obtain handle to xml document. */
