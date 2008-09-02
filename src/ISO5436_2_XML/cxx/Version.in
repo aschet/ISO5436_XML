@@ -40,7 +40,7 @@
 /// Minor program revision. This is increased manually in the release process
 #define _OPENGPS_MINVERSION 1
 /// Build number is automatically incremented after each succesfull release build.
-#define _OPENGPS_BUILD     12
+#define _OPENGPS_BUILD     13
 /// Version or Version range, automatically extracted from SVN repository
 #define _OPENGPS_REVISION "$WCRANGE$"
 
