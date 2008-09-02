@@ -156,8 +156,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publishing include directory."
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps"
+				Description="Publishing include directory and incremention build number"
+				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps&#x0D;&#x0A;$(SolutionDir)..\Build\Tools\IncRev.exe &quot;$(InputDir)\cxx\Version.in&quot; &quot;#define _OPENGPS_BUILD&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -323,8 +323,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publishing include directory."
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps"
+				Description="Publishing include directory and incremention build number"
+				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps&#x0D;&#x0A;$(SolutionDir)..\Build\Tools\IncRev.exe &quot;$(InputDir)\cxx\Version.in&quot; &quot;#define _OPENGPS_BUILD&quot;"
 			/>
 		</Configuration>
 		<Configuration

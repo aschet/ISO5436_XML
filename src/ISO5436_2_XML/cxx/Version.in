@@ -39,8 +39,8 @@
 #define _OPENGPS_VERSION 0
 /// Minor program revision. This is increased manually in the release process
 #define _OPENGPS_MINVERSION 1
-/// \todo Build number. Should be an automatic count.
-#define _OPENGPS_BUILD "0"
+/// Build number is automatically incremented after each succesfull release build.
+#define _OPENGPS_BUILD     11
 /// Version or Version range, automatically extracted from SVN repository
 #define _OPENGPS_REVISION "$WCRANGE$"
 
