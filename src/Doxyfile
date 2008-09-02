@@ -117,13 +117,15 @@ FILE_PATTERNS          = *.c \
                          *.inc \
                          *.m \
                          *.mm \
-                         *.dox
+                         *.dox \
+                         *.x3p
 RECURSIVE              = YES
-EXCLUDE                = ./zlib
+EXCLUDE                = ./zlib \
+                         ./ISO5436_2_XML_Demo/samplefiles/Alicona_RoundRobin_V1
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 
-EXAMPLE_PATH           = ./ISO5436_2_XML_Demo
+EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = 
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = ../doc/SDK/HTML_Stylesheet \

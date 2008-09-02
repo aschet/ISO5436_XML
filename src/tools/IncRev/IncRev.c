@@ -1,5 +1,5 @@
-/****************************************************************************
- *	IncRev: Increment version numbers in text files.
+ /*! @file IncRev.c
+ *  \brief Tool to increment version numbers in text files.
  *
  *  (C) by Georg Wiora 1990/2008
  *
@@ -8,7 +8,20 @@
  * 
  *  This program is published under the 
  *  Boost Software License V1.0 (s. below)
- ****************************************************************************/
+ *
+ *  Usage:
+ *  Syntax: IncRev <File> <Pattern> [<Increment>]
+ *  The specified <File> must contain a line with the given pattern.
+ *    \li Example:\n
+ *         "textexttextpattern   123"\n
+ *         IncRev will search "pattern" (case sensitive), read the number
+ *         and use the space after pattern to the last digit to replace it
+ *         with the incremented number, in this example 124.
+ *
+ *  The substitution happens in place without using a temp file!
+ *  The optional <Increment> parameter is a number to add to the
+ *  current version number. Default is 1.
+ */
 
 /****************************************************************************
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -42,10 +55,20 @@ http://www.boost.org/LICENSE_1_0.txt
 #include <string.h>
 #include <ctype.h>
 
+/// Version number of IncRev
 #define VERSION 2
+/// Minor Version or Revision number of IncRev
 #define REVISION 0
 
-/* Sucht bestimmte Zeile und gibt zahlenlänge zurück*/
+/*! @brief Search for line with pattern in file.
+    Position the file pointer at the end of pattern.
+
+    @arg \c fp File pointer to the file to search.
+    @arg \c pat pointer to the pattern string that is searched in file.
+
+    @return the number of characters available for the incremented number.
+    The file pointer is repostioned right after the pattern
+*/
 int
 findline(FILE *fp, const char *pat)
 {
@@ -116,6 +139,26 @@ findline(FILE *fp, const char *pat)
   return patend+firstdigit+lastdigit-startofnumber;
 }
 
+/*! @brief Increment a version number in a text file
+    
+    \li Usage: IncRev <File> <Pattern> [<Increment>]\n
+    The specified <File> must contain a line with the given pattern.
+      \li Example:\n
+          "textexttextpattern   123"\n
+          IncRev will search "pattern" (case sensitive), read the number
+          and use the space after pattern to the last digit to replace it
+          with the incremented number, in this example 124.
+  
+    The substitution happens in place without using a temp file!
+    The optional <Increment> parameter is a number to add to the
+    current version number. Default is 1.
+
+    @arg \c argc Argument count.
+    @arg \c argv List of argument strings.
+
+    @return 0 for successful run and 1 for errors.
+    Error messages are printed to \c stderr stream
+*/
 
 int
 main (const int argc, const char *argv[])
