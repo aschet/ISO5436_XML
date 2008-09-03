@@ -116,47 +116,47 @@ namespace OpenGPS
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
-         const unsigned long listDimension,
+         const OGPS_ULong listDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       virtual PointIteratorAutoPtr CreateNextPointIterator() throw(...);
       virtual PointIteratorAutoPtr CreatePrevPointIterator() throw(...);
 
       virtual void SetMatrixPoint(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          const PointVector* const vector) throw(...);
 
       virtual void GetMatrixPoint(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          PointVector& vector) throw(...);
 
       virtual void SetListPoint(
-         const unsigned long index,
+         const OGPS_ULong index,
          const PointVector& vector) throw(...);
 
       virtual void GetListPoint(
-         const unsigned long index,
+         const OGPS_ULong index,
          PointVector& vector) throw(...);
 
       virtual void GetMatrixCoord(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          OGPS_Double* const x,
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
 
       virtual OGPS_Boolean IsMatrixCoordValid(
-         unsigned long u,
-         unsigned long v,
-         unsigned long w) throw(...);
+         OGPS_ULong u,
+         OGPS_ULong v,
+         OGPS_ULong w) throw(...);
 
       virtual void GetListCoord(
-         const unsigned long index,
+         const OGPS_ULong index,
          OGPS_Double* const x,
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
@@ -164,6 +164,13 @@ namespace OpenGPS
       virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
 
       virtual OGPS_Boolean IsMatrix() const throw(...);
+
+      virtual void GetMatrixDimensions(
+         OGPS_ULong * const size_u,
+         OGPS_ULong * const size_v,
+         OGPS_ULong * const size_w) const throw(...);
+
+      virtual OGPS_ULong GetListDimensions() const throw(...);
 
       virtual void Write(const int compressionLevel = -1) throw(...);
 
@@ -203,7 +210,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxU() const throw(...);
+      OGPS_ULong GetMaxU() const throw(...);
       
       /*!
        * Gets the maximum index value possible in Y direction.
@@ -214,7 +221,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxV() const throw(...);
+      OGPS_ULong GetMaxV() const throw(...);
       
       /*!
        * Gets the maximum index value possible in Z direction.
@@ -225,7 +232,7 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      unsigned long GetMaxW() const throw(...);
+      OGPS_ULong GetMaxW() const throw(...);
 
       /*! Gets the file path to the X3P archive the current instance is an interface for. */
       const OpenGPS::String& GetFilePath() const;
@@ -328,7 +335,7 @@ namespace OpenGPS
          const Schemas::ISO5436_2::Record1Type* const record1,
          const Schemas::ISO5436_2::Record2Type* const record2,
          const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
-         const unsigned long listDimension,
+         const OGPS_ULong listDimension,
          const OGPS_Boolean useBinaryData) throw(...);
 
       /*!
@@ -427,7 +434,7 @@ namespace OpenGPS
       /*!
        * Gets the amount of point data that is stored in the archive.
        */
-      unsigned long GetPointCount() const throw(...);
+      OGPS_ULong GetPointCount() const throw(...);
 
       /*!
        * Releases any resources allocated to handle the xml document tree or internal storage of vectors in memory.
@@ -464,6 +471,11 @@ namespace OpenGPS
        * @returns A new instance of a vector proxy context. The caller ist responsible of releasing this resource.
        */
       virtual PointVectorProxyContext* CreatePointVectorProxyContext() const throw(...);
+
+      /*!
+       * Checks for the current document instance and raises an excpetion if it is not instantiated.
+       */
+      void CheckDocumentInstance() const throw(...);
 
 
    private:
@@ -636,7 +648,7 @@ namespace OpenGPS
        * @param value The value to be converted.
        * @returns Returns the same value, but as a cast to a smaller data type.
        */
-      unsigned long ConvertULongLongToULong(const unsigned long long value) const throw(...);
+      OGPS_ULong ConvertULongLongToULong(const unsigned long long value) const throw(...);
 
       /*!
        * Converts a value of unsigned long long into a shorter data type.
@@ -653,7 +665,7 @@ namespace OpenGPS
        * @param value2 The second value of the operands.
        * @returns Returns the result of their multiplication, but casted to a shorter data type.
        */
-      unsigned long SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...);
+      OGPS_ULong SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...);
 
       /*!
       * Implementation of the point iterator interface.
@@ -694,11 +706,11 @@ namespace OpenGPS
 
          virtual void SetCurrent(const PointVector* const vector) throw(...);
 
-         virtual OGPS_Boolean GetPosition(unsigned long* const index) const;
+         virtual OGPS_Boolean GetPosition(OGPS_ULong * const index) const;
          virtual OGPS_Boolean GetPosition(
-            unsigned long* const u,
-            unsigned long* const v,
-            unsigned long* const w) const;
+            OGPS_ULong * const u,
+            OGPS_ULong * const v,
+            OGPS_ULong * const w) const;
 
       private:
          /*! Instance of the ISO5436-2 X3P to be accessed through this popint iterator. */
@@ -714,13 +726,13 @@ namespace OpenGPS
          OGPS_Boolean m_IsMatrix;
 
          /*! The current index in X direction. Used when iterating both matrices and lists. */
-         unsigned long m_U;
+         OGPS_ULong m_U;
 
          /*! The current index in Y direction. Used with matrices only. */
-         unsigned long m_V;
+         OGPS_ULong m_V;
 
          /*! The current index in Z direction. Used with matrices only. */
-         unsigned long m_W;
+         OGPS_ULong m_W;
 
          /*! The copy-ctor is not implemented. This prevents its usage. */
          PointIteratorImpl(const PointIteratorImpl& src);

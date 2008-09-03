@@ -41,21 +41,21 @@ DoublePointBuffer::~DoublePointBuffer()
    Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
 }
 
-void DoublePointBuffer::Allocate(const unsigned long size) throw(...)
+void DoublePointBuffer::Allocate(const OGPS_ULong size) throw(...)
 {
    _ASSERT(!m_Buffer);
    
    m_Buffer = (OGPS_Double*)PointBuffer::Allocate(size, sizeof(OGPS_Double));
 }
 
-void DoublePointBuffer::Set(const unsigned long index, const OGPS_Double value) throw(...)
+void DoublePointBuffer::Set(const OGPS_ULong index, const OGPS_Double value) throw(...)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
    m_Buffer[index] = value;
 }
 
-void DoublePointBuffer::Get(const unsigned long index, OGPS_Double& value) const throw(...)
+void DoublePointBuffer::Get(const OGPS_ULong index, OGPS_Double& value) const throw(...)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

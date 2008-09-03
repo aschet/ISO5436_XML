@@ -158,9 +158,9 @@ namespace OpenGPS
        * @returns Returns TRUE on success, FALSE otherwise.
        */
       virtual OGPS_Boolean GetPosition(
-         unsigned long* const u,
-         unsigned long* const v,
-         unsigned long* const w) const = 0;    
+         OGPS_ULong * const u,
+         OGPS_ULong * const v,
+         OGPS_ULong * const w) const = 0;    
 
       /*!
        * Gets the current position of the iterator.
@@ -170,7 +170,7 @@ namespace OpenGPS
        * @param index Gets the position index.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean GetPosition(unsigned long* const index) const = 0;
+      virtual OGPS_Boolean GetPosition(OGPS_ULong * const index) const = 0;
    };
 }
 

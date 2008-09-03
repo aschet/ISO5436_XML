@@ -40,7 +40,7 @@ PointVectorProxyContext::~PointVectorProxyContext()
 {
 }
 
-unsigned long PointVectorProxyContext::GetIndex() const
+OGPS_ULong PointVectorProxyContext::GetIndex() const
 {
    return 0;
 }

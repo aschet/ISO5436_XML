@@ -184,7 +184,7 @@ namespace OpenGPS
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
-         const unsigned long listDimension,
+         const OGPS_ULong listDimension,
          const OGPS_Boolean useBinaryData = TRUE) throw(...);
 
       /*! Destructs this object. */
@@ -235,9 +235,9 @@ namespace OpenGPS
       * to the topology encoding properties of the matrix format storage.
       */
       virtual void SetMatrixPoint(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          const PointVector* const vector) throw(...);
 
       /*!
@@ -261,9 +261,9 @@ namespace OpenGPS
        * @param vector Returns the raw point value at the given u,v,w position.
        */
       virtual void GetMatrixPoint(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          PointVector& vector) throw(...);
 
       /*!
@@ -289,7 +289,7 @@ namespace OpenGPS
        * @param vector Set this point value at the given index position.
        */
       virtual void SetListPoint(
-         const unsigned long index,
+         const OGPS_ULong index,
          const PointVector& vector) throw(...);
 
       /*!
@@ -312,7 +312,7 @@ namespace OpenGPS
        * @return Returns TRUE on success, FALSE otherwise.
        */
       virtual void GetListPoint(
-         const unsigned long index,
+         const OGPS_ULong index,
          PointVector& vector) throw(...);
 
       /*!
@@ -342,9 +342,9 @@ namespace OpenGPS
        * @return Returns TRUE on success, FALSE otherwise.
        */
       virtual void GetMatrixCoord(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w,
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w,
          OGPS_Double* const x,
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
@@ -366,9 +366,9 @@ namespace OpenGPS
        * @returns Returns TRUE if the vector point data at the given position is valid, otherwise return FALSE to indicate there is no measurement data available at this particular position.
     */
       virtual OGPS_Boolean IsMatrixCoordValid(
-         unsigned long u,
-         unsigned long v,
-         unsigned long w) throw(...);
+         OGPS_ULong u,
+         OGPS_ULong v,
+         OGPS_ULong w) throw(...);
 
       /*!
        * Gets the fully transformed value of a data point vector at a given index position.
@@ -395,7 +395,7 @@ namespace OpenGPS
        * @return Returns TRUE on success, FALSE otherwise.
        */
       virtual void GetListCoord(
-         const unsigned long index,
+         const OGPS_ULong index,
          OGPS_Double* const x,
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
@@ -413,6 +413,28 @@ namespace OpenGPS
        * when point vectors are stored sequentially within a simple list.
        */
       virtual OGPS_Boolean IsMatrix() const throw(...);
+
+      /*!
+      * Gets information on the matrix dimensions of the current data structure
+      * The dimensions are written to the arguments size_u, size_v, size_w.
+      * Be sure that the current handle points to a matrix structure.
+      * @param handle Operate on this handle object.
+      * @param size_u Pointer to the return value of the matrix dimension in u-direction
+      * @param size_v Pointer to the return value of the matrix dimension in v-direction
+      * @param size_w Pointer to the return value of the matrix dimension in w-direction
+      */
+      virtual void GetMatrixDimensions(
+         OGPS_ULong * const size_u,
+         OGPS_ULong * const size_v,
+         OGPS_ULong * const size_w) const throw(...);
+
+      /*!
+      * Gets information on the list dimensions of the current data structure.
+      * Be sure that the current handle points to a list structure.
+      * @param handle Operate on this handle object.
+      * @returns The dimension of the current list structure.
+      */
+      virtual OGPS_ULong GetListDimensions() const throw(...);
 
       /*!
        * Writes any changes back to the X3P file.

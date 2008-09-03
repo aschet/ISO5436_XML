@@ -98,7 +98,7 @@ void ISO5436_2::Create(
 void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
             const Schemas::ISO5436_2::Record2Type* record2,
-            const unsigned long listDimension,
+            const OGPS_ULong listDimension,
             const OGPS_Boolean useBinaryData) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -121,9 +121,9 @@ PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator() throw(...)
 }
 
 void ISO5436_2::SetMatrixPoint(
-                                 const unsigned long u,
-                                 const unsigned long v,
-                                 const unsigned long w,
+                                 const OGPS_ULong u,
+                                 const OGPS_ULong v,
+                                 const OGPS_ULong w,
                                  const PointVector* const vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -132,9 +132,9 @@ void ISO5436_2::SetMatrixPoint(
 }
 
 void ISO5436_2::GetMatrixPoint(
-                                 const unsigned long u,
-                                 const unsigned long v,
-                                 const unsigned long w,
+                                 const OGPS_ULong u,
+                                 const OGPS_ULong v,
+                                 const OGPS_ULong w,
                                  PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -143,7 +143,7 @@ void ISO5436_2::GetMatrixPoint(
 }
 
 void ISO5436_2::SetListPoint(
-                               const unsigned long index,
+                               const OGPS_ULong index,
                                const PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -152,7 +152,7 @@ void ISO5436_2::SetListPoint(
 }
 
 void ISO5436_2::GetListPoint(
-                               const unsigned long index,
+                               const OGPS_ULong index,
                                PointVector& vector) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
@@ -161,9 +161,9 @@ void ISO5436_2::GetListPoint(
 }
 
 void ISO5436_2::GetMatrixCoord(
-                                 const unsigned long u,
-                                 const unsigned long v,
-                                 const unsigned long w,
+                                 const OGPS_ULong u,
+                                 const OGPS_ULong v,
+                                 const OGPS_ULong w,
                                  OGPS_Double* const x,
                                  OGPS_Double* const y,
                                  OGPS_Double* const z) throw(...)
@@ -174,9 +174,9 @@ void ISO5436_2::GetMatrixCoord(
 }
 
 OGPS_Boolean ISO5436_2::IsMatrixCoordValid(
-       unsigned long u,
-       unsigned long v,
-       unsigned long w) throw(...)
+       OGPS_ULong u,
+       OGPS_ULong v,
+       OGPS_ULong w) throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -184,7 +184,7 @@ OGPS_Boolean ISO5436_2::IsMatrixCoordValid(
 }
 
 void ISO5436_2::GetListCoord(
-                               const unsigned long index,
+                               const OGPS_ULong index,
                                OGPS_Double* const x,
                                OGPS_Double* const y,
                                OGPS_Double* const z) throw(...)
@@ -206,6 +206,23 @@ OGPS_Boolean ISO5436_2::IsMatrix() const throw(...)
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->IsMatrix();
+}
+
+void ISO5436_2::GetMatrixDimensions(
+         OGPS_ULong * const size_u,
+         OGPS_ULong * const size_v,
+         OGPS_ULong * const size_w) const throw(...)
+{
+   _ASSERT(m_Instance && m_Instance != this);
+
+   m_Instance->GetMatrixDimensions(size_u, size_v, size_w);
+}
+
+OGPS_ULong ISO5436_2::GetListDimensions() const throw(...)
+{
+   _ASSERT(m_Instance && m_Instance != this);
+
+   return m_Instance->GetListDimensions();
 }
 
 void ISO5436_2::Write(const int compressionLevel) throw(...)

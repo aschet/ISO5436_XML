@@ -51,7 +51,7 @@ namespace OpenGPS
       virtual ~PointVectorProxyContext();
 
       /*! Gets the current index. */
-      virtual unsigned long GetIndex() const;
+      virtual OGPS_ULong GetIndex() const;
 
       /*! Can the current index be incremented? */
       virtual OGPS_Boolean CanIncrementIndex() const;

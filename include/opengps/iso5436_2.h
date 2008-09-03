@@ -194,9 +194,9 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_SetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long u,
-      const unsigned long v,
-      const unsigned long w,
+      const OGPS_ULong u,
+      const OGPS_ULong v,
+      const OGPS_ULong w,
       const OGPS_PointVectorPtr vector);
 
    /*!
@@ -222,9 +222,9 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_GetMatrixPoint(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long u,
-      const unsigned long v,
-      const unsigned long w,
+      const OGPS_ULong u,
+      const OGPS_ULong v,
+      const OGPS_ULong w,
       OGPS_PointVectorPtr const vector);
 
    /*!
@@ -251,7 +251,7 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_SetListPoint(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long index,
+      const OGPS_ULong index,
       const OGPS_PointVectorPtr vector);
 
    /*!
@@ -275,7 +275,7 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_GetListPoint(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long index,
+      const OGPS_ULong index,
       OGPS_PointVectorPtr const vector);
 
    /*!
@@ -305,9 +305,9 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_GetMatrixCoord(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long u,
-      const unsigned long v,
-      const unsigned long w,
+      const OGPS_ULong u,
+      const OGPS_ULong v,
+      const OGPS_ULong w,
       OGPS_Double* const x,
       OGPS_Double* const y,
       OGPS_Double* const z);
@@ -328,9 +328,9 @@ extern "C" {
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrixCoordValid(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long u,
-      const unsigned long v,
-      const unsigned long w);
+      const OGPS_ULong u,
+      const OGPS_ULong v,
+      const OGPS_ULong w);
 
    /*!
     * Gets the fully transformed value of a data point vector at a given index position.
@@ -357,7 +357,7 @@ extern "C" {
     */
    _OPENGPS_EXPORT void ogps_GetListCoord(
       const OGPS_ISO5436_2Handle handle,
-      const unsigned long index,
+      const OGPS_ULong index,
       OGPS_Double* const x,
       OGPS_Double* const y,
       OGPS_Double* const z);
@@ -377,21 +377,30 @@ extern "C" {
 
    /*!
    * Gets information on the matrix dimensions of the current data structure
-   * @returns Returns TRUE if handle points to a matrix. The dimensions are
-   *          written to the arguments size_u, size_v, size_w.
-   * Returns FALSE if handle points to a list structure.
+   * The dimensions are written to the arguments size_u, size_v, size_w.
+   * Be sure that the current handle points to a matrix structure.
    * @param handle Operate on this handle object.
    * @param size_u Pointer to the return value of the matrix dimension in u-direction
    * @param size_v Pointer to the return value of the matrix dimension in v-direction
    * @param size_w Pointer to the return value of the matrix dimension in w-direction
    * Also see remarks.
    * @remarks Important: After execution check with ogps_Error() whether the request was
-   * processed correctly, otherwise futurue behavior of your program is undefined!
+   * processed correctly, otherwise future behavior of your program is undefined!
    */
-   _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
-                                                         unsigned long * const size_u,
-                                                         unsigned long * const size_v,
-                                                         unsigned long * const size_w);
+   _OPENGPS_EXPORT void ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
+                                                         OGPS_ULong * const size_u,
+                                                         OGPS_ULong * const size_v,
+                                                         OGPS_ULong * const size_w);
+
+   /*!
+   * Gets information on the list dimensions of the current data structure.
+   * Be sure that the current handle points to a list structure.
+   * @param handle Operate on this handle object.
+   * @returns The dimension of the current list structure.
+   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * processed correctly, otherwise future behavior of your program is undefined!
+   */
+   _OPENGPS_EXPORT OGPS_ULong ogps_GetListDimensions(const OGPS_ISO5436_2Handle handle);
 
 
 #ifdef __cplusplus

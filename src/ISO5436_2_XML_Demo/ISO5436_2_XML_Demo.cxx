@@ -129,9 +129,9 @@ void simpleExample(OpenGPS::String fileName)
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();
 
    /* Matrix indices. */
-   unsigned long u = 0;
-   unsigned long v = 0;
-   unsigned long w = 0;
+   OGPS_ULong u = 0;
+   OGPS_ULong v = 0;
+   OGPS_ULong w = 0;
 
    /* 2. Since the z axis is of absolute type and the
    * other two are incremental, we simply set up just z
@@ -230,11 +230,16 @@ void mediumComplexExample(OpenGPS::String fileName)
    OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, TRUE);
 
    /* Get Matrix dimensions */
-   unsigned long sx,sy,sz;
-   if (ogps_GetMatrixDimensions(handle,&sx,&sy,&sz))
-     cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
+   OGPS_ULong sx,sy,sz;
+   if (ogps_IsMatrix(handle))
+   {
+      ogps_GetMatrixDimensions(handle,&sx,&sy,&sz);
+      std::cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << std::endl;
+   }
    else
-     cout << "This is not a matrix but a list" << endl;
+   {
+      std::cout << "This is not a matrix but a list." << std::endl;
+   }
 
    /* Add data points */
    /* 1. Create point vector buffer for three points. */
@@ -308,11 +313,16 @@ void readonlyExample(OpenGPS::String fileName)
 
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
    /* Get Matrix dimensions */
-   unsigned long sx,sy,sz;
-   if (ogps_GetMatrixDimensions(handle,&sx,&sy,&sz))
-     cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
+   OGPS_ULong sx,sy,sz;
+   if (ogps_IsMatrix(handle))
+   {
+      ogps_GetMatrixDimensions(handle,&sx,&sy,&sz);
+      std::cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << std::endl;
+   }
    else
-     cout << "This is not a matrix but a list" << endl;
+   {
+      std::cout << "This is not a matrix but a list." << std::endl;
+   }
 
    /* Create point buffer. */
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();
@@ -380,9 +390,9 @@ void readonlyExampleMatrix(OpenGPS::String fileName)
    OGPS_PointIteratorPtr iterator = ogps_CreateNextPointIterator(handle);
 
    /* Matrix indices. */
-   unsigned long u = 0;
-   unsigned long v = 0;
-   unsigned long w = 0;
+   OGPS_ULong u = 0;
+   OGPS_ULong v = 0;
+   OGPS_ULong w = 0;
 
    /* Iterate point data (ignoring the fact whether they were stored
     * in xml directly or in external binary file). */
@@ -730,8 +740,8 @@ void readonlyExample4(OpenGPS::String fileName)
             OpenGPS::PointVector vector;
 
             // safe cast, since values greater than 32bit are not supported by the ISO5436-2 XML specification.
-            const unsigned long maxIndex = (unsigned long)document->Record3().ListDimension().get();
-            for(unsigned long index = 0; index < maxIndex; ++index)
+            const OGPS_ULong maxIndex = (OGPS_ULong)document->Record3().ListDimension().get();
+            for(OGPS_ULong index = 0; index < maxIndex; ++index)
             {
                iso5436_2.GetListPoint(index, vector);
 
@@ -765,7 +775,7 @@ void readonlyExample4(OpenGPS::String fileName)
 /** Performance test using Int16 z-Data.
     
 **/
-void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
+void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boolean binary)
 {
    // Timer
    clock_t start = clock();
@@ -826,7 +836,7 @@ void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Bo
    /* Create/write random number. */
    srand((unsigned)time(0));
 
-   for(unsigned long n = 0; n < dimension; ++n)
+   for(OGPS_ULong n = 0; n < dimension; ++n)
    {
       /* Generate random number */
       short random = (short)(rand() % std::numeric_limits<short>::max());
@@ -852,7 +862,7 @@ void performanceInt16(OpenGPS::String fileName, unsigned long dimension, OGPS_Bo
              << " seconds." << std::endl;
 }
 
-void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_Boolean binary)
+void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boolean binary)
 {
    // Timer
    clock_t start = clock();
@@ -913,7 +923,7 @@ void performanceDouble(OpenGPS::String fileName, unsigned long dimension, OGPS_B
    /* Create/write random number. */
    srand((unsigned)time(0));
 
-   for(unsigned long n = 0; n < dimension; ++n)
+   for(OGPS_ULong n = 0; n < dimension; ++n)
    {
       /* Generate random number */
       double random = rand() * (std::numeric_limits<double>::max() / RAND_MAX);

@@ -214,8 +214,8 @@ OGPS_Boolean ValidBuffer::HasInvalidMarks() const
 {
    if(m_ValidityBuffer)
    {
-      const unsigned long max_index = GetPointBuffer()->GetSize();
-      for(unsigned long index = 0; index < max_index; ++index)
+      const OGPS_ULong max_index = GetPointBuffer()->GetSize();
+      for(OGPS_ULong index = 0; index < max_index; ++index)
       {
          if(!IsValid(index))
          {

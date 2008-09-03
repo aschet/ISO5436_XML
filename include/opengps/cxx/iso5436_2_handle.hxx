@@ -99,7 +99,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    const OGPS_Character* const temp,
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
    const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
-   const unsigned long listDimension,
+   const OGPS_ULong listDimension,
    const OGPS_Boolean useBinaryData = TRUE) throw();
 
 /*!

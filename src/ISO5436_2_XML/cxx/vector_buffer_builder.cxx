@@ -61,7 +61,7 @@ OGPS_Boolean VectorBufferBuilder::BuildBuffer()
    return TRUE;
 }
 
-OGPS_Boolean VectorBufferBuilder::BuildX(const OGPS_DataPointType dataType, const unsigned long size)
+OGPS_Boolean VectorBufferBuilder::BuildX(const OGPS_DataPointType dataType, const OGPS_ULong size)
 {
    _ASSERT(m_Buffer);
 
@@ -70,7 +70,7 @@ OGPS_Boolean VectorBufferBuilder::BuildX(const OGPS_DataPointType dataType, cons
    return success;
 }
 
-OGPS_Boolean VectorBufferBuilder::BuildY(const OGPS_DataPointType dataType, const unsigned long size)
+OGPS_Boolean VectorBufferBuilder::BuildY(const OGPS_DataPointType dataType, const OGPS_ULong size)
 {
    _ASSERT(m_Buffer);
 
@@ -79,7 +79,7 @@ OGPS_Boolean VectorBufferBuilder::BuildY(const OGPS_DataPointType dataType, cons
    return success;
 }
 
-OGPS_Boolean VectorBufferBuilder::BuildZ(const OGPS_DataPointType dataType, const unsigned long size)
+OGPS_Boolean VectorBufferBuilder::BuildZ(const OGPS_DataPointType dataType, const OGPS_ULong size)
 {
    _ASSERT(m_Buffer);
    _ASSERT(dataType != OGPS_MissingPointType);
@@ -136,7 +136,7 @@ VectorBuffer* VectorBufferBuilder::GetBuffer()
    return m_Buffer;
 }
 
-PointBuffer* VectorBufferBuilder::CreatePointBuffer(const OGPS_DataPointType dataType, const unsigned long size, OGPS_Boolean* const retval) const
+PointBuffer* VectorBufferBuilder::CreatePointBuffer(const OGPS_DataPointType dataType, const OGPS_ULong size, OGPS_Boolean* const retval) const
 {
    _ASSERT(retval);
 

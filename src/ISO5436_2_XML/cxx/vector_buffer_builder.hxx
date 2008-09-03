@@ -73,7 +73,7 @@ namespace OpenGPS
        * no point data needs to be stored.
        * @param size The amount of points stored for the X component of all available vectors.
        */
-      virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType, const unsigned long size);
+      virtual OGPS_Boolean BuildX(const OGPS_DataPointType dataType, const OGPS_ULong size);
 
       /*!
        * Connects the appropriate OpenGPS::PointBuffer connected with the Y axis description.
@@ -82,7 +82,7 @@ namespace OpenGPS
        * no point data needs to be stored.
        * @param size The amount of points stored for the Y component of all available vectors.
        */
-      virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType, const unsigned long size);
+      virtual OGPS_Boolean BuildY(const OGPS_DataPointType dataType, const OGPS_ULong size);
 
       /*!
        * Connects the appropriate OpenGPS::PointBuffer connected with the Z axis description.
@@ -91,7 +91,7 @@ namespace OpenGPS
        * or not, a value of ::OGPS_MissingPointType is invalid here.
        * @param size The amount of points stored for the Z component of all available vectors.
        */
-      virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType, const unsigned long size);
+      virtual OGPS_Boolean BuildZ(const OGPS_DataPointType dataType, const OGPS_ULong size);
 
       /*!
        * Connects the appropriate OpenGPS::PointValidityProvider.
@@ -110,7 +110,7 @@ namespace OpenGPS
        * @param retval Gets TRUE on success, FALSE otherwise.
        * @returns Returns an instance of a buffer object or NULL if the type of point data to be handled equals ::OGPS_MissingPointType.
        */
-      PointBuffer* CreatePointBuffer(const OGPS_DataPointType dataType, const unsigned long size, OGPS_Boolean* const retval) const;
+      PointBuffer* CreatePointBuffer(const OGPS_DataPointType dataType, const OGPS_ULong size, OGPS_Boolean* const retval) const;
 
       /*! The vector buffer object to be assembled. */
       VectorBuffer* m_Buffer;

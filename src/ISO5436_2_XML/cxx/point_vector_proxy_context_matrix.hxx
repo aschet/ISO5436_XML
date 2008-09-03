@@ -60,9 +60,9 @@ namespace OpenGPS
        * @param maxW The maximum index possible in Z direction of the topology mapping.
        */
       PointVectorProxyContextMatrix(
-         const unsigned long maxU,
-         const unsigned long maxV,
-         const unsigned long maxW);
+         const OGPS_ULong maxU,
+         const OGPS_ULong maxV,
+         const OGPS_ULong maxW);
 
       /*! Destroys this instance. */
       virtual ~PointVectorProxyContextMatrix();
@@ -75,33 +75,33 @@ namespace OpenGPS
        * @returns Returns TRUE on success, FALSE otherwise.
        */
       void SetIndex(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w) throw(...);
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w) throw(...);
 
-      virtual unsigned long GetIndex() const;
+      virtual OGPS_ULong GetIndex() const;
       virtual OGPS_Boolean CanIncrementIndex() const;
       virtual OGPS_Boolean IncrementIndex();
       virtual OGPS_Boolean IsMatrix() const;
 
    private:
       /*! The current index in X direction of the topology mapping. */
-      unsigned long m_U;
+      OGPS_ULong m_U;
 
       /*! The current index in Y direction of the topology mapping. */
-      unsigned long m_V;
+      OGPS_ULong m_V;
 
       /*! The current index in Z direction of the topology mapping. */
-      unsigned long m_W;
+      OGPS_ULong m_W;
 
       /*! The maximum index possible in X direction. */
-      unsigned long m_MaxU;
+      OGPS_ULong m_MaxU;
       
       /*! The maximum index possible in Y direction. */
-      unsigned long m_MaxV;
+      OGPS_ULong m_MaxV;
 
       /*! The maximum index possible in Z direction. */
-      unsigned long m_MaxW;
+      OGPS_ULong m_MaxW;
    };
 }
 

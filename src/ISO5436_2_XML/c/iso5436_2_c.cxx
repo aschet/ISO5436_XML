@@ -110,7 +110,7 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
         const OGPS_Character* temp,
         const Schemas::ISO5436_2::Record1Type& record1,
         const Schemas::ISO5436_2::Record2Type* record2,
-        const unsigned long listDimension,
+        const OGPS_ULong listDimension,
         const OGPS_Boolean useBinaryData) throw()
 {
    _ASSERT(file);
@@ -215,9 +215,9 @@ OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle ha
 
 void ogps_SetMatrixPoint(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long u,
-        const unsigned long v,
-        const unsigned long w,
+        const OGPS_ULong u,
+        const OGPS_ULong v,
+        const OGPS_ULong w,
         const OGPS_PointVectorPtr vector) throw()
 {
    _ASSERT(handle && handle->instance);
@@ -227,9 +227,9 @@ void ogps_SetMatrixPoint(
 
 void ogps_GetMatrixPoint(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long u,
-        const unsigned long v,
-        const unsigned long w,
+        const OGPS_ULong u,
+        const OGPS_ULong v,
+        const OGPS_ULong w,
         OGPS_PointVectorPtr const vector) throw()
 {
    _ASSERT(handle && handle->instance && vector);
@@ -239,7 +239,7 @@ void ogps_GetMatrixPoint(
 
 void ogps_SetListPoint(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long index,
+        const OGPS_ULong index,
         const OGPS_PointVectorPtr vector) throw()
 {
    _ASSERT(handle && handle->instance && vector);
@@ -249,7 +249,7 @@ void ogps_SetListPoint(
 
 void ogps_GetListPoint(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long index,
+        const OGPS_ULong index,
         OGPS_PointVectorPtr const vector) throw()
 {
    _ASSERT(handle && handle->instance && vector);
@@ -259,9 +259,9 @@ void ogps_GetListPoint(
 
 void ogps_GetMatrixCoord(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long u,
-        const unsigned long v,
-        const unsigned long w,
+        const OGPS_ULong u,
+        const OGPS_ULong v,
+        const OGPS_ULong w,
         OGPS_Double* const x,
         OGPS_Double* const y,
         OGPS_Double* const z) throw()
@@ -273,9 +273,9 @@ void ogps_GetMatrixCoord(
 
 OGPS_Boolean ogps_IsMatrixCoordValid(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long u,
-        const unsigned long v,
-        const unsigned long w) throw()
+        const OGPS_ULong u,
+        const OGPS_ULong v,
+        const OGPS_ULong w) throw()
 {
    _ASSERT(handle && handle->instance);
 
@@ -284,7 +284,7 @@ OGPS_Boolean ogps_IsMatrixCoordValid(
 
 void ogps_GetListCoord(
         const OGPS_ISO5436_2Handle handle,
-        const unsigned long index,
+        const OGPS_ULong index,
         OGPS_Double* const x,
         OGPS_Double* const y,
         OGPS_Double* const z) throw()
@@ -328,39 +328,21 @@ OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle) throw()
    return FALSE;
 }
 
-OGPS_Boolean ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
-                                                         unsigned long * const size_u,
-                                                         unsigned long * const size_v,
-                                                         unsigned long * const size_w)
+void ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
+                                      OGPS_ULong * const size_u,
+                                      OGPS_ULong * const size_v,
+                                      OGPS_ULong * const size_w) throw()
 {
-  // assert Handle and instance
-  _ASSERT(handle && handle->instance);
-  // Assert result pointers
-  _ASSERT(size_u);
-  _ASSERT(size_v);
-  _ASSERT(size_w);
+   _ASSERT(handle && handle->instance);
 
-  // Pointer to the XML-Document
-  OpenGPS::Schemas::ISO5436_2::ISO5436_2Type *const doc = ogps_GetDocument(handle);
-
-  // Check if document contains a matrix
-  if (! ogps_IsMatrix(handle))
-  {
-    // This is not a matrix
-    // Set dimensions to 0
-    *size_u = 0;
-    *size_v = 0;
-    *size_w = 0;
-    // Return FALSE
-    return FALSE;
-  }
-  
-  // Extract dimensions
-  *size_u = doc->Record3().MatrixDimension()->SizeX();
-  *size_v = doc->Record3().MatrixDimension()->SizeY();
-  *size_w = doc->Record3().MatrixDimension()->SizeZ();
-
-  // This is a matrix
-  return TRUE;
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetMatrixDimensions(size_u, size_v, size_w));
 }
 
+OGPS_ULong ogps_GetListDimensions(const OGPS_ISO5436_2Handle handle) throw()
+{
+   _ASSERT(handle && handle->instance);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetListDimensions());
+
+   return 0;
+}

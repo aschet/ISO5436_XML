@@ -103,7 +103,7 @@ namespace OpenGPS
       const StringList* m_PointVectorList;
 
       /*! The index of the next point vector to be parsed. */
-      unsigned long m_Next;
+      OGPS_ULong m_Next;
 
       /*! The inner stream object which streams the current point vector. */
       PointVectorInputStringStream* m_Stream;            

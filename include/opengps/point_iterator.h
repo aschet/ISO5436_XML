@@ -168,9 +168,9 @@ extern "C" {
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetMatrixPosition(
       const OGPS_PointIteratorPtr iterator,
-      unsigned long* u,
-      unsigned long* v,
-      unsigned long* w);
+      OGPS_ULong * u,
+      OGPS_ULong * v,
+      OGPS_ULong * w);
 
    /*!
     * Gets the current position of the iterator.
@@ -183,7 +183,7 @@ extern "C" {
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_GetListPosition(
       const OGPS_PointIteratorPtr iterator,
-      unsigned long* index);
+      OGPS_ULong * index);
 
    /*!
     * Frees the point iterator instance.

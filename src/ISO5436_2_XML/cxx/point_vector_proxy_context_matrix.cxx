@@ -33,9 +33,9 @@
 #include "stdafx.hxx"
 
 PointVectorProxyContextMatrix::PointVectorProxyContextMatrix(
-         const unsigned long maxU,
-         const unsigned long maxV,
-         const unsigned long maxW)
+         const OGPS_ULong maxU,
+         const OGPS_ULong maxV,
+         const OGPS_ULong maxW)
          : PointVectorProxyContext()
 {
    m_MaxU = maxU;
@@ -52,9 +52,9 @@ PointVectorProxyContextMatrix::~PointVectorProxyContextMatrix()
 }
 
 void PointVectorProxyContextMatrix::SetIndex(
-         const unsigned long u,
-         const unsigned long v,
-         const unsigned long w) throw(...)
+         const OGPS_ULong u,
+         const OGPS_ULong v,
+         const OGPS_ULong w) throw(...)
 {
    if(u < m_MaxU && v < m_MaxV && w < m_MaxW)
    {
@@ -72,7 +72,7 @@ void PointVectorProxyContextMatrix::SetIndex(
    }
 }
 
-unsigned long PointVectorProxyContextMatrix::GetIndex() const
+OGPS_ULong PointVectorProxyContextMatrix::GetIndex() const
 {
    return m_V * m_MaxU * m_MaxW + m_U * m_MaxW + m_W;
 }

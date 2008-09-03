@@ -101,9 +101,9 @@ void ogps_SetCurrentPoint(
 
 OGPS_Boolean ogps_GetMatrixPosition(
         const OGPS_PointIteratorPtr iterator,
-        unsigned long* u,
-        unsigned long* v,
-        unsigned long* w) throw()
+        OGPS_ULong * u,
+        OGPS_ULong * v,
+        OGPS_ULong * w) throw()
 {
    _ASSERT(iterator && iterator->instance);
 
@@ -112,7 +112,7 @@ OGPS_Boolean ogps_GetMatrixPosition(
 
 OGPS_Boolean ogps_GetListPosition(
         const OGPS_PointIteratorPtr iterator,
-        unsigned long* index) throw()
+        OGPS_ULong * index) throw()
 {
    _ASSERT(iterator && iterator->instance);
 

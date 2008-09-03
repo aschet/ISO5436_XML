@@ -135,6 +135,8 @@ typedef int OGPS_Int32;
 typedef float OGPS_Float;
 /*! Represents measurement data of type double. */
 typedef double OGPS_Double;
+/*! Represents most index ranges. */
+typedef unsigned long OGPS_ULong;
 
 /*! Comprises text used to describe raised exceptions, that might be localized. */
 #define _EX_T(x) (x)

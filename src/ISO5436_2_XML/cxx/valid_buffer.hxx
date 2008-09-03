@@ -115,7 +115,7 @@ namespace OpenGPS
       OpenGPS::UnsignedBytePtr m_ValidityBuffer;
 
       /*! Size of the bit array in bytes. */
-      unsigned long m_RawSize;
+      OGPS_ULong m_RawSize;
    };
 
    /*!

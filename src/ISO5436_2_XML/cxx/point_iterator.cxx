@@ -288,7 +288,7 @@ void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const 
    }
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(unsigned long* const index) const
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(OGPS_ULong * const index) const
 {
    _ASSERT(index);
 
@@ -302,9 +302,9 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(unsigned long* c
 }
 
 OGPS_Boolean ISO5436_2Container::PointIteratorImpl::GetPosition(
-   unsigned long* const u,
-   unsigned long* const v,
-   unsigned long* const w) const
+   OGPS_ULong * const u,
+   OGPS_ULong * const v,
+   OGPS_ULong * const w) const
 {
    if(m_IsMatrix)
    {

@@ -58,7 +58,7 @@ namespace OpenGPS
        * @param maxIndex The maximum amount of indexable measurement data.
        * In other words: the number of elements contained in the list structure.
        */
-      PointVectorProxyContextList(const unsigned long maxIndex);
+      PointVectorProxyContextList(const OGPS_ULong maxIndex);
 
       /*! Destroys this instance. */       
       virtual ~PointVectorProxyContextList();
@@ -68,19 +68,19 @@ namespace OpenGPS
        * @param index The new arbitrary index.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual void SetIndex(const unsigned long index) throw(...);
+      virtual void SetIndex(const OGPS_ULong index) throw(...);
 
-      virtual unsigned long GetIndex() const;
+      virtual OGPS_ULong GetIndex() const;
       virtual OGPS_Boolean CanIncrementIndex() const;
       virtual OGPS_Boolean IncrementIndex();
       virtual OGPS_Boolean IsMatrix() const;
 
    private:
       /*! The current index. */
-      unsigned long m_Index;
+      OGPS_ULong m_Index;
 
       /*! The maximum index possible. */
-      unsigned long m_MaxIndex;
+      OGPS_ULong m_MaxIndex;
    };
 }
 
