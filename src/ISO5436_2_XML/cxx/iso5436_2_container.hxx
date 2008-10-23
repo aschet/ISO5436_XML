@@ -170,7 +170,7 @@ namespace OpenGPS
          OGPS_ULong * const size_v,
          OGPS_ULong * const size_w) const throw(...);
 
-      virtual OGPS_ULong GetListDimensions() const throw(...);
+      virtual OGPS_ULong GetListDimension() const throw(...);
 
       virtual void Write(const int compressionLevel = -1) throw(...);
 

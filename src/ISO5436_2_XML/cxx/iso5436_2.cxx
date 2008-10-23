@@ -218,11 +218,11 @@ void ISO5436_2::GetMatrixDimensions(
    m_Instance->GetMatrixDimensions(size_u, size_v, size_w);
 }
 
-OGPS_ULong ISO5436_2::GetListDimensions() const throw(...)
+OGPS_ULong ISO5436_2::GetListDimension() const throw(...)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
-   return m_Instance->GetListDimensions();
+   return m_Instance->GetListDimension();
 }
 
 void ISO5436_2::Write(const int compressionLevel) throw(...)

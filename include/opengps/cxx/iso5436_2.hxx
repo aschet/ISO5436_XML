@@ -28,6 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
 /*! @file
  * Represents the ISO5436-2 XML X3P file format container. It serves as the main
  * interface for communication with this software library. Interfaces for opening and creating
@@ -434,7 +437,7 @@ namespace OpenGPS
       * @param handle Operate on this handle object.
       * @returns The dimension of the current list structure.
       */
-      virtual OGPS_ULong GetListDimensions() const throw(...);
+      virtual OGPS_ULong GetListDimension() const throw(...);
 
       /*!
        * Writes any changes back to the X3P file.
@@ -505,3 +508,5 @@ namespace OpenGPS
 
 
 #endif /* _OPENGPS_CXX_ISO5436_2_HXX */
+
+/*! @} */

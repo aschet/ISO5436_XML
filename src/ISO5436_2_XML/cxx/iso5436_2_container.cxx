@@ -652,7 +652,7 @@ void ISO5436_2Container::GetMatrixDimensions(
    }
 }
 
-OGPS_ULong ISO5436_2Container::GetListDimensions() const throw(...)
+OGPS_ULong ISO5436_2Container::GetListDimension() const throw(...)
 {
    CheckDocumentInstance();
 
@@ -662,7 +662,7 @@ OGPS_ULong ISO5436_2Container::GetListDimensions() const throw(...)
          OGPS_ExInvalidOperation,
          _EX_T("It is assumed that point data is stored in list structure but actually it is not."),
          _EX_T("The size of the list structure wherin point data is stored cannot be obtained because this document stores point data in a matrix topology."),
-         _EX_T("ISO5436_2Container::GetListDimensions"));
+         _EX_T("ISO5436_2Container::GetListDimension"));
    }
 
    // Extract dimensions

@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @defgroup Cpp C++ Interface for X3P-library
+   @addtogroup Cpp 
+   @{ */
+
+
 /*! @file
  * An enhanced std::string string type.
  */
@@ -59,6 +64,8 @@ namespace OpenGPS
 {
    /*!
     * Stores an ::OGPS_Character sequence.
+    *
+    * @todo Add a streaming input and output operator
     */
    class _OPENGPS_EXPORT String : public
 
@@ -152,3 +159,5 @@ namespace OpenGPS
 }
 
 #endif	/* _OPENGPS_CXX_STRING_HXX */
+
+/*! @} */

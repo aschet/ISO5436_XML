@@ -93,8 +93,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publish sample files to build directory"
-				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(TargetDir)/../SampleFiles/&quot;"
+				Description="Copy RunDemo.bat to output folder"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -175,8 +175,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publish sample files to build directory"
-				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(TargetDir)/../SampleFiles/&quot;"
+				Description="Copy RunDemo.bat to output folder"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -256,8 +256,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publish example files to install directory"
-				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(SolutionDir)/../../install/SampleFiles/&quot;"
+				Description="Copy RunDemo.bat to output folder"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(SolutionDir)../../Install/bin/&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -337,8 +337,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publish example files to install directory"
-				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(SolutionDir)/../../install/SampleFiles/&quot;"
+				Description="Copy RunDemo.bat to output folder"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(SolutionDir)../../Install/bin/&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -419,8 +419,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Publish sample files to build directory"
-				CommandLine="xcopy /F/Y &quot;$(ProjectDir)/SampleFiles/*.x3p&quot; &quot;$(TargetDir)/../SampleFiles/&quot;"
+				Description="Copy RunDemo.bat to output folder"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -495,6 +495,50 @@
 		<File
 			RelativePath=".\ISO5436_2_XML_Demo.cxx"
 			>
+		</File>
+		<File
+			RelativePath=".\RunDemo.bat"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug-Shared|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release-Shared|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug Demo (Without Lib)|Win32"
+				ExcludedFromBuild="true"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

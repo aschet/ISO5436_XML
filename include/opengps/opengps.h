@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  @{
+ */
+
 /*! @file
  * Common define's and typedef's.
  * @see cxx/opengps.hxx
@@ -154,3 +158,4 @@ typedef unsigned long OGPS_ULong;
 #define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRO")
 
 #endif	/* _OPENGPS_H */
+/*! @} */

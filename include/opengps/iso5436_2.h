@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright by Johannes Herwig (NanoFocus AG) 2007                      *
- *   Copyright by Georg Wiora (NanoFocus AG) 2007                          *
+ *   Copyright by Georg Wiora (NanoFocus AG) 2007-2008                          *
  *                                                                         *
  *   This file is part of the openGPS (R)[TM] software library.            *
  *                                                                         *
@@ -27,6 +27,10 @@
  *   More information about openGPS can be found at                        *
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
+
+/*! \addtogroup C
+ *  @{
+ */
 
 /*! @file
  * The abstract data type of the ISO 5436-2 X3P file specification. It serves as the main
@@ -369,7 +373,7 @@ extern "C" {
    * @returns Returns TRUE if the underlying document structure represents
    * the matrix topology, otherwise FALSE, which corresponds to unordered list structure.
    * Also see remarks.
-   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * @remarks Important: After execution check with ogps_HasError() whether the request was
    * processed correctly, otherwise futurue behavior of your program is undefined!
    */
    _OPENGPS_EXPORT OGPS_Boolean ogps_IsMatrix(const OGPS_ISO5436_2Handle handle);
@@ -384,7 +388,7 @@ extern "C" {
    * @param size_v Pointer to the return value of the matrix dimension in v-direction
    * @param size_w Pointer to the return value of the matrix dimension in w-direction
    * Also see remarks.
-   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * @remarks Important: After execution check with ogps_HasError() whether the request was
    * processed correctly, otherwise future behavior of your program is undefined!
    */
    _OPENGPS_EXPORT void ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
@@ -393,14 +397,14 @@ extern "C" {
                                                          OGPS_ULong * const size_w);
 
    /*!
-   * Gets information on the list dimensions of the current data structure.
+   * Gets information on the list dimension of the current data structure.
    * Be sure that the current handle points to a list structure.
    * @param handle Operate on this handle object.
    * @returns The dimension of the current list structure.
-   * @remarks Important: After execution check with ogps_Error() whether the request was
+   * @remarks Important: After execution check with ogps_HasError() whether the request was
    * processed correctly, otherwise future behavior of your program is undefined!
    */
-   _OPENGPS_EXPORT OGPS_ULong ogps_GetListDimensions(const OGPS_ISO5436_2Handle handle);
+   _OPENGPS_EXPORT OGPS_ULong ogps_GetListDimension(const OGPS_ISO5436_2Handle handle);
 
 
 #ifdef __cplusplus
@@ -408,3 +412,4 @@ extern "C" {
 #endif
 
 #endif /* _OPENGPS_ISO5436_2_H */
+/*! @} */

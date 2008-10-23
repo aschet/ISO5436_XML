@@ -28,12 +28,28 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
+/*! @defgroup C Ansi-C Interface for X3P library
+*/
+
+/*! \addtogroup C
+ *  Ansi-C Interface for X3P library
+ *  @{
+ */
+
+
 /*! @file
  * Enhancing C++ part of the C interface of the abstract data type of the
  * ISO 5436-2 X3P file format. Since the underlying ISO 5436-2 XML document
  * can be created using a C++ interface only, the C and C++ part of the
  * abstract data type coded mainly in C are split up into two files. @see iso5436_2.h
+ *
  */
+
+
+
 
 #ifndef _OPENGPS_CXX_ISO5436_2_HANDLE_HXX
 #define _OPENGPS_CXX_ISO5436_2_HANDLE_HXX
@@ -70,6 +86,7 @@ namespace OpenGPS
  * @param matrixDimension Specifies the topology for which point measurement data will be processed.
  * @param useBinaryData Defines whether point measurement data will be directly stored into the xml document as tag elements or if it is separately stored in a binary file within the X3P container.
  * @returns Returns the file handle or NULL on failure.
+ *
  */
 _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    const OGPS_Character* const file,
@@ -107,7 +124,8 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
  *
  * @param handle Handle object to operate on.
  * @returns Returns ISO5436_2 XML document handle or NULL on failure.
- */
+  */
 _OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw();
 
 #endif /* _OPENGPS_CXX_ISO5436_2_HANDLE_HXX */
+/*! @} */

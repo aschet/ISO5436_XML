@@ -56,6 +56,45 @@
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
 
+/*!
+  @brief Prints list or matrix dimension of a given x3p handle to cout.
+  
+  @param handle;
+
+  @return TRUE on success, FALSE if handle is neither a list nor a matrix.
+*/
+OGPS_Boolean 
+PrintDimensions(const OGPS_ISO5436_2Handle handle)
+{
+  _ASSERT(handle);
+
+  // Check for Matrix or List
+  bool ismatrix=ogps_IsMatrix(handle);
+  if (ogps_HasError())
+  {
+    cerr << "Error checking matrix type!" << endl;
+    return FALSE;
+  }
+
+  // Check for Matrix or List
+  if (ismatrix)
+  {
+    /* Get Matrix dimensions */
+    unsigned long sx,sy,sz;
+    ogps_GetMatrixDimensions(handle,&sx,&sy,&sz);
+    cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
+    return TRUE;
+  }
+  else 
+  {
+    unsigned long sx = ogps_GetListDimension(handle);
+    cout << "This is a list with " << sx << " elements." << endl;
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
  /*!
     * @brief Creates and writes a simple ISO5436-2 XML X3P file
     * with two incremental and one absolute axis (the z-axis).
@@ -170,6 +209,9 @@ void simpleExample(OpenGPS::String fileName)
 
    ogps_AppendVendorSpecific(handle, _T("http://www.example.com/format/version1"), vname.c_str());
 
+   /* Print dimensions */
+   PrintDimensions(handle);
+
    /* Finally: write container to disk. */
    ogps_WriteISO5436_2(handle);
    ogps_CloseISO5436_2(&handle);
@@ -229,17 +271,8 @@ void mediumComplexExample(OpenGPS::String fileName)
    /* Create ISO5436_2 container */
    OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, TRUE);
 
-   /* Get Matrix dimensions */
-   OGPS_ULong sx,sy,sz;
-   if (ogps_IsMatrix(handle))
-   {
-      ogps_GetMatrixDimensions(handle,&sx,&sy,&sz);
-      std::cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << std::endl;
-   }
-   else
-   {
-      std::cout << "This is not a matrix but a list." << std::endl;
-   }
+   /* Print dimensions */
+   PrintDimensions(handle);
 
    /* Add data points */
    /* 1. Create point vector buffer for three points. */
@@ -288,6 +321,9 @@ void mediumComplexExample(OpenGPS::String fileName)
    /* Free buffer */
    ogps_FreePointVector(&vector);
 
+   /* Print dimensions */
+   PrintDimensions(handle);
+
    /* Finally: write container to disk. */
    ogps_WriteISO5436_2(handle);
    ogps_CloseISO5436_2(&handle);
@@ -312,17 +348,8 @@ void readonlyExample(OpenGPS::String fileName)
       return;
 
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
-   /* Get Matrix dimensions */
-   OGPS_ULong sx,sy,sz;
-   if (ogps_IsMatrix(handle))
-   {
-      ogps_GetMatrixDimensions(handle,&sx,&sy,&sz);
-      std::cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << std::endl;
-   }
-   else
-   {
-      std::cout << "This is not a matrix but a list." << std::endl;
-   }
+   /* Print dimensions */
+   PrintDimensions(handle);
 
    /* Create point buffer. */
    OGPS_PointVectorPtr vector = ogps_CreatePointVector();
@@ -378,8 +405,19 @@ void readonlyExampleMatrix(OpenGPS::String fileName)
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
 
+   // Check for error
+   if (ogps_HasError())
+   {
+     // Print full description
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     return;
+   }
+
    if(!handle)
       return;
+
+   /* Print dimensions */
+   PrintDimensions(handle);
 
    /* Assume matrix format. */
 
@@ -447,6 +485,14 @@ void readonlyExample2(OpenGPS::String fileName)
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
 
+   // Check for error
+   if (ogps_HasError())
+   {
+     // Print full description
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     return;
+   }
+
    if(!handle)
       return;
 
@@ -455,6 +501,9 @@ void readonlyExample2(OpenGPS::String fileName)
 
    /* Z axis data type must be present (even if it is an incremental axis). */
    _ASSERT(document->Record1().Axes().CZ().DataType().present());
+
+   /* Print dimensions */
+   PrintDimensions(handle);
 
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
@@ -573,14 +622,31 @@ void readonlyExample3(OpenGPS::String fileName)
 
    /* Open the file, hopefully everything went well... */
    OpenGPS::ISO5436_2 iso5436_2(fileName);
-   iso5436_2.Open(TRUE);
+   // Check for error opening
+   if(ogps_HasError())
+   {
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     return;
+   }
+
+   // Try to open in read only mode
+   try
+   {
+     iso5436_2.Open(TRUE);
+   }
+   catch(OpenGPS::Exception &e)
+   {
+     OpenGPS::String err=e.details();
+     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl
+               << err.ToChar() << endl;
+     return;
+   }
 
    /* Obtain handle to xml document. */
    const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const document = iso5436_2.GetDocument();
 
    if(document)
    {
-
       /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
       /* Use iterator to create points in this example. */
@@ -849,6 +915,9 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    /* Free buffer */
    ogps_FreePointVector(&vector);
 
+   // Print dimensions
+   PrintDimensions(handle);
+
    /* Finally: write container to disk. */
    ogps_WriteISO5436_2(handle);
    ogps_CloseISO5436_2(&handle);
@@ -936,6 +1005,9 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    /* Free buffer */
    ogps_FreePointVector(&vector);
 
+   // Print dimensions
+   PrintDimensions(handle);
+
    /* Finally: write container to disk. */
    ogps_WriteISO5436_2(handle);
    ogps_CloseISO5436_2(&handle);
@@ -962,6 +1034,9 @@ void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, con
 
    if(!src_handle)
       return;
+
+   // Print dimensions
+   PrintDimensions(src_handle);
 
    /* Obtain handle to xml document for reading. */
    const ISO5436_2Type * const document = ogps_GetDocument(src_handle);

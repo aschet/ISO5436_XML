@@ -28,6 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
 /*! @file
  * Very fundamental representation of three-dimensional point measurement data.
  * A point vector holds all three components of 3D point data stored in an ISO 5436-2 X3P file
@@ -113,3 +116,5 @@ namespace OpenGPS
 }
 
 #endif /* _OPENGPS_CXX_POINT_VECTOR_BASE_HXX */
+
+/*! @} */

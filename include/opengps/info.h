@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  @{
+ */
+
 /*! @file
  * Copyright and license information.
  */
@@ -120,3 +124,4 @@ extern "C"
 #endif /* __cplusplus */
 
 #endif	/* _OPENGPS_INFO_H */
+/*! @} */

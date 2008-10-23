@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  @{
+ */
+
 /*! @file
  * The abstract data type of the typesafe representation of a single data point value.
  * The interface supports getting and setting an encapsulated point value of a predetermined data type.
@@ -180,3 +184,4 @@ extern "C" {
 #endif
 
 #endif /* _OPENGPS_DATA_POINT_H */
+/*! @} */

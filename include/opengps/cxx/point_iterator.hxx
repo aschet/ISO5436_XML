@@ -28,6 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
 /*! @file
  * Interface to a point iterator used for direct manipulation
  * of point data stored in an ISO 5436-2 X3P file.
@@ -175,3 +178,5 @@ namespace OpenGPS
 }
 
 #endif /* _OPENGPS_CXX_POINT_ITERATOR_HXX */
+
+/*! @} */

@@ -333,16 +333,16 @@ void ogps_GetMatrixDimensions(const OGPS_ISO5436_2Handle handle,
                                       OGPS_ULong * const size_v,
                                       OGPS_ULong * const size_w) throw()
 {
-   _ASSERT(handle && handle->instance);
+  _ASSERT(handle && handle->instance);
 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(handle->instance->GetMatrixDimensions(size_u, size_v, size_w));
 }
 
-OGPS_ULong ogps_GetListDimensions(const OGPS_ISO5436_2Handle handle) throw()
-{
+OGPS_ULong ogps_GetListDimension(const OGPS_ISO5436_2Handle handle) throw()
+  {
    _ASSERT(handle && handle->instance);
-
-   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetListDimensions());
+  
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(return handle->instance->GetListDimension());
 
    return 0;
 }

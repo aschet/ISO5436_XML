@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  @{
+ */
+
 /*! @file
  * An enumeration type which may describe the data type of
  * a current data point value. Used by various components throughout
@@ -62,3 +66,4 @@ extern "C" {
 #endif
 
 #endif /* _OPENGPS_DATA_POINT_TYPE_H */
+/*! @} */

@@ -28,6 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
 /*! @file
  * Common define's and typedef's.
  * This file is an enhanced version of opengps.h for C++ maintance.
@@ -70,3 +73,5 @@ namespace OpenGPS
 } /* namespace OpenGPS */
 
 #endif	/* _OPENGPS_CXX_OPENGPS_HXX */
+
+/*! @} */

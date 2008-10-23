@@ -28,6 +28,9 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! @addtogroup Cpp 
+   @{ */
+
 /*! @file
  * Copyright and license information.
  */
@@ -107,3 +110,5 @@ namespace OpenGPS
 }
 
 #endif	/* _OPENGPS_CXX_INFO_HXX */
+
+/*! @} */

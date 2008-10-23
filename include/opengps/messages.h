@@ -28,6 +28,10 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  @{
+ */
+
 /*! @file
  * Global handling of error and warning messages. This wrappes C++ exception
  * handling to be usable in the C interface. See OpenGPS::Exception for
@@ -107,3 +111,4 @@ extern "C"
 #endif /* __cplusplus */
 
 #endif	/* _OPENGPS_MESSAGES_H */
+/*! @} */

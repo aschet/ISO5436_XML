@@ -28,6 +28,11 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+/*! \addtogroup C
+ *  Ansi-C Interface for X3P library
+ *  @{
+ */
+
 /*! @file
  * Handle mechanism which makes a C++ OpenGPS::ISO5436_2 object accessible
  * through the corresponding C interface of an ISO5436-2 X3P file container.
@@ -54,3 +59,5 @@ typedef struct _OGPS_ISO5436_2_HANDLE
  * of a data point handle used within the C interface. */
 
 #endif /* _OPENGPS_C_ISO5436_2_HXX */
+
+/*! @} */
