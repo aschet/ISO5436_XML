@@ -155,7 +155,7 @@ typedef unsigned long OGPS_ULong;
 
 /*! Gives the name of the profile feature type in an ISO 5436-2 document.
     The xerces tool does not generate an appropriate enum value here. */
-#define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRO")
+#define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRF")
 
 #endif	/* _OPENGPS_H */
 /*! @} */
