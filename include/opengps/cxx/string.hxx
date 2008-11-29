@@ -65,7 +65,7 @@ namespace OpenGPS
    /*!
     * Stores an ::OGPS_Character sequence.
     *
-    * @todo Add a streaming input and output operator
+    * @todo Add a streaming input operator
     */
    class _OPENGPS_EXPORT String : public
 
@@ -157,6 +157,58 @@ namespace OpenGPS
    };
 
 }
+
+
+#ifdef _UNICODE
+/*!
+ * Streams unicode strings to ansi character streams.
+ *
+ * Takes care of the appropriate conversion, @see OpenGPS::String::ToChar.
+ */
+inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const std::basic_string<wchar_t>& text)
+{
+   OpenGPS::String buffer(text);
+   return os << buffer.ToChar();
+}
+
+/*!
+ * Streams unicode strings to ansi character streams.
+ *
+ * Takes care of the appropriate conversion, @see OpenGPS::String::ToChar.
+ */
+inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const OpenGPS::String& text)
+{
+   OpenGPS::String buffer(text);
+   return os << buffer.ToChar();
+}
+
+/*!
+ * Streams unicode strings to ansi character streams.
+ *
+ * Takes care of the appropriate conversion, @see OpenGPS::String::ToChar.
+ */
+inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, OpenGPS::String& text)
+{
+   return os << text.ToChar();
+}
+
+/*!
+ * Streams OpenGPS::String type.
+ */
+inline std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& os, const OpenGPS::String& text)
+{
+   return os << text.c_str();
+}
+#else
+/*!
+ * Streams OpenGPS::String type.
+ */
+inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const OpenGPS::String& text)
+{
+   return os << text.c_str();
+}
+#endif /* _UNICODE */
+
 
 #endif	/* _OPENGPS_CXX_STRING_HXX */
 

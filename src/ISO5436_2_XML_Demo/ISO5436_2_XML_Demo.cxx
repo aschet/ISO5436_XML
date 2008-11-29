@@ -156,6 +156,7 @@ void simpleExample(OpenGPS::String fileName)
    Record2Type record2(date, instrument, calibrationDate, probingSystem);
    record2.Comment(comment);
 
+
    /* Create MATRIX */
    MatrixDimensionType matrix(1, 1, 2);
 
@@ -340,7 +341,7 @@ void readonlyExample(OpenGPS::String fileName)
    if (ogps_HasError())
    {
      // Print full description
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl;
      return;
    }
 
@@ -409,7 +410,7 @@ void readonlyExampleMatrix(OpenGPS::String fileName)
    if (ogps_HasError())
    {
      // Print full description
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl;
      return;
    }
 
@@ -489,7 +490,7 @@ void readonlyExample2(OpenGPS::String fileName)
    if (ogps_HasError())
    {
      // Print full description
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl;
      return;
    }
 
@@ -625,7 +626,7 @@ void readonlyExample3(OpenGPS::String fileName)
    // Check for error opening
    if(ogps_HasError())
    {
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl;
      return;
    }
 
@@ -637,8 +638,8 @@ void readonlyExample3(OpenGPS::String fileName)
    catch(OpenGPS::Exception &e)
    {
      OpenGPS::String err=e.details();
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl
-               << err.ToChar() << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl
+               << err << endl;
      return;
    }
 
@@ -775,7 +776,7 @@ void readonlyExample4(OpenGPS::String fileName)
    // Check for error opening
    if(ogps_HasError())
    {
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl;
      return;
    }
 
@@ -787,8 +788,8 @@ void readonlyExample4(OpenGPS::String fileName)
    catch(OpenGPS::Exception &e)
    {
      OpenGPS::String err=e.details();
-     std::cerr << "Error opening file \"" << fileName.ToChar() << "\"" << endl
-               << err.ToChar() << endl;
+     std::cerr << "Error opening file \"" << fileName << "\"" << endl
+               << err << endl;
      return;
    }
    
@@ -1121,9 +1122,9 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
    OpenGPS::Info::GetVersion(&LibVersion);
    OpenGPS::Info::GetAbout(&LibAbout);
 
-   std::cout << "This programm uses the Library \"" << LibName.ToChar() 
-             << "\" Version " << LibVersion.ToChar() << endl
-             << LibAbout.ToChar() << endl;
+   std::cout << "This programm uses the Library \"" << LibName 
+             << "\" Version " << LibVersion << endl
+             << LibAbout << endl;
    OpenGPS::Info::PrintVersion();
    OpenGPS::Info::PrintCopyright();
    OpenGPS::Info::PrintLicense();
