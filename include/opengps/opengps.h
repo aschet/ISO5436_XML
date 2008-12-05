@@ -40,6 +40,8 @@
 #ifndef _OPENGPS_H
 #define _OPENGPS_H
 
+#include "cxx/version.h"
+
 #ifdef _WIN32
 #  ifdef BUILD_ISO5436_2_XML_DLL
 /*!
@@ -156,6 +158,26 @@ typedef unsigned long OGPS_ULong;
 /*! Gives the name of the profile feature type in an ISO 5436-2 document.
     The xerces tool does not generate an appropriate enum value here. */
 #define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRF")
+
+/// Build a version string from version numbers
+// This macro is necessary to make a number to string conversion
+#ifdef _UNICODE
+#  define _OPENGPS_MSTR(x) L#x
+#else
+#  define _OPENGPS_MSTR(x) #x
+#endif /* _UNICODE */
+
+#define _OPENGPS_VERSIONSTRING_M(ver,mver,build,rev) _OPENGPS_MSTR(ver) _T(".") _OPENGPS_MSTR(mver) _T(".") _OPENGPS_MSTR(build) _T(".") _T(rev)
+
+/// Build a version string
+#define _OPENGPS_VERSIONSTRING _OPENGPS_VERSIONSTRING_M(_OPENGPS_VERSION, _OPENGPS_MINVERSION, _OPENGPS_BUILD, _OPENGPS_REVISION)
+
+/// Define ID string with programm name and Version
+#define _OPENGPS_ID _OPENGPS_NAME _T(" (V") _OPENGPS_VERSIONSTRING _T(")")
+
+#define _OPENGPS_DELETE(x) if((x) != NULL) { delete (x); (x) = NULL; }
+#define _OPENGPS_DELETE_ARRAY(x) if((x) != NULL) { delete[] (x); (x) = NULL; }
+#define _OPENGPS_FREE(x) if((x) != NULL) { free(x); (x) = NULL; }
 
 #endif	/* _OPENGPS_H */
 /*! @} */

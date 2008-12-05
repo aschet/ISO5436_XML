@@ -486,6 +486,61 @@
 				<File
 					RelativePath=".\cxx\Version.h"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Publish version include file."
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							AdditionalDependencies="Version.in"
+							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Publish version include file."
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							AdditionalDependencies="Version.in"
+							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug-Shared|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Publish version include file."
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							AdditionalDependencies="Version.in"
+							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release-Shared|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Publish version include file."
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							AdditionalDependencies="Version.in"
+							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Demo (Without Lib)|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Publish version include file."
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							AdditionalDependencies="Version.in"
+							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\cxx\Version.in"
