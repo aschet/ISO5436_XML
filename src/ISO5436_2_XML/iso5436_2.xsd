@@ -145,6 +145,7 @@
          <xsd:element name="ProbingSystem" type="ProbingSystemType" maxOccurs="1" minOccurs="1">
             <xsd:annotation>
                <xsd:documentation>
+                 Type of probing system: This can be contacting, non contacting or software
                </xsd:documentation>
             </xsd:annotation>
          </xsd:element>
@@ -375,7 +376,7 @@
          <xsd:element name="Type" maxOccurs="1" minOccurs="1">
             <xsd:annotation>
                <xsd:documentation>
-    					one of "NonContacting" or "Contacting"
+    					one of "NonContacting" or "Contacting" or "Software"
     				</xsd:documentation>
             </xsd:annotation>
             <xsd:simpleType>
@@ -383,6 +384,8 @@
                   <xsd:enumeration value="Contacting">
                   </xsd:enumeration>
                   <xsd:enumeration value="NonContacting">
+                  </xsd:enumeration>
+                  <xsd:enumeration value="Software">
                   </xsd:enumeration>
                </xsd:restriction>
             </xsd:simpleType>
