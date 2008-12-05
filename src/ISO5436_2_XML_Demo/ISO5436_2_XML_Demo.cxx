@@ -95,6 +95,102 @@ PrintDimensions(const OGPS_ISO5436_2Handle handle)
   return FALSE;
 }
 
+
+
+/*!
+  @brief Prints all meta data available in the current document.
+  
+  @param Pointer to xml document tree
+
+  @return TRUE on success, FALSE if no meta data available.
+*/
+OGPS_Boolean 
+PrintMetaData(const ISO5436_2Type* const document)
+{
+  _ASSERT(document);
+
+  // Get a reference to optional record 2
+  const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_optional &r2opt = document->Record2();
+
+  // Check for presence of meta data
+  if (r2opt.present() == FALSE)
+  {
+    cout << "Warning: This document does not contain a meta data record (Record2)!" << endl;
+    return FALSE;
+  }
+
+  cout << std::endl << "Meta data in record2:" << std::endl;
+
+  // Get the Record2
+  const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_type &r2 = r2opt.get();
+
+  // Data set creation date
+  cout << "Data set creation date: " << r2.Date() << endl;
+  // Check for data set creator
+  if (r2.Creator().present())
+  {
+    if (r2.Creator().get().length() < 1)
+      cout << "Warning: Data set creator name is present, but empty!" << endl;
+    else
+      cout << "Data set has been created by \"" << r2.Creator().get() << '"' << std::endl;
+  }
+  else
+    cout << "Data set was created anonymously." << endl;
+
+  // Measuring instrument
+  cout << "Measuring Instrument Description: " << endl
+    << "  Manufacturer: \"" << r2.Instrument().Manufacturer() << '"' << endl
+    << "         Model: \"" << r2.Instrument().Model() << '"' << endl
+    << " Serial Number: \"" << r2.Instrument().Serial() << '"' << endl
+    << "       Version: \"" << r2.Instrument().Version() << '"' << endl;
+
+  // Calibration
+  cout << "Instrument was calibrated: \"" << r2.CalibrationDate() << '"' << endl;
+  // Probing system type
+  cout << "Probing system type: \"" << r2.ProbingSystem().Type() << '"' << endl
+    << "Probing system identification: \"" << r2.ProbingSystem().Identification() << '"' << endl;
+
+  // Extract and print information
+  if (r2.Comment().present())
+  {
+    if (r2.Comment().get().length() < 1)
+      cout << "Warning: File comment field is present, but empty!" << endl;
+    else
+      cout << "File Comment: \"" << r2.Comment().get() << '"' << endl;
+  }
+  else
+    cout << "Warning: File contains no Comment field!" << endl;
+
+  return TRUE;
+}
+
+/*!
+  @brief Prints all meta data available in the current document.
+  
+  @param handle to current X3P document
+
+  @return TRUE on success, FALSE if no meta data available.
+*/
+OGPS_Boolean 
+PrintMetaData(const OGPS_ISO5436_2Handle handle)
+{
+  _ASSERT(handle);
+
+  // Get document 
+  const ISO5436_2Type* const document = ogps_GetDocument(handle);
+  _ASSERT(document);
+
+  if (ogps_HasError())
+  {
+    cerr << "Error accessing XML document while printing meta data!" << endl;
+    return FALSE;
+  }
+
+  // Call Print function for c++ document
+  return PrintMetaData(document);
+}
+
+
  /*!
     * @brief Creates and writes a simple ISO5436-2 XML X3P file
     * with two incremental and one absolute axis (the z-axis).
@@ -140,15 +236,15 @@ void simpleExample(OpenGPS::String fileName)
    Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
-   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
-   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
-   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
+   Record2Type::Instrument_type::Serial_type serial(_T("not available"));
+   Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
 
-   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
-   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
    Record2Type::ProbingSystem_type probingSystem(type, id);
 
    Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
@@ -250,15 +346,15 @@ void mediumComplexExample(OpenGPS::String fileName)
    Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
-   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
-   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
-   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
+   Record2Type::Instrument_type::Serial_type serial(_T("not available"));
+   Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
 
-   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
-   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
    Record2Type::ProbingSystem_type probingSystem(type, id);
 
    Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
@@ -348,6 +444,9 @@ void readonlyExample(OpenGPS::String fileName)
    if(!handle)
       return;
 
+   /* Print meta data */
+   PrintMetaData(handle);
+
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
    /* Print dimensions */
    PrintDimensions(handle);
@@ -417,6 +516,8 @@ void readonlyExampleMatrix(OpenGPS::String fileName)
    if(!handle)
       return;
 
+   /* Print meta data */
+   PrintMetaData(handle);
    /* Print dimensions */
    PrintDimensions(handle);
 
@@ -503,6 +604,8 @@ void readonlyExample2(OpenGPS::String fileName)
    /* Z axis data type must be present (even if it is an incremental axis). */
    _ASSERT(document->Record1().Axes().CZ().DataType().present());
 
+   /* Print meta data */
+   PrintMetaData(handle);
    /* Print dimensions */
    PrintDimensions(handle);
 
@@ -648,6 +751,8 @@ void readonlyExample3(OpenGPS::String fileName)
 
    if(document)
    {
+     /* Print meta data */
+     PrintMetaData(document);
       /* Is data list? / Is matrix? - don't care; we use point iterator. */
 
       /* Use iterator to create points in this example. */
@@ -799,9 +904,12 @@ void readonlyExample4(OpenGPS::String fileName)
       const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const document = iso5436_2.GetDocument();
       if(document)
       {
-         /* Is data list? / Is matrix? */
-         if(document->Record3().ListDimension().present())
-         {
+        /* Print meta data */
+        PrintMetaData(document);
+
+        /* Is data list? / Is matrix? */
+        if(document->Record3().ListDimension().present())
+        {
             _ASSERT(!document->Record3().MatrixDimension().present());
 
             OpenGPS::PointVector vector;
@@ -857,17 +965,25 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CX_type xaxis(xaxisType);
    xaxis.DataType(xdataType);
+   /* A profile is still 3D. so increment and offset of x and y have a meaning, but both are incremented from the same index! */
+   // This example is a profile along x-axis
+   xaxis.Increment(10E-6);
+   xaxis.Offset(0.0);
 
    Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CY_type yaxis(yaxisType);
    yaxis.DataType(ydataType);
+   // Increment has to be zero to orient profile along x-axis.
+   yaxis.Increment(0);
+   yaxis.Offset(0.0);
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CZ_type zaxis(zaxisType);
    zaxis.DataType(zdataType);
-
+   zaxis.Increment(1e-6);
+   zaxis.Offset(-32768e-6);
    Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
 
    Record1Type record1(revision, featureType, axis);
@@ -876,18 +992,18 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
-   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
-   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
-   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
+   Record2Type::Instrument_type::Serial_type serial(_T("not available"));
+   Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
 
-   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
-   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
    Record2Type::ProbingSystem_type probingSystem(type, id);
 
-   Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
+   Record2Type::Comment_type comment(_T("This file is a line profile written as performance test in int16 precision."));
 
    Record2Type record2(date, instrument, calibrationDate, probingSystem);
    record2.Comment(comment);
@@ -916,6 +1032,8 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    /* Free buffer */
    ogps_FreePointVector(&vector);
 
+   /* Print meta data */
+   PrintMetaData(handle);
    // Print dimensions
    PrintDimensions(handle);
 
@@ -947,11 +1065,18 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CX_type xaxis(xaxisType);
    xaxis.DataType(xdataType);
+   /* A profile is still 3D. so increment and offset of x and y have a meaning, but both are incremented from the same index! */
+   // This example is a profile along x-axis
+   xaxis.Increment(10E-6);
+   xaxis.Offset(0.0);
 
    Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CY_type yaxis(yaxisType);
    yaxis.DataType(ydataType);
+   // Increment has to be zero to orient profile along x-axis.
+   yaxis.Increment(0);
+   yaxis.Offset(0.0);
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D); /* double */
@@ -966,18 +1091,18 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
-   Record2Type::Instrument_type::Model_type model(_T("µSurf X"));
-   Record2Type::Instrument_type::Serial_type serial(_T("12345abc"));
-   Record2Type::Instrument_type::Version_type version(_T("Software V1.0, Hardware V1.0"));
+   Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
+   Record2Type::Instrument_type::Serial_type serial(_T("not available"));
+   Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
 
-   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::NonContacting);
-   Record2Type::ProbingSystem_type::Identification_type id(_T("LensName,Setupname,..."));
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
    Record2Type::ProbingSystem_type probingSystem(type, id);
 
-   Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
+   Record2Type::Comment_type comment(_T("This file is a line profile written as performance test in double precision."));
 
    Record2Type record2(date, instrument, calibrationDate, probingSystem);
    record2.Comment(comment);
@@ -996,7 +1121,7 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    for(OGPS_ULong n = 0; n < dimension; ++n)
    {
       /* Generate random number */
-      double random = rand() * (std::numeric_limits<double>::max() / RAND_MAX);
+      double random = rand() * (1.0 / (double)RAND_MAX);
       ogps_SetDoubleZ(vector, random);
 
       /* Write into document */
@@ -1006,6 +1131,8 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    /* Free buffer */
    ogps_FreePointVector(&vector);
 
+   /* Print meta data */
+   PrintMetaData(handle);
    // Print dimensions
    PrintDimensions(handle);
 
@@ -1019,7 +1146,7 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    std::cout << std::endl << "Writing an X3P file containing " << dimension
              << " points in double " << (binary ? "binary" : "xml")
              << " format took " << (((double)(stop - start))/CLOCKS_PER_SEC)
-             << " seconds." << std::endl;
+             << " seconds." << std::endl << std::endl;
 }
 
 /* Converts a given X3P file either to binary or text format (if dstFormatIsBinary parameter equals FALSE). */
@@ -1036,6 +1163,8 @@ void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, con
    if(!src_handle)
       return;
 
+   /* Print meta data */
+   PrintMetaData(src_handle);
    // Print dimensions
    PrintDimensions(src_handle);
 
@@ -1104,65 +1233,67 @@ void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, con
 
 int _cdecl _tmain(int argc, _TCHAR* argv[])
 {
-   if(argc != 2)
-   {
-      std::cout << "Usage: ISO5436_2_XML_demo <full path to sample files>/" << std::endl << std::endl <<
-         "Please specify the full path to the directory where the *.x3p sample files reside. The path should also contain the terminating directory separator. Ensure that you have write access to that path." << std::endl << std::endl <<
-         "This simple demo program parses the sample files and prints its contents onto the console. Do not change the names of the sample files, since these are hard coded herein. The purpose of the demo is to get you familiar with the openGPS(R) API." << std::endl;
-      return 1;
-   }
+  // Number of points to generate for performance counter
+  const unsigned int performanceCounter=1000;
+  if(argc != 2)
+  {
+    std::cout << "Usage: ISO5436_2_XML_demo <full path to sample files>/" << std::endl << std::endl <<
+       "Please specify the full path to the directory where the *.x3p sample files reside. The path should also contain the terminating directory separator. Ensure that you have write access to that path." << std::endl << std::endl <<
+       "This simple demo program parses the sample files and prints its contents onto the console. Do not change the names of the sample files, since these are hard coded herein. The purpose of the demo is to get you familiar with the openGPS(R) API." << std::endl;
+    return 1;
+  }
 
-   // Print version and copyright information
-   OpenGPS::String LibName;
-   OpenGPS::String LibVersion;
-   OpenGPS::String LibAbout;
+  // Print version and copyright information
+  OpenGPS::String LibName;
+  OpenGPS::String LibVersion;
+  OpenGPS::String LibAbout;
 
-   // get Info strings from Library
-   OpenGPS::Info::GetName(&LibName);
-   OpenGPS::Info::GetVersion(&LibVersion);
-   OpenGPS::Info::GetAbout(&LibAbout);
+  // get Info strings from Library
+  OpenGPS::Info::GetName(&LibName);
+  OpenGPS::Info::GetVersion(&LibVersion);
+  OpenGPS::Info::GetAbout(&LibAbout);
 
-   std::cout << "This programm uses the Library \"" << LibName 
-             << "\" Version " << LibVersion << endl
-             << LibAbout << endl;
-   OpenGPS::Info::PrintVersion();
-   OpenGPS::Info::PrintCopyright();
-   OpenGPS::Info::PrintLicense();
+  std::cout << "This programm uses the Library \"" << LibName 
+            << "\" Version " << LibVersion << endl
+            << LibAbout << endl;
+  OpenGPS::Info::PrintVersion();
+  OpenGPS::Info::PrintCopyright();
+  OpenGPS::Info::PrintLicense();
 
-   std::wstring path = argv[1];
-   std::wstring tmp;
-   
-   tmp = path; tmp += _T("ISO5436-sample1.x3p");
-   readonlyExample(tmp);
+  std::wstring path = argv[1];
+  std::wstring tmp;
 
-   tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
-   readonlyExample2(tmp);
+  tmp = path; tmp += _T("ISO5436-sample1.x3p");
+  readonlyExample(tmp);
 
-   tmp = path; tmp += _T("ISO5436-sample3.x3p");
-   readonlyExample3(tmp);
+  tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
+  readonlyExample2(tmp);
 
-   tmp = path; tmp += _T("ISO5436-sample2.x3p");
-   readonlyExample4(tmp);
+  tmp = path; tmp += _T("ISO5436-sample3.x3p");
+  readonlyExample3(tmp);
 
-   tmp = path; tmp += _T("simple.x3p");
-   simpleExample(tmp);
+  tmp = path; tmp += _T("ISO5436-sample2.x3p");
+  readonlyExample4(tmp);
 
-   tmp = path; tmp += _T("medium.x3p");
-   mediumComplexExample(tmp);
+  tmp = path; tmp += _T("simple.x3p");
+  simpleExample(tmp);
 
-   std::cout << std::endl << "Starting performance tests..." << std::endl;
+  tmp = path; tmp += _T("medium.x3p");
+  mediumComplexExample(tmp);
 
-   tmp = path; tmp += _T("performance_int16.x3p"); 
-   performanceInt16(tmp, 1000000, FALSE);
+  std::cout << std::endl << "Starting performance tests..." << std::endl;
 
-   tmp = path; tmp += _T("performance_int16_bin.x3p"); 
-   performanceInt16(tmp, 1000000, TRUE);
+  tmp = path; tmp += _T("performance_int16.x3p"); 
+  performanceInt16(tmp, performanceCounter, FALSE);
 
-   tmp = path; tmp += _T("performance_double.x3p"); 
-   performanceDouble(tmp, 1000000, FALSE);
+  tmp = path; tmp += _T("performance_int16_bin.x3p"); 
+  performanceInt16(tmp, performanceCounter, TRUE);
 
-   tmp = path; tmp += _T("performance_double_bin.x3p"); 
-   performanceDouble(tmp, 1000000, TRUE);
+  tmp = path; tmp += _T("performance_double.x3p"); 
+  performanceDouble(tmp, performanceCounter, FALSE);
 
-   return 0;
+  tmp = path; tmp += _T("performance_double_bin.x3p"); 
+  performanceDouble(tmp, performanceCounter, TRUE);
+
+  return 0;
 }
