@@ -1,7 +1,39 @@
+/***************************************************************************
+ *   Copyright by Georg Wiora (NanoFocus AG) 2008                          *
+ *                                                                         *
+ *   This file is part of the openGPS (R)[TM] software library.            *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+ *   as published by the Free Software Foundation; either version 3 of     *
+ *   the License, or (at your option) any later version.                   *
+ *   for detail see the files "licence_LGPL-3.0.txt" and                   *
+ *   "licence_GPL-3.0.txt".                                                *
+ *                                                                         *
+ *   openGPS is distributed in the hope that it will be useful,            *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Lesser General Public License for more details.                   *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ *   The name "openGPS" and the logo are registered as                     *
+ *   European trade mark No. 006178354 for                                 *
+ *   Physikalisch Technische Bundesanstalt (PTB)                           *
+ *   http://www.ptb.de/                                                    *
+ *                                                                         *
+ *   More information about openGPS can be found at                        *
+ *   http://www.opengps.eu/                                                *
+ ***************************************************************************/
+
 // Mex file to import X3P files to matlab
-// (C) by Georg Wiora, NanoFocus AG
 // 30-Nov-2008
-// Precondition: ISO5436_2_XML.dll must be available
+
+// Preconditions:
+//   ISO5436_2_XML.dll and lib must be available
+//   xerces-c_2_7_vc80.dll and xerces 3.0 headers from CodeSynthesis must be installed.
+
 // Compile from Matlab with 
 // mex -L getenv('OPENGPS_LOCATION') -I [getenv(OPENGPS_LOCATION),'/../include/'] openX3P.cpp
 // Replace OPENGPS_LOCATION with your installation location
@@ -76,12 +108,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
   const _TCHAR *SyntaxHelp = 
      L"Call Syntax:\n"
      L"  [x,y,z,meta] = openX3P(filename)\n"
-     L"    x       - Array of x coordinates in meter\n"
-     L"    y       - Array of y coordinates in meter\n"
-     L"    z       - Array of z coordinates in meter\n"
-     L"    meta - Meta data structure of the file\n"
+     L"    x     - Array of x coordinates in meter\n"
+     L"    y     - Array of y coordinates in meter\n"
+     L"    z     - Array of z coordinates in meter\n"
+     L"    pinfo - Info about data organisation\n"
+     L"    meta  - Meta data structure of the file\n"
      L"  [z, x, y] = openX3P(filename)\n"
-     L"  [z, x, y, meta] = openX3P(filename)\n";
+     L"  [z, x, y, pinfo] = openX3P(filename)\n"
+     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n";
   char FileName[1024];              /* filename */
   mxArray *outMatrixX=NULL;               /*output matrix with x-Values*/
   mxArray *outMatrixY=NULL;               /*output matrix with y-Values*/
@@ -96,7 +130,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     mexErrMsgIdAndTxt("openGPS:openX3P:nrhs",msg.str());
   }
   // Check number of output arguments
-  if((nlhs<3) || (nlhs>4))
+  if((nlhs<3) || (nlhs>5))
   {
     ostrstream msg;
     msg << "openX3P was called with " << nlhs << " output arguments!" << endl
@@ -106,15 +140,13 @@ void mexFunction( int nlhs, mxArray *plhs[],
   
   // Check for metadata requested
   bool hasMeta=false;
-  if (nlhs == 4)
+  if (nlhs == 5)
     hasMeta=true;
-
-/*  // Check syntax variant
-  if (nlhs==1)
-  {
-    // Structure output
-    bHasStruct=true;
-  }*/
+  
+  // Check for point info structure requested
+  bool hasPointInfo=false;
+  if (nlhs >= 4)
+    hasPointInfo=true;
 
   /* make sure the first input argument is string */
   if( !mxIsChar(prhs[0]) || 
@@ -154,13 +186,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
    if(!handle)
       return;
 
-   /* Print meta data */
-   // TOdo: Extract meta data to structure
-   //PrintMetaData(handle);
-
    /* Is data list? / Is matrix? - don't care; we use point iterator. */
-   //PrintDimensions(handle);
 
+ 
    // Number of points in file
    unsigned long npoints=0;
    if (ogps_IsMatrix(handle))
@@ -257,6 +285,38 @@ void mexFunction( int nlhs, mxArray *plhs[],
    /* Free iterator/buffer */
    ogps_FreePointIterator(&iterator);
    ogps_FreePointVector(&vector);
+
+  // get point info 
+  if (hasPointInfo)
+  {
+    // Get document 
+    const ISO5436_2Type* const document = ogps_GetDocument(handle);
+    if (ogps_HasError())
+    {
+      mexErrMsgIdAndTxt("openGPS:openX3P:XMLDocument","Could not access XML document!");
+    }
+    // Get a reference to record 1
+    const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record1_type &r1 = document->Record1();
+    
+    // Create point info structure
+    // Number of structure elements
+    const unsigned int nelem=4;
+    // Field names
+    const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList"};
+    // Create the structure
+    plhs[3] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
+    
+    // Get file format revision
+    mxSetField(plhs[3], 0, "Revision",  ConvertWtoMStr(r1.Revision()));
+
+    // Get Feature type "PRF", "SUR", "POINTLIST"
+    mxSetField(plhs[3], 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
+
+    // Check for matrix organisation
+    mxSetField(plhs[3], 0, "IsMatrix",  mxCreateLogicalScalar(ogps_IsMatrix(handle)));
+    // Check for list organisation
+    mxSetField(plhs[3], 0, "IsList",  mxCreateLogicalScalar(ogps_IsMatrix(handle) ? false:true));
+  }
    
   // Collect meta data
   if (hasMeta)
@@ -284,14 +344,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
         "Instrument_Model","Instrument_Serial","Instrument_Version",
         "CalibrationDate","ProbingSystem_Type","ProbingSystem_Identification","Comment"};
     // Create the structure
-    plhs[3] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
+    plhs[4] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
 
     // Assign Structure elements
     // Get the Record2
     const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_type &r2 = r2opt.get();
 
     // Data set creation date
-    mxSetField(plhs[3], 0, "Date", ConvertWtoMStr(r2.Date()));
+    mxSetField(plhs[4], 0, "Date", ConvertWtoMStr(r2.Date()));
 
     // Check for data set creator
     if (r2.Creator().present())
@@ -300,11 +360,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
       { 
         mexWarnMsgIdAndTxt("openGPS:openX3P:XMLDocument:Record2:Creator",
                 "Data set creator name is present, but empty!");
-        mxSetField(plhs[3], 0, "Creator", mxCreateString("No data set creator specified"));
+        mxSetField(plhs[4], 0, "Creator", mxCreateString("No data set creator specified"));
       }
       else
       {
-        mxSetField(plhs[3], 0, "Date", ConvertWtoMStr(r2.Creator().get()));
+        mxSetField(plhs[4], 0, "Date", ConvertWtoMStr(r2.Creator().get()));
       }
     }
     else
@@ -312,17 +372,17 @@ void mexFunction( int nlhs, mxArray *plhs[],
               "Data set was created anonymously.");
  
     // Measuring instrument
-    mxSetField(plhs[3], 0, "Instrument_Manufacturer", ConvertWtoMStr(r2.Instrument().Manufacturer()));
-    mxSetField(plhs[3], 0, "Instrument_Model", ConvertWtoMStr(r2.Instrument().Model()));
-    mxSetField(plhs[3], 0, "Instrument_Serial", ConvertWtoMStr(r2.Instrument().Serial()));    
-    mxSetField(plhs[3], 0, "Instrument_Version", ConvertWtoMStr(r2.Instrument().Version()));    
+    mxSetField(plhs[4], 0, "Instrument_Manufacturer", ConvertWtoMStr(r2.Instrument().Manufacturer()));
+    mxSetField(plhs[4], 0, "Instrument_Model", ConvertWtoMStr(r2.Instrument().Model()));
+    mxSetField(plhs[4], 0, "Instrument_Serial", ConvertWtoMStr(r2.Instrument().Serial()));    
+    mxSetField(plhs[4], 0, "Instrument_Version", ConvertWtoMStr(r2.Instrument().Version()));    
 
     // Calibration
-    mxSetField(plhs[3], 0, "CalibrationDate", ConvertWtoMStr(r2.CalibrationDate()));    
+    mxSetField(plhs[4], 0, "CalibrationDate", ConvertWtoMStr(r2.CalibrationDate()));    
 
     // Probing system type
-    mxSetField(plhs[3], 0, "ProbingSystem_Type", ConvertWtoMStr( r2.ProbingSystem().Type()));    
-    mxSetField(plhs[3], 0, "ProbingSystem_Identification", ConvertWtoMStr(r2.ProbingSystem().Identification()));    
+    mxSetField(plhs[4], 0, "ProbingSystem_Type", ConvertWtoMStr( r2.ProbingSystem().Type()));    
+    mxSetField(plhs[4], 0, "ProbingSystem_Identification", ConvertWtoMStr(r2.ProbingSystem().Identification()));    
 
     // Extract and print information
     if (r2.Comment().present())
@@ -334,7 +394,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
       }
       else
       {
-        mxSetField(plhs[3], 0, "Comment", ConvertWtoMStr(r2.Comment().get()));
+        mxSetField(plhs[4], 0, "Comment", ConvertWtoMStr(r2.Comment().get()));
       }
     }
     else
