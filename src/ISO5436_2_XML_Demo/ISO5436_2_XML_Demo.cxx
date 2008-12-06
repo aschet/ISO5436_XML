@@ -959,10 +959,11 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
 
    /* Create RECORD1 */
    Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   // ToDo: A list is neither a PRF nor a SUR type. Should be something new.
    Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_PROFILE_NAME);
 
-   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
-   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::I); /* int16 */
+   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* incremental */
+   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
    Record1Type::Axes_type::CX_type xaxis(xaxisType);
    xaxis.DataType(xdataType);
    /* A profile is still 3D. so increment and offset of x and y have a meaning, but both are incremented from the same index! */
@@ -970,12 +971,12 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    xaxis.Increment(10E-6);
    xaxis.Offset(0.0);
 
-   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
+   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::A); /* incremental */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CY_type yaxis(yaxisType);
    yaxis.DataType(ydataType);
    // Increment has to be zero to orient profile along x-axis.
-   yaxis.Increment(0);
+   yaxis.Increment(10E-6);
    yaxis.Offset(0.0);
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
@@ -1003,7 +1004,7 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
    Record2Type::ProbingSystem_type probingSystem(type, id);
 
-   Record2Type::Comment_type comment(_T("This file is a line profile written as performance test in int16 precision."));
+   Record2Type::Comment_type comment(_T("This file is a list of points written as performance test in int16 precision."));
 
    Record2Type record2(date, instrument, calibrationDate, probingSystem);
    record2.Comment(comment);
@@ -1022,8 +1023,11 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    for(OGPS_ULong n = 0; n < dimension; ++n)
    {
       /* Generate random number */
-      short random = (short)(rand() % std::numeric_limits<short>::max());
-      ogps_SetInt16Z(vector, random);
+      short randomz = (short)(rand() % std::numeric_limits<short>::max());
+      short randomy = (short)(rand() % std::numeric_limits<short>::max());
+      ogps_SetInt32X(vector,n);
+      ogps_SetInt16Y(vector, randomy);
+      ogps_SetInt16Z(vector, randomz);
 
       /* Write into document */
       ogps_SetListPoint(handle, n, vector);
@@ -1044,7 +1048,7 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    // Timer
    clock_t stop = clock();
 
-   std::cout << std::endl << "Writing an X3P file containing " << dimension
+   std::cout << std::endl << "Writing an X3P list file containing " << dimension
              << " points in int16 " << (binary ? "binary" : "xml")
              << " format took " << (((double)(stop - start))/CLOCKS_PER_SEC)
              << " seconds." << std::endl;
@@ -1107,8 +1111,12 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record2Type record2(date, instrument, calibrationDate, probingSystem);
    record2.Comment(comment);
 
+   // Set dimensions
+   OpenGPS::Schemas::ISO5436_2::MatrixDimensionType mdim(dimension,1,1);
+
    /* Create ISO5436_2 container */
-   OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, &record2, dimension, binary);
+   // OGPS_ISO5436_2Handle handle = ogps_CreateListISO5436_2(fileName.c_str(), NULL, record1, &record2, dimension, binary);
+   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, mdim, binary);
 
    /* Add data points */
 
@@ -1125,7 +1133,10 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
       ogps_SetDoubleZ(vector, random);
 
       /* Write into document */
-      ogps_SetListPoint(handle, n, vector);
+      // Profiles have to be saved as a matrix of size n,1,m
+      // So it would be wrong to use list format here
+      // ogps_SetListPoint(handle, n, vector);
+      ogps_SetMatrixPoint(handle,n,0,0,vector);
    }
 
    /* Free buffer */
