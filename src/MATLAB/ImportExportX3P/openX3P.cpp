@@ -105,7 +105,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
 {
   bool bHasStruct=false;
   
-  const _TCHAR *SyntaxHelp = 
+  const wstring SyntaxHelp( 
      L"Call Syntax:\n"
      L"  [x,y,z,meta] = openX3P(filename)\n"
      L"    x     - Array of x coordinates in meter\n"
@@ -115,7 +115,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"    meta  - Meta data structure of the file\n"
      L"  [z, x, y] = openX3P(filename)\n"
      L"  [z, x, y, pinfo] = openX3P(filename)\n"
-     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n";
+     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n");
   char FileName[1024];              /* filename */
   mxArray *outMatrixX=NULL;               /*output matrix with x-Values*/
   mxArray *outMatrixY=NULL;               /*output matrix with y-Values*/
@@ -364,7 +364,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
       }
       else
       {
-        mxSetField(plhs[4], 0, "Date", ConvertWtoMStr(r2.Creator().get()));
+        mxSetField(plhs[4], 0, "Creator", ConvertWtoMStr(r2.Creator().get()));
       }
     }
     else
