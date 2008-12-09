@@ -327,16 +327,22 @@ void mediumComplexExample(OpenGPS::String fileName)
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
    Record1Type::Axes_type::CX_type xaxis(xaxisType);
    xaxis.DataType(xdataType);
+   xaxis.Increment(10e-6); // 10 micro metre
+   xaxis.Offset(1000.0e-6); // 1 milli metre
 
    Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::F); /* float */
    Record1Type::Axes_type::CX_type yaxis(xaxisType);
    yaxis.DataType(ydataType);
+   yaxis.Increment(1); // set to 1 for float and double axis
+   yaxis.Offset(-1000.0e-6); // -1 milli metre
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D); /* double */
    Record1Type::Axes_type::CX_type zaxis(xaxisType);
    zaxis.DataType(zdataType);
+   zaxis.Increment(1); // set to 1 for float and double axis
+   zaxis.Offset(1000.0e-6); // 1 milli metre
 
    Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
 
