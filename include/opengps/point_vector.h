@@ -220,6 +220,20 @@ extern "C" {
       OGPS_Double* const z);
 
    /*!
+    * Sets the values of each component of the given point vector.
+    *
+    * @param vector Operate on this point vector instance.
+    * @param x Sets the value of the x component.
+    * @param y Sets the value of the y component.
+    * @param z Sets the value of the z component.
+    */
+   _OPENGPS_EXPORT void ogps_SetXYZ(
+      OGPS_PointVectorPtr vector,
+      const OGPS_Double x,
+      const OGPS_Double y,
+      const OGPS_Double z);
+
+   /*!
     * Gets the x component of the given vector.
     *
     * @param vector Operate on this point vector instance.

@@ -183,7 +183,18 @@ void ogps_GetXYZ(
 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(vector->instance.GetXYZ(x, y, z));
 }
-		  
+
+void ogps_SetXYZ(
+        OGPS_PointVectorPtr vector,
+        const OGPS_Double x,
+        const OGPS_Double  y,
+        const OGPS_Double z) throw()
+{
+   _ASSERT(vector);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(vector->instance.SetXYZ(x, y, z));
+}
+
 OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector) throw()
 {
    _ASSERT(vector);

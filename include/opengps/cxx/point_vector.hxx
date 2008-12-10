@@ -355,6 +355,18 @@ namespace OpenGPS
          OGPS_Double* const z) const throw(...);
 
       /*!
+       * Sets the values of each component.
+       *
+       * @param x Sets the value of the x component.
+       * @param y Sets the value of the y component.
+       * @param z Sets the value of the z component.
+       */
+      void SetXYZ(
+         const OGPS_Double x,
+         const OGPS_Double y,
+         const OGPS_Double z) const throw(...);
+
+      /*!
        * Asks if this point vector stores a valid data point.
        *
        * A valid point vector does not have components where some or all of its values are missing.

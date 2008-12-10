@@ -134,6 +134,9 @@ extern "C" {
    /*!
     * Gets the value of the current point vector.
     *
+    * Retrieves the raw point data. No offsets and increments have been applied.
+    *
+    * @see ::ogps_GetCurrentCoord
     * @see ::ogps_MoveNext
     *
     * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
@@ -142,6 +145,23 @@ extern "C" {
     * @param vector Gets a copy of the vector at the current iterator position.
     */
    _OPENGPS_EXPORT void ogps_GetCurrentPoint(
+      const OGPS_PointIteratorPtr iterator,
+      OGPS_PointVectorPtr const vector);
+
+    /*!
+    * Gets the value of the current coordinate vector.
+    *
+    * Retrieves coordinates where offsets and increments have been readily applied to the underlying raw point data.
+    *
+    * @see ::ogps_GetCurrentPoint
+    * @see ::ogps_MoveNext
+    *
+    * On failure you may get further information by calling ::ogps_GetErrorMessage hereafter.
+    *
+    * @param iterator Operate on this iterator handle.
+    * @param vector Gets a copy of the vector at the current iterator position.
+    */
+   _OPENGPS_EXPORT void ogps_GetCurrentCoord(
       const OGPS_PointIteratorPtr iterator,
       OGPS_PointVectorPtr const vector);
 

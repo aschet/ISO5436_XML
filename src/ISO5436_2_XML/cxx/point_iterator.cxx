@@ -271,6 +271,24 @@ void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector) thro
    }
 }
 
+void ISO5436_2Container::PointIteratorImpl::GetCurrentCoord(PointVector& vector) throw(...)
+{
+   _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
+
+   OGPS_Double x, y, z;
+   
+   if(m_IsMatrix)
+   {
+      m_Handle->GetMatrixCoord(m_U, m_V, m_W, &x, &y, &z);      
+   }
+   else
+   {
+      m_Handle->GetListCoord(m_U, &x, &y, &z);
+   }
+
+   vector.SetXYZ(x, y, z);
+}
+
 void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector) throw(...)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);

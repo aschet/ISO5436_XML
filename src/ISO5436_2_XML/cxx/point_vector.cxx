@@ -260,6 +260,21 @@ void PointVector::GetXYZ(
    }
 }
 
+void PointVector::SetXYZ(
+                         const OGPS_Double x,
+                         const OGPS_Double y,
+                         const OGPS_Double z) const throw(...)
+{
+   _ASSERT(m_X);
+   m_X->Set(x);
+
+   _ASSERT(m_Y);
+   m_Y->Set(y);
+
+   _ASSERT(m_Z);
+   m_Z->Set(z);
+}
+
 OGPS_Boolean PointVector::IsValid() const throw(...)
 {
    _ASSERT(m_X && m_Y && m_Z);

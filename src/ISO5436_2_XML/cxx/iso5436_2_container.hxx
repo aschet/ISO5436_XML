@@ -621,6 +621,9 @@ namespace OpenGPS
          OGPS_Double* const y,
          OGPS_Double* const z) throw(...);
 
+      /*! Returns TRUE if the axis has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
+      OGPS_Boolean IsIncrementalAxis(Schemas::ISO5436_2::AxisType axis) const;
+
       /*! Returns TRUE if X has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
       OGPS_Boolean IsIncrementalX() const;
 
@@ -703,6 +706,7 @@ namespace OpenGPS
          virtual void ResetPrev();
 
          virtual void GetCurrent(PointVector& vector) throw(...);
+         virtual void GetCurrentCoord(PointVector& vector) throw(...);
 
          virtual void SetCurrent(const PointVector* const vector) throw(...);
 

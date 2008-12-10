@@ -90,6 +90,15 @@ void ogps_GetCurrentPoint(
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(iterator->instance->GetCurrent(vector->instance));
 }
 
+void ogps_GetCurrentCoord(
+        const OGPS_PointIteratorPtr iterator,
+        OGPS_PointVectorPtr const vector) throw()
+{
+   _ASSERT(iterator && iterator->instance && vector);
+
+   _OPENGPS_GENERIC_EXCEPTION_HANDLER(iterator->instance->GetCurrentCoord(vector->instance));
+}
+
 void ogps_SetCurrentPoint(
         const OGPS_PointIteratorPtr iterator,
         const OGPS_PointVectorPtr vector) throw()

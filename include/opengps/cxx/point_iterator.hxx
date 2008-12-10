@@ -130,13 +130,28 @@ namespace OpenGPS
       /*!
        * Gets the value of the current point vector.
        *
+       * Retrieves the raw point data without offsets and increments applied.
        * A specific instance may throw an OpenGPS::Exception on failure,
        *
+       * @see PointIterator::GetCurrentCoord
        * @see PointIterator::MoveNext
        *
        * @param vector Gets a copy of the vector at the current iterator position.
        */
       virtual void GetCurrent(PointVector& vector) throw(...) = 0;
+
+      /*!
+       * Gets the value of the current coordinate vector.
+       *
+       * Retrieves coordinate data, where offsets and increments have been readily applied to the underlying point data.
+       * A specific instance may throw an OpenGPS::Exception on failure,
+       *
+       * @see PointIterator::GetCurrent
+       * @see PointIterator::MoveNext
+       *
+       * @param vector Gets a copy of the coordinate at the current iterator position.
+       */
+      virtual void GetCurrentCoord(PointVector& vector) throw(...) = 0;
 
       /*!
        * Sets the value of the current point vector.

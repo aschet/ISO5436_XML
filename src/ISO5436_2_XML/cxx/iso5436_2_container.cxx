@@ -1861,12 +1861,17 @@ VectorBuffer* ISO5436_2Container::GetVectorBuffer()
    return m_VectorBufferBuilder->GetBuffer();
 }
 
+OGPS_Boolean ISO5436_2Container::IsIncrementalAxis(Schemas::ISO5436_2::AxisType axis) const
+{
+   return (axis == Schemas::ISO5436_2::Record1Type::Axes_type::CX_type::AxisType_type::I);
+}
+
 OGPS_Boolean ISO5436_2Container::IsIncrementalX() const
 {
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
-   return (cx.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CX_type::AxisType_type::I);
+   return IsIncrementalAxis(cx.AxisType());
 }
 
 OGPS_Boolean ISO5436_2Container::IsIncrementalY() const
@@ -1874,7 +1879,7 @@ OGPS_Boolean ISO5436_2Container::IsIncrementalY() const
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
-   return (cy.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CY_type::AxisType_type::I);
+   return IsIncrementalAxis(cy.AxisType());
 }
 
 double ISO5436_2Container::GetIncrementX() const
@@ -1882,7 +1887,7 @@ double ISO5436_2Container::GetIncrementX() const
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
-   if(cx.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CX_type::AxisType_type::I)
+   if(IsIncrementalAxis(cx.AxisType()))
    {
       if(cx.Increment().present())
       {
@@ -1898,7 +1903,7 @@ double ISO5436_2Container::GetIncrementY() const
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
-   if(cy.AxisType() == Schemas::ISO5436_2::Record1Type::Axes_type::CY_type::AxisType_type::I)
+   if(IsIncrementalAxis(cy.AxisType()))
    {
       if(cy.Increment().present())
       {
