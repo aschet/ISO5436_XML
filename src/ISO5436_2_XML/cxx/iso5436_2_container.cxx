@@ -145,7 +145,8 @@ void ISO5436_2Container::Open(const OGPS_Boolean readOnly) throw(...)
    m_IsReadOnly = readOnly;
    m_IsCreating = FALSE;
 
-   TestChecksums();
+   ValidateDocument();
+   TestChecksums();   
 }
 
 void ISO5436_2Container::Decompress() throw(...)
@@ -587,6 +588,8 @@ void ISO5436_2Container::Write(const int compressionLevel) throw(...)
    m_CompressionLevel = compressionLevel;
 
    Compress();
+
+   ValidateDocument();
 }
 
 void ISO5436_2Container::Close()
@@ -1020,7 +1023,7 @@ void ISO5436_2Container::Compress() throw(...)
       throw OpenGPS::Exception(
          OGPS_ExWarning,
          _EX_T("At least some of the vendorspecific files supplied could not be added to the X3P archive."),
-         _EX_T("Please verify that the files containing additional data still exist on the filesystem at this time."),
+         _EX_T("Please verify that the files containing additional data still exist on the filesystem at this time. Also check for enuogh file system space left and permissions."),
          _EX_T("OpenGPS::ISO5436_2Container::Compress"));
    }
 }
@@ -1882,6 +1885,14 @@ OGPS_Boolean ISO5436_2Container::IsIncrementalY() const
    return IsIncrementalAxis(cy.AxisType());
 }
 
+OGPS_Boolean ISO5436_2Container::IsIncrementalZ() const
+{
+   _ASSERT(HasDocument());
+
+   const Schemas::ISO5436_2::Record1Type::Axes_type::CZ_type& cz = m_Document->Record1().Axes().CZ();
+   return IsIncrementalAxis(cz.AxisType());
+}
+
 double ISO5436_2Container::GetIncrementX() const
 {
    _ASSERT(HasDocument());
@@ -2014,6 +2025,24 @@ OGPS_ULong ISO5436_2Container::SafeMultipilcation(const unsigned long long value
    return ((OGPS_ULong)(value1 * value2));
 }
 
+void ISO5436_2Container::ValidateDocument() throw(...)
+{
+   if(HasDocument())
+   {
+      if(!IsMatrix())
+      {
+         if(IsIncrementalX() || IsIncrementalY() || IsIncrementalZ())
+         {
+            throw OpenGPS::Exception(
+               OGPS_ExWarning,
+               _EX_T("At least one of the axis definitions is incremental, although point data is stored within an unordered list."),
+               _EX_T("List type files do not represent a topology, so there is no relation between list position and coordinate. Thus the x and y and z axis must not be of implicit (incremental) type."),
+               _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+         }
+      }
+   }
+}
+
 void ISO5436_2Container::TestChecksums() throw(...)
 {
    if(!m_MainChecksum)
@@ -2122,101 +2151,100 @@ OGPS_Boolean ISO5436_2Container::WriteVendorSpecific(zipFile handle)
             Z_DEFLATED,
             m_CompressionLevel) != ZIP_OK)
          {
-            throw OpenGPS::Exception(
-               OGPS_ExWarning,
-               _EX_T("Could not write additional vendor specific data to the X3P archive."),
-               _EX_T("Zlib could not open the target handle. Check for filesystem permissions and enough space left."),
-               _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
+            // zip file could not be created
+            success = FALSE;
          }
-
-         try
+         else
          {
-            ZipStreamBuffer vbuffer(handle, FALSE);
-            ZipOutputStream vstream(vbuffer);
-
-            std::ifstream src(vendor.ToChar(), std::ios::in | std::ios::binary | std::ios::ate);
-
-            if(!src.is_open())
+            try
             {
-               success = FALSE;
-            }
-            else
-            {
-               // get length of file:
-               int length = src.tellg();
-               src.seekg(0, std::ios::beg);
+               ZipStreamBuffer vbuffer(handle, FALSE);
+               ZipOutputStream vstream(vbuffer);
 
-               if(length < 0)
+               std::ifstream src(vendor.ToChar(), std::ios::in | std::ios::binary | std::ios::ate);
+
+               if(!src.is_open())
                {
-                  throw OpenGPS::Exception(
-                     OGPS_ExGeneral,
-                     _EX_T("Could not write additional vendor specific data to the X3P archive."),
-                     _EX_T("The size of the source file could not be determined."),
-                     _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
+                  success = FALSE;
                }
-
-               if(length > 0)
+               else
                {
-                  do
+                  // get length of file:
+                  int length = src.tellg();
+                  src.seekg(0, std::ios::beg);
+
+                  if(length < 0)
                   {
-                     const int chunk = min(_OPENGPS_ZIP_CHUNK_MAX, length);
-                     voidp buffer = (voidp)malloc(chunk);
+                     throw OpenGPS::Exception(
+                        OGPS_ExGeneral,
+                        _EX_T("Could not write additional vendor specific data to the X3P archive."),
+                        _EX_T("The size of the source file could not be determined."),
+                        _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
+                  }
 
-                     if(buffer)
+                  if(length > 0)
+                  {
+                     do
                      {
-                        try
-                        {
-                           src.read((OpenGPS::BytePtr)buffer, chunk);
+                        const int chunk = min(_OPENGPS_ZIP_CHUNK_MAX, length);
+                        voidp buffer = (voidp)malloc(chunk);
 
-                           if(src.fail())
+                        if(buffer)
+                        {
+                           try
                            {
-                              if(!src.eof())
+                              src.read((OpenGPS::BytePtr)buffer, chunk);
+
+                              if(src.fail())
+                              {
+                                 if(!src.eof())
+                                 {
+                                    throw OpenGPS::Exception(
+                                       OGPS_ExGeneral,
+                                       _EX_T("Could not write additional vendor specific data to the X3P archive."),
+                                       _EX_T("The vendorspecific file to be added could not be read completely."),
+                                       _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
+                                 }
+                              }
+
+                              if(zipWriteInFileInZip(handle, (voidp)buffer, chunk) != ZIP_OK)
                               {
                                  throw OpenGPS::Exception(
-                                    OGPS_ExGeneral,
+                                    OGPS_ExInvalidOperation,
                                     _EX_T("Could not write additional vendor specific data to the X3P archive."),
-                                    _EX_T("The vendorspecific file to be added could not be read completely."),
+                                    _EX_T("Zlib could write all external data. Please check that there is enough space left on the device."),
                                     _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
                               }
+                              _OPENGPS_FREE(buffer);
                            }
-
-                           if(zipWriteInFileInZip(handle, (voidp)buffer, chunk) != ZIP_OK)
+                           catch(...)
                            {
-                              throw OpenGPS::Exception(
-                                 OGPS_ExInvalidOperation,
-                                 _EX_T("Could not write additional vendor specific data to the X3P archive."),
-                                 _EX_T("Zlib could write all external data. Please check that there is enough space left on the device."),
-                                 _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
+                              _OPENGPS_FREE(buffer);
+                              throw;
                            }
-                           _OPENGPS_FREE(buffer);
                         }
-                        catch(...)
+                        else
                         {
-                           _OPENGPS_FREE(buffer);
-                           throw;
+                           throw OpenGPS::Exception(
+                              OGPS_ExGeneral,
+                              _EX_T("Could not allocate memory via malloc."),
+                              _EX_T("Verify that there is enough free virtual memory installed."),
+                              _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
                         }
-                     }
-                     else
-                     {
-                        throw OpenGPS::Exception(
-                           OGPS_ExGeneral,
-                           _EX_T("Could not allocate memory via malloc."),
-                           _EX_T("Verify that there is enough free virtual memory installed."),
-                           _EX_T("OpenGPS::ISO5436_2Container::WriteVendorSpecific"));
-                     }
 
-                     length -= chunk;
-                  } while(!src.eof() && length > 0);
-               }
-            }            
-         }
-         catch(...)
-         {
+                        length -= chunk;
+                     } while(!src.eof() && length > 0);
+                  }
+               }            
+            }
+            catch(...)
+            {
+               _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
+               throw;
+            }
+
             _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
-            throw;
          }
-
-         _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
       }
    }
    else

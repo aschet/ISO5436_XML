@@ -598,6 +598,12 @@ namespace OpenGPS
       void TestChecksums() throw(...);
 
       /*!
+       * Checks the document for some semantic errors.
+       * If any semantic errors were found, this throws an OpenGPS::Exception of type ::OGPS_ExWarning that may be ignored.
+       */
+      void ValidateDocument() throw(...);
+
+      /*!
        * Reads the first md5 checksum from a file that contains md5 checksums of files.
        * @param fileName The path to the file that contains md5 checksums.
        * @param checksum Target of the extracted checksum.
@@ -629,6 +635,9 @@ namespace OpenGPS
 
       /*! Returns TRUE if Y has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
       OGPS_Boolean IsIncrementalY() const;
+
+      /*! Returns TRUE if Z has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
+      OGPS_Boolean IsIncrementalZ() const;
 
       /*! Gets the increment of the X axis definition or 1.0 if there is no incremental step. */
       double GetIncrementX() const;
