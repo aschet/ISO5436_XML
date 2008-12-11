@@ -1919,12 +1919,9 @@ double ISO5436_2Container::GetIncrementX() const
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CX_type& cx = m_Document->Record1().Axes().CX();
-   if(IsIncrementalAxis(cx.AxisType()))
+   if(cx.Increment().present())
    {
-      if(cx.Increment().present())
-      {
-         return cx.Increment().get();
-      }
+      return cx.Increment().get();
    }
 
    return (1.0);
@@ -1935,12 +1932,9 @@ double ISO5436_2Container::GetIncrementY() const
    _ASSERT(HasDocument());
 
    const Schemas::ISO5436_2::Record1Type::Axes_type::CY_type& cy = m_Document->Record1().Axes().CY();
-   if(IsIncrementalAxis(cy.AxisType()))
+   if(cy.Increment().present())
    {
-      if(cy.Increment().present())
-      {
-         return cy.Increment().get();
-      }
+      return cy.Increment().get();
    }
 
    return (1.0);
