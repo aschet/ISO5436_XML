@@ -48,13 +48,16 @@ function TestX3P()
     'performance_int16.x3p',...
     'performance_int16_bin.x3p',...
     'simple.x3p'};
-
+  
   % Test all files
   for i=1:numel(testfiles)
     disp(' ');
     disp('****************************************************');
     disp(['Reading x3p file "',testfiles{i},'"...']);
     [z,x,y,pinfo,meta] = openX3P(testfiles{i});
+    
+    % Test write
+    pinfo = writeX3P(['w_',testfiles{i}],x,y,z,meta);
     
     % Print point info
     pinfo

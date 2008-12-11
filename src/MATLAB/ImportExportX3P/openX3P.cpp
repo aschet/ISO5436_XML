@@ -242,8 +242,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
    {
      // goto next point
      ogps_MoveNextPoint(iterator);
-      /* Get points at current position. */
-      ogps_GetCurrentPoint(iterator, vector);
+      /* Get point at current position without any transformation. */
+      // ogps_GetCurrentPoint(iterator, vector);
+      /* Get coordinates of current point transformed to original coordinate space */
+      ogps_GetCurrentCoord(iterator, vector);
 
       if(ogps_HasError())
       {
@@ -309,7 +311,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     // Get file format revision
     mxSetField(plhs[3], 0, "Revision",  ConvertWtoMStr(r1.Revision()));
 
-    // Get Feature type "PRF", "SUR", "POINTLIST"
+    // Get Feature type "PRF", "SUR", "PCL"
     mxSetField(plhs[3], 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
 
     // Check for matrix organisation
