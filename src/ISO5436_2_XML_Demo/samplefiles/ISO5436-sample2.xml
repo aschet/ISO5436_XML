@@ -10,8 +10,8 @@
            xsi:schemaLocation="http://www.opengps.eu/2008/ISO5436_2 http://www.opengps.eu/2008/ISO5436_2/ISO5436_2.xsd ">
   <Record1>
     <Revision>ISO5436 - 2000</Revision>
-    <!-- "SUR" for surface or "PRF" for profile -->
-    <FeatureType>SUR</FeatureType>
+    <!-- "SUR" for surface or "PRF" for profile PCL for Point cloud-->
+    <FeatureType>PCL</FeatureType>
     <!-- Axis description-->
     <Axes>
       <CX>

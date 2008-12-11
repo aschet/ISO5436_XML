@@ -432,9 +432,10 @@ void mediumComplexExample(OpenGPS::String fileName)
    ogps_CloseISO5436_2(&handle);
 }
 
-void readonlyExample(OpenGPS::String fileName)
+void readonlyExample(const OpenGPS::String fileName)
 {
    /* We want to read in some file and read its point data. */
+   std::cout << endl << endl << "readonlyExample(\"" << fileName << "\")" << endl;
 
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
@@ -504,9 +505,10 @@ void readonlyExample(OpenGPS::String fileName)
    ogps_CloseISO5436_2(&handle);
 }
 
-void readonlyExampleMatrix(OpenGPS::String fileName)
+void readonlyExampleMatrix(const OpenGPS::String fileName)
 {
    /* Same as above, but here matrix format is assumed to provide indices within the output. */
+  std::cout << endl << endl << "readonlyExampleMatrix(\"" << fileName << "\")" << endl;
 
    /* Open the file, hopefully everything went well... */
    OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(fileName.c_str(), NULL, TRUE);
@@ -584,9 +586,11 @@ void readonlyExampleMatrix(OpenGPS::String fileName)
    ogps_CloseISO5436_2(&handle);
 }
 
-void readonlyExample2(OpenGPS::String fileName)
+void readonlyExample2(const OpenGPS::String fileName)
 {
    /* We want to read in some file and read its point data. */
+  std::cout << endl << endl << "readonlyExample2(\"" << fileName << "\")" << endl;
+
    /* This time reading real typed data points. */
    /* With type information obtained from xml document. */
 
@@ -725,9 +729,10 @@ void readonlyExample2(OpenGPS::String fileName)
    ogps_CloseISO5436_2(&handle);
 }
 
-void readonlyExample3(OpenGPS::String fileName)
+void readonlyExample3(const OpenGPS::String fileName)
 {
    /* We want to read in some file and read its point data. */
+   std::cout << endl << endl << "readonlyExample3(\"" << fileName << "\")" << endl;
    /* Same as above but with C++ Interface. */
 
    /* Open the file, hopefully everything went well... */
@@ -878,9 +883,10 @@ void readonlyExample3(OpenGPS::String fileName)
    iso5436_2.Close();
 }
 
-void readonlyExample4(OpenGPS::String fileName)
+void readonlyExample4(const OpenGPS::String fileName)
 {
    /* We want to read in some file and read its point data. */
+   std::cout << endl << endl << "readonlyExample4(\"" << fileName << "\")" << endl;
 
    /* Open the file, hopefully everything went well... */
    OpenGPS::ISO5436_2 iso5436_2(fileName);
@@ -958,6 +964,8 @@ void readonlyExample4(OpenGPS::String fileName)
 **/
 void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boolean binary)
 {
+   std::cout << endl << endl << "performanceInt16(\"" << fileName << "\")" << endl;
+
    // Timer
    clock_t start = clock();
 
@@ -965,8 +973,8 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
 
    /* Create RECORD1 */
    Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
-   // ToDo: A list is neither a PRF nor a SUR type. Should be something new.
-   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_PROFILE_NAME);
+   // A list has to be stored as type point cloud
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_POINTCLOUD_NAME);
 
    Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* incremental */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
@@ -1062,6 +1070,8 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
 
 void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boolean binary)
 {
+   std::cout << endl << endl << "performanceDouble(\"" << fileName << "\")" << endl;
+
    // Timer
    clock_t start = clock();
 
@@ -1169,6 +1179,7 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
 /* Converts a given X3P file either to binary or text format (if dstFormatIsBinary parameter equals FALSE). */
 void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, const OGPS_Boolean dstFormatIsBinary)
 {
+   std::cout << endl << endl << "convertFormat(\"" << srcFileName << "\") to \"" << dstFileName << "\"" << endl;
    /* We want to read in some file regardless whether it was written
    in text or binary format and then copy its contents into
    a newly created file to ensure binary format of X3P.
