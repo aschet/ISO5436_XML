@@ -729,7 +729,7 @@ namespace OpenGPS
          virtual void ResetPrev();
 
          virtual void GetCurrent(PointVector& vector) throw(...);
-         virtual void GetCurrentTransformedCoord(PointVector& vector) throw(...);
+         virtual void GetCurrentCoord(PointVector& vector) throw(...);
 
          virtual void SetCurrent(const PointVector* const vector) throw(...);
 
