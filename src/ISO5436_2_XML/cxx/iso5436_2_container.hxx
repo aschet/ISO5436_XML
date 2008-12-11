@@ -604,6 +604,13 @@ namespace OpenGPS
       void ValidateDocument() throw(...);
 
       /*!
+       * Checks whether the current document data is either for profiles or surfaces.
+       * @remarks Throws an exception if the current feature type is undefined.
+       * @returns True, if the document record specifies a profile, FALSE otherwise.
+       */
+      OGPS_Boolean IsProfile() const  throw(...);
+
+      /*!
        * Reads the first md5 checksum from a file that contains md5 checksums of files.
        * @param fileName The path to the file that contains md5 checksums.
        * @param checksum Target of the extracted checksum.

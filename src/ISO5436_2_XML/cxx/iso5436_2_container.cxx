@@ -624,6 +624,27 @@ OGPS_Boolean ISO5436_2Container::IsMatrix() const throw(...)
    return FALSE;
 }
 
+OGPS_Boolean ISO5436_2Container::IsProfile() const
+{
+   _ASSERT(HasDocument());
+
+   const OpenGPS::Schemas::ISO5436_2::Record1Type::FeatureType_type& featureType = m_Document->Record1().FeatureType();
+   if(featureType == OGPS_FEATURE_TYPE_PROFILE_NAME)
+   {
+      return true;
+   }
+   else if(featureType == OGPS_FEATURE_TYPE_SURFACE_NAME)
+   {
+      return false;
+   }
+
+   throw OpenGPS::Exception(
+      OGPS_ExOverflow,
+      _EX_T("The fature type sepcified is unknown."),
+      _EX_T("Only profile and surface feature types are valid."),
+      _EX_T("ISO5436_2Container::IsProfile"));
+}
+
 void ISO5436_2Container::GetMatrixDimensions(
          OGPS_ULong * const size_u,
          OGPS_ULong * const size_v,
@@ -636,7 +657,7 @@ void ISO5436_2Container::GetMatrixDimensions(
       throw OpenGPS::Exception(
          OGPS_ExInvalidOperation,
          _EX_T("It is assumed that point data is stored in matrix topology but actually it is not."),
-         _EX_T("The dimensions of the matrix wherin point data is stored cannot be obtained because this document stores point data in a list structure."),
+         _EX_T("The dimensions of the matrix wherein point data is stored cannot be obtained because this document stores point data in a list structure."),
          _EX_T("ISO5436_2Container::GetMatrixDimensions"));
    }
 
@@ -2029,14 +2050,49 @@ void ISO5436_2Container::ValidateDocument() throw(...)
 {
    if(HasDocument())
    {
-      if(!IsMatrix())
+      if(IsIncrementalZ())
       {
-         if(IsIncrementalX() || IsIncrementalY() || IsIncrementalZ())
+         throw OpenGPS::Exception(
+            OGPS_ExWarning,
+            _EX_T("The z axis is defined as incremental."),
+            _EX_T("Since the z-coordinate is not derived from topology, therefore the z axis must always be with absolute values."),
+            _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+      }
+
+      if(IsMatrix())
+      {
+         if(IsProfile())
+         {
+            OGPS_ULong size_u, size_v, size_w;
+            GetMatrixDimensions(&size_u, &size_v, &size_w);
+
+            if(size_v != 1)
+            {
+               throw OpenGPS::Exception(
+                  OGPS_ExWarning,
+                  _EX_T("The feature type is profile, but matrix dimensions do not fit."),
+                  _EX_T("PRF type files must always be encoded as matrix of size N,1,M with N the number of points and M the number of layers in z direction."),
+                  _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+            }
+         }
+      }
+      else
+      {
+         if(IsIncrementalX() || IsIncrementalY())
          {
             throw OpenGPS::Exception(
                OGPS_ExWarning,
-               _EX_T("At least one of the axis definitions is incremental, although point data is stored within an unordered list."),
+               _EX_T("At least one of the x/y axes definitions is incremental, although point data is stored within an unordered list."),
                _EX_T("List type files do not represent a topology, so there is no relation between list position and coordinate. Thus the x and y and z axis must not be of implicit (incremental) type."),
+               _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+         }
+
+         if(IsProfile())
+         {
+            throw OpenGPS::Exception(
+               OGPS_ExWarning,
+               _EX_T("The feature type is profile, but point data is stored in an unordered list."),
+               _EX_T("PRF type files must always be encoded as matrix of size N,1,M with N the number of points and M the number of layers in z direction."),
                _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
          }
       }
