@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
+				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -118,7 +118,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
+				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
@@ -189,7 +189,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
+				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -274,7 +274,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
+				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				RuntimeLibrary="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
@@ -355,7 +355,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
+				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -492,7 +492,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
 							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
@@ -503,7 +503,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
 							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
@@ -514,7 +514,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
 							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
@@ -525,7 +525,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
 							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
@@ -536,7 +536,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
 							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
 						/>

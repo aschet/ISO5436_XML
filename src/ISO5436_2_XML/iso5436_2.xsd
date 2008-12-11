@@ -57,10 +57,11 @@
             <xsd:annotation>
                <xsd:documentation>
 						"SUR" for surface type feature, "PRF" for
-						profile type feature. Profile features are
+						profile type feature or "PCL" for unordered point clouds. Profile features are
 						allways defined as a matrix of size (N,1,M) with
 						N beeing the number of points in the profile and
 						M the number of layers in z-direction.
+            Point clouds have to be stored as list type. 
 					</xsd:documentation>
             </xsd:annotation>
             <xsd:simpleType>
@@ -70,6 +71,8 @@
                   <xsd:enumeration value="PRF">
                   </xsd:enumeration>
                   <xsd:enumeration value="SUR">
+                  </xsd:enumeration>
+                  <xsd:enumeration value="PCL">
                   </xsd:enumeration>
                </xsd:restriction>
             </xsd:simpleType>

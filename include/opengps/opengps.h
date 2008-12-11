@@ -159,6 +159,10 @@ typedef unsigned long OGPS_ULong;
     The xerces tool does not generate an appropriate enum value here. */
 #define OGPS_FEATURE_TYPE_PROFILE_NAME _T("PRF")
 
+/*! Gives the name of the point cloud feature type in an ISO 5436-2 document.
+    The xerces tool does not generate an appropriate enum value here. */
+#define OGPS_FEATURE_TYPE_POINTCLOUD_NAME _T("PCL")
+
 /// Build a version string from version numbers
 // This macro is necessary to make a number to string conversion
 #ifdef _UNICODE

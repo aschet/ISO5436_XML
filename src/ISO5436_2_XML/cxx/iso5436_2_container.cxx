@@ -637,12 +637,41 @@ OGPS_Boolean ISO5436_2Container::IsProfile() const
    {
       return false;
    }
+   else if(featureType == OGPS_FEATURE_TYPE_POINTCLOUD_NAME)
+   {
+      return false;
+   }
 
    throw OpenGPS::Exception(
       OGPS_ExOverflow,
-      _EX_T("The fature type sepcified is unknown."),
-      _EX_T("Only profile and surface feature types are valid."),
+      _EX_T("The feature type sepcified is unknown."),
+      _EX_T("Only profiles, surface, and point cloud feature types are valid."),
       _EX_T("ISO5436_2Container::IsProfile"));
+}
+
+OGPS_Boolean ISO5436_2Container::IsPointCloud() const
+{
+   _ASSERT(HasDocument());
+
+   const OpenGPS::Schemas::ISO5436_2::Record1Type::FeatureType_type& featureType = m_Document->Record1().FeatureType();
+   if(featureType == OGPS_FEATURE_TYPE_POINTCLOUD_NAME)
+   {
+      return true;
+   }
+   else if(featureType == OGPS_FEATURE_TYPE_SURFACE_NAME)
+   {
+      return false;
+   }
+   else if(featureType == OGPS_FEATURE_TYPE_PROFILE_NAME)
+   {
+      return false;
+   }
+
+   throw OpenGPS::Exception(
+      OGPS_ExOverflow,
+      _EX_T("The feature type sepcified is unknown."),
+      _EX_T("Only profiles, surface, and point cloud feature types are valid."),
+      _EX_T("ISO5436_2Container::IsPointCloud"));
 }
 
 void ISO5436_2Container::GetMatrixDimensions(
@@ -2075,7 +2104,7 @@ void ISO5436_2Container::ValidateDocument() throw(...)
          if(IsIncrementalX() || IsIncrementalY())
          {
             throw OpenGPS::Exception(
-               OGPS_ExWarning,
+               OGPS_ExInvalidOperation,
                _EX_T("At least one of the x/y axes definitions is incremental, although point data is stored within an unordered list."),
                _EX_T("List type files do not represent a topology, so there is no relation between list position and coordinate. Thus the x and y and z axis must not be of implicit (incremental) type."),
                _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
@@ -2084,9 +2113,19 @@ void ISO5436_2Container::ValidateDocument() throw(...)
          if(IsProfile())
          {
             throw OpenGPS::Exception(
-               OGPS_ExWarning,
+               OGPS_ExInvalidOperation,
                _EX_T("The feature type is profile, but point data is stored in an unordered list."),
                _EX_T("PRF type files must always be encoded as matrix of size N,1,M with N the number of points and M the number of layers in z direction."),
+               _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+         }
+
+         // Must be of type PCL (Point cloud)
+         if (~IsPointCloud())
+         {
+            throw OpenGPS::Exception(
+               OGPS_ExInvalidOperation,
+               _EX_T("The data is stored as an unordered point list, but the feature type is not a PointCloud (PCL)."),
+               _EX_T("Unordered point clouds must be stored as a PCL type files."),
                _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
          }
       }

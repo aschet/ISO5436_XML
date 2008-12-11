@@ -611,6 +611,13 @@ namespace OpenGPS
       OGPS_Boolean IsProfile() const  throw(...);
 
       /*!
+       * Checks whether the current document data is for point clouds.
+       * @remarks Throws an exception if the current feature type is undefined.
+       * @returns True, if the document record specifies a point cloud, FALSE otherwise.
+       */
+      OGPS_Boolean IsPointCloud() const throw(...);
+
+      /*!
        * Reads the first md5 checksum from a file that contains md5 checksums of files.
        * @param fileName The path to the file that contains md5 checksums.
        * @param checksum Target of the extracted checksum.
@@ -722,7 +729,7 @@ namespace OpenGPS
          virtual void ResetPrev();
 
          virtual void GetCurrent(PointVector& vector) throw(...);
-         virtual void GetCurrentCoord(PointVector& vector) throw(...);
+         virtual void GetCurrentTransformedCoord(PointVector& vector) throw(...);
 
          virtual void SetCurrent(const PointVector* const vector) throw(...);
 
