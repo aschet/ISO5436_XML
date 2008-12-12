@@ -183,5 +183,9 @@ typedef unsigned long OGPS_ULong;
 #define _OPENGPS_DELETE_ARRAY(x) if((x) != NULL) { delete[] (x); (x) = NULL; }
 #define _OPENGPS_FREE(x) if((x) != NULL) { free(x); (x) = NULL; }
 
+#define _OPENGPS_DBL_EPSILON 2.2204460492503131e-016 /* smallest such that 1.0 + _OPENGPS_DBL_EPSILON != 1.0 */
+#define _OPENGPS_DBL_EQ(a, b) (fabs((a) - (b)) < (_OPENGPS_DBL_EPSILON)) /* a equals b */
+#define _OPENGPS_DBL_EQN(a) _OPENGPS_DBL_EQ(a, 0.0) /* a equals 0.0 */
+
 #endif	/* _OPENGPS_H */
 /*! @} */

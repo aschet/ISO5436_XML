@@ -2120,12 +2120,40 @@ void ISO5436_2Container::ValidateDocument() throw(...)
          }
 
          // Must be of type PCL (Point cloud)
-         if (~IsPointCloud())
+         if (!IsPointCloud())
          {
             throw OpenGPS::Exception(
                OGPS_ExInvalidOperation,
                _EX_T("The data is stored as an unordered point list, but the feature type is not a PointCloud (PCL)."),
                _EX_T("Unordered point clouds must be stored as a PCL type files."),
+               _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+         }
+      }
+
+      // Check for Null-increment, X axis
+      if(IsIncrementalX())
+      {
+         const double incrementX = GetIncrementX();
+         if(_OPENGPS_DBL_EQN(incrementX))
+         {
+            throw OpenGPS::Exception(
+               OGPS_ExOverflow,
+               _EX_T("The increment of the x axis equals to null."),
+               _EX_T("The x axis is defined as incremental, but an increment of null is invalid here."),
+               _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
+         }
+      }
+
+      // Check for Null-increment, Y axis
+      if(IsIncrementalY())
+      {
+         const double incrementY = GetIncrementY();
+         if(_OPENGPS_DBL_EQN(incrementY))
+         {
+            throw OpenGPS::Exception(
+               OGPS_ExOverflow,
+               _EX_T("The increment of the y axis equals to null."),
+               _EX_T("The y axis is defined as incremental, but an increment of null is invalid here."),
                _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
          }
       }
