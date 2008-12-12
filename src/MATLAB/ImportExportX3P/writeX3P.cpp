@@ -46,8 +46,8 @@
 #define _UNICODE
 #define UNICODE
 
+#include "X3PUtilities.h"
 #include <tchar.h>
-
 #include "mex.h"
 #include <strstream>
 #include <limits>
@@ -191,45 +191,6 @@ bool IsMetaComplete(const mxArray *meta)
   return true;
 }
 
-
-// Convert wstring to matlab string
-mxArray *
-ConvertWtoMStr(const std::wstring &inp)
-{
-  size_t len = inp.length();
-  // String dimensions
-  mwSize dims[2]={1,len};
-  // Create a matlab string with length of input string
-  mxArray *dest = mxCreateCharArray(2, dims);
-  // Copy characters to string
-  wchar_t *dptr = (wchar_t*)mxGetData(dest);
-  for (unsigned int i=0; i<len ; i++)
-    *(dptr++) = inp[i];
-
-  // Return pointer to mxArray
-  return dest;
-}
-
-// Convert matlab string to wstring
-std::wstring &
-ConvertMtoWStr(const mxArray *inp)
-{
-  // Destination string
-  std::wstring *dest = new std::wstring();
-  
-  // Get len from
-  mwSize len = mxGetNumberOfElements(inp);
-  // Copy characters to string
-  wchar_t *sptr = (wchar_t*)mxGetData(inp);
-  // copy all characters to destination string
-  for (int i=0; i<len ; i++)
-    dest->push_back(*(sptr++));
-
-  // Return reference to wstring
-  // Todo: caller has to delete the result string
-  return *dest;
-}
-
 // Get type of probing system from string
 Record2Type::ProbingSystem_type::Type_type
 GetProbingSystemTypeEnum(const mxArray *inp)
@@ -280,7 +241,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"     .Comment    - 'A user comment specific to this dataset'\n"          
      L"    pinfo - Info about data organisation\n");
 
-  char FileName[1024];              /* filename */
+  // char FileName[1024];              /* filename */
 
   /* check for proper number of arguments */
   if(nrhs!=5)
@@ -306,10 +267,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
   }
 
   /* get the filename  */
-  if (mxGetString(prhs[0], FileName, sizeof(FileName)-1))
+  std::wstring FileNameL(ConvertMtoWStr(prhs[0]));
+/*  if (mxGetString(prhs[0], FileName, sizeof(FileName)-1))
   {
     mexErrMsgIdAndTxt("openGPS:writeX3P:notString","Filename is too long.");
-  }
+  }*/
   
   /* make sure the coordinate arrays are numeric */
   if( !mxIsNumeric(prhs[1]) || 
@@ -332,9 +294,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
   }
 
   // Convert filename to wide character
-  _TCHAR FileNameL[1024];
-  for (unsigned int i=0; i<1024 ; i++)
-    FileNameL[i] = FileName[i];
+  // _TCHAR FileNameL[1024];
+  // for (unsigned int i=0; i<1024 ; i++)
+  //  FileNameL[i] = FileName[i];
 
   // Get pointers to arrays
   const mxArray *inMatrixX=prhs[1];               /*input matrix with x-Values*/
@@ -574,7 +536,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     useBinary=true;
 
   /* Create ISO5436_2 container, */
-  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(FileNameL, NULL, record1, &record2, matrix, useBinary);
+  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(FileNameL.c_str(), NULL, record1, &record2, matrix, useBinary);
 
   /* Add data points */
   /* 1. Create point vector buffer */
@@ -667,7 +629,37 @@ void mexFunction( int nlhs, mxArray *plhs[],
 
    ogps_AppendVendorSpecific(handle, _T("http://www.example.com/format/version1"), vname.c_str());
    */
-   
+
+  // Create the point info structure
+  // Get document 
+  const ISO5436_2Type* const document = ogps_GetDocument(handle);
+  if (ogps_HasError())
+  {
+    mexErrMsgIdAndTxt("openGPS:openX3P:XMLDocument","Could not access XML document!");
+  }
+  // Get a reference to record 1
+  const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record1_type &r1 = document->Record1();
+
+  // Create point info structure
+  // Number of structure elements
+  const unsigned int nelem=4;
+  // Field names
+  const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList"};
+  // Create the structure
+  plhs[0] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
+
+  // Get file format revision
+  mxSetField(plhs[0], 0, "Revision",  ConvertWtoMStr(r1.Revision()));
+
+  // Get Feature type "PRF", "SUR", "PCL"
+  mxSetField(plhs[0], 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
+
+  // Check for matrix organisation
+  mxSetField(plhs[0], 0, "IsMatrix",  mxCreateLogicalScalar(ogps_IsMatrix(handle)));
+  // Check for list organisation
+  mxSetField(plhs[0], 0, "IsList",  mxCreateLogicalScalar(ogps_IsMatrix(handle) ? false:true));
+
+  
   /* Finally: write container to disk. */
   ogps_WriteISO5436_2(handle);
   ogps_CloseISO5436_2(&handle);
@@ -678,7 +670,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   {
     // Print full description
     ostrstream msg;
-    msg << "Error writing X3P-file name \"" << wstring(FileNameL) << "\"!" << endl
+    msg << "Error writing X3P-file name \"" << FileNameL << "\"!" << endl
         << ogps_GetErrorMessage() << endl
         << ogps_GetErrorDescription() << endl
         << ends;

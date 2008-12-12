@@ -30,6 +30,8 @@ LibX3P= '-lISO5436_2_XML_S '
 
 % Path of x3p dll
 LibX3PPath = [InstallX3P,'bin',fs,'ISO5436_2_XML.dll']
+% Path of Sample files
+X3PSamplePath = [InstallX3P,'SampleFiles',fs,'*.x3p']
            
 %%
 
@@ -82,8 +84,8 @@ end
 
 %% Create compile commands
 cmex=['mex ',debug,IDirX3P,LDirX3P,LibX3P,IDirCS,LDirCS,'COMPFLAGS="$COMPFLAGS /Zc:wchar_t" '];
-cmexopenX3P=[cmex,'openX3P.cpp'];
-cmexwriteX3P=[cmex,'writeX3P.cpp'];
+cmexopenX3P=[cmex,'openX3P.cpp ','X3PUtilities.cpp'];
+cmexwriteX3P=[cmex,'writeX3P.cpp ','X3PUtilities.cpp'];
 
 %% compile
 disp(cmexopenX3P);
@@ -95,3 +97,11 @@ eval(cmexwriteX3P)
 %% Copy the dlls to the same directory as the mex files
 copyfile(LibX3PPath,'.')
 copyfile(LibXercesPath,'.')
+
+%% Copy sample files
+% Clear all x3p files from current dir
+disp('Delete all x3p files in current directory...');
+delete('*.x3p');
+% Copy sample files to current dir
+disp('Copy sample files to current directory...');
+copyfile(X3PSamplePath,'.')

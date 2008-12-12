@@ -54,13 +54,17 @@ function TestX3P()
     disp(' ');
     disp('****************************************************');
     disp(['Reading x3p file "',testfiles{i},'"...']);
-    [z,x,y,pinfo,meta] = openX3P(testfiles{i});
-    
-    % Test write
-    pinfo = writeX3P(['w_',testfiles{i}],x,y,z,meta);
+    [z,x,y,pinfor,meta] = openX3P(testfiles{i});
     
     % Print point info
-    pinfo
+    pinfor
+    
+    % Test write
+    disp(['Write file back to "','w_',testfiles{i},'"']);
+    pinfow = writeX3P(['w_',testfiles{i}],x,y,z,meta);
+    
+    % Print point info
+    pinfow
     % Get dimensions and extend to 3
     dims = [size(z),1,1];
     dims = dims(1:3);
@@ -73,19 +77,19 @@ function TestX3P()
         figure('name',testfiles{i});
 
         % check for list type data
-        if pinfo.IsList
+        if pinfor.IsList
           % List type data are independet points without topologic 
           % neighbourship
           plot3(x,y,z,'+');
         else
           % Matrix type data can be ploted as surface or profile
           % Is a surface profile?
-          if strcmp(pinfo.FeatureType,'SUR')
+          if strcmp(pinfor.FeatureType,'SUR')
             % This is a matrix plot it layer by layer
             hold all;
             surface(x(:,:,layer),y(:,:,layer),z(:,:,layer));
             hold off;
-          elseif strcmp(pinfo.FeatureType,'PRF')
+          elseif strcmp(pinfor.FeatureType,'PRF')
             % This is a a line profile
             plot(x,z);
           else
