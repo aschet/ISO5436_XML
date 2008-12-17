@@ -46,27 +46,27 @@ FloatInlineValidity::~FloatInlineValidity()
 
 void FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
-   _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
+  _ASSERT(std::numeric_limits<OGPS_Float>::has_quiet_NaN);
 
-   if(!value)
-   {
-      GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Float>::infinity());
-   }
+  if(!value)
+  {
+   GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Float>::quiet_NaN());
+  }
 }
 
 OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const throw(...)
 {
-   _ASSERT(std::numeric_limits<OGPS_Float>::has_infinity);
+  _ASSERT(std::numeric_limits<OGPS_Float>::has_quiet_NaN);
 
    OGPS_Float value;
    GetPointBuffer()->Get(index, value);
-   return value != std::numeric_limits<OGPS_Float>::infinity();
+   return value != std::numeric_limits<OGPS_Float>::quiet_NaN();
 }
 
 DoubleInlineValidity::DoubleInlineValidity(PointBuffer* const value)
 : PointValidityProvider(value)
 {
-   _ASSERT(value && value->GetPointType() == OGPS_DoublePointType);
+  _ASSERT(value && value->GetPointType() == OGPS_DoublePointType);
 }
 
 DoubleInlineValidity::~DoubleInlineValidity()
@@ -75,19 +75,19 @@ DoubleInlineValidity::~DoubleInlineValidity()
 
 void DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
 {
-   _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
+  _ASSERT(std::numeric_limits<OGPS_Double>::has_quiet_NaN);
 
-   if(!value)
-   {
-      GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Double>::infinity());
-   }
+  if(!value)
+  {
+   GetPointBuffer()->Set(index, std::numeric_limits<OGPS_Double>::quiet_NaN());
+  }
 }
 
 OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const throw(...)
 {
-   _ASSERT(std::numeric_limits<OGPS_Double>::has_infinity);
+  _ASSERT(std::numeric_limits<OGPS_Double>::has_quiet_NaN);
 
-   OGPS_Double value;
-   GetPointBuffer()->Get(index, value);
-   return (value != std::numeric_limits<OGPS_Double>::infinity());
+  OGPS_Double value;
+  GetPointBuffer()->Get(index, value);
+  return (value != std::numeric_limits<OGPS_Double>::quiet_NaN());
 }

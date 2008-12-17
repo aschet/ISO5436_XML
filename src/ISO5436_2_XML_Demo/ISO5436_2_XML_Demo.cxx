@@ -197,7 +197,7 @@ PrintMetaData(const OGPS_ISO5436_2Handle handle)
     *
     * @param fileName Full path to the ISO5436-2 XML X3P to write.
     */
-void simpleExample(OpenGPS::String fileName)
+void simpleExample(const OpenGPS::String fileName)
 {
    /* Simple example where we have two incremental and one absolute axis (the z-axis). */
 
@@ -211,8 +211,8 @@ void simpleExample(OpenGPS::String fileName)
    xaxis.DataType(xdataType);
 
    /* Set increment and offset. */
-   xaxis.Increment(1.60160000000000E-0002);
-   xaxis.Offset(0.0);
+   xaxis.Increment(1.60123456789123456789E-0002);
+   xaxis.Offset(1.0123456789123456789e-1);
 
    Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::D); /* double */
@@ -220,13 +220,16 @@ void simpleExample(OpenGPS::String fileName)
    yaxis.DataType(ydataType);
 
    /* Set increment and offset. */
-   yaxis.Increment(1.60160000000000E-0002);
+   yaxis.Increment(1.60123456789123456789E-0002);
    yaxis.Offset(0.0);
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D); /* double */
    Record1Type::Axes_type::CZ_type zaxis(zaxisType);
    zaxis.DataType(zdataType);
+   // Default value for absolute axis
+   zaxis.Increment(1);
+   zaxis.Offset(-1e-1);
 
    Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
 
@@ -254,7 +257,7 @@ void simpleExample(OpenGPS::String fileName)
 
 
    /* Create MATRIX */
-   MatrixDimensionType matrix(1, 1, 2);
+   MatrixDimensionType matrix(2, 2, 2);
 
 
    /* Create ISO5436_2 container */
@@ -278,9 +281,15 @@ void simpleExample(OpenGPS::String fileName)
    ogps_SetMatrixPoint(handle, u , v, w, vector);
 
    /* Loop all data points we want to add... */
+   ogps_SetDoubleZ(vector, 3E-0001);
+   ogps_SetMatrixPoint(handle, 1 , 0, 0, vector);
+   ogps_SetDoubleZ(vector, 2E-0001);
+   ogps_SetMatrixPoint(handle, 0 , 1, 0, vector);
+   ogps_SetDoubleZ(vector, 1E-0001);
+   ogps_SetMatrixPoint(handle, 1 , 1, 0, vector);
 
    /* 2b/3b. We have missing point data, here. */
-   ogps_SetMatrixPoint(handle, u , v, w + 1, NULL);
+   ogps_SetMatrixPoint(handle, 0 , 0, 1, NULL);
 
    /* The above will show up in xml like this: */
    /*
@@ -293,6 +302,12 @@ void simpleExample(OpenGPS::String fileName)
    * <Datum>8.23683772970184E-0001</Datum>
    * </DataList>
    */
+   ogps_SetDoubleZ(vector, 5E-0001);
+   ogps_SetMatrixPoint(handle, 1 , 0, 1, vector);
+   ogps_SetDoubleZ(vector, 6E-0001);
+   ogps_SetMatrixPoint(handle, 0 , 1, 1, vector);
+   ogps_SetDoubleZ(vector, 7E-0001);
+   ogps_SetMatrixPoint(handle, 1 , 1, 1, vector);
 
    /* Free buffer */
    ogps_FreePointVector(&vector);
@@ -315,7 +330,7 @@ void simpleExample(OpenGPS::String fileName)
 }
 
 
-void mediumComplexExample(OpenGPS::String fileName)
+void mediumComplexExample(const OpenGPS::String fileName)
 {
    /* More complex example where we have three absolute axis. */
 
@@ -1088,14 +1103,15 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    /* A profile is still 3D. so increment and offset of x and y have a meaning, but both are incremented from the same index! */
    // This example is a profile along x-axis
    xaxis.Increment(10E-6);
-   xaxis.Offset(0.0);
+   // Test very small numbers
+   xaxis.Offset(1.12345678912345678912345e-19);
 
    Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CY_type yaxis(yaxisType);
    yaxis.DataType(ydataType);
-   // Increment has to be zero to orient profile along x-axis.
-   yaxis.Increment(0);
+   // Increment defaults to 1.
+   yaxis.Increment(1);
    yaxis.Offset(0.0);
 
    Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
