@@ -30,6 +30,7 @@
 #include "X3PUtilities.h"
 
 using namespace std;
+using namespace OpenGPS::Schemas::ISO5436_2;
 
 // Helper functions for X3P import export in MATLAB
 // Convert wstring to matlab string
@@ -68,4 +69,57 @@ ConvertMtoWStr(const mxArray *inp)
   // Return reference to wstring
   // Todo: caller has to delete the result string
   return *dest;
+}
+
+
+// Get point info structure returned by openX3P and writeX3P
+mxArray *
+GetPointInfoStructure(OGPS_ISO5436_2Handle handle)
+{
+  // Result
+  mxArray *res=NULL;
+
+  // Get document 
+  const ISO5436_2Type* const document = ogps_GetDocument(handle);
+  if (ogps_HasError())
+  {
+    mexErrMsgIdAndTxt("openGPS:X3P:XMLDocument",
+            "Could not access XML document in current x3p file!");
+    return NULL;
+  }
+  // Get a reference to record 1
+  const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record1_type &r1 = document->Record1();
+
+  // Create point info structure
+  // Number of structure elements
+  const unsigned int nelem=7;
+  // Field names
+  const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList",
+                                 "isXIncremental","isYIncremental","isZIncremental"};
+  // Create the structure
+  res = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
+
+  // Get file format revision
+  mxSetField(res, 0, "Revision",  ConvertWtoMStr(r1.Revision()));
+
+  // Get Feature type "PRF", "SUR", "PCL"
+  mxSetField(res, 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
+
+  // Check for matrix organisation
+  mxSetField(res, 0, "IsMatrix",  mxCreateLogicalScalar(ogps_IsMatrix(handle)));
+  // Check for list organisation
+  mxSetField(res, 0, "IsList",  mxCreateLogicalScalar(ogps_IsMatrix(handle) ? false:true));
+  // Check for axis types
+  mxSetField(res, 0, "isXIncremental",  mxCreateLogicalScalar(
+          r1.Axes().CX().AxisType() == Record1Type::Axes_type::CX_type::AxisType_type::I 
+          ? true : false));
+  mxSetField(res, 0, "isYIncremental",  mxCreateLogicalScalar(
+          r1.Axes().CY().AxisType() == Record1Type::Axes_type::CY_type::AxisType_type::I 
+          ? true : false));
+  mxSetField(res, 0, "isZIncremental",  mxCreateLogicalScalar(
+          r1.Axes().CZ().AxisType() == Record1Type::Axes_type::CZ_type::AxisType_type::I 
+          ? true : false));    
+          
+  // Return pointer to structure
+  return res;
 }

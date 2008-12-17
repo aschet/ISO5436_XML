@@ -216,12 +216,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
          break;
       }
 
+      // Get current point
+      double x, y, z;
+      ogps_GetXYZ(vector, &x, &y, &z);
       /* Valid data point (not missing)?  */
       if(ogps_IsValidPoint(vector))
       {
-         double x, y, z;
-         ogps_GetXYZ(vector, &x, &y, &z);
-         
          // Write data point to array
          *(ptrX++) = x;
          *(ptrY++) = y;
@@ -230,11 +230,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
       else
       {
          // Write invalid point to array
-         *(ptrX++) = numeric_limits<double>::quiet_NaN();
-         *(ptrY++) = numeric_limits<double>::quiet_NaN();
-         *(ptrZ++) = numeric_limits<double>::quiet_NaN();
+         *(ptrX++) = mxGetNaN();
+         *(ptrY++) = mxGetNaN();
+         *(ptrZ++) = mxGetNaN();
       }
-
    }
 
    // Failed?
@@ -254,38 +253,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
 
   // get point info 
   if (hasPointInfo)
-  {
-    // Get document 
-    const ISO5436_2Type* const document = ogps_GetDocument(handle);
-    if (ogps_HasError())
-    {
-      ostrstream msg;
-      msg << "Could not access XML document in file \"" << string(FileName) << "\"!"
-          << endl << ends;
-      mexErrMsgIdAndTxt("openGPS:openX3P:XMLDocument",msg.str());
-    }
-    // Get a reference to record 1
-    const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record1_type &r1 = document->Record1();
-    
-    // Create point info structure
-    // Number of structure elements
-    const unsigned int nelem=4;
-    // Field names
-    const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList"};
-    // Create the structure
-    plhs[3] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
-    
-    // Get file format revision
-    mxSetField(plhs[3], 0, "Revision",  ConvertWtoMStr(r1.Revision()));
-
-    // Get Feature type "PRF", "SUR", "PCL"
-    mxSetField(plhs[3], 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
-
-    // Check for matrix organisation
-    mxSetField(plhs[3], 0, "IsMatrix",  mxCreateLogicalScalar(ogps_IsMatrix(handle)));
-    // Check for list organisation
-    mxSetField(plhs[3], 0, "IsList",  mxCreateLogicalScalar(ogps_IsMatrix(handle) ? false:true));
-  }
+     plhs[3] = GetPointInfoStructure(handle);
    
   // Collect meta data
   if (hasMeta)

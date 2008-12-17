@@ -61,10 +61,30 @@ function TestX3P()
     
     % Test write
     disp(['Write file back to "','w_',testfiles{i},'"']);
-    pinfow = writeX3P(['w_',testfiles{i}],x,y,z,meta);
+    testfilename = ['w_',testfiles{i}];
+    pinfow = writeX3P(testfilename,pinfor.FeatureType,x,y,z,meta);
     
     % Print point info
     pinfow
+
+    disp(['Rereading and comparing x3p file "',testfiles{i},'"...']);
+    [z1,x1,y1,pinfow1,meta1] = openX3P(testfilename);
+    
+    % Compare meta information
+    if structcompare(meta,meta1)==false
+      warning('Warning: Meta information has changed on read write cycle!');
+    end
+    % Compare point information
+    if structcompare(pinfow,pinfow1)==false
+      pinfow1
+      warning('Warning: Point information structure has changed on read write cycle!');
+    end
+    % Compare coordinate vectors
+    ErrMaxX = max(abs(x1(:)-x(:)));
+    ErrMaxY = max(abs(y1(:)-y(:)));
+    ErrMaxZ = max(abs(z1(:)-z(:)));
+    fprintf(1,'Maximum coordinate differences [x,y,z] = [%g,%g,%g]\n',ErrMaxX,ErrMaxY,ErrMaxZ);
+    
     % Get dimensions and extend to 3
     dims = [size(z),1,1];
     dims = dims(1:3);
@@ -106,4 +126,48 @@ function TestX3P()
     % Display meta information for this files
     meta
   end
+end
+
+% Helper function to compare two structures
+function equal = structcompare(s1,s2)
+  % Sort structures
+  s1s = orderfields(s1);
+  s2s = orderfields(s2);
+  
+  % Get fieldnames
+  f1n = fieldnames(s1s);
+  f2n = fieldnames(s2s);
+  
+  % Compare number of fields
+  if numel(f1n) ~= numel(f2n)
+    equal=false;
+    return;
+  end
+
+  % compare
+  for i=1:numel(f1n)
+    % compare fieldnames
+    if ~strcmp(f1n(i),f2n(i))
+      equal=false;
+      return;
+    end
+    % compare contents
+    if (isnumeric(s1.(f1n{i})) && isnumeric(s2.(f2n{i}))) || ...
+       (islogical(s1.(f1n{i})) && islogical(s2.(f2n{i})))
+      % Compare numerically
+      if s1.(f1n{i}) ~= s2.(f2n{i})
+        equal=false;
+        return;
+      end
+    else
+      % Compare strings
+      if ~strcmp(s1.(f1n{i}),s2.(f2n{i}))
+        equal=false;
+        return;
+      end
+    end
+  end
+  
+  % All equal
+  equal=true;
 end

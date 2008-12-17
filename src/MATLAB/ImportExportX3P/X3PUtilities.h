@@ -34,10 +34,17 @@
 #include <string>
 #include <tchar.h>
 #include "mex.h"
+#include <opengps/cxx/opengps.hxx>
+#include <opengps/iso5436_2.h>
+#include <opengps/cxx/iso5436_2.hxx>
+#include <opengps/cxx/iso5436_2_handle.hxx>
+#include <opengps/cxx/iso5436_2_xsd.hxx>
 
 // convert wstring to matlab string.
 mxArray *ConvertWtoMStr(const std::wstring &inp);
 // Convert matlab string to wstring
 std::wstring &ConvertMtoWStr(const mxArray *inp);
+// Get point info structure
+mxArray *GetPointInfoStructure(OGPS_ISO5436_2Handle handle);
 
 #endif

@@ -66,6 +66,7 @@ using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
 
 // Check for incremental data in axis vector for arbitrary numeric type
+// Array must have at least two dimensions
 // Returns 0 for non incremental axis
 template <class T> double
 AxisIncrement(const mxArray *x)
@@ -73,8 +74,14 @@ AxisIncrement(const mxArray *x)
   double curr,increment=0;
   // Element pointer
   const T *ptr = (const T*)mxGetPr(x);
-  // Number of elements
-  mwSize numel = mxGetNumberOfElements(x);
+  // Check for two dimensions
+  mxAssert(mxGetNumberOfElements(x)>1,
+          "AxisIncrement Assertion: input array must have at least 2 dimensions!");
+  // Number of elements in first two dimensions
+  const mwSize *dims = mxGetDimensions(x);
+  unsigned long numel = dims[0]*dims[1];
+  // number of elements must be > 1
+  mxAssert(numel>1, "AxisIncrement Assertion: Number of elements in first two dimensions must be >= 2");
 
   // estimate increment from first element
   increment = (*(ptr+1)) - (*ptr) ;
@@ -106,16 +113,16 @@ AxisIsIncremental(const mxArray *x, double &increment)
   // Flag for coord vector
   bool isVector = false;
   
-  // Check number of dimensions if only 1 or [1,m] or [n,1] it is a vector
+  // Check number of dimensions if only 1 or [1,v] or [u,1] it is a vector
   if ( ndims > 2)
     // This is not incremental
     return false;
-  // Check for [n,1] or [1,m]
+  // Check for [u,1,w] or [1,v,w]
   if (ndims == 2)
   {
     if (((dims[0] == 1) && (dims[1] > 1))
       ||((dims[1] == 1) && (dims[0] > 1)))
-      // This is a 1d coordinate vector an can be checked to be incremental
+      // This is a 1d coordinate vector and can be checked to be incremental
       isVector=true;
     else
       return false;
@@ -181,7 +188,7 @@ bool IsMetaComplete(const mxArray *meta)
     {
       // Print full description
       ostrstream msg;
-      msg << "Error: Meta data record is incomplete, field\"" 
+      msg << "Error: Meta data record is incomplete, field \"" 
           << string(fieldnames[i]) << "\" is missing!" << endl << ends;
       mexErrMsgIdAndTxt("openGPS:writeX3P:MetaData",msg.str());
       return false;
@@ -224,7 +231,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
   
   const wstring SyntaxHelp(  
      L"Call Syntax:\n"
-     L"  pinfo = writeX3P(filename,x,y,z,meta)\n"
+     L"  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta)\n"
+     L"    FileName - name of file to write\n"
+     L"    FeatureType - one of 'PRF' for a line profile, 'SUR' for surface or 'PCL' for a point cloud.\n"
      L"    x     - 1,2 or 3d array of x coordinates in meter\n"
      L"    y     - 1,2 or 3d array of y coordinates in meter\n"
      L"    z     - 1,2 or 3d array of z coordinates in meter\n"
@@ -244,7 +253,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // char FileName[1024];              /* filename */
 
   /* check for proper number of arguments */
-  if(nrhs!=5)
+  if(nrhs!=6)
   {
     ostrstream msg;
     msg << "writeX3P was called with " << nrhs << " input arguments!" << endl
@@ -252,171 +261,235 @@ void mexFunction( int nlhs, mxArray *plhs[],
     mexErrMsgIdAndTxt("openGPS:writeX3P:nrhs",msg.str());
   }
   // Check number of output arguments
-  if(nlhs!=1)
+  if(nlhs>1)
   {
     ostrstream msg;
     msg << "writeX3P was called with " << nlhs << " output arguments!" << endl
         << SyntaxHelp << ends;
     mexErrMsgIdAndTxt("openGPS:writeX3P:nlhs",msg.str());
   }
-    
-  /* make sure the first input argument is string */
-  if( !mxIsChar(prhs[0]) || 
-       mxGetNumberOfElements(prhs[0])<1 ) {
-       mexErrMsgIdAndTxt("openGPS:writeX3P:notString","First argument must be a file name string");
-  }
+  // Flag for structure output argument available
+  bool hasPointInfo=false;
+  if (nlhs>=1)
+    hasPointInfo=true;
 
+  // Filename
+  const mxArray *inFileName=prhs[0];
+  // feature type string
+  const mxArray *inFeatureType=prhs[1];
+  // Get pointers to input data
+  const mxArray *inMatrixX=prhs[2];               /*input matrix with x-Values*/
+  const mxArray *inMatrixY=prhs[3];               /*input matrix with y-Values*/
+  const mxArray *inMatrixZ=prhs[4];               /*input matrix with z-Values*/
+  const mxArray *meta=prhs[5];                    /* Meta data structure */
+
+  
+  /* make sure the first input argument is string */
+  if( !mxIsChar(inFileName) || 
+       mxGetNumberOfElements(inFileName)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notString","FileName argument must be a string");
+  }
   /* get the filename  */
-  std::wstring FileNameL(ConvertMtoWStr(prhs[0]));
-/*  if (mxGetString(prhs[0], FileName, sizeof(FileName)-1))
-  {
-    mexErrMsgIdAndTxt("openGPS:writeX3P:notString","Filename is too long.");
-  }*/
+  std::wstring FileNameL(ConvertMtoWStr(inFileName));
+
+  if( !mxIsChar(inFeatureType) || 
+       mxGetNumberOfElements(inFeatureType)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notString","FeatureType argument must be a string");
+  }
   
   /* make sure the coordinate arrays are numeric */
-  if( !mxIsNumeric(prhs[1]) || 
-       mxGetNumberOfElements(prhs[1])<1 ) {
-       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Second input argument must be numeric");
+  if( !mxIsNumeric(inMatrixX) || 
+       mxGetNumberOfElements(inMatrixX)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","X input argument must be numeric");
   }
-  if( !mxIsNumeric(prhs[2]) || 
-       mxGetNumberOfElements(prhs[2])<1 ) {
-       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Third input argument must be numeric");
+  if( !mxIsNumeric(inMatrixY) || 
+       mxGetNumberOfElements(inMatrixY)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Y input argument must be numeric");
   }
-  if( !mxIsNumeric(prhs[3]) || 
-       mxGetNumberOfElements(prhs[3])<1 ) {
-       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Fourth input argument must be numeric");
+  if( !mxIsNumeric(inMatrixZ) || 
+       mxGetNumberOfElements(inMatrixZ)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Z input argument must be numeric");
   }
   
-  /* make sure the fourth argument is a structure */
-  if( !mxIsStruct(prhs[4]) || 
-       mxGetNumberOfElements(prhs[4])<1 ) {
-       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Fifth input argument must be a meta data structure");
+  /* make sure the meta data argument is a structure */
+  if( !mxIsStruct(meta) || 
+       mxGetNumberOfElements(meta)<1 ) {
+       mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric","Meta data input argument must be a meta data structure");
   }
 
-  // Convert filename to wide character
-  // _TCHAR FileNameL[1024];
-  // for (unsigned int i=0; i<1024 ; i++)
-  //  FileNameL[i] = FileName[i];
-
-  // Get pointers to arrays
-  const mxArray *inMatrixX=prhs[1];               /*input matrix with x-Values*/
-  const mxArray *inMatrixY=prhs[2];               /*input matrix with y-Values*/
-  const mxArray *inMatrixZ=prhs[3];               /*input matrix with z-Values*/
-  const mxArray *meta=prhs[4];                    /* Meta data structure */
-
-  // Check meta data for completeness
-  if (false == IsMetaComplete(meta))
-    return;
+  // Get featuretype
+  wstring ftype(ConvertMtoWStr(inFeatureType));
+  // Define enum for featuretype
+  typedef enum {FT_undefined, FT_profile, FT_surface, FT_pointcloud} FeatureType_T;
+  FeatureType_T ft = FT_undefined;
   
+  // Check featuretype argument
+  if (ftype==OGPS_FEATURE_TYPE_PROFILE_NAME)
+    ft = FT_profile;
+  else if (ftype==OGPS_FEATURE_TYPE_SURFACE_NAME)
+    ft = FT_surface;
+  else if (ftype==OGPS_FEATURE_TYPE_POINTCLOUD_NAME)
+    ft = FT_pointcloud;
+  else
+  {
+    // Illegal value
+    ostrstream msg;
+    msg << "Error: FeatureType argument is \"" << ftype 
+        << "\" must be one of 'SUR', 'PRF', or 'PCL'!" 
+        << endl << ends;
+    mexErrMsgIdAndTxt("openGPS:writeX3P:FeatureType",msg.str());
+    return;    
+  }
+
   // Get number of data dimensions
   mwSize ndimx = mxGetNumberOfDimensions(inMatrixX);
   mwSize ndimy = mxGetNumberOfDimensions(inMatrixY);
   mwSize ndimz = mxGetNumberOfDimensions(inMatrixZ);
+  
   // Has to be one to 3 dimensions
   if ((ndimx < 1) || (ndimx>3) || (ndimy < 1) || (ndimy>3) || (ndimz < 1) || (ndimz>3))
   {
     // Print full description
     ostrstream msg;
-    // TODO: Error messages are not correctly printed yet!
-    msg << "Input arrays must have 1 to 3 dimensions but have [ndimx,ndimy,ndimz]=[" 
+    msg << "Error: Input arrays must have 1 to 3 dimensions but have [ndimx,ndimy,ndimz]=[" 
         << ndimx << ", " << ndimy << ", " << ndimz << "]!" << endl << ends;
     mexErrMsgIdAndTxt("openGPS:writeX3P:InputDimensions",msg.str());
     return;
   }  
-
-  // Check for u,1,w dimensions: This is a profile feature
+  
+  // Check meta data for completeness
+  if (false == IsMetaComplete(meta))
+    return;
+  
+  // Get dimensions of z-data matrix
   // Other dimensions are a surface
   const mwSize *dim = mxGetDimensions(inMatrixZ);
-  // check for profile data
-  bool isProfile=false;
-  if (ndimz == 1)
-    // This is a profile
-    isProfile = true;
-  else if ((dim[0]==1) || (dim[1]==1))
-    // This is also a profile if one dimension is 1
-    isProfile = true;
-  else
-    // This is a surface feature
-    isProfile = false;
+
+  // x or y are incremental if dimension of x or y are [n,1] or [1,n]
+  // and contained values are close to beeing incremental
+  double xIncrement=0;
+  double yIncrement=0;
+  // Flags for incremental axis
+  bool xIncremental=false;
+  bool yIncremental=false;
+  // Switch for featuretype, check data dimensions and incremental axis
+  switch (ft)
+  {
+    //********************** Profile Feature type
+    case FT_profile:
+      // A profile must have dimensions N,1,M or 1,N,M
+      // Both cases are handled the same way
+      if ((dim[0] != 1) && (dim[1] != 1))
+      {
+        // Print full description
+        ostrstream msg;
+        msg << "Error: For a line profile the input array Z must have dimensions [u,1,w] or [1,v,w] but has [" 
+            << dim[0] << ", " << dim[1] << ", w]!" << endl << ends;
+        mexErrMsgIdAndTxt("openGPS:writeX3P:NotProfileData",msg.str());
+        return;
+      }
+
+      // A profile must have more than one point n>1 and m>1
+      if ((dim[0] * dim[1])<2)
+      {
+        // Print full description
+        ostrstream msg;
+        msg << "Error: A profile must have at least two points. One of dimensions u and v must be > 1. [u,v,w] is [" 
+            << dim[0] << ", " << dim[1] << ", w]!" << endl << ends;
+        mexErrMsgIdAndTxt("openGPS:writeX3P:NotProfileData",msg.str());
+        return;
+      }
+
+      // Check for incremental axis
+      if (AxisIsIncremental(inMatrixX, xIncrement))
+        xIncremental = true;
+      if (AxisIsIncremental(inMatrixY, yIncrement))
+        yIncremental = true;
+      break;
+    //********************** Surface Feature type
+    case FT_surface:
+      // A surface must have n>1 and m>1
+      if ((dim[0]<2) || (dim[1]<2))
+      {
+        // Print full description
+        ostrstream msg;
+        msg << "Error: For a surface the input array Z must have dimensions [u,v,w] with u>=2 and v>=2 but has [" 
+            << dim[0] << ", " << dim[1] << ", w]!" << endl << ends;
+        mexErrMsgIdAndTxt("openGPS:writeX3P:NotSurfaceData",msg.str());
+        return;
+      }
+      
+      // Check for incremental axis
+      if (AxisIsIncremental(inMatrixX, xIncrement))
+        xIncremental = true;
+      if (AxisIsIncremental(inMatrixY, yIncrement))
+        yIncremental = true;
+      break;
+    //********************** Point cloud Feature type
+    case FT_pointcloud:
+      // Point cloud allows any dimension but no incremental axis
+      xIncremental = false;
+      yIncremental = false;
+      break;
+  }
+  
   
   // Create records for document
   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
   
   // Set feature type
-  Record1Type::FeatureType_type *featureType=NULL;
-  if (isProfile)
-    featureType = new Record1Type::FeatureType_type(OGPS_FEATURE_TYPE_PROFILE_NAME);
-  else
-    featureType = new Record1Type::FeatureType_type(OGPS_FEATURE_TYPE_SURFACE_NAME);
+  Record1Type::FeatureType_type featureType(ftype);
   
-  // X and y are incremental if dimension of x are [n,1] or [1,n]
-  double xIncrement=0;
-  bool xIncremental;
   // Axis type
   Record1Type::Axes_type::CX_type::AxisType_type *xaxisType=NULL;
 
-  if (AxisIsIncremental(inMatrixX, xIncrement))
-  {
-    xIncremental = true;
+  if (xIncremental)
     // Make incremental axis
-    xaxisType = new Record1Type::Axes_type::CX_type::AxisType_type(Record1Type::Axes_type::CX_type::AxisType_type::I); /* incremental */
-  }
+    xaxisType = new Record1Type::Axes_type::CX_type::AxisType_type(Record1Type::Axes_type::CX_type::AxisType_type::I); 
   else
-  {
-    xIncremental = false;
     // Absolute axis
-    xaxisType = new Record1Type::Axes_type::CX_type::AxisType_type(Record1Type::Axes_type::CX_type::AxisType_type::A); /* incremental */
-  }
-  // Data type is allways double
+    xaxisType = new Record1Type::Axes_type::CX_type::AxisType_type(Record1Type::Axes_type::CX_type::AxisType_type::A); 
+
+  // TODO: Data type is allways double
   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::D); /* double */  
   // Create axis of specified type
   Record1Type::Axes_type::CX_type xaxis(*xaxisType);
   xaxis.DataType(xdataType);
   /* Set increment and offset. */
   if (xIncrement==0)
-    xaxis.Increment(1.0);
+    xaxis.Increment(1.0); // Default value
   else
     xaxis.Increment(xIncrement);
-  // Todo: Offset should be set to average of data min/max
+  // Todo: Offset should be set to -average of data min/max
   xaxis.Offset(0.0);
   // Delete the axis type 
   delete xaxisType;
 
 
-    // X and y are incremental if dimension of x are [n,1] or [1,n]
-  double yIncrement=0;
-  bool yIncremental;
-  // Axis type
+  // Y Axis type
   Record1Type::Axes_type::CY_type::AxisType_type *yaxisType=NULL;
 
-  if (AxisIsIncremental(inMatrixY, yIncrement))
-  {
-    yIncremental = true;
+  if (yIncremental)
     // Make incremental axis
-    yaxisType = new Record1Type::Axes_type::CY_type::AxisType_type(Record1Type::Axes_type::CY_type::AxisType_type::I); /* incremental */
-  }
+    yaxisType = new Record1Type::Axes_type::CY_type::AxisType_type(Record1Type::Axes_type::CY_type::AxisType_type::I);
   else
-  {
-    yIncremental = false;
-    // Absolute axis
-    yaxisType = new Record1Type::Axes_type::CY_type::AxisType_type(Record1Type::Axes_type::CY_type::AxisType_type::A); /* incremental */
-  }
-  // Data type is allways double
+    yaxisType = new Record1Type::Axes_type::CY_type::AxisType_type(Record1Type::Axes_type::CY_type::AxisType_type::A);
+  
+  // ToDo: Data type is allways double
   Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::D); /* double */  
   // Create axis of specified type
   Record1Type::Axes_type::CY_type yaxis(*yaxisType);
   yaxis.DataType(ydataType);
   /* Set increment and offset. */
   if (yIncrement==0)
-    yaxis.Increment(1.0);
+    yaxis.Increment(1.0); // Default
   else
     yaxis.Increment(yIncrement);
 
-  // Todo: Offset should be set to average of data min/max
+  // Todo: Offset should be set to -average of data min/max
   yaxis.Offset(0.0);
   // Delete the axis type 
   delete yaxisType;
-
 
   // Setup z-axis, allways double absolute
   Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
@@ -430,10 +503,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // Create the final axis definition for all three axis
   Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
   // Create Record1
-  Record1Type record1(revision, *featureType, axis);
-  // Delete feature type
-  delete featureType;
-  featureType=NULL;
+  Record1Type record1(revision, featureType, axis);
    
   /* Create RECORD2 with information from meta data structure */
   // Data set creation date
@@ -547,11 +617,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
   OGPS_ULong v = 0;
   OGPS_ULong w = 0;
 
-  // Data pointer to z
-  OGPS_Double *pdbl=NULL;
-  OGPS_Float *pflt=NULL;
-  OGPS_Int16 *pshrt=NULL;
-  OGPS_Int32 *plng=NULL;
+  // Data pointer to z,y,x
+  OGPS_Double *pdblZ=NULL,*pdblY=NULL,*pdblX=NULL;
+  OGPS_Float *pfltZ=NULL,*pfltY=NULL,*pfltX=NULL;
+  OGPS_Int16 *pshrtZ=NULL,*pshrtY=NULL,*pshrtX=NULL;
+  OGPS_Int32 *plngZ=NULL,*plngY=NULL,*plngX=NULL;
   // Data type
   unsigned int dtype=0;
   if (mxIsDouble(inMatrixZ))
@@ -567,16 +637,40 @@ void mexFunction( int nlhs, mxArray *plhs[],
   switch (dtype)
   {
     case 1:
-      pdbl = (OGPS_Double*)mxGetPr(inMatrixZ);
+      // Get pointer to z data
+      pdblZ = (OGPS_Double*)mxGetPr(inMatrixZ);
+      // Get pointer to xy data if not incremental
+      if (!xIncremental)
+        pdblX = (OGPS_Double*)mxGetPr(inMatrixX);
+      if (!yIncremental)
+        pdblY = (OGPS_Double*)mxGetPr(inMatrixY);
       break;
     case 2:
-      pflt = (OGPS_Float*)mxGetPr(inMatrixZ);
+      // Get pointer to z data
+      pfltZ = (OGPS_Float*)mxGetPr(inMatrixZ);
+      // Get pointer to xy data if not incremental
+      if (!xIncremental)
+        pfltX = (OGPS_Float*)mxGetPr(inMatrixX);
+      if (!yIncremental)
+        pfltY = (OGPS_Float*)mxGetPr(inMatrixY);
       break;
     case 3:
-      pshrt = (OGPS_Int16*)mxGetPr(inMatrixZ);
+      // Get pointer to z data
+      pshrtZ = (OGPS_Int16*)mxGetPr(inMatrixZ);
+      // Get pointer to xy data if not incremental
+      if (!xIncremental)
+        pshrtX = (OGPS_Int16*)mxGetPr(inMatrixX);
+      if (!yIncremental)
+        pshrtY = (OGPS_Int16*)mxGetPr(inMatrixY);
       break;
     case 4:
-      plng = (OGPS_Int32*)mxGetPr(inMatrixZ);
+      // Get pointer to z data
+      plngZ = (OGPS_Int32*)mxGetPr(inMatrixZ);
+      // Get pointer to xy data if not incremental
+      if (!xIncremental)
+        plngX = (OGPS_Int32*)mxGetPr(inMatrixX);
+      if (!yIncremental)
+        plngY = (OGPS_Int32*)mxGetPr(inMatrixY);
       break;
   }
   
@@ -587,20 +681,43 @@ void mexFunction( int nlhs, mxArray *plhs[],
     {
       for (u=0; u<mdims[0]; u++)
       {
+        bool isValid=true;
         // Set z-coordinate
         switch (dtype)
         {
           case 1:
-            ogps_SetDoubleZ(vector, *(pdbl++));
+            // Check missing data
+            if (mxIsNaN(*pdblZ))
+            {
+              isValid=false;
+              pdblZ++;
+              break;
+            }
+            // Set z-value
+            ogps_SetDoubleZ(vector, *(pdblZ++));
+            // Set x value if not incremental
+            if (!xIncremental)
+              ogps_SetDoubleX(vector, *(pdblX++));
+            // Set y value if not incremental
+            if (!yIncremental)
+              ogps_SetDoubleY(vector, *(pdblY++));
             break;
           case 2:
-            ogps_SetFloatZ(vector, *(pflt++));
+            if (mxIsNaN(*pfltZ))
+            {
+              isValid=false;
+              break;
+            }
+            // Set z-value
+            ogps_SetFloatZ(vector, *(pfltZ++));
             break;
           case 3:
-            ogps_SetInt16Z(vector, *(pshrt++));
+            // Set z-value
+            ogps_SetInt16Z(vector, *(pshrtZ++));
             break;
           case 4:
-            ogps_SetInt32Z(vector, *(plng++));
+            // Set z-value
+            ogps_SetInt32Z(vector, *(plngZ++));
             break;
         }
           
@@ -608,12 +725,16 @@ void mexFunction( int nlhs, mxArray *plhs[],
         * other two are incremental, we simply set up just z
         * values and leave x an y values untouched (missing). */
 
-        /* 3. Write into document */
-        ogps_SetMatrixPoint(handle, u , v, w, vector);
-
-        // TODO: Handle missing data points
-        /* 2b/3b. We have missing point data, here. */
-        //ogps_SetMatrixPoint(handle, u , v, w + 1, NULL);
+        if (isValid)
+        {
+          /* 3. Write into document */
+          ogps_SetMatrixPoint(handle, u , v, w, vector);
+        }
+        else
+        {
+          // Set data point to invalid
+          ogps_SetMatrixPoint(handle, u , v, w , NULL);
+        }
       }
     }
   }
@@ -640,25 +761,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // Get a reference to record 1
   const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record1_type &r1 = document->Record1();
 
-  // Create point info structure
-  // Number of structure elements
-  const unsigned int nelem=4;
-  // Field names
-  const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList"};
-  // Create the structure
-  plhs[0] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
-
-  // Get file format revision
-  mxSetField(plhs[0], 0, "Revision",  ConvertWtoMStr(r1.Revision()));
-
-  // Get Feature type "PRF", "SUR", "PCL"
-  mxSetField(plhs[0], 0, "FeatureType",  ConvertWtoMStr(r1.FeatureType()));
-
-  // Check for matrix organisation
-  mxSetField(plhs[0], 0, "IsMatrix",  mxCreateLogicalScalar(ogps_IsMatrix(handle)));
-  // Check for list organisation
-  mxSetField(plhs[0], 0, "IsList",  mxCreateLogicalScalar(ogps_IsMatrix(handle) ? false:true));
-
+  // get point info 
+  if (hasPointInfo)
+     plhs[0] = GetPointInfoStructure(handle);
   
   /* Finally: write container to disk. */
   ogps_WriteISO5436_2(handle);

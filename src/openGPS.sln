@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibstat", "zlib\contrib\vs
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IncRev", "tools\IncRev\IncRev.vcproj", "{B8A81307-75C0-4ED2-81A9-BEA181A126A4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImportExportX3P", "MATLAB\ImportExportX3P\ImportExportX3P.vcproj", "{3DBCF3C7-217A-41DC-854B-4FE932F5B763}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Demo (Without Lib)|Win32 = Debug Demo (Without Lib)|Win32
@@ -72,6 +74,12 @@ Global
 		{B8A81307-75C0-4ED2-81A9-BEA181A126A4}.Release-Shared|Win32.Build.0 = Release|Win32
 		{B8A81307-75C0-4ED2-81A9-BEA181A126A4}.ReleaseWithoutAsm|Win32.ActiveCfg = Release|Win32
 		{B8A81307-75C0-4ED2-81A9-BEA181A126A4}.ReleaseWithoutAsm|Win32.Build.0 = Release|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.Debug Demo (Without Lib)|Win32.ActiveCfg = Debug|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.Debug-Shared|Win32.ActiveCfg = Debug|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.Release|Win32.ActiveCfg = Release|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.Release-Shared|Win32.ActiveCfg = Release|Win32
+		{3DBCF3C7-217A-41DC-854B-4FE932F5B763}.ReleaseWithoutAsm|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
