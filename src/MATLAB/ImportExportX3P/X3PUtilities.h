@@ -49,10 +49,10 @@
 // convert wstring to matlab string.
 mxArray *ConvertWtoMStr(const std::wstring &inp);
 // Convert matlab string to wstring
-std::wstring &ConvertMtoWStr(const mxArray *inp);
+std::wstring ConvertMtoWStr(const mxArray *inp);
 // Get point info structure
 mxArray *GetPointInfoStructure(OGPS_ISO5436_2Handle handle);
 // Get the name and version from X3P dll
-std::wstring &GetX3P_Dll_ID(void);
+std::wstring GetX3P_Dll_ID(void);
 
 #endif

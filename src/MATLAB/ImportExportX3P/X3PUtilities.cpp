@@ -55,11 +55,11 @@ ConvertWtoMStr(const std::wstring &inp)
 }
 
 // Convert matlab string to wstring
-std::wstring &
+std::wstring 
 ConvertMtoWStr(const mxArray *inp)
 {
   // Destination string
-  std::wstring *dest = new std::wstring();
+  std::wstring dest;
   
   // Get len from
   mwSize len = mxGetNumberOfElements(inp);
@@ -67,11 +67,10 @@ ConvertMtoWStr(const mxArray *inp)
   wchar_t *sptr = (wchar_t*)mxGetData(inp);
   // copy all characters to destination string
   for (int i=0; i<len ; i++)
-    dest->push_back(*(sptr++));
+    dest.push_back(*(sptr++));
 
   // Return reference to wstring
-  // Todo: caller has to delete the result string
-  return *dest;
+  return dest;
 }
 
 
@@ -131,12 +130,9 @@ GetPointInfoStructure(OGPS_ISO5436_2Handle handle)
 
 
 // Get the name and version from X3P dll
-std::wstring &
+std::wstring 
 GetX3P_Dll_ID(void)
-{
-  // Result string pointer
-  // std::wstring *res=NULL;
-  
+{  
   // Get dll name
   OpenGPS::String Name;
   OpenGPS::Info::GetName(&Name);
@@ -149,6 +145,6 @@ GetX3P_Dll_ID(void)
   msg.append(L" V");
   msg.append(Version);
 
-  // Create wstring from stream
-  return *new std::wstring(msg);
+  // Return result string
+  return msg;
 }
