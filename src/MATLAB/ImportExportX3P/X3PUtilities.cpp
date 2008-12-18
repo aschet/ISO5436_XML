@@ -29,6 +29,9 @@
 
 #include "X3PUtilities.h"
 
+#include <strstream>
+#include <opengps/cxx/info.hxx>
+
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
 
@@ -92,10 +95,10 @@ GetPointInfoStructure(OGPS_ISO5436_2Handle handle)
 
   // Create point info structure
   // Number of structure elements
-  const unsigned int nelem=7;
+  const unsigned int nelem=8;
   // Field names
   const char *fieldnames[nelem] = {"Revision","FeatureType","IsMatrix","IsList",
-                                 "isXIncremental","isYIncremental","isZIncremental"};
+                                 "isXIncremental","isYIncremental","isZIncremental","DLL_Version"};
   // Create the structure
   res = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
 
@@ -119,7 +122,33 @@ GetPointInfoStructure(OGPS_ISO5436_2Handle handle)
   mxSetField(res, 0, "isZIncremental",  mxCreateLogicalScalar(
           r1.Axes().CZ().AxisType() == Record1Type::Axes_type::CZ_type::AxisType_type::I 
           ? true : false));    
-          
+
+  // Set dll version
+  mxSetField(res, 0, "DLL_Version",  ConvertWtoMStr(GetX3P_Dll_ID()));
   // Return pointer to structure
   return res;
+}
+
+
+// Get the name and version from X3P dll
+std::wstring &
+GetX3P_Dll_ID(void)
+{
+  // Result string pointer
+  // std::wstring *res=NULL;
+  
+  // Get dll name
+  OpenGPS::String Name;
+  OpenGPS::Info::GetName(&Name);
+  // Get Version info
+  OpenGPS::String Version;
+  OpenGPS::Info::GetVersion(&Version);
+
+  // Create output string
+  std::wstring msg(Name);
+  msg.append(L" V");
+  msg.append(Version);
+
+  // Create wstring from stream
+  return *new std::wstring(msg);
 }

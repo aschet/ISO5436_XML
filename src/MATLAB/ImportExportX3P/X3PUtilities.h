@@ -31,6 +31,10 @@
 #ifndef _X3PUTILITIES_H
 #define _X3PUTILITIES_H
 
+#define SHARED_OPENGPS_LIBRARY
+#define _UNICODE
+#define UNICODE
+
 #include <string>
 #include <tchar.h>
 #include "mex.h"
@@ -40,11 +44,15 @@
 #include <opengps/cxx/iso5436_2_handle.hxx>
 #include <opengps/cxx/iso5436_2_xsd.hxx>
 
+#define OGPS_LICENSETEXT L"openX3P is part of the openGPS project (see <a href=\"http://www.opengps.eu/\">www.opengps.eu</a> for more info)\n"
+
 // convert wstring to matlab string.
 mxArray *ConvertWtoMStr(const std::wstring &inp);
 // Convert matlab string to wstring
 std::wstring &ConvertMtoWStr(const mxArray *inp);
 // Get point info structure
 mxArray *GetPointInfoStructure(OGPS_ISO5436_2Handle handle);
+// Get the name and version from X3P dll
+std::wstring &GetX3P_Dll_ID(void);
 
 #endif

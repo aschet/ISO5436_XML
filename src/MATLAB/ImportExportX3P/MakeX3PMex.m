@@ -14,7 +14,8 @@ up=['..',fs];
 d = [pwd(),fs];
 
 % Debug flag
-debug='-g '
+% debug='-g '
+debug=''
 
 %% Build path names
 
@@ -87,12 +88,44 @@ cmex=['mex ',debug,IDirX3P,LDirX3P,LibX3P,IDirCS,LDirCS,'COMPFLAGS="$COMPFLAGS /
 cmexopenX3P=[cmex,'openX3P.cpp ','X3PUtilities.cpp'];
 cmexwriteX3P=[cmex,'writeX3P.cpp ','X3PUtilities.cpp'];
 
-%% compile
-disp(cmexopenX3P);
-eval(cmexopenX3P)
+%% Check date of mexfiles and compare to source files
+  datsrc(1) = dir('openX3P.cpp');
+  datsrc(2) = dir('writeX3P.cpp');
+  datsrc(3) = dir('X3PUtilities.h');
+  datsrc(4) = dir('X3PUtilities.cpp');
+  datmex.openX3P_mex = dir(['openX3P.',mexext]);
+  datmex.writeX3P_mex = dir(['writeX3P.',mexext]);
+  
+  % Compare youngest source file to mex date
+  if (max([datsrc([1,3,4]).datenum]) >= datmex.openX3P_mex.datenum)
+    build_openX3P=true;
+  else
+    build_openX3P=false;
+  end
+  
+  % Compare youngest source file to mex date
+  if (max([datsrc([2,3,4]).datenum]) >= datmex.writeX3P_mex.datenum)
+    build_writeX3P=true;
+  else
+    build_writeX3P=false;
+  end
 
-disp(cmexwriteX3P);
-eval(cmexwriteX3P)
+%% compile
+if build_openX3P
+  disp(['openX3P.',mexext,' is out of date. Rebuilding.']);
+  disp(cmexopenX3P);
+  eval(cmexopenX3P)
+else
+  disp(['openX3P.',mexext,' is up to date. Not touching.']);
+end
+
+if build_writeX3P
+  disp(['writeX3P.',mexext,' is out of date. Rebuilding.']);
+  disp(cmexwriteX3P);
+  eval(cmexwriteX3P)
+else
+  disp(['writeX3P.',mexext,' is up to date. Not touching.']);
+end
 
 %% Copy the dlls to the same directory as the mex files
 copyfile(LibX3PPath,'.')

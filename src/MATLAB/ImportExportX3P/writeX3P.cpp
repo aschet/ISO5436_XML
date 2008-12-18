@@ -124,8 +124,7 @@ AxisIsIncremental(const mxArray *x, double &increment)
       ||((dims[1] == 1) && (dims[0] > 1)))
       // This is a 1d coordinate vector and can be checked to be incremental
       isVector=true;
-    else
-      return false;
+    else      return false;
   }
   else if (ndims==1)
     // 1d vector
@@ -229,7 +228,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
 {
   bool bHasStruct=false;
   
-  const wstring SyntaxHelp(  
+  wstring SyntaxHelp(  
      L"Call Syntax:\n"
      L"  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta)\n"
      L"    FileName - name of file to write\n"
@@ -248,9 +247,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"     .ProbingSystem_Type - one of  'Software','Contacting' or 'NonContacting'\n"
      L"     .ProbingSystem_Identification - String identifying lens, probe tip, etc.\n"
      L"     .Comment    - 'A user comment specific to this dataset'\n"          
-     L"    pinfo - Info about data organisation\n");
-
-  // char FileName[1024];              /* filename */
+     L"    pinfo - Info about data organisation\n\n"
+     OGPS_LICENSETEXT);
+  SyntaxHelp.append(GetX3P_Dll_ID());
 
   /* check for proper number of arguments */
   if(nrhs!=6)

@@ -42,10 +42,6 @@
 // mex -g -L"S:/openGPS/ISO5436_XML/install/lib/" -L"S:/openGPS/ISO5436_XML/install/bin/" -l"ISO5436_2_XML_S" -I"S:/openGPS/ISO5436_XML/install/include/" -I"C:\Programme\CodeSynthesis XSD 3.0\include"  COMPFLAGS="$COMPFLAGS /Zc:wchar_t" openX3P.cpp
 
 // We want to link to the iso5436_2.dll
-#define SHARED_OPENGPS_LIBRARY
-#define _UNICODE
-#define UNICODE
-
 #include "X3PUtilities.h"
 
 #include <tchar.h>
@@ -72,9 +68,9 @@ void mexFunction( int nlhs, mxArray *plhs[],
 {
   bool bHasStruct=false;
   
-  const wstring SyntaxHelp( 
+  wstring SyntaxHelp( 
      L"Call Syntax:\n"
-     L"  [x,y,z,meta] = openX3P(filename)\n"
+     L"  [z,x,y,pinfo,meta] = openX3P(filename)\n"
      L"    x     - Array of x coordinates in meter\n"
      L"    y     - Array of y coordinates in meter\n"
      L"    z     - Array of z coordinates in meter\n"
@@ -82,8 +78,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"    meta  - Meta data structure of the file\n"
      L"  [z, x, y] = openX3P(filename)\n"
      L"  [z, x, y, pinfo] = openX3P(filename)\n"
-     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n");
-  char FileName[1024];              /* filename */
+     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n\n"
+     OGPS_LICENSETEXT);
+  SyntaxHelp.append(GetX3P_Dll_ID());
+
+
   mxArray *outMatrixX=NULL;               /*output matrix with x-Values*/
   mxArray *outMatrixY=NULL;               /*output matrix with y-Values*/
   mxArray *outMatrixZ=NULL;               /*output matrix with z-Values*/
@@ -115,33 +114,28 @@ void mexFunction( int nlhs, mxArray *plhs[],
   if (nlhs >= 4)
     hasPointInfo=true;
 
-  /* make sure the first input argument is string */
-  if( !mxIsChar(prhs[0]) || 
-       mxGetNumberOfElements(prhs[0])<1 ) {
+  // Get filename
+  const mxArray *inFileName = prhs[0];
+
+  /* make sure the filename argument is string */
+  if( !mxIsChar(inFileName) || 
+       mxGetNumberOfElements(inFileName)<1 ) {
        mexErrMsgIdAndTxt("openGPS:openX3P:notString","Input must be a file name string");
   }
 
-  /* get the filename  */
-  if (mxGetString(prhs[0], FileName, sizeof(FileName)-1))
-  {
-    mexErrMsgIdAndTxt("openGPS:openX3P:notString","Filename is too long.");
-  }
-
   // Convert filename to wide character
-  _TCHAR FileNameL[1024];
-  for (unsigned int i=0; i<1024 ; i++)
-    FileNameL[i] = FileName[i];
+  std::wstring FileNameL(ConvertMtoWStr(inFileName));
   
   /* We want to read in some file and read its point data. */
   /* Open the file, hopefully everything went well... */
-  OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(FileNameL, NULL, TRUE);
+  OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(FileNameL.c_str(), NULL, TRUE);
 
   // Check for error
   if (ogps_HasError())
   {
     // Print full description
     ostrstream msg;
-    msg << "Error opening X3P-file name \"" << string(FileName) << "\"!" << endl
+    msg << "Error opening X3P-file name \"" << FileNameL << "\"!" << endl
         << wstring(ogps_GetErrorMessage()) << endl
         << wstring(ogps_GetErrorDescription()) << endl
         << ends;
@@ -241,7 +235,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
    {
      // Print full description
      ostrstream msg;
-     msg << "File \"" << string(FileName) << "\" was expected to contain exactly "
+     msg << "File \"" << FileNameL << "\" was expected to contain exactly "
          << npoints << " data points, but it seems to have more!" << endl
          << ends;
      mexErrMsgIdAndTxt("openGPS:openX3P:FileRead",msg.str());
@@ -263,7 +257,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     if (ogps_HasError())
     {
       ostrstream msg;
-      msg << "Could not access XML document in file \"" << string(FileName) << "\"!"
+      msg << "Could not access XML document in file \"" << FileNameL << "\"!"
           << endl << ends;
       mexErrMsgIdAndTxt("openGPS:openX3P:XMLDocument",msg.str());
     }
@@ -274,7 +268,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     if (r2opt.present() == FALSE)
     {
       ostrstream msg;
-      msg << "File \"" << string(FileName) << "\" does not contain meta data Record2!"
+      msg << "File \"" << FileNameL << "\" does not contain meta data Record2!"
           << endl << ends;
       mexWarnMsgIdAndTxt("openGPS:openX3P:XMLDocument:Record2",msg.str());
       return;
