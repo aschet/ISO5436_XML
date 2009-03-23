@@ -119,18 +119,19 @@ cmexwriteX3P=[cmex,'writeX3P.cpp ','X3PUtilities.cpp'];
   datsrc(2) = dir('writeX3P.cpp');
   datsrc(3) = dir('X3PUtilities.h');
   datsrc(4) = dir('X3PUtilities.cpp');
+  datsrc(5) = dir('MakeX3PMex.m');
   datmex.openX3P_mex = dir(['openX3P.',mexext]);
   datmex.writeX3P_mex = dir(['writeX3P.',mexext]);
   
   % Compare youngest source file to mex date
-  if (max([datsrc([1,3,4]).datenum]) >= datmex.openX3P_mex.datenum)
+  if (max([datsrc([1,3,4,5]).datenum]) >= datmex.openX3P_mex.datenum)
     build_openX3P=true;
   else
     build_openX3P=false;
   end
   
   % Compare youngest source file to mex date
-  if (max([datsrc([2,3,4]).datenum]) >= datmex.writeX3P_mex.datenum)
+  if (max([datsrc([2,3,4,5]).datenum]) >= datmex.writeX3P_mex.datenum)
     build_writeX3P=true;
   else
     build_writeX3P=false;
