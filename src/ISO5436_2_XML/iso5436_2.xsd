@@ -536,8 +536,8 @@
     			3-element offset vector. The * denotes a matrix product.
     			The formula for the x coordinate is: Qx =
     			r11*Px+r12*Py+r13*Pz + Tx. The formula for the y
-    			coordinate is: Qx = r21*Px+r22*Py+r23*Pz + Ty. The
-    			formula for the x coordinate is: Qx =
+    			coordinate is: Qy = r21*Px+r22*Py+r23*Pz + Ty. The
+    			formula for the x coordinate is: Qz =
     			r31*Px+r32*Py+r33*Pz + Tz.s
     		</xsd:documentation>
       </xsd:annotation>
