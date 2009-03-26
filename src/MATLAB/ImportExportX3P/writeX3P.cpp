@@ -230,7 +230,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   
   wstring SyntaxHelp(  
      L"Call Syntax:\n"
-     L"  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta)\n"
+     L"  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta[,...])\n"
      L"    FileName - name of file to write\n"
      L"    FeatureType - one of 'PRF' for a line profile, 'SUR' for surface or 'PCL' for a point cloud.\n"
      L"    x     - 1,2 or 3d array of x coordinates in meter\n"
@@ -247,12 +247,18 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"     .ProbingSystem_Type - one of  'Software','Contacting' or 'NonContacting'\n"
      L"     .ProbingSystem_Identification - String identifying lens, probe tip, etc.\n"
      L"     .Comment    - 'A user comment specific to this dataset'\n"          
-     L"    pinfo - Info about data organisation\n\n"
+     L"    pinfo - Info about data organisation\n"
+     L"  Additional key-value-pairs can be specified after the last argument:\n"
+     L"    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied"
+     L"                 to each 3D-data point P on readback. R1 = R*P+T\n"
+     L"    'offset'   - a 3 element vector T containing a translation vector for the data\n"
+     L"                 that is applied to each 3D-data point P on readback: R1 = R*P+T\n"
+     L"<a href=\"http://www.opengps.eu/\"www.opengps.eu</a>\n\n"
      OGPS_LICENSETEXT);
   SyntaxHelp.append(GetX3P_Dll_ID());
 
   /* check for proper number of arguments */
-  if(nrhs!=6)
+  if ((nrhs<6) || (nrhs>10))
   {
     ostrstream msg;
     msg << "writeX3P was called with " << nrhs << " input arguments!" << endl
@@ -277,11 +283,79 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // feature type string
   const mxArray *inFeatureType=prhs[1];
   // Get pointers to input data
-  const mxArray *inMatrixX=prhs[2];               /*input matrix with x-Values*/
-  const mxArray *inMatrixY=prhs[3];               /*input matrix with y-Values*/
-  const mxArray *inMatrixZ=prhs[4];               /*input matrix with z-Values*/
-  const mxArray *meta=prhs[5];                    /* Meta data structure */
+  const mxArray *inMatrixX=prhs[2];           /*input matrix with x-Values*/
+  const mxArray *inMatrixY=prhs[3];           /*input matrix with y-Values*/
+  const mxArray *inMatrixZ=prhs[4];           /*input matrix with z-Values*/
+  const mxArray *meta=prhs[5];                /* Meta data structure */
+  const mxArray **inKeywords = NULL;         /* Keyword-value pairs */
+  const mxArray *inRotation=NULL;             /* Rotation matrix */
+  const mxArray *inTranslation=NULL;          /* Translation vector */
+  // Flags for keyword existence
+  bool bHasRotation=false;
+  bool bHasTranslation=false;
 
+  const unsigned int cKeywordOffset=6;        //Position of first keyword argument
+  const unsigned int inNKeywords = nrhs-cKeywordOffset;    /* number of keyword arguments */
+
+  // Parse keyword arguments
+  if (inNKeywords > 0)
+  {
+    // Get pointer to start of keyword value pairs
+    inKeywords = &prhs[cKeywordOffset];
+    // Parse keys
+    for (unsigned int i=0; i<inNKeywords ; i++)
+    {
+      // Convert string to C
+      wstring key(ConvertMtoWStr(inKeywords[i]));
+
+      // check rotation matrix
+      if (key == L"rotation")
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'rotation' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inRotation = inKeywords[++i];
+        // check for argument type
+        if( !mxIsNumeric(inRotation) || !mxIsDouble(inRotation) || mxGetNumberOfElements(inRotation)!=9 ) 
+        {
+          mexErrMsgIdAndTxt("openGPS:writeX3P:notMatrix","rotation matrix must have 9 double precision elements");
+        }
+        // Everything is fine
+        bHasRotation = true;
+      }
+      // check rotation matrix
+      else if (key == L"translation")
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'translation' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inTranslation = inKeywords[++i];
+        // check for argument type
+        if( !mxIsNumeric(inTranslation) || !mxIsDouble(inTranslation) || mxGetNumberOfElements(inTranslation)!=3 ) 
+        {
+          mexErrMsgIdAndTxt("openGPS:writeX3P:notVector","translation vector must have 3 double precision elements");
+        }
+        // Everything is fine
+        bHasTranslation = true;
+      }
+      else
+      {
+        // Unkwon argument
+        ostrstream msg;
+        msg << "Warning: unknown keyword argument on position " << cKeywordOffset+i << "!" << endl << ends;
+        mexWarnMsgIdAndTxt("openGPS:writeX3P:IllegalArgument",msg.str());
+      }
+    }
+    
+  }
   
   /* make sure the first input argument is string */
   if( !mxIsChar(inFileName) || 
@@ -460,7 +534,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
   else
     xaxis.Increment(xIncrement);
   // Todo: Offset should be set to -average of data min/max
-  xaxis.Offset(0.0);
+  if (bHasTranslation)
+    // Set translation to value specified in keyword argument
+    xaxis.Offset(((double*)mxGetPr(inTranslation))[0]);
+  else
+    xaxis.Offset(0.0);
   // Delete the axis type 
   delete xaxisType;
 
@@ -486,7 +564,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
     yaxis.Increment(yIncrement);
 
   // Todo: Offset should be set to -average of data min/max
-  yaxis.Offset(0.0);
+  if (bHasTranslation)
+    // Set translation to value specified in keyword argument
+    yaxis.Offset(((double*)mxGetPr(inTranslation))[1]);
+  else
+    yaxis.Offset(0.0);
   // Delete the axis type 
   delete yaxisType;
 
@@ -497,10 +579,31 @@ void mexFunction( int nlhs, mxArray *plhs[],
   zaxis.DataType(zdataType);
   zaxis.Increment(1.0);
   // Todo: Offset should be set to average of data min/max
-  zaxis.Offset(0.0);
+  if (bHasTranslation)
+    // Set translation to value specified in keyword argument
+    zaxis.Offset(((double*)mxGetPr(inTranslation))[2]);
+  else
+    zaxis.Offset(0.0);
 
   // Create the final axis definition for all three axis
   Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
+  
+  // Create Rotation matrix
+  AxesType::Rotation_type *rot=NULL;
+  
+  if (bHasRotation)
+  {
+    // Get pointer to rotation matrix
+    double *rotMat = mxGetPr(inRotation);
+    // Create Rotation matrix
+    rot = new AxesType::Rotation_type(
+           rotMat[0],rotMat[3],rotMat[6],
+           rotMat[1],rotMat[4],rotMat[7],
+           rotMat[2],rotMat[5],rotMat[8]);
+    // add rotation matrix to axes type element
+    axis.Rotation(*rot);
+  }
+  
   // Create Record1
   Record1Type record1(revision, featureType, axis);
    
