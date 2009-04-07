@@ -122,6 +122,13 @@ namespace OpenGPS
       void FromChar(const char* const s);
 
       /*!
+       * Stores an ANSI char squence.
+       * @param s An ANSI char squence to store as unicode internally.
+       * @param length Amount of characters to be copied.
+       */
+      void FromChar(const char* const s, const size_t length);
+
+      /*!
        * Stores an MD5 sum as a character sequence in hexadecimal format.
        *
        * @param md5 The 128-Bit MD5 value to be storedin hexadecimal format.
@@ -148,6 +155,15 @@ namespace OpenGPS
        * returns the number of characters the target buffer must be able to store.
        */
       size_t CopyTo(OGPS_Character* const target, const size_t size) const;
+
+      /*!
+       * Replaces all occurances of a given string with another.
+       *
+       * @param old_str The string to be replaced.
+       * @param new_str The string inserted for a match.
+       * @returns This instance.
+       */
+      String& String::ReplaceAll(const String& old_str, const String& new_str);
 
 #ifdef _UNICODE
    private:

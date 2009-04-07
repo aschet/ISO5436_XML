@@ -39,17 +39,23 @@
 String::String() :
 BaseType()
 {
+#ifdef _UNICODE
    m_Chars = NULL;
+#endif
 }
 
 String::String(const BaseType& s) : BaseType(s)
 {
+#ifdef _UNICODE
    m_Chars = NULL;
+#endif
 }
 
 String::String(const OGPS_Character* const s) : BaseType(s)
 {
+#ifdef _UNICODE
    m_Chars = NULL;
+#endif
 }
 
 String::~String()
@@ -85,11 +91,27 @@ void String::FromChar(const char* const s)
    {
 #ifdef _UNICODE
       const size_t len = strlen(s);
-      wchar_t* chars = new wchar_t[len + 1];
+      FromChar(s, len);
+#else
+      *this = s;
+#endif
+   }
+   else
+   {
+      clear();
+   }
+}
+
+void String::FromChar(const char* const s, const size_t length)
+{
+   if(s && length > 0)
+   {
+#ifdef _UNICODE
+      wchar_t* chars = new wchar_t[length + 1];
       /// @bug: It would be safer to use wcstomb_s on windows systems but this function is not ANSI-standard.
 #pragma warning(suppress: 4996)
-      mbstowcs(chars, s, len);
-      chars[len] = 0;
+      mbstowcs(chars, s, length);
+      chars[length] = 0;
 
       *this = chars;
 
@@ -186,4 +208,19 @@ OGPS_Boolean String::ConvertFromMd5(const OpenGPS::UnsignedByte md5[16])
    }
 
    return FALSE;
+}
+
+String& String::ReplaceAll(const String& old_str, const String& new_str)
+{
+   size_t pos = 0;
+   do
+   {
+      pos = find(old_str, pos);
+      if(pos != String::npos)
+      {
+         replace(pos, old_str.length(), new_str);
+         pos += new_str.length();
+      }
+   } while(pos != String::npos);
+   return *this;
 }

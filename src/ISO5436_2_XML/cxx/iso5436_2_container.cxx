@@ -75,6 +75,8 @@
 
 #define _OPENGPS_ZIP_CHUNK_MAX (256*1024)
 #define _OPENGPS_FILE_URI_PREF _T("file:///")
+#define _OPENGPS_WHITESPACE _T(" ")
+#define _OPENGPS_URI_WHITESPACE _T("%20")
 
 #ifdef max
 #  undef max
@@ -1026,11 +1028,7 @@ void ISO5436_2Container::Compress() throw(...)
             SavePointBuffer(handle);
             vendorfilesAdded = WriteVendorSpecific(handle);
             SaveXmlDocument(handle);
-
-            if(HasValidPointsLink())
-            {
-               SaveValidPointsLink(handle);
-            }
+            SaveValidPointsLink(handle);
 
             success = TRUE;
          }
@@ -1425,6 +1423,14 @@ void ISO5436_2Container::ConfigureNamespaceMap(xml_schema::namespace_infomap& ma
    map[_T("p")].schema = _OPENGPS_XSD_ISO5436_LOCATION;
 }
 
+String ISO5436_2Container::ConvertToURI(const String& src) const
+{
+   String uri = src;
+   uri.ReplaceAll(_OPENGPS_WHITESPACE, _OPENGPS_URI_WHITESPACE);
+   // TODO: there are surely other conformance issues.
+   return uri;
+}
+
 OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& props) const
 {
    OpenGPS::String xsdPathBuf;
@@ -1436,7 +1442,7 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
       Environment::GetInstance()->GetPathName(xsdPathBuf, xsdPath);
       if(xsdPath.size() > 0)
       {
-         xsdPath = _OPENGPS_FILE_URI_PREF + xsdPath;
+         xsdPath = ConvertToURI(_OPENGPS_FILE_URI_PREF + xsdPath);
          props.schema_location(_OPENGPS_XSD_ISO5436_NAMESPACE, xsdPath);
          return TRUE;
       }
@@ -1447,53 +1453,56 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
 
 void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
 {
-   _ASSERT(HasValidPointsLink());
-
-   // Creates new file in the zip container.
-   OpenGPS::String section(GetValidPointsArchiveName());
-   if(zipOpenNewFileInZip(handle,
-      section.ToChar(),
-      NULL,
-      NULL,
-      0,
-      NULL,
-      0,
-      NULL,
-      Z_DEFLATED,
-      m_CompressionLevel) != ZIP_OK)
+   if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer()))
    {
-      throw OpenGPS::Exception(
-         OGPS_ExGeneral,
-         _EX_T("The binary point validity file could not be written to the X3P archive."),
-         _EX_T("Zlib could not open the appropriate handle. Check your permissions and that there is enough space left on your filesystem."),
-         _EX_T("OpenGPS::ISO5436_2Container::SaveValidPointsLink"));
-   }
+      _ASSERT(IsBinary());
 
-   VectorBuffer* const vectorBuffer = GetVectorBuffer();
-
-   ZipStreamBuffer vbuffer(handle, TRUE);
-   ZipOutputStream vstream(vbuffer);
-
-   try
-   {
-      if(!vstream.fail())
+      // Creates new file in the zip container.
+      OpenGPS::String section(GetValidPointsArchiveName());
+      if(zipOpenNewFileInZip(handle,
+         section.ToChar(),
+         NULL,
+         NULL,
+         0,
+         NULL,
+         0,
+         NULL,
+         Z_DEFLATED,
+         m_CompressionLevel) != ZIP_OK)
       {
-         _ASSERT(vectorBuffer->HasValidityBuffer());
-         vectorBuffer->GetValidityBuffer()->Write(vstream);
+         throw OpenGPS::Exception(
+            OGPS_ExGeneral,
+            _EX_T("The binary point validity file could not be written to the X3P archive."),
+            _EX_T("Zlib could not open the appropriate handle. Check your permissions and that there is enough space left on your filesystem."),
+            _EX_T("OpenGPS::ISO5436_2Container::SaveValidPointsLink"));
       }
-   }
-   catch(...)
-   {
+
+      VectorBuffer* const vectorBuffer = GetVectorBuffer();
+
+      ZipStreamBuffer vbuffer(handle, TRUE);
+      ZipOutputStream vstream(vbuffer);
+
+      try
+      {
+         if(!vstream.fail())
+         {
+            _ASSERT(vectorBuffer->HasValidityBuffer());
+            vectorBuffer->GetValidityBuffer()->Write(vstream);
+         }
+      }
+      catch(...)
+      {
+         _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
+         throw;
+      }
       _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
-      throw;
+
+      OpenGPS::UnsignedByte md5[16];
+      _VERIFY(vbuffer.GetMd5(md5), TRUE);
+
+      const Schemas::ISO5436_2::DataLinkType::MD5ChecksumValidPoints_type checksum(md5, 16);
+      m_Document->Record3().DataLink()->MD5ChecksumValidPoints(checksum);
    }
-   _VERIFY(zipCloseFileInZip(handle), ZIP_OK);
-
-   OpenGPS::UnsignedByte md5[16];
-   _VERIFY(vbuffer.GetMd5(md5), TRUE);
-
-   const Schemas::ISO5436_2::DataLinkType::MD5ChecksumValidPoints_type checksum(md5, 16);
-   m_Document->Record3().DataLink()->MD5ChecksumValidPoints(checksum);
 }
 
 void ISO5436_2Container::SavePointBuffer(zipFile handle) throw(...)

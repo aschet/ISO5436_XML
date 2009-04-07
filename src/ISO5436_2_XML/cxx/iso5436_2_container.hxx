@@ -694,6 +694,14 @@ namespace OpenGPS
       OGPS_ULong SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...);
 
       /*!
+       * Converts any string to its URI conformant compangnon.
+       *
+       * @param src String to convert.
+       * @returns Returns URI conformant string.
+       */
+      String ConvertToURI(const String& src) const;
+
+      /*!
       * Implementation of the point iterator interface.
       * A point iterator can be created and initialized
       * by an instance of OpenGPS::ISO5436_2Container only.
