@@ -1,5 +1,6 @@
-%
-%  Copyright by Dr. Georg Wiora (NanoFocus AG) 2008
+function TestX3P()
+% TestX3P: Test the x3p integration
+%   Read all demo files and display its contents and file information
 %
 %  This file is part of the openGPS(R)[TM] software library.
 %
@@ -26,10 +27,9 @@
 %  More information about openGPS can be found at
 %  http://www.opengps.eu/
 
+%  Copyright 2008, Dr. Georg Wiora, NanoFocus AG
 
-function TestX3P()
-% TestX3P: Test the x3p integration
-%   Read all demo files and display its contents and file information
+
 
   % Close windows from last run
   close all hidden;

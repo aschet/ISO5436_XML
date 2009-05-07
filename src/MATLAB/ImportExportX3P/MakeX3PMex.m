@@ -1,5 +1,4 @@
-%%
-%  Copyright by Georg Wiora (NanoFocus AG) 2008
+% MakeX3PMex  Compile the Mex files for openGPS X3P import/export
 %
 %  This file is part of the openGPS(R)[TM] software library.
 %
@@ -25,8 +24,10 @@
 %
 %  More information about openGPS can be found at
 %  http://www.opengps.eu/
- 
-% Compile the Mex files for openGPS X3P import/export
+
+%  Copyright 2008, by Dr. Georg Wiora, NanoFocus AG
+
+
 
 %% Unload all libraries
 clear all libraries
