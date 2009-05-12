@@ -70,7 +70,7 @@ namespace OpenGPS
        * @param details Detailed description of the exception. May be set to NULL.
        * @param method The name of the method wherein the failure condition occured. May be set to NULL.
        */
-      Exception(const OGPS_ExceptionId id, const OGPS_ExceptionChar *text, const OGPS_ExceptionChar *details, const OGPS_ExceptionChar *method) throw();
+      Exception(const OGPS_ExceptionId id, const OGPS_ExceptionChar *text, const OGPS_ExceptionChar *details, const OGPS_ExceptionChar *method);
       /*!
        * Creates a new instance.
        *

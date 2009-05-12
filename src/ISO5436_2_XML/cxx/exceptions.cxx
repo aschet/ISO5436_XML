@@ -35,7 +35,7 @@
 Exception::Exception(const OGPS_ExceptionId id,
                      const OGPS_ExceptionChar *text,
                      const OGPS_ExceptionChar *details,
-                     const OGPS_ExceptionChar *method) throw()
+                     const OGPS_ExceptionChar *method)
    : std::exception(text)
 {
    _ASSERT(text && details);
