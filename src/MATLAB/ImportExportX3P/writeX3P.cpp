@@ -249,7 +249,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
      L"     .Comment    - 'A user comment specific to this dataset'\n"          
      L"    pinfo - Info about data organisation\n"
      L"  Additional key-value-pairs can be specified after the last argument:\n"
-     L"    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied"
+     L"    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied\n"
      L"                 to each 3D-data point P on readback. R1 = R*P+T\n"
      L"    'offset'   - a 3 element vector T containing a translation vector for the data\n"
      L"                 that is applied to each 3D-data point P on readback: R1 = R*P+T\n"
@@ -456,7 +456,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
       {
         // Print full description
         ostrstream msg;
-        msg << "Error: For a line profile the input array Z must have dimensions [u,1,w] or [1,v,w] but has [" 
+        msg << "Error: For a line profile the input array Z must have dimensions [u,1,w] but has [" 
             << dim[0] << ", " << dim[1] << ", w]!" << endl << ends;
         mexErrMsgIdAndTxt("openGPS:writeX3P:NotProfileData",msg.str());
         return;
