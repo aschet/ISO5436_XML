@@ -59,7 +59,7 @@ namespace OpenGPS
    {
    protected:
       /*! Creates and initializes a new object. */
-      DataPoint() = 0;
+      DataPoint();
 
    public:
       /*! Destructs this object. */

@@ -32,14 +32,6 @@
 #include <opengps/cxx/exceptions.hxx>
 #include "stdafx.hxx"
 
-DataPoint::DataPoint()
-{
-}
-
-DataPoint::~DataPoint()
-{
-}
-
 DataPointImpl::DataPointImpl()
 : DataPoint()
 {
