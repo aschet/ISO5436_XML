@@ -405,20 +405,24 @@ void mediumComplexExample(const OpenGPS::String fileName)
 
    /* Create new points (current point set should be empty - of course) */
    /* Loop all 16 data points we want to add... */
+   unsigned int cnt=0;
    while(ogps_MoveNextPoint(iterator))
    {
       /* Int not short! Although this wouldn't mess up
       * if we had forgotten "L": both data types are compatible,
       * and we would have accepted both (short and int) in
       * this special case here. */
-      ogps_SetInt32X(vector, 4L);
+      ogps_SetInt32X(vector, 4L*cnt);
       /* automatic type conversion occurs for double */
-      ogps_SetFloatY(vector, 2.5F);
+      ogps_SetFloatY(vector, 2.5F*cnt);
       /* Z has data type double */
-      ogps_SetDoubleZ(vector, 4.8);
+      ogps_SetDoubleZ(vector, 4.8*cnt);
 
       /* 3. Write into document */  
       ogps_SetCurrentPoint(iterator, vector);
+
+      // Increment counter
+      ++cnt;
 
       if(ogps_HasError())
       {
