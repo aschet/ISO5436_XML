@@ -1327,17 +1327,17 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
 
   std::cout << std::endl << "Starting performance tests..." << std::endl;
 
-  tmp = path; tmp += _T("performance_int16.x3p"); 
-  performanceInt16(tmp, performanceCounter, FALSE);
-
   tmp = path; tmp += _T("performance_int16_bin.x3p"); 
   performanceInt16(tmp, performanceCounter, TRUE);
 
-  tmp = path; tmp += _T("performance_double.x3p"); 
-  performanceDouble(tmp, performanceCounter, FALSE);
+  tmp = path; tmp += _T("performance_int16.x3p"); 
+  performanceInt16(tmp, performanceCounter, FALSE);
 
   tmp = path; tmp += _T("performance_double_bin.x3p"); 
   performanceDouble(tmp, performanceCounter, TRUE);
+
+  tmp = path; tmp += _T("performance_double.x3p"); 
+  performanceDouble(tmp, performanceCounter, FALSE);
 
   return 0;
 }

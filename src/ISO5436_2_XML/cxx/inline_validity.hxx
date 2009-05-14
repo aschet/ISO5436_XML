@@ -51,7 +51,7 @@ namespace OpenGPS
     *
     * If the value of the point data stored for the Z component
     * of a point vector equals the special IEEE754 value
-    * of infinity, then the point measurement is identified as invalid.
+    * of not-a-number, then the point measurement is identified as invalid.
     */
    class FloatInlineValidity : public PointValidityProvider
    {
@@ -75,7 +75,7 @@ namespace OpenGPS
     *
     * If the value of the point data stored for the Z component
     * of a point vector equals the special IEEE754 value
-    * of infinity, then the point measurement is identified as invalid.
+    * of not-a-number, then the point measurement is identified as invalid.
     */
    class DoubleInlineValidity : public PointValidityProvider
    {

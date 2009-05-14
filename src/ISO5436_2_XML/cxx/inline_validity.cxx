@@ -58,9 +58,10 @@ OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const throw(
 {
   _ASSERT(std::numeric_limits<OGPS_Float>::has_quiet_NaN);
 
-   OGPS_Float value;
-   GetPointBuffer()->Get(index, value);
-   return value != std::numeric_limits<OGPS_Float>::quiet_NaN();
+  OGPS_Float value;
+  GetPointBuffer()->Get(index, value);
+  // Comparing a NaN to itself is allways false
+  return (value == value);
 }
 
 DoubleInlineValidity::DoubleInlineValidity(PointBuffer* const value)
@@ -89,5 +90,6 @@ OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const throw
 
   OGPS_Double value;
   GetPointBuffer()->Get(index, value);
-  return (value != std::numeric_limits<OGPS_Double>::quiet_NaN());
+  // Comparing a NaN to itself is allways false
+  return (value == value);
 }
