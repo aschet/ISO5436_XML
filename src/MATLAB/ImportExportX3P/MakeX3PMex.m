@@ -38,7 +38,8 @@ fs=filesep;
 up=['..',fs];
 
 % Get current directory
-d = [pwd(),fs];
+mexpath = which('MakeX3PMex');
+d = [fileparts(mexpath),filesep];
 
 % Debug flag
 % debug='-g '
@@ -125,17 +126,25 @@ cmexwriteX3P=[cmex,'writeX3P.cpp ','X3PUtilities.cpp'];
   datmex.writeX3P_mex = dir(['writeX3P.',mexext]);
   
   % Compare youngest source file to mex date
-  if (max([datsrc([1,3,4,5]).datenum]) >= datmex.openX3P_mex.datenum)
-    build_openX3P=true;
+  if numel(dir([d,'openX3P.',mexext]))==1
+    if (max([datsrc([1,3,4,5]).datenum]) >= datmex.openX3P_mex.datenum)
+      build_openX3P=true;
+    else
+      build_openX3P=false;
+    end
   else
-    build_openX3P=false;
+    build_openX3P=true;
   end
   
   % Compare youngest source file to mex date
-  if (max([datsrc([2,3,4,5]).datenum]) >= datmex.writeX3P_mex.datenum)
-    build_writeX3P=true;
+  if numel(dir([d,'writeX3P.',mexext])) == 1
+    if (max([datsrc([2,3,4,5]).datenum]) >= datmex.writeX3P_mex.datenum)
+      build_writeX3P=true;
+    else
+      build_writeX3P=false;
+    end
   else
-    build_writeX3P=false;
+    build_writeX3P=true;
   end
 
 %% compile

@@ -42,12 +42,13 @@ function TestX3P()
     'ISO5436-sample3.x3p',...
     'ISO5436-sample4.x3p',...
     'ISO5436-sample4_bin.x3p',...
+    'simple.x3p',...
     'medium.x3p',...
     'performance_double.x3p',...
     'performance_double_bin.x3p',...
     'performance_int16.x3p',...
-    'performance_int16_bin.x3p',...
-    'simple.x3p'};
+    'performance_int16_bin.x3p'...
+    };
   
   % Test all files
   for i=1:numel(testfiles)
@@ -62,7 +63,20 @@ function TestX3P()
     % Test write
     disp(['Write file back to "','w_',testfiles{i},'"']);
     testfilename = ['w_',testfiles{i}];
-    pinfow = writeX3P(testfilename,pinfor.FeatureType,x,y,z,meta);
+    
+    % if  axis is incremental the coordinate array has to be 1 dimensional
+    if pinfor.isXIncremental
+      x1 = x(:,1);
+    else
+      x1 = x;
+    end
+    if pinfor.isYIncremental
+      y1 = y(:,1);
+    else
+      y1 = y;
+    end
+    
+    pinfow = writeX3P(testfilename,pinfor.FeatureType,x1,y1,z,meta);
     
     % Print point info
     pinfow
