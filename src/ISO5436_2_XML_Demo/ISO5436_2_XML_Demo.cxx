@@ -979,7 +979,7 @@ void readonlyExample4(const OpenGPS::String fileName)
 
 
 /** Performance test using Int16 z-Data.
-    
+    Simple writing an unsorted points cloud. So all axis have to be absolute.
 **/
 void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boolean binary)
 {
@@ -988,27 +988,25 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    // Timer
    clock_t start = clock();
 
-   /* Simple example where we have two incremental and one absolute axis (the z-axis). */
-
    /* Create RECORD1 */
    Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
    // A list has to be stored as type point cloud
    Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_POINTCLOUD_NAME);
 
-   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* incremental */
+   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
    Record1Type::Axes_type::CX_type xaxis(xaxisType);
    xaxis.DataType(xdataType);
-   /* A profile is still 3D. so increment and offset of x and y have a meaning, but both are incremented from the same index! */
-   // This example is a profile along x-axis
+   /* Increment and offset of x and y are needed to scale the integer values to metric coordinates */
+   // The x axis is scaled in units of 10 micrometer
    xaxis.Increment(10E-6);
    xaxis.Offset(0.0);
 
-   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::A); /* incremental */
+   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::A); /* absolute */
    Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::I); /* int16 */
    Record1Type::Axes_type::CY_type yaxis(yaxisType);
    yaxis.DataType(ydataType);
-   // Increment has to be zero to orient profile along x-axis.
+   // The y axis is scaled in units of 10 micrometer
    yaxis.Increment(10E-6);
    yaxis.Offset(0.0);
 
@@ -1056,9 +1054,9 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    for(OGPS_ULong n = 0; n < dimension; ++n)
    {
       /* Generate random number */
-      short randomz = (short)(rand() % std::numeric_limits<short>::max());
-      short randomy = (short)(rand() % std::numeric_limits<short>::max());
-      ogps_SetInt32X(vector,n);
+      short randomz = (short)((rand() - (RAND_MAX/2)) % std::numeric_limits<short>::max());
+      short randomy = (short)((rand() - (RAND_MAX/2)) % std::numeric_limits<short>::max());
+      ogps_SetInt32X(vector,n - (dimension/2));
       ogps_SetInt16Y(vector, randomy);
       ogps_SetInt16Z(vector, randomz);
 

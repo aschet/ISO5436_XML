@@ -1453,6 +1453,7 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
 
 void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
 {
+  // BUG? Is this correct? A list file seems to have a vector buffer and a validity buffer
    if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer()))
    {
       _ASSERT(IsBinary());
