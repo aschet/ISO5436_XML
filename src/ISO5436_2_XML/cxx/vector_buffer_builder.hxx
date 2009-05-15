@@ -95,9 +95,12 @@ namespace OpenGPS
 
       /*!
        * Connects the appropriate OpenGPS::PointValidityProvider.
+       * @param allowInvalidPoints Set this to TRUE, if invalid points are allowed to be contained
+       * within point vector data, otherwise set this to FALSE. E.g. it makes no sense for a
+       * point cloud to have invalid points (these points should not be within the cloud, afterall).
        * @remarks This is the last step of the building process.
        */
-      virtual OGPS_Boolean BuildValidityProvider();
+      virtual OGPS_Boolean BuildValidityProvider(const bool allowInvalidPoints);
 
       /*! Gets the object built. This object instance remains managed by the builder, though. */
       virtual VectorBuffer* GetBuffer();

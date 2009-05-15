@@ -59,14 +59,24 @@ namespace OpenGPS
       /*!
        * Creates a new instance.
        * @param value The point buffer of the Z axis.
+       * @param allowInvalidPoints Whether the point buffer is allowed to contain
+       * invalid points.
        */
-      FloatInlineValidity(PointBuffer* const value);
+      FloatInlineValidity(PointBuffer* const value, const bool allowInvalidPoints);
 
       /*! Destroys this instance. */
       ~FloatInlineValidity();
 
       virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
       virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
+
+   private:
+      /*! Defines whether the point buffer is allowed to contain invalid points. */
+      const bool m_AllowInvalidPoints;
+
+      /*! Not implemented. */
+      FloatInlineValidity(const FloatInlineValidity& src);
+      FloatInlineValidity& operator=(const FloatInlineValidity& src);
    };
 
    /*!
@@ -83,14 +93,24 @@ namespace OpenGPS
       /*!
        * Creates a new instance.
        * @param value The point buffer of the Z axis.
+       * @param allowInvalidPoints Whether the point buffer is allowed to contain
+       * invalid points.
        */
-      DoubleInlineValidity(PointBuffer* const value);
+      DoubleInlineValidity(PointBuffer* const value, const bool allowInvalidPoints);
 
       /*! Destroys this instance. */
       ~DoubleInlineValidity();
 
       virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
       virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
+
+   private:
+      /*! Defines whether the point buffer is allowed to contain invalid points. */
+      const bool m_AllowInvalidPoints;
+
+      /*! Not implemented. */
+      DoubleInlineValidity(const DoubleInlineValidity& src);
+      DoubleInlineValidity& operator=(const DoubleInlineValidity& src);
    };
 }
 

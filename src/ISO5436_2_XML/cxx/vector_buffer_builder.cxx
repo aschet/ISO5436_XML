@@ -89,7 +89,7 @@ OGPS_Boolean VectorBufferBuilder::BuildZ(const OGPS_DataPointType dataType, cons
    return success;
 }
 
-OGPS_Boolean VectorBufferBuilder::BuildValidityProvider()
+OGPS_Boolean VectorBufferBuilder::BuildValidityProvider(const bool allowInvalidPoints)
 {
    _ASSERT(m_Buffer);
    _ASSERT(m_Buffer->GetZ());
@@ -103,23 +103,39 @@ OGPS_Boolean VectorBufferBuilder::BuildValidityProvider()
    switch(dataType)
    {
    case OGPS_Int16PointType:
-      provider = validBuffer = new Int16ValidBuffer(zBuffer);
-      break;
+      {
+         Int16ValidBuffer* validityInt16 = new Int16ValidBuffer(zBuffer);
+         provider = validityInt16;
+         if(allowInvalidPoints)
+         {
+            validBuffer = validityInt16;
+         }
+      } break;
    case OGPS_Int32PointType:
-      provider = validBuffer = new Int32ValidBuffer(zBuffer);
-      break;
+      {
+         Int32ValidBuffer* validityInt32 = new Int32ValidBuffer(zBuffer);
+         provider = validityInt32;
+         if(allowInvalidPoints)
+         {
+            validBuffer = validityInt32;
+         }
+      } break;
    case OGPS_FloatPointType:
-      provider = new FloatInlineValidity(zBuffer);
-      break;
+      {
+         provider = new FloatInlineValidity(zBuffer, allowInvalidPoints);
+      } break;
    case OGPS_DoublePointType:
-      provider = new DoubleInlineValidity(zBuffer);
-      break;
+      {
+         provider = new DoubleInlineValidity(zBuffer, allowInvalidPoints);
+      } break;
    case OGPS_MissingPointType:
-      _ASSERT(FALSE);
-      break;
+      {
+         _ASSERT(FALSE);
+      } break;
    default:
-      _ASSERT(FALSE);
-      break;
+      {
+         _ASSERT(FALSE);
+      } break;
    }
 
    if(provider)

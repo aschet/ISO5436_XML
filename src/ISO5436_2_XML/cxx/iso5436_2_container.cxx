@@ -1620,11 +1620,13 @@ OGPS_Boolean ISO5436_2Container::BuildVectorBuffer(VectorBufferBuilder& builder)
 
    const OGPS_ULong size = GetPointCount();
 
+   const bool allowInvalidPoints = !IsPointCloud();
+
    return (builder.BuildBuffer() &&
       builder.BuildX(xType, size) &&
       builder.BuildY(yType, size) &&
       builder.BuildZ(zType, size) &&
-      builder.BuildValidityProvider());
+      builder.BuildValidityProvider(allowInvalidPoints));
 }
 
 PointVectorReaderContext* ISO5436_2Container::CreatePointVectorReaderContext()
