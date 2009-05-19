@@ -720,6 +720,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\cxx\data_point.cxx"
+					>
+				</File>
+				<File
 					RelativePath=".\cxx\data_point_impl.cxx"
 					>
 				</File>
