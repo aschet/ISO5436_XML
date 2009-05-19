@@ -26,6 +26,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Updating Version.h"
+				CommandLine="subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -97,6 +99,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Updating Version.h"
+				CommandLine="subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -172,6 +176,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Updating Version.h"
+				CommandLine="subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -253,6 +259,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Updating Version.h"
+				CommandLine="subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -338,6 +346,8 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="Updating Version.h"
+				CommandLine="subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -547,52 +557,57 @@
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
-							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+							Description=""
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
-							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+							Description=""
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug-Shared|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
-							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+							Description=""
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release-Shared|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
-							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+							Description=""
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug Demo (Without Lib)|Win32"
+						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
-							Description="Generate Version info File"
-							CommandLine="subwcrev $(ProjectDir) $(InputPath) $(InputDir)$(InputName).h&#x0D;&#x0A;"
-							Outputs="&quot;$(InputDir)$(InputName).h&quot;"
+							Description=""
+							CommandLine=""
+							Outputs=""
 						/>
 					</FileConfiguration>
 				</File>
