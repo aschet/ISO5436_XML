@@ -700,15 +700,30 @@ void mexFunction( int nlhs, mxArray *plhs[],
   else
     mdims[2] = 1;
 
-  MatrixDimensionType matrix(mdims[0], mdims[1], mdims[2]);
-
   bool useBinary=false;
   // For more than 5000 Elements use binary encoding
   if (mxGetNumberOfElements(inMatrixZ)>=5000)
     useBinary=true;
 
+  // Define a handle for the container
+  OGPS_ISO5436_2Handle handle = NULL;
+
   /* Create ISO5436_2 container, */
-  OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(FileNameL.c_str(), NULL, record1, &record2, matrix, useBinary);
+  if (ft == FT_pointcloud)
+  {
+    // This is a list data type
+    handle =
+      ogps_CreateListISO5436_2(FileNameL.c_str(), NULL, record1, &record2, mdims[0]*mdims[1]*mdims[2], useBinary);
+  }
+  else
+  {
+    // all other are matrix data types
+    // Define dimensions
+    MatrixDimensionType dimMatrix(mdims[0], mdims[1], mdims[2]);
+    // Create the container
+    handle = 
+      ogps_CreateMatrixISO5436_2(FileNameL.c_str(), NULL, record1, &record2, dimMatrix, useBinary);
+  }
 
   /* Add data points */
   /* 1. Create point vector buffer */
@@ -733,7 +748,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   else if (mxIsUint16(inMatrixZ))
     dtype=3;
   else if (mxIsUint32(inMatrixZ))
-    dtype=3;  
+    dtype=4;  
   
   // Get data pointer
   switch (dtype)
@@ -776,12 +791,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
       break;
   }
   
+  // point index for lists
+  OGPS_ULong index=0;
   // Loop over array
-  for (w=0; w<mdims[2] ; w++)
+  for (w=0; w<mdims[2] ; ++w)
   {
-    for (v=0; v<mdims[1]; v++)
+    for (v=0; v<mdims[1]; ++v)
     {
-      for (u=0; u<mdims[0]; u++)
+      for (u=0; u<mdims[0]; ++u)
       {
         bool isValid=true;
         // Set z-coordinate
@@ -830,12 +847,20 @@ void mexFunction( int nlhs, mxArray *plhs[],
         if (isValid)
         {
           /* 3. Write into document */
-          ogps_SetMatrixPoint(handle, u , v, w, vector);
+          // Check for feature type: PCL have list, other have matrix
+          if (ft == FT_pointcloud)
+            // Unsorted point list
+            ogps_SetListPoint(handle, index++, vector);
+          else
+            // Matrix organized point list
+            ogps_SetMatrixPoint(handle, u , v, w, vector);
         }
         else
         {
-          // Set data point to invalid
-          ogps_SetMatrixPoint(handle, u , v, w , NULL);
+          // PCL does not have invalid points
+          if (ft != FT_pointcloud)
+            // Set data point to invalid
+            ogps_SetMatrixPoint(handle, u , v, w , NULL);
         }
       }
     }
