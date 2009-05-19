@@ -1452,8 +1452,7 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
 }
 
 void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
-{
-  // BUG? Is this correct? A list file seems to have a vector buffer and a validity buffer
+{  
    if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer()))
    {
       _ASSERT(IsBinary());
@@ -2109,6 +2108,15 @@ void ISO5436_2Container::ValidateDocument() throw(...)
                   _EX_T("PRF type files must always be encoded as matrix of size N,1,M with N the number of points and M the number of layers in z direction."),
                   _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
             }
+         }
+
+         if(IsPointCloud())
+         {
+            throw OpenGPS::Exception(
+                  OGPS_ExWarning,
+                  _EX_T("The feature type is a point cloud, but it is stored in matrix format."),
+                  _EX_T("It makes no sense to store point data of the unordered PCL feature type in (ordered) matrix format."),
+                  _EX_T("OpenGPS::ISO5436_2Container::ValidateDocument"));
          }
       }
       else
