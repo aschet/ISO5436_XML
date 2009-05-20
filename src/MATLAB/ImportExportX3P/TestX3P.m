@@ -56,6 +56,8 @@ function TestX3P()
     disp('****************************************************');
     disp(['Reading x3p file "',testfiles{i},'"...']);
     [z,x,y,pinfor,meta] = openX3P(testfiles{i});
+    % Get valid points
+    valid = ~(isnan(z) | isnan(x) | isnan(y));
     
     % Print point info
     pinfor

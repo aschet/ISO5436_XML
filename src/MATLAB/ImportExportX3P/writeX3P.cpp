@@ -806,35 +806,63 @@ void mexFunction( int nlhs, mxArray *plhs[],
         {
           case 1:
             // Check missing data
-            if (mxIsNaN(*pdblZ))
+            isValid = !mxIsNaN(*pdblZ) 
+                    && (xIncremental ? true : !mxIsNaN(*pdblX))
+                    && (yIncremental ? true : !mxIsNaN(*pdblY));
+            if (isValid)
             {
-              isValid=false;
-              pdblZ++;
-              break;
+              // Set z-value
+              ogps_SetDoubleZ(vector, *(pdblZ++));
+              // Set x value if not incremental
+              if (!xIncremental)
+                ogps_SetDoubleX(vector, *(pdblX++));
+              // Set y value if not incremental
+              if (!yIncremental)
+                ogps_SetDoubleY(vector, *(pdblY++));
             }
-            // Set z-value
-            ogps_SetDoubleZ(vector, *(pdblZ++));
-            // Set x value if not incremental
-            if (!xIncremental)
-              ogps_SetDoubleX(vector, *(pdblX++));
-            // Set y value if not incremental
-            if (!yIncremental)
-              ogps_SetDoubleY(vector, *(pdblY++));
+            else
+            {
+              // Increment pointers
+              ++pdblZ;
+              if (!xIncremental)
+                ++pdblX;
+              if (!yIncremental)
+                ++pdblY;
+            }
             break;
           case 2:
-            if (mxIsNaN(*pfltZ))
+            // Check missing data
+            isValid = !mxIsNaN(*pfltZ) 
+                    && (xIncremental ? true : !mxIsNaN(*pfltX))
+                    && (yIncremental ? true : !mxIsNaN(*pfltY));
+            if (isValid)
             {
-              isValid=false;
-              break;
+              // Set z-value
+              ogps_SetFloatZ(vector, *(pfltZ++));
+              // Set x value if not incremental
+              if (!xIncremental)
+                ogps_SetFloatX(vector, *(pfltX++));
+              // Set y value if not incremental
+              if (!yIncremental)
+                ogps_SetFloatY(vector, *(pfltY++));
             }
-            // Set z-value
-            ogps_SetFloatZ(vector, *(pfltZ++));
+            else
+            {
+              // Increment pointers
+              ++pfltZ;
+              if (!xIncremental)
+                ++pfltX;
+              if (!yIncremental)
+                ++pfltY;
+            }
             break;
           case 3:
+            // BUG: This is not fully implemented yet!
             // Set z-value
             ogps_SetInt16Z(vector, *(pshrtZ++));
             break;
           case 4:
+            // BUG: This is not fully implemented yet!
             // Set z-value
             ogps_SetInt32Z(vector, *(plngZ++));
             break;

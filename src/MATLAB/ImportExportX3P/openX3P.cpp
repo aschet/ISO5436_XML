@@ -210,24 +210,26 @@ void mexFunction( int nlhs, mxArray *plhs[],
          break;
       }
 
+      /* Valid data point (not missing)?  */
+      // A transformed coordinate is allways valid, but some of the components may be set to NaN
+      // So we can allways call GetXYZ here.
+      // if(ogps_IsValidPoint(vector))
+      //{
       // Get current point
       double x, y, z;
       ogps_GetXYZ(vector, &x, &y, &z);
-      /* Valid data point (not missing)?  */
-      if(ogps_IsValidPoint(vector))
-      {
-         // Write data point to array
-         *(ptrX++) = x;
-         *(ptrY++) = y;
-         *(ptrZ++) = z;
-      }    
+       // Write data point to array
+       *(ptrX++) = x;
+       *(ptrY++) = y;
+       *(ptrZ++) = z;
+      /* }    
       else
       {
          // Write invalid point to array
          *(ptrX++) = mxGetNaN();
          *(ptrY++) = mxGetNaN();
          *(ptrZ++) = mxGetNaN();
-      }
+      }*/
    }
 
    // Failed?
