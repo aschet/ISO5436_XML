@@ -138,7 +138,9 @@ namespace OpenGPS
       virtual OGPS_Double Get() const throw(...) = 0;
 
       /*!
-      * Asks whether there is a point value stored within this instance currently.
+      * Asks whether there is a valid point value stored within this instance currently.
+      * This function test whether a point value is stored and in case it is a floating
+      * point value whether it is Not-a-Number (NaN).
       *
       * @see DataPoint::GetPointType
       *

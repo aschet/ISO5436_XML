@@ -546,7 +546,7 @@ void ISO5436_2Container::ConvertPointToCoord(
    {
       if(x)
       {
-         *x = 0.0;
+        *x = std::numeric_limits<OGPS_Double>::quiet_NaN();
       }
    }
 
@@ -559,7 +559,7 @@ void ISO5436_2Container::ConvertPointToCoord(
    {
       if(y)
       {
-         *y = 0.0;
+         *y = std::numeric_limits<OGPS_Double>::quiet_NaN();
       }
    }
 
@@ -571,7 +571,7 @@ void ISO5436_2Container::ConvertPointToCoord(
    {
       if(z)
       {
-         *z = 0.0;
+         *z = std::numeric_limits<OGPS_Double>::quiet_NaN();
       }
    }
 }

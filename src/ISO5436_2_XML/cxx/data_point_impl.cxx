@@ -30,6 +30,7 @@
 
 #include "data_point_impl.hxx"
 #include <opengps/cxx/exceptions.hxx>
+#include <limits>
 #include "stdafx.hxx"
 
 DataPointImpl::DataPointImpl()
@@ -170,7 +171,35 @@ void DataPointImpl::Set(const OGPS_Double value) throw(...)
 
 OGPS_Boolean DataPointImpl::IsValid() const throw(...)
 {
-   return m_Type != OGPS_MissingPointType;
+  // Check for floating point vectors and test for NaN also
+  if (m_Type == OGPS_MissingPointType)
+    return false;
+
+  // Test for floating point types
+  if (m_Type == OGPS_FloatPointType)
+  {
+    // Avoid optimization of x==x by declaring value as volatile
+    volatile OGPS_Float val=m_Value.floatValue;
+    // Check for NaN. Comparing a number to NaN is allways false.
+    // This is also valid if the number itself is NaN
+    if (val==val)
+      return true;
+    else
+      return false;
+  }
+  else if (m_Type == OGPS_DoublePointType)
+  {
+    // Avoid optimization of x==x by declaring value as volatile
+    volatile OGPS_Double val=m_Value.doubleValue;
+    // Check for NaN. Comparing a number to NaN is allways false.
+    // This is also valid if the number itself is NaN
+    if (val==val)
+      return true;
+    else
+      return false;
+  }
+  // All tests failed so it is a valid point
+  return true;
 }
 
 void DataPointImpl::Set(const DataPoint& src) throw(...)

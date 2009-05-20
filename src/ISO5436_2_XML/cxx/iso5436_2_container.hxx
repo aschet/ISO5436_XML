@@ -67,6 +67,8 @@
 
 #include <zip.h>
 
+#include <limits>
+
 namespace OpenGPS
 {
    class PointVectorParser;
@@ -629,6 +631,8 @@ namespace OpenGPS
        * Extracts the three components of a point vector.
        *
        * May throw an OpenGPS::Exception on failure due to type incompatibilities or overflow.
+       * Vector components that result from a missing point are set to IEEE NaN.
+       * This means that incremental axis allways produce a valid result, but absolute axis create a NaN.
        *
        * @param vector The vector which components are to be extracted.
        * @param x Target of the value of the X component of that vector. If this equals NULL, this component is ignored.

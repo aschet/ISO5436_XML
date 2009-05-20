@@ -425,8 +425,13 @@ extern "C" {
     * A valid point vector does not have components where some or all of its values are missing.
     * Missing or invalid points are indicated by ::OGPS_MissingPointType.
     *
+    * @note When using ogps_GetCurrentCoord() to get the transformed coordinate,
+    *       the resulting point is allways valid but some of the components may contain NaN values.
+    *
     * @param vector Operate on this point vector instance.
     * @returns Returns TRUE if this point vector contains valid point components only, FALSE otherwise.
+    *
+    * @see ogps_GetCurrentCoord()
     */
    _OPENGPS_EXPORT OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector);
 

@@ -650,7 +650,7 @@ void readonlyExample2(const OpenGPS::String fileName)
    * in xml directly or in external binary file). */
    while(ogps_MoveNextPoint(iterator))
    {
-      /* Get points at current position. */
+      /* Get point at current position. */
       ogps_GetCurrentPoint(iterator, vector);
 
       if(ogps_HasError())
@@ -661,7 +661,9 @@ void readonlyExample2(const OpenGPS::String fileName)
       /* Valid data point (not missing)?  */
       if(ogps_IsValidPoint(vector))
       {
-         std::cout << "X; Y; Z = ";
+        // Get transformed point at current position
+        ogps_GetCurrentCoord(iterator, vector);
+        std::cout << "X; Y; Z = ";
 
          switch(ogps_GetPointTypeX(vector))
          {
@@ -1313,6 +1315,9 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
   readonlyExample(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
+  readonlyExample2(tmp);
+
+  tmp = path; tmp += _T("ISO5436-sample3.x3p");
   readonlyExample2(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample3.x3p");
