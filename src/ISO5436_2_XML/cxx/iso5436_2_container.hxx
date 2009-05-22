@@ -67,8 +67,6 @@
 
 #include <zip.h>
 
-#include <limits>
-
 namespace OpenGPS
 {
    class PointVectorParser;
