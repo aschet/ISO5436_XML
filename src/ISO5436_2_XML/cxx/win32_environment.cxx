@@ -229,6 +229,8 @@ OGPS_Boolean Win32Environment::PathExists(const OpenGPS::String& file) const
 {
    _ASSERT(file.length() > 0);
 
+   ResetLastErrorCode();
+
    const DWORD dwAttr = GetFileAttributes(file.c_str());
    if (dwAttr == INVALID_FILE_ATTRIBUTES)
    {
@@ -274,6 +276,9 @@ OGPS_Boolean Win32Environment::PathExists(const OpenGPS::String& file) const
 OGPS_Boolean Win32Environment::RemoveFile(const OpenGPS::String& file) const
 {
    _ASSERT(file.length() > 0);
+
+   ResetLastErrorCode();
+
    return (DeleteFile(file.c_str()) != 0);
 }
 
@@ -299,12 +304,17 @@ OpenGPS::String Win32Environment::GetUniqueName() const
 OGPS_Boolean Win32Environment::CreateDir(const OpenGPS::String& path) const
 {
    _ASSERT(path.length() > 0);
+
+   ResetLastErrorCode();
+
    return (CreateDirectory(path.c_str(), NULL) != 0);
 }
 
 OGPS_Boolean Win32Environment::RemoveDir(const OpenGPS::String& path) const
 {
    _ASSERT(path.length() > 0);
+
+   ResetLastErrorCode();
 
    const OpenGPS::String pattern = ConcatPathes(path, _T("*"));
 
@@ -330,6 +340,8 @@ OGPS_Boolean Win32Environment::RemoveDir(const OpenGPS::String& path) const
 
 OpenGPS::String Win32Environment::GetTempDir() const
 {
+   ResetLastErrorCode();
+
    unsigned long size = GetTempPath(0, NULL);
 
    OGPS_Character* buffer = new OGPS_Character[size];
@@ -348,15 +360,15 @@ OpenGPS::String Win32Environment::GetTempDir() const
 
 OGPS_Boolean Win32Environment::RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const
 {
-#ifdef MOVEFILE_FAIL_IF_NOT_TRACKABLE
-   return (MoveFileEx(src.c_str(), dst.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_FAIL_IF_NOT_TRACKABLE | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0);
-#else
+   ResetLastErrorCode();
+
    return (MoveFileEx(src.c_str(), dst.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0);
-#endif
 }
 
 OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const
 {
+   ResetLastErrorCode();
+
    const size_t bufferLength = GetEnvironmentVariable(varName.c_str(), NULL, 0);
    
    if(bufferLength == 0)
@@ -403,6 +415,31 @@ OGPS_Boolean Win32Environment::GetVariable(const OpenGPS::String& varName, OpenG
    }
 
    return TRUE;
+}
+
+OpenGPS::String Win32Environment::GetLastErrorMessage() const
+{
+   const DWORD error_code = GetLastError();
+   LPTSTR lpMsgBuf = NULL;
+   FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+      NULL,
+      error_code,
+      0,
+      (LPTSTR)&lpMsgBuf,
+      0,
+      NULL);
+   OpenGPS::String message;
+   if(lpMsgBuf != NULL)
+   {
+      message.assign(lpMsgBuf);
+      LocalFree(lpMsgBuf);
+   }
+   return message;
+}
+
+void Win32Environment::ResetLastErrorCode() const
+{
+   SetLastError(0);
 }
 
 Environment* Environment::CreateInstance()

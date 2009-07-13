@@ -1014,6 +1014,8 @@ void ISO5436_2Container::Compress() throw(...)
    OGPS_Boolean vendorfilesAdded = TRUE;
    OGPS_Boolean success = FALSE;
 
+   OpenGPS::String systemErrorMessage;
+
    CreateTempDir();
 
    OpenGPS::String targetZip = CreateContainerTempFilePath();
@@ -1046,7 +1048,10 @@ void ISO5436_2Container::Compress() throw(...)
 
       if(success)
       {
-         Environment::GetInstance()->RenameFile(targetZip, GetFullFilePath());
+         if(!Environment::GetInstance()->RenameFile(targetZip, GetFullFilePath()))
+         {
+            systemErrorMessage = Environment::GetInstance()->GetLastErrorMessage();
+         }
       }
    }
    catch(...)
@@ -1063,6 +1068,15 @@ void ISO5436_2Container::Compress() throw(...)
          OGPS_ExGeneral,
          _EX_T("The X3P archive could not be written."),
          _EX_T("Zlib library could not create a handle to the X3P target file. Check your permissions on the temporary directory."),
+         _EX_T("OpenGPS::ISO5436_2Container::Compress"));
+   }
+
+   if(!systemErrorMessage.empty())
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExGeneral,
+         _EX_T("The X3P archive could not be copied from the temporary directory to its target filename."),
+         systemErrorMessage.ToChar(),
          _EX_T("OpenGPS::ISO5436_2Container::Compress"));
    }
 

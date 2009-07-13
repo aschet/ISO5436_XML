@@ -69,8 +69,12 @@ namespace OpenGPS
       virtual OpenGPS::String GetTempDir() const;
       virtual OGPS_Boolean RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const;
       virtual OGPS_Boolean GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const;
+      virtual OpenGPS::String GetLastErrorMessage() const;
 
-   private: 
+   private:
+      /*! Resets the last system error API code. */
+      void ResetLastErrorCode() const;
+
       /*! Tracks whether the sofware randomization API still needs to be initialized before its usage. */
       static OGPS_Boolean m_InitRandom;
    };

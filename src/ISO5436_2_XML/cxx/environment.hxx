@@ -161,6 +161,11 @@ namespace OpenGPS
       virtual OGPS_Boolean GetVariable(const OpenGPS::String& varName, OpenGPS::String& value) const = 0;
 
       /*!
+       * Returns the last error message of a failed system API call.
+       */
+      virtual OpenGPS::String GetLastErrorMessage() const = 0;
+
+      /*!
        * Returns TRUE on a system with little endian byte order, FALSE on a system using big endian byte order.
        */
       virtual OGPS_Boolean IsLittleEndian() const;
