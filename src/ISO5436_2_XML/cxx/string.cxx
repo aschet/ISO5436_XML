@@ -107,17 +107,14 @@ void String::FromChar(const char* const s, const size_t length)
    if(s && length > 0)
    {
 #ifdef _UNICODE
-      wchar_t* chars = new wchar_t[length + 1];
+      wchar_t* chars = new wchar_t[length];
       /// @bug: It would be safer to use wcstomb_s on windows systems but this function is not ANSI-standard.
 #pragma warning(suppress: 4996)
       mbstowcs(chars, s, length);
-      chars[length] = 0;
-
-      *this = chars;
-
+      this->assign(chars, length);
       _OPENGPS_DELETE_ARRAY(chars);
 #else
-      *this = s;
+      this->assign(s, length);
 #endif
    }
    else
