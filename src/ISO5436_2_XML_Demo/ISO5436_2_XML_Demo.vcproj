@@ -44,7 +44,7 @@
 				PreprocessorDefinitions="_UNICODE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
@@ -126,7 +126,7 @@
 				PreprocessorDefinitions="_UNICODE; SHARED_OPENGPS_LIBRARY"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
@@ -206,7 +206,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;"
 				PreprocessorDefinitions="_UNICODE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
@@ -287,7 +287,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include/&quot;"
 				PreprocessorDefinitions="_UNICODE; SHARED_OPENGPS_LIBRARY"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="true"
@@ -304,7 +304,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_S.lib"
+				AdditionalDependencies="kernel32.lib $(TargetDir)../lib/ISO5436_2_XML_S.lib $(NOINHERIT)"
 				OutputFile="$(ProjectDir)../../../install/bin/$(ProjectName)_S.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(ProjectDir)../../../install/lib/"
@@ -427,7 +427,7 @@
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{745F0451-47F7-400E-BD04-A1741E01A158}"
-			RelativePathToProject="./ISO5436_2_XML/ISO5436_2_XML.vcproj"
+			RelativePathToProject=".\ISO5436_2_XML\ISO5436_2_XML.vcproj"
 		/>
 	</References>
 	<Files>
