@@ -45,6 +45,9 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <ios>
 #include <ostream>
 #include <fstream>
 #include <cstdlib>
@@ -52,6 +55,8 @@
 #include <limits>
 
 #include <tchar.h>
+
+#include <time.h>
 
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
@@ -95,6 +100,61 @@ PrintDimensions(const OGPS_ISO5436_2Handle handle)
   return FALSE;
 }
 
+
+/*!
+  @brief Helper function to return the current time properly formated.
+  
+  @return A string containing the time stamp from now.
+
+  @note There is only a windows implementation yet. In other cases
+  return a dummy. That is enough for testing purposes.
+*/
+#ifdef _WIN32
+OpenGPS::String TimeStamp(void)
+{
+  time_t ltime;
+  struct tm lt;
+  // Time zone offset
+  long tzoff;
+  // Set timezone
+  _tzset();
+  // Get time zone offset
+  _get_timezone(&tzoff);
+  // Offset ours and minutes
+  int tzoff_h,tzoff_m;
+  tzoff_h = -(int)floor(((double)tzoff)/3600.);
+  tzoff_m = -(int)floor(((double)tzoff)/60. + 0.5) - tzoff_h*60;
+
+  // Get current time
+  time( &ltime );
+  // get local time
+  localtime_s(&lt,&ltime);
+  
+  // Correct tz offset by dst
+  if (lt.tm_isdst > 0)
+    tzoff_h++;
+
+  // Absolute offset for printing
+  int tzoff_habs = abs(tzoff_h);
+  OGPS_Character tzoffsign = tzoff_h<0 ? _T('-') : _T('+');
+
+  // Create a string of pattern "2007-04-30T13:58:02.6+02:00"
+  wostringstream sout;
+  sout << std::setfill(_T('0')) << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday 
+      << _T('T') << lt.tm_hour << _T(':') << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
+      << tzoffsign << setw(2) << tzoff_habs << _T(':') << setw(2) << tzoff_m << ends;
+
+  return sout.str();
+}
+#else
+// There is only a windows implementation yet.
+//In other cases return a dummy. That is enough for testing purposes.
+OGPS_String TimeStamp(void)
+{
+  return _T("2007-04-30T13:58:02.6+02:00");
+}
+
+#endif
 
 
 /*!
@@ -236,7 +296,7 @@ void simpleExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::Date_type date(TimeStamp());
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -364,7 +424,7 @@ void mediumComplexExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::Date_type date(TimeStamp());
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -450,6 +510,135 @@ void mediumComplexExample(const OpenGPS::String fileName)
    ogps_WriteISO5436_2(handle);
    ogps_CloseISO5436_2(&handle);
 }
+
+void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
+{
+   /* More complex example with integer encoded z-axis and invalid points */
+
+   /* Create RECORD1 */
+   Record1Type::Revision_type revision(OGPS_ISO5436_2000_REVISION_NAME);
+   Record1Type::FeatureType_type featureType(OGPS_FEATURE_TYPE_SURFACE_NAME);
+
+   Record1Type::Axes_type::CX_type::AxisType_type xaxisType(Record1Type::Axes_type::CX_type::AxisType_type::A); /* absolute */
+   Record1Type::Axes_type::CX_type::DataType_type xdataType(Record1Type::Axes_type::CX_type::DataType_type::L); /* int32 */
+   Record1Type::Axes_type::CX_type xaxis(xaxisType);
+   xaxis.DataType(xdataType);
+   xaxis.Increment(10e-6); // 10 micrometres
+   xaxis.Offset(1000.0e-6); // 1 millimetre
+
+   Record1Type::Axes_type::CY_type::AxisType_type yaxisType(Record1Type::Axes_type::CY_type::AxisType_type::A); /* absolute */
+   Record1Type::Axes_type::CY_type::DataType_type ydataType(Record1Type::Axes_type::CY_type::DataType_type::F); /* float */
+   Record1Type::Axes_type::CX_type yaxis(xaxisType);
+   yaxis.DataType(ydataType);
+   yaxis.Increment(1); // set to 1 for float and double axis
+   yaxis.Offset(-1000.0e-6); // -1 milli metre
+
+   Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); /* absolute */
+   Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::I); /* 16 bit integer */
+   Record1Type::Axes_type::CX_type zaxis(xaxisType);
+   zaxis.DataType(zdataType);
+   zaxis.Increment(1e-6); // set to 1 for float and double axis
+   zaxis.Offset(1000.0e-6); // 1 milli metre
+
+   Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
+
+   Record1Type record1(revision, featureType, axis);
+
+   /* Create RECORD2 */
+   Record2Type::Date_type date(TimeStamp());
+
+   Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
+   Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
+   Record2Type::Instrument_type::Serial_type serial(_T("not available"));
+   Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
+   Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
+
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+
+   Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
+   Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
+   Record2Type::ProbingSystem_type probingSystem(type, id);
+
+   Record2Type::Comment_type comment(_T("This is a user comment specific to this dataset."));
+
+   Record2Type record2(date, instrument, calibrationDate, probingSystem);
+   record2.Comment(comment);
+
+   /* Create MATRIX */
+   MatrixDimensionType matrix(4, 2, 2);
+
+   /* Create ISO5436_2 container */
+   OGPS_ISO5436_2Handle handle = ogps_CreateMatrixISO5436_2(fileName.c_str(), NULL, record1, &record2, matrix, TRUE);
+
+   /* Print dimensions */
+   PrintDimensions(handle);
+
+   /* Add data points */
+   /* 1. Create point vector buffer for three points. */
+   OGPS_PointVectorPtr vector = ogps_CreatePointVector();
+
+   /* 2. There are three absolute axis, so we have to
+   * provide point values for all three axis. Though, we
+   * do care about their data type. */
+
+   /* Use iterator to create points in this example. */
+   OGPS_PointIteratorPtr iterator = ogps_CreateNextPointIterator(handle);
+
+   /* Create new points (current point set should be empty - of course) */
+   /* Loop all 16 data points we want to add... */
+   unsigned int cnt=0;
+   while(ogps_MoveNextPoint(iterator))
+   {
+      /* Int not short! Although this wouldn't mess up
+      * if we had forgotten "L": both data types are compatible,
+      * and we would have accepted both (short and int) in
+      * this special case here. */
+      ogps_SetInt32X(vector, 4L*cnt);
+      /* automatic type conversion occurs for double */
+      ogps_SetFloatY(vector, 2.5F*(cnt % 4));
+
+      // 
+      /* Z has data type 16 bit int */
+      //ogps_SetDoubleZ(vector, 4.8*cnt);
+      ogps_SetInt16Z(vector, floor(4.8*cnt));
+
+      /* 3. Write into document */  
+      // Generate a missing point
+      if (cnt != 8)
+        ogps_SetCurrentPoint(iterator, vector);
+      else
+        ogps_SetCurrentPoint(iterator, NULL);
+
+      // Increment counter
+      ++cnt;
+
+      if(ogps_HasError())
+      {
+         break;
+      }
+   }
+
+   // Free iterator
+   ogps_FreePointIterator(&iterator);
+
+   /* The above will show up in xml like this: */
+   /*
+   * <DataList>
+   * <Datum>4;2.5;4.8</Datum>
+   * </DataList>
+   */  
+
+   /* Free buffer */
+   ogps_FreePointVector(&vector);
+
+   /* Print dimensions */
+   PrintDimensions(handle);
+
+   /* Finally: write container to disk. */
+   ogps_WriteISO5436_2(handle);
+   ogps_CloseISO5436_2(&handle);
+}
+
 
 void readonlyExample(const OpenGPS::String fileName)
 {
@@ -1023,7 +1212,7 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::Date_type date(TimeStamp());
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1128,7 +1317,7 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-   Record2Type::Date_type date(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::Date_type date(TimeStamp());
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1331,6 +1520,9 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
 
   tmp = path; tmp += _T("medium.x3p");
   mediumComplexExample(tmp);
+
+  tmp = path; tmp += _T("medium_invalid_points.x3p");
+  mediumComplexExampleWInvalid(tmp);
 
   std::cout << std::endl << "Starting performance tests..." << std::endl;
 
