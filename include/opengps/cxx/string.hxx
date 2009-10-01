@@ -47,7 +47,8 @@
 #include <string>
 
 #if defined(SHARED_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL)
-
+/* Wiora: Removed this part and changed to DLL-Runtime libs. This produces no errors.
+          The method used here created a linker error in release mode, I could not resolve. 
 // Export std::wstring for use with Visual Studio VC8 compiler
 #  if _MSC_VER >= 1400
       class _OPENGPS_EXPORT std::_String_base;
