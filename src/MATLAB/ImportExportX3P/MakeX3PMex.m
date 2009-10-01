@@ -48,7 +48,7 @@ debug=''
 %% Build path names
 
 % Installation path of x3p lib
-InstallX3P = [d,up,up,up,up,'install',fs]
+InstallX3P = [cd(cd([d,up,up,up,up,'install'])),fs]
 % Include directory for x3p
 IDirX3P = ['-I"',InstallX3P,'include',fs,'" ']
 % Library directory for x3p
@@ -97,10 +97,10 @@ if ispc()
     % grep the bin path of codesynthesys
     DirCS = [sp(st:en),fs];
     % Set include and library path
-    IDirCS=['-I"',DirCS,up,'include',fs,'" ']
+    IDirCS=['-I"',cd(cd([DirCS,up,'include'])),fs,'" ']
     % ToDo: We stick to vc8 here, this may have to be changed
     warning('Assuming you are using Visual C8.0. If this is not the case please change the version of Codysynthesys libraries!');
-    LDirCS=['-L"',DirCS,up,'lib',fs,'vc-8.0',fs,'" ',...
+    LDirCS=['-L"',cd(cd([DirCS,up,'lib',fs,'vc-8.0'])),fs,'" ',...
             '-L"',DirCS,'" ']
     % Path to xerces DLL
     LibXercesPath = [DirCS,'xerces-c_2_7_vc80.dll']
