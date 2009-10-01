@@ -600,7 +600,7 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
       // 
       /* Z has data type 16 bit int */
       //ogps_SetDoubleZ(vector, 4.8*cnt);
-      ogps_SetInt16Z(vector, floor(4.8*cnt));
+      ogps_SetInt16Z(vector, (OGPS_Int16)floor(4.8*cnt));
 
       /* 3. Write into document */  
       // Generate a missing point

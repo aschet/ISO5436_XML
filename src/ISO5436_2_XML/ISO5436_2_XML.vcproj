@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="1"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)../../include/&quot;;&quot;$(ProjectDir)../zlib/&quot;;&quot;$(ProjectDir)../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -68,7 +68,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
+				OutputFile="$(OutDir)/$(ProjectName)_D.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -89,7 +89,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="1"
@@ -121,7 +121,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)../../include/&quot;;&quot;$(ProjectDir)../zlib/&quot;;&quot;$(ProjectDir)../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -143,7 +143,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="xerces-c_2.lib"
-				OutputFile="$(SolutionDir)\..\..\install\lib\$(ProjectName).lib"
+				OutputFile="$(ProjectDir)../../../install/lib/$(ProjectName).lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -161,12 +161,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Publishing include directory and incremention build number"
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps&#x0D;&#x0A;$(SolutionDir)..\Build\Tools\IncRev.exe &quot;$(InputDir)\cxx\Version.in&quot; &quot;#define _OPENGPS_BUILD&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy /s /i /v /y /d $(ProjectDir)..\..\include\opengps $(ProjectDir)..\..\..\install\include\opengps\&#x0D;&#x0A;$(ProjectDir)..\..\Build\Tools\IncRev.exe &quot;$(InputDir)\cxx\Version.in&quot; &quot;#define _OPENGPS_BUILD&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug-Shared|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -194,7 +194,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)../../include/&quot;;&quot;$(ProjectDir)../zlib/&quot;;&quot;$(ProjectDir)../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -215,7 +215,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.dll"
+				OutputFile="$(OutDir)/$(ProjectName)_D.dll"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				ImportLibrary="$(TargetDir)$(TargetName)S.lib"
@@ -248,7 +248,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release-Shared|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -281,7 +281,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)../../include/&quot;;&quot;$(ProjectDir)../zlib/&quot;;&quot;$(ProjectDir)../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;NDEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML_DLL"
 				RuntimeLibrary="0"
 				WarningLevel="4"
@@ -300,12 +300,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="xerces-c_2.lib"
-				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName).dll"
+				OutputFile="$(ProjectDir)../../../install/bin/$(ProjectName).dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="false"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(TargetDir)..\lib\$(TargetName)_S.lib"
+				ImportLibrary="$(TargetDir)../lib/$(TargetName)_S.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -332,12 +332,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Publishing include directory"
-				CommandLine="xcopy /s /i /v /y /d $(SolutionDir)..\include\opengps $(SolutionDir)\..\..\install\include\opengps&#x0D;&#x0A;"
+				CommandLine="xcopy /s /i /v /y /d $(ProjectDir)..\..\include\opengps $(ProjectDir)..\..\..\install\include\opengps\&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug Demo (Without Lib)|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="1"
@@ -364,7 +364,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../include/&quot;;&quot;$(SolutionDir)/zlib/&quot;;&quot;$(SolutionDir)/zlib/contrib/minizip/&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)../../include/&quot;;&quot;$(ProjectDir)../zlib/&quot;;&quot;$(ProjectDir)../zlib/contrib/minizip/&quot;"
 				PreprocessorDefinitions="XSD_FP_ALL_DIGITS;WIN32;_DEBUG;_LIB;ZLIB_WINAPI;BUILD_ISO5436_2_XML"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -388,7 +388,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="xerces-c_2D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.lib"
+				OutputFile="$(OutDir)/$(ProjectName)_D.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -502,9 +502,9 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx\&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
-							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+							Outputs="&quot;$(ProjectDir)../../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -513,9 +513,9 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx\&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
-							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+							Outputs="&quot;$(ProjectDir)../../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -524,9 +524,9 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx\&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
-							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+							Outputs="&quot;$(ProjectDir)../../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -535,9 +535,9 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx\&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
-							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+							Outputs="&quot;$(ProjectDir)../../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -546,9 +546,9 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Publish version include file."
-							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(SolutionDir)/../include/opengps/cxx&quot;&#x0D;&#x0A;"
+							CommandLine="xcopy /Y &quot;$(InputPath)&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx\&quot;&#x0D;&#x0A;"
 							AdditionalDependencies="Version.in"
-							Outputs="&quot;$(SolutionDir)/../include/opengps/cxx/$(InputFilename)&quot;"
+							Outputs="&quot;$(ProjectDir)../../include/opengps/cxx/$(InputFilename)&quot;"
 						/>
 					</FileConfiguration>
 				</File>
@@ -625,7 +625,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -636,7 +636,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -647,7 +647,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -658,7 +658,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>
@@ -669,7 +669,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generate tree parser from XSD"
-						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(SolutionDir)..\include\opengps\cxx\&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						CommandLine="xsd.exe cxx-tree --prologue-file &quot;$(ProjectDir)xsd_Licence_Header.c&quot; --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix &quot;_xsd.cxx&quot; --hxx-suffix &quot;_xsd.hxx&quot; --output-dir &quot;$(InputDir).&quot; &quot;$(InputFileName)&quot;&#x0D;&#x0A;xcopy /y &quot;$(ProjectDir)$(InputName)_xsd.hxx&quot; &quot;$(ProjectDir)..\..\include\opengps\cxx&quot;&#x0D;&#x0A;xcopy /y &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="xsd_Licence_Header.c"
 						Outputs="$(InputName)_xsd.cxx $(InputName)_xsd.hxx"
 					/>

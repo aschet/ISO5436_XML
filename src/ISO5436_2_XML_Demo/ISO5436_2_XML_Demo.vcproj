@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -63,9 +63,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
+				OutputFile="$(OutDir)/$(ProjectName)_D.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(ProjectDir)../../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -94,12 +94,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Copy RunDemo.bat to output folder"
-				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles\*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles/*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug-Shared|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -145,9 +145,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_DS.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_DS.exe"
+				OutputFile="$(OutDir)/$(ProjectName)_DS.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(ProjectDir)../../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -176,12 +176,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Copy RunDemo.bat to output folder"
-				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles\*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles/*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -224,9 +224,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML.lib"
-				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName).exe"
+				OutputFile="$(ProjectDir)../../../install/bin/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)\..\..\install\lib\"
+				AdditionalLibraryDirectories="$(ProjectDir)../../../install/lib/"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -257,12 +257,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Copy RunDemo.bat to output folder and publish sample files"
-				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(SolutionDir)../../Install/bin/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles\*.x3p&quot; &quot;$(SolutionDir)../../Install/SampleFiles/&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(ProjectDir)../../../Install/bin/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles/*.x3p&quot; &quot;$(ProjectDir)../../../Install/SampleFiles/&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release-Shared|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -305,9 +305,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_S.lib"
-				OutputFile="$(SolutionDir)\..\..\install\bin\$(ProjectName)_S.exe"
+				OutputFile="$(ProjectDir)../../../install/bin/$(ProjectName)_S.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)\..\..\install\lib\"
+				AdditionalLibraryDirectories="$(ProjectDir)../../../install/lib/"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -338,12 +338,12 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Copy RunDemo.bat to output folder and publish sample files"
-				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(SolutionDir)../../Install/bin/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles\*.x3p&quot; &quot;$(SolutionDir)../../Install/SampleFiles/&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(ProjectDir)../../../Install/bin/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles/*.x3p&quot; &quot;$(ProjectDir)../../../Install/SampleFiles/&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug Demo (Without Lib)|Win32"
-			OutputDirectory="$(SolutionDir)../build/$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)../../build/$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -389,9 +389,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="kernel32.lib $(NoInherit) ISO5436_2_XML_D.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_D.exe"
+				OutputFile="$(OutDir)/$(ProjectName)_D.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)../build/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(ProjectDir)../../build/$(ConfigurationName)"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -420,14 +420,14 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="Copy RunDemo.bat to output folder"
-				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles\*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
+				CommandLine="xcopy  /y /f &quot;$(InputDir)RunDemo.bat&quot; &quot;$(OutDir)/&quot;&#x0D;&#x0A;xcopy /y /f &quot;$(InputDir)samplefiles/*.x3p&quot; &quot;$(OutDir)/../SampleFiles/&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
 	<References>
 		<ProjectReference
 			ReferencedProjectIdentifier="{745F0451-47F7-400E-BD04-A1741E01A158}"
-			RelativePathToProject=".\ISO5436_2_XML\ISO5436_2_XML.vcproj"
+			RelativePathToProject="./ISO5436_2_XML/ISO5436_2_XML.vcproj"
 		/>
 	</References>
 	<Files>
@@ -436,68 +436,68 @@
 			Filter="*.xml"
 			>
 			<File
-				RelativePath=".\samplefiles\ExamplesReadMe.txt"
+				RelativePath="./samplefiles/ExamplesReadMe.txt"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample1.x3p"
+				RelativePath="./samplefiles/ISO5436-sample1.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample1.xml"
+				RelativePath="./samplefiles/ISO5436-sample1.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample1_bin.x3p"
+				RelativePath="./samplefiles/ISO5436-sample1_bin.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample1_bin.xml"
+				RelativePath="./samplefiles/ISO5436-sample1_bin.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample2.x3p"
+				RelativePath="./samplefiles/ISO5436-sample2.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample2.xml"
+				RelativePath="./samplefiles/ISO5436-sample2.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample3.x3p"
+				RelativePath="./samplefiles/ISO5436-sample3.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample3.xml"
+				RelativePath="./samplefiles/ISO5436-sample3.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample4.x3p"
+				RelativePath="./samplefiles/ISO5436-sample4.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample4.xml"
+				RelativePath="./samplefiles/ISO5436-sample4.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample4_bin.x3p"
+				RelativePath="./samplefiles/ISO5436-sample4_bin.x3p"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\ISO5436-sample4_bin.xml"
+				RelativePath="./samplefiles/ISO5436-sample4_bin.xml"
 				>
 			</File>
 			<File
-				RelativePath=".\samplefiles\Sample_Files_Description_for_Doxygen.h"
+				RelativePath="./samplefiles/Sample_Files_Description_for_Doxygen.h"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\ISO5436_2_XML_Demo.cxx"
+			RelativePath="./ISO5436_2_XML_Demo.cxx"
 			>
 		</File>
 		<File
-			RelativePath=".\RunDemo.bat"
+			RelativePath="./RunDemo.bat"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"
