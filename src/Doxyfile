@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "openGPS ISO 5436-2 XML       "
-PROJECT_NUMBER         = 0.02
+PROJECT_NUMBER         = 0.03
 OUTPUT_DIRECTORY       = ../doc/SDK
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
@@ -51,9 +51,9 @@ TYPEDEF_HIDES_STRUCT   = YES
 # Build related configuration options
 #---------------------------------------------------------------------------
 EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
-EXTRACT_LOCAL_CLASSES  = NO
+EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = NO
 EXTRACT_ANON_NSPACES   = YES
 HIDE_UNDOC_MEMBERS     = NO
@@ -93,8 +93,7 @@ WARN_LOGFILE           = DoxygenWarnings.log
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../include \
-                         ../src
+INPUT                  = ../include
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -125,7 +124,8 @@ FILE_PATTERNS          = *.c \
                          *.x3p
 RECURSIVE              = YES
 EXCLUDE                = ./zlib \
-                         ./ISO5436_2_XML_Demo/samplefiles/Alicona_RoundRobin_V1
+                         ./ISO5436_2_XML_Demo/samplefiles/Alicona_RoundRobin_V1 \
+                         .svn
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = */.svn/* \
                          */.*/*
@@ -144,8 +144,8 @@ FILTER_SOURCE_FILES    = NO
 SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO
 STRIP_CODE_COMMENTS    = YES
-REFERENCED_BY_RELATION = YES
-REFERENCES_RELATION    = YES
+REFERENCED_BY_RELATION = NO
+REFERENCES_RELATION    = NO
 REFERENCES_LINK_SOURCE = YES
 USE_HTAGS              = NO
 VERBATIM_HEADERS       = NO
