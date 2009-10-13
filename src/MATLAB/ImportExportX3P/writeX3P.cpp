@@ -205,11 +205,11 @@ GetProbingSystemTypeEnum(const mxArray *inp)
   // with one value of "Contacting", "NonContacting", "Software"
   wstring winp(ConvertMtoWStr(mxGetField(inp, 0,"ProbingSystem_Type")));
   
-  if (winp == L"Contacting")
+  if (winp == _T("Contacting"))
     return Record2Type::ProbingSystem_type::Type_type::Contacting;
-  else if (winp == L"NonContacting")
+  else if (winp == _T("NonContacting"))
     return Record2Type::ProbingSystem_type::Type_type::NonContacting;
-  else if (winp == L"Software")
+  else if (winp == _T("Software"))
     return Record2Type::ProbingSystem_type::Type_type::Software;
 
   // Illegal value
@@ -229,32 +229,35 @@ void mexFunction( int nlhs, mxArray *plhs[],
   bool bHasStruct=false;
   
   wstring SyntaxHelp(  
-     L"Call Syntax:\n"
-     L"  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta[,...])\n"
-     L"    FileName - name of file to write\n"
-     L"    FeatureType - one of 'PRF' for a line profile, 'SUR' for surface or 'PCL' for a point cloud.\n"
-     L"    x     - 1,2 or 3d array of x coordinates in meter\n"
-     L"    y     - 1,2 or 3d array of y coordinates in meter\n"
-     L"    z     - 1,2 or 3d array of z coordinates in meter\n"
-     L"    meta  - Meta data structure of the file with the following elements:\n"
-     L"     .Date - Data set creation date of the form '2007-04-30T13:58:02.6+02:00'\n"
-     L"     .Creator - optional name of the creator or empty array.\n"
-     L"     .Instrument_Manufacturer - String with name of the manufacturer\n"
-     L"     .Instrument_Model - String with instrument model or software name\n"
-     L"     .Instrument_Serial - String with serial number of instrument or 'not available'.\n"
-     L"     .Instrument_Version - Hardware and software version string of Instrument\n"
-     L"     .CalibrationDate - Date of last calibration of the form '2007-04-30T13:58:02.6+02:00'\n"
-     L"     .ProbingSystem_Type - one of  'Software','Contacting' or 'NonContacting'\n"
-     L"     .ProbingSystem_Identification - String identifying lens, probe tip, etc.\n"
-     L"     .Comment    - 'A user comment specific to this dataset'\n"          
-     L"    pinfo - Info about data organisation\n"
-     L"  Additional key-value-pairs can be specified after the last argument:\n"
-     L"    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied\n"
-     L"                 to each 3D-data point P on readback. R1 = R*P+T\n"
-     L"    'offset'   - a 3 element vector T containing a translation vector for the data\n"
-     L"                 that is applied to each 3D-data point P on readback: R1 = R*P+T\n"
-     L"<a href=\"http://www.opengps.eu/\"www.opengps.eu</a>\n\n"
-     OGPS_LICENSETEXT);
+     _T("Call Syntax:\n")
+     _T("  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta[,...])\n")
+     _T("    FileName - name of file to write\n")
+     _T("    FeatureType - one of 'PRF' for a line profile, 'SUR' for surface or 'PCL' for a point cloud.\n")
+     _T("    x     - 1,2 or 3d array of x coordinates in meter\n")
+     _T("    y     - 1,2 or 3d array of y coordinates in meter\n")
+     _T("    z     - 1,2 or 3d array of z coordinates in meter\n")
+     _T("    meta  - Meta data structure of the file with the following elements:\n")
+     _T("     .Date - Data set creation date of the form '2007-04-30T13:58:02.6+02:00'\n")
+     _T("     .Creator - optional name of the creator or empty array.\n")
+     _T("     .Instrument_Manufacturer - String with name of the manufacturer\n")
+     _T("     .Instrument_Model - String with instrument model or software name\n")
+     _T("     .Instrument_Serial - String with serial number of instrument or 'not available'.\n")
+     _T("     .Instrument_Version - Hardware and software version string of Instrument\n")
+     _T("     .CalibrationDate - Date of last calibration of the form '2007-04-30T13:58:02.6+02:00'\n")
+     _T("     .ProbingSystem_Type - one of  'Software','Contacting' or 'NonContacting'\n")
+     _T("     .ProbingSystem_Identification - String identifying lens, probe tip, etc.\n")
+     _T("     .Comment    - 'A user comment specific to this dataset'\n")          
+     _T("    pinfo - Info about data organisation\n")
+     _T("  Additional key-value-pairs can be specified after the last argument:\n")
+     _T("    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied\n")
+     _T("                 to each 3D-data point P on readback. R1 = R*P+T\n")
+     _T("    'offset'   - a 3 element vector T containing a translation vector for the data\n")
+     _T("                 that is applied to each 3D-data point P on readback: R1 = R*P+T\n")
+     _T("    'VendorSpecific' - a path of a file to be packet into x3p file as a vendor\n")
+     _T("                 specific extension. The filename portion of the file is used as\n")
+     _T("                 the URI for this extension is '") OGPS_VEXT_URI _T("'\n")
+     _T("<a href=\"http://www.opengps.eu/\"www.opengps.eu</a>\n\n")
+     OGPS_LICENSETEXT );
   SyntaxHelp.append(GetX3P_Dll_ID());
 
   /* check for proper number of arguments */
@@ -290,7 +293,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
   const mxArray **inKeywords = NULL;         /* Keyword-value pairs */
   const mxArray *inRotation=NULL;             /* Rotation matrix */
   const mxArray *inTranslation=NULL;          /* Translation vector */
-  // Flags for keyword existence
+  const mxArray *inVendorSpecific=NULL;       /* Argument string for vendor specific extension */
+
+  /* vendor specific extension filename  */
+  std::wstring VendorFileNameL(_T(""));
+  
+// Flags for keyword existence
   bool bHasRotation=false;
   bool bHasTranslation=false;
 
@@ -307,9 +315,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
     {
       // Convert string to C
       wstring key(ConvertMtoWStr(inKeywords[i]));
+      // convert keyword name to lower case
+      transform(key.begin(), key.end(), key.begin(), tolower);
 
       // check rotation matrix
-      if (key == L"rotation")
+      if (key == _T("rotation"))
       {
         // check for available argument
         if (inNKeywords <= i+1)
@@ -328,7 +338,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
         bHasRotation = true;
       }
       // check rotation matrix
-      else if (key == L"translation")
+      else if (key == _T("translation"))
       {
         // check for available argument
         if (inNKeywords <= i+1)
@@ -345,6 +355,25 @@ void mexFunction( int nlhs, mxArray *plhs[],
         }
         // Everything is fine
         bHasTranslation = true;
+      }
+      else if (key == _T("vendorspecific"))
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'VendorSpecific' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inVendorSpecific = inKeywords[++i];
+        // Check argument type
+        if( !mxIsChar(inVendorSpecific) || 
+             mxGetNumberOfElements(inVendorSpecific)<1 ) {
+             mexErrMsgIdAndTxt("openGPS:writeX3P:notString","'VendorSpecific' argument must be a string");
+        }
+        /* get the filename  */
+        VendorFileNameL = std::wstring(ConvertMtoWStr(inVendorSpecific));
+        
       }
       else
       {
@@ -896,15 +925,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
   /* Free buffer */
   ogps_FreePointVector(&vector);
 
-   /* How to append vendorspecific data:
-   OpenGPS::String vname(fileName.substr(0, fileName.find_last_of(_T("/\\")) + 1));
-   vname.append(_T("vendor.tmp"));
-   std::wofstream vendor_dat(vname.ToChar(), std::ios::trunc);
-   vendor_dat << _T("Vendorspecific data.") << std::endl;
-   vendor_dat.close();
-
-   ogps_AppendVendorSpecific(handle, _T("http://www.example.com/format/version1"), vname.c_str());
-   */
+  /* How to append vendorspecific data: */
+  // Get last portion of filename to use es filename in zip archive
+  //OpenGPS::String vname(VendorFileNameL);
+  ogps_AppendVendorSpecific(handle, OGPS_VEXT_URI, VendorFileNameL.c_str());
 
   // Create the point info structure
   // Get document 

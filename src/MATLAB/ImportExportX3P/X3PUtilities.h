@@ -44,7 +44,10 @@
 #include <opengps/cxx/iso5436_2_handle.hxx>
 #include <opengps/cxx/iso5436_2_xsd.hxx>
 
-#define OGPS_LICENSETEXT L"openX3P is part of the openGPS project (see <a href=\"http://www.opengps.eu/\">www.opengps.eu</a> for more info)\n"
+#define OGPS_LICENSETEXT _T("openX3P is part of the openGPS project (see <a href=\"http://www.opengps.eu/\">www.opengps.eu</a> for more info)\n")
+
+// Uri for vendor specific extension
+#define OGPS_VEXT_URI _T("http://www.mathworks.com/x3p/version_1")
 
 // convert wstring to matlab string.
 mxArray *ConvertWtoMStr(const std::wstring &inp);
