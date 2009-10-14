@@ -141,7 +141,7 @@ OpenGPS::String TimeStamp(void)
   // Create a string of pattern "2007-04-30T13:58:02.6+02:00"
   wostringstream sout;
   sout << std::setfill(_T('0')) << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday 
-      << _T('T') << lt.tm_hour << _T(':') << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
+      << _T('T') << setw(2) << lt.tm_hour << _T(':') << setw(2) << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
       << tzoffsign << setw(2) << tzoff_habs << _T(':') << setw(2) << tzoff_m << ends;
 
   return sout.str();

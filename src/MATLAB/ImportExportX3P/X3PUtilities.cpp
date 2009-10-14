@@ -30,7 +30,11 @@
 #include "X3PUtilities.h"
 
 #include <strstream>
+#include <iomanip>
+#include <ios>
 #include <opengps/cxx/info.hxx>
+
+#include <time.h>
 
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
@@ -148,3 +152,59 @@ GetX3P_Dll_ID(void)
   // Return result string
   return msg;
 }
+
+
+/*!
+  @brief Helper function to return the current time properly formated.
+  
+  @return A string containing the time stamp from now.
+
+  @note There is only a windows implementation yet. In other cases
+  return a dummy. That is enough for testing purposes.
+*/
+#ifdef _WIN32
+OpenGPS::String TimeStamp(void)
+{
+  time_t ltime;
+  struct tm lt;
+  // Time zone offset
+  long tzoff;
+  // Set timezone
+  _tzset();
+  // Get time zone offset
+  _get_timezone(&tzoff);
+  // Offset ours and minutes
+  int tzoff_h,tzoff_m;
+  tzoff_h = -(int)floor(((double)tzoff)/3600.);
+  tzoff_m = -(int)floor(((double)tzoff)/60. + 0.5) - tzoff_h*60;
+
+  // Get current time
+  time( &ltime );
+  // get local time
+  localtime_s(&lt,&ltime);
+  
+  // Correct tz offset by dst
+  if (lt.tm_isdst > 0)
+    tzoff_h++;
+
+  // Absolute offset for printing
+  int tzoff_habs = abs(tzoff_h);
+  OGPS_Character tzoffsign = tzoff_h<0 ? _T('-') : _T('+');
+
+  // Create a string of pattern "2007-04-30T13:58:02.6+02:00"
+  wostringstream sout;
+  sout << std::setfill(_T('0')) << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday 
+      << _T('T') << setw(2) << lt.tm_hour << _T(':') << setw(2) << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
+      << tzoffsign << setw(2) << tzoff_habs << _T(':') << setw(2) << tzoff_m << ends;
+
+  return sout.str();
+}
+#else
+// There is only a windows implementation yet.
+//In other cases return a dummy. That is enough for testing purposes.
+OGPS_String TimeStamp(void)
+{
+  return _T("2000-01-01T00:00:00.0+00:00");
+}
+
+#endif

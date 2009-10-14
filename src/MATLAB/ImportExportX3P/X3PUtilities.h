@@ -57,5 +57,7 @@ std::wstring ConvertMtoWStr(const mxArray *inp);
 mxArray *GetPointInfoStructure(OGPS_ISO5436_2Handle handle);
 // Get the name and version from X3P dll
 std::wstring GetX3P_Dll_ID(void);
+// Get a properly formated timestamp for the current date
+OpenGPS::String TimeStamp(void);
 
 #endif

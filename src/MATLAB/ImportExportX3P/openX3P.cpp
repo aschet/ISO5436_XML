@@ -69,16 +69,28 @@ void mexFunction( int nlhs, mxArray *plhs[],
   bool bHasStruct=false;
   
   wstring SyntaxHelp( 
-     L"Call Syntax:\n"
-     L"  [z,x,y,pinfo,meta] = openX3P(filename)\n"
-     L"    x     - Array of x coordinates in meter\n"
-     L"    y     - Array of y coordinates in meter\n"
-     L"    z     - Array of z coordinates in meter\n"
-     L"    pinfo - Info about data organisation\n"
-     L"    meta  - Meta data structure of the file\n"
-     L"  [z, x, y] = openX3P(filename)\n"
-     L"  [z, x, y, pinfo] = openX3P(filename)\n"
-     L"  [z, x, y, pinfo, meta] = openX3P(filename)\n\n"
+     _T("Call Syntax:\n")
+     _T("  [z,x,y,pinfo,meta] = openX3P(filename[,...])\n")
+     _T("    x     - Array of x coordinates in meter\n")
+     _T("    y     - Array of y coordinates in meter\n")
+     _T("    z     - Array of z coordinates in meter\n")
+     _T("    pinfo - Info about data organisation\n")
+     _T("    meta  - Meta data structure of the file\n")
+     _T("  [z, x, y] = openX3P(filename)\n")
+     _T("  [z, x, y, pinfo] = openX3P(filename)\n")
+     _T("  [z, x, y, pinfo, meta] = openX3P(filename)\n\n")
+     _T("  Additional key-value-pairs can be specified after the last argument:\n")
+     _T("    'VendorSpecificFilename' - The exact (case sensitive) filename\n")
+     _T("            (without path portion) of a file that was packet into the\n")
+     _T("            x3p file as a vendor specific extension. This argument is\n")
+     _T("            mandatory for reading the vendorspecific extension.\n")
+     _T("    'VendorSpecificTargetFile' - The path for the destination where the\n")
+     _T("            unpacked file should be stored to. Default is the current\n")
+     _T("            directory and the original filename.\n")
+     _T("    'VendorSpecificURI' - if a specific URI has been used you have to\n")
+     _T("            specify it here. The default extension for MATLAB written\n")
+     _T("            x3p-files is '") OGPS_VEXT_URI _T("'\n")
+     
      OGPS_LICENSETEXT);
   SyntaxHelp.append(GetX3P_Dll_ID());
 
@@ -88,7 +100,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   mxArray *outMatrixZ=NULL;               /*output matrix with z-Values*/
 
   /* check for proper number of arguments */
-  if(nrhs!=1)
+  if((nrhs<1) || (nrhs>7))
   {
     ostrstream msg;
     msg << "openX3P was called with " << nrhs << " input arguments!" << endl
@@ -126,6 +138,120 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // Convert filename to wide character
   std::wstring FileNameL(ConvertMtoWStr(inFileName));
   
+  // Flags for keyword existence
+  bool bHasVendorFilename=false;
+  bool bHasVendorURI=false;
+  bool bHasVendorTarget=false;
+
+  const unsigned int cKeywordOffset=1;        //Position of first keyword argument
+  const unsigned int inNKeywords = nrhs-cKeywordOffset;    /* number of keyword arguments */
+
+  // Keyword arguments
+  const mxArray **inKeywords = NULL;
+  const mxArray *inVendorFilename = NULL;   // Filename of the vendor specific file
+  const mxArray *inVendorURI = NULL;        // URI of the vendor specific extension
+  const mxArray *inVendorTarget = NULL;     // Target Filename of the vendor specific file
+  // std strings for keyword arguments
+  std::wstring strVFilename (_T(""));
+  std::wstring strVURI (OGPS_VEXT_URI);
+  std::wstring strVTarget (_T(""));
+
+  // Parse keyword arguments
+  if (inNKeywords > 0)
+  {
+    // Get pointer to start of keyword value pairs
+    inKeywords = &prhs[cKeywordOffset];
+    // Parse keys
+    for (unsigned int i=0; i<inNKeywords ; i++)
+    {
+      // Convert string to C
+      wstring key(ConvertMtoWStr(inKeywords[i]));
+      // convert keyword name to lower case
+      transform(key.begin(), key.end(), key.begin(), tolower);
+
+      // check Vendor specific filename
+      if (key == _T("vendorspecificfilename"))
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'VendorSpecificFilename' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inVendorFilename = inKeywords[++i];
+        // check for argument type
+        if( !mxIsChar(inVendorFilename) || 
+             mxGetNumberOfElements(inVendorFilename)<1 ) {
+             mexErrMsgIdAndTxt("openGPS:writeX3P:notString","'VendorSpecificFilename' argument must be a string");
+        }
+        /* get the filename  */
+        strVFilename = std::wstring(ConvertMtoWStr(inVendorFilename));
+        // Everything is fine
+        bHasVendorFilename = true;
+      }
+      // check rotation matrix
+      else if (key == _T("vendorspecifictargetfile"))
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'VendorSpecificTargetFile' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inVendorTarget = inKeywords[++i];
+        // check for argument type
+        if( !mxIsChar(inVendorTarget) || 
+             mxGetNumberOfElements(inVendorTarget)<1 ) {
+             mexErrMsgIdAndTxt("openGPS:writeX3P:notString","'VendorSpecificTargetFile' argument must be a string");
+        }
+        /* get the filename  */
+        strVTarget = std::wstring(ConvertMtoWStr(inVendorTarget));
+        // Everything is fine
+        bHasVendorTarget = true;
+      }
+      else if (key == _T("vendorspecificuri"))
+      {
+        // check for available argument
+        if (inNKeywords <= i+1)
+        {
+          // Throw error message
+          mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument","'VendorSpecificURI' keyword not followd by an argument");
+        }
+        // Fetch next argument and increment index
+        inVendorURI = inKeywords[++i];
+        // Check argument type
+        if( !mxIsChar(inVendorURI) || 
+             mxGetNumberOfElements(inVendorURI)<1 ) {
+             mexErrMsgIdAndTxt("openGPS:writeX3P:notString","'VendorSpecificURI' argument must be a string");
+        }
+        /* get the URI string  */
+        strVURI = std::wstring(ConvertMtoWStr(inVendorURI));
+        bHasVendorURI = true;        
+      }
+      else
+      {
+        // Unkwon argument
+        ostrstream msg;
+        msg << "Warning: unknown keyword argument on position " << cKeywordOffset+i << "!" << endl << ends;
+        mexWarnMsgIdAndTxt("openGPS:writeX3P:IllegalArgument",msg.str());
+      }
+    }
+  }
+
+  
+  // Create default arguments for optional arguments if needed
+  if (bHasVendorFilename)
+  {
+    // Check for existence of target file
+    if (!bHasVendorTarget)
+    {
+      // copy vendor filename to target file
+      strVTarget = strVFilename;
+    }
+  }
+  
   /* We want to read in some file and read its point data. */
   /* Open the file, hopefully everything went well... */
   OGPS_ISO5436_2Handle handle = ogps_OpenISO5436_2(FileNameL.c_str(), NULL, TRUE);
@@ -143,8 +269,33 @@ void mexFunction( int nlhs, mxArray *plhs[],
     return;
   }
 
-   if(!handle)
+  if(!handle)
       return;
+  
+   // Check for vendor specific extension
+  if (bHasVendorFilename)
+  {
+    /* Try to read your vendorspecific extension file data. */
+    if(!ogps_GetVendorSpecific(handle, strVURI.c_str(),strVFilename.c_str(), strVTarget.c_str()))
+    {
+      ostrstream msg;
+      msg << "Error reading vendor specific extension with URI \"" << strVURI << "\"," << endl
+          << "file name \"" << strVFilename << "\"," << endl
+          << "and destination file name \"" << strVTarget << "\"." << endl
+          << "Please check wether you used the correct URI and filename." << endl;
+      // Is this just a failure or an error?
+      if (ogps_HasError())
+      {
+         msg << "X3P-library reported the following error:" << endl
+             << wstring(ogps_GetErrorMessage()) << endl
+             << wstring(ogps_GetErrorDescription()) << endl;
+      }
+      // Close string
+      msg << ends;
+      mexWarnMsgIdAndTxt("openGPS:openX3P:VendorSpecificExtension",
+            msg.str());
+    }
+  }
   
    /* Is data list? / Is matrix? */ 
    // Number of points in file

@@ -237,7 +237,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
      _T("    y     - 1,2 or 3d array of y coordinates in meter\n")
      _T("    z     - 1,2 or 3d array of z coordinates in meter\n")
      _T("    meta  - Meta data structure of the file with the following elements:\n")
-     _T("     .Date - Data set creation date of the form '2007-04-30T13:58:02.6+02:00'\n")
+     _T("     .Date    - Data set creation date of the form '2007-04-30T13:58:02.6+02:00'.\n")
+     _T("                Set to empty string to use current time.\n")
      _T("     .Creator - optional name of the creator or empty array.\n")
      _T("     .Instrument_Manufacturer - String with name of the manufacturer\n")
      _T("     .Instrument_Model - String with instrument model or software name\n")
@@ -261,7 +262,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   SyntaxHelp.append(GetX3P_Dll_ID());
 
   /* check for proper number of arguments */
-  if ((nrhs<6) || (nrhs>10))
+  if ((nrhs<6) || (nrhs>12))
   {
     ostrstream msg;
     msg << "writeX3P was called with " << nrhs << " input arguments!" << endl
@@ -298,9 +299,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
   /* vendor specific extension filename  */
   std::wstring VendorFileNameL(_T(""));
   
-// Flags for keyword existence
+  // Flags for keyword existence
   bool bHasRotation=false;
   bool bHasTranslation=false;
+  bool bHasExtension=false;
 
   const unsigned int cKeywordOffset=6;        //Position of first keyword argument
   const unsigned int inNKeywords = nrhs-cKeywordOffset;    /* number of keyword arguments */
@@ -373,7 +375,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
         }
         /* get the filename  */
         VendorFileNameL = std::wstring(ConvertMtoWStr(inVendorSpecific));
-        
+        bHasExtension = true;        
       }
       else
       {
@@ -638,7 +640,28 @@ void mexFunction( int nlhs, mxArray *plhs[],
    
   /* Create RECORD2 with information from meta data structure */
   // Data set creation date
-  Record2Type::Date_type date(ConvertMtoWStr(mxGetField(meta, 0,"Date")));
+  Record2Type::Date_type *date=NULL;
+  // Check for a date with correct length given in meta data field
+  // TODO: We should at least do some format cecking
+  mwSize dlen = mxGetNumberOfElements(mxGetField(meta, 0,"Date"));
+  if (dlen != 27)
+  {
+    // If length is less than 2 we assume it has been left blank intentionally
+    if (dlen > 1)
+    {
+      // Issue a warning
+      mexWarnMsgIdAndTxt("openGPS:writeX3P:CreationDate",
+              "The creation date must have a length of 27 characters and a format\n"
+              "similar to '2007-04-30T13:58:02.6+02:00'. Using the current date as\n"
+              "data set creation date\n");
+    }
+    // Use current date as creation date
+    date = new Record2Type::Date_type(TimeStamp());
+  }
+  else
+    // Use the given date
+    date = new Record2Type::Date_type(ConvertMtoWStr(mxGetField(meta, 0,"Date")));
+    
   
   // Instrument manufacturer
   Record2Type::Instrument_type::Manufacturer_type 
@@ -682,7 +705,11 @@ void mexFunction( int nlhs, mxArray *plhs[],
   Record2Type::ProbingSystem_type probingSystem(type, id);
 
   // Create Record2 from collected data
-  Record2Type record2(date, instrument, calibrationDate, probingSystem);
+  Record2Type record2(*date, instrument, calibrationDate, probingSystem);
+  
+  // Delete date record
+  if (date)
+    delete date;
 
   // Look out for comment field
   mxArray *cfield = mxGetField(meta, 0,"Comment");
@@ -925,10 +952,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
   /* Free buffer */
   ogps_FreePointVector(&vector);
 
-  /* How to append vendorspecific data: */
-  // Get last portion of filename to use es filename in zip archive
-  //OpenGPS::String vname(VendorFileNameL);
-  ogps_AppendVendorSpecific(handle, OGPS_VEXT_URI, VendorFileNameL.c_str());
+  /* append vendorspecific data */
+  if (bHasExtension)
+  {
+    // add file to zip archive
+    ogps_AppendVendorSpecific(handle, OGPS_VEXT_URI, VendorFileNameL.c_str());
+  }
 
   // Create the point info structure
   // Get document 

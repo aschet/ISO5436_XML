@@ -2271,9 +2271,33 @@ OGPS_Boolean ISO5436_2Container::GetVendorSpecific(const OpenGPS::String& vendor
          _EX_T("OpenGPS::ISO5436_2Container::GetVendorSpecific"));
    }
 
-   if(m_Document->VendorSpecificID().present() && m_Document->VendorSpecificID().get() == vendorURI)
+   if(m_Document->VendorSpecificID().present())
    {
-      return Decompress(fileName, targetPath, TRUE);
+     if(m_Document->VendorSpecificID().get() == vendorURI)
+     {
+        return Decompress(fileName, targetPath, TRUE);
+     }
+     else
+     {
+       std::ostringstream msg;
+       msg << _EX_T("File vendor URI is \"") << m_Document->VendorSpecificID().get() << _EX_T("\"") << std::endl
+           << _EX_T("Argument vendor URI is \"") << vendorURI << _EX_T("\"") << std::endl << std::ends;
+       std::string msg1(msg.str());
+
+       throw OpenGPS::Exception(
+         OGPS_ExWarning,
+         _EX_T("The argument vendorURI is not equal to the file vendor uri."),
+         msg1.c_str(),
+         _EX_T("OpenGPS::ISO5436_2Container::GetVendorSpecific"));
+     }
+   }
+   else
+   {
+      throw OpenGPS::Exception(
+         OGPS_ExWarning,
+         _EX_T("No vendor specific extension in file detected."),
+         _EX_T("The file does not contain a vendorURI."),
+         _EX_T("OpenGPS::ISO5436_2Container::GetVendorSpecific"));
    }
 
    return FALSE;
