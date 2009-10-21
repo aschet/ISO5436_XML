@@ -1124,7 +1124,8 @@ void ISO5436_2Container::CreateDocument(
 
       if(useBinaryData)
       {
-         Schemas::ISO5436_2::DataLinkType dataLink(_OPENGPS_XSD_ISO5436_DATALINK_PATH, NULL);
+         const Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type md5;
+         Schemas::ISO5436_2::DataLinkType dataLink(_OPENGPS_XSD_ISO5436_DATALINK_PATH, md5);
          m_Document->Record3().DataLink(dataLink);
       }
       else

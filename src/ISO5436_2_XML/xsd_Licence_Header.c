@@ -33,3 +33,4 @@
  ***************************************************************************/
 
 #include <opengps/opengps.h>
+#include <opengps/cxx/iso5436_2_xsd_utils.hxx>

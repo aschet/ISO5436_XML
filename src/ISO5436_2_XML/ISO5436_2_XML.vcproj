@@ -474,6 +474,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\opengps\cxx\iso5436_2_xsd_utils.hxx"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\opengps\cxx\opengps.hxx"
 					>
 				</File>
@@ -785,6 +789,10 @@
 				</File>
 				<File
 					RelativePath=".\cxx\iso5436_2_container.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\cxx\iso5436_2_xsd_utils.cxx"
 					>
 				</File>
 				<File

@@ -101,6 +101,83 @@ PrintDimensions(const OGPS_ISO5436_2Handle handle)
 }
 
 
+#if (XSD_INT_VERSION >= 3020000L)
+
+/*!
+  @brief Helper function to return the current local time and UTC offsets.
+*/
+void TimeStamp(
+               int* tz_year,
+               unsigned short* tz_month,
+               unsigned short* tz_day,
+               unsigned short* tz_hour,
+               unsigned short* tz_min,
+               double* tz_second,
+               short* tz_offset_hour,
+               short* tz_offset_min)
+{
+   time_t ltime;
+   struct tm lt;
+   // Time zone offset
+   long tzoff;
+   // Set timezone
+   _tzset();
+   // Get time zone offset
+   _get_timezone(&tzoff);
+   // Offset ours and minutes
+   int tzoff_h,tzoff_m;
+   tzoff_h = -(int)floor(((double)tzoff)/3600.);
+   tzoff_m = -(int)floor(((double)tzoff)/60. + 0.5) - tzoff_h*60;
+
+   // Get current time
+   time( &ltime );
+   // get local time
+   localtime_s(&lt,&ltime);
+
+   // Correct tz offset by dst
+   if (lt.tm_isdst > 0)
+      tzoff_h++;
+
+   if(tz_year)
+   {
+      *tz_year = lt.tm_year + 1900;
+   }
+   if(tz_month)
+   {
+      _ASSERT(lt.tm_mon >= 0);
+      *tz_month = (unsigned short)lt.tm_mon;
+   }
+   if(tz_day)
+   {
+      _ASSERT(lt.tm_mday >= 0);
+      *tz_day = (unsigned short)lt.tm_mday;
+   }
+   if(tz_hour)
+   {
+      _ASSERT(lt.tm_hour >= 0);
+      *tz_hour = (unsigned short)lt.tm_hour;
+   }
+   if(tz_min)
+   {
+      _ASSERT(lt.tm_min >= 0);
+      *tz_min = (unsigned short)lt.tm_min;
+   }
+   if(tz_second)
+   {
+      *tz_second = lt.tm_sec;
+   }
+   if(tz_offset_hour)
+   {
+      *tz_offset_hour = (short)tzoff_h;
+   }
+   if(tz_offset_min)
+   {
+      *tz_offset_min = (short)tzoff_m;
+   }
+}
+
+#else /* XSD_INT_VERSION */
+
 /*!
   @brief Helper function to return the current time properly formated.
   
@@ -153,9 +230,9 @@ OGPS_String TimeStamp(void)
 {
   return _T("2007-04-30T13:58:02.6+02:00");
 }
-
 #endif
 
+#endif /* XSD_INT_VERSION */
 
 /*!
   @brief Prints all meta data available in the current document.
@@ -296,7 +373,17 @@ void simpleExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
+#if (XSD_INT_VERSION >= 3020000L)
+   int tz_year;
+   unsigned short tz_month, tz_day, tz_hour, tz_min;
+   double tz_second;
+   short tz_offset_hour, tz_offset_min;
+   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
+   
+   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
+#else /* XSD_INT_VERSION */
    Record2Type::Date_type date(TimeStamp());
+#endif /* XSD_INT_VERSION */
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -304,7 +391,20 @@ void simpleExample(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
+#if (XSD_INT_VERSION >= 3020000L)
+   // "2007-04-30T13:58:02.6+02:00"
+   Record2Type::CalibrationDate_type calibrationDate(
+      2007,
+      4,
+      30,
+      13,
+      58,
+      2,
+      2,
+      0);
+#else /* XSD_INT_VERSION */
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+#endif /* XSD_INT_VERSION */
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -424,7 +524,17 @@ void mediumComplexExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
+#if (XSD_INT_VERSION >= 3020000L)
+   int tz_year;
+   unsigned short tz_month, tz_day, tz_hour, tz_min;
+   double tz_second;
+   short tz_offset_hour, tz_offset_min;
+   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
+   
+   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
+#else /* XSD_INT_VERSION */
    Record2Type::Date_type date(TimeStamp());
+#endif /* XSD_INT_VERSION */
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -432,7 +542,20 @@ void mediumComplexExample(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
+#if (XSD_INT_VERSION >= 3020000L)
+   // "2007-04-30T13:58:02.6+02:00"
+   Record2Type::CalibrationDate_type calibrationDate(
+      2007,
+      4,
+      30,
+      13,
+      58,
+      2,
+      2,
+      0);
+#else /* XSD_INT_VERSION */
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+#endif /* XSD_INT_VERSION */
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -545,7 +668,17 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
+#if (XSD_INT_VERSION >= 3020000L)
+   int tz_year;
+   unsigned short tz_month, tz_day, tz_hour, tz_min;
+   double tz_second;
+   short tz_offset_hour, tz_offset_min;
+   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
+   
+   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
+#else /* XSD_INT_VERSION */
    Record2Type::Date_type date(TimeStamp());
+#endif /* XSD_INT_VERSION */
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -553,7 +686,20 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
+#if (XSD_INT_VERSION >= 3020000L)
+   // "2007-04-30T13:58:02.6+02:00"
+   Record2Type::CalibrationDate_type calibrationDate(
+      2007,
+      4,
+      30,
+      13,
+      58,
+      2,
+      2,
+      0);
+#else /* XSD_INT_VERSION */
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+#endif /* XSD_INT_VERSION */
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -922,6 +1068,8 @@ void readonlyExample2(const OpenGPS::String fileName)
       }
       else
       {
+         OGPS_Double xx, yy, zz;
+         ogps_GetXYZ(vector, &xx, &yy, &zz);
          std::cout << "X; Y; Z = MISSING" << std::endl;
       }
    }
@@ -1212,7 +1360,17 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
+#if (XSD_INT_VERSION >= 3020000L)
+   int tz_year;
+   unsigned short tz_month, tz_day, tz_hour, tz_min;
+   double tz_second;
+   short tz_offset_hour, tz_offset_min;
+   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
+   
+   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
+#else /* XSD_INT_VERSION */
    Record2Type::Date_type date(TimeStamp());
+#endif /* XSD_INT_VERSION */
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1220,7 +1378,20 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
+#if (XSD_INT_VERSION >= 3020000L)
+   // "2007-04-30T13:58:02.6+02:00"
+   Record2Type::CalibrationDate_type calibrationDate(
+      2007,
+      4,
+      30,
+      13,
+      58,
+      2,
+      2,
+      0);
+#else /* XSD_INT_VERSION */
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+#endif /* XSD_INT_VERSION */
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -1317,7 +1488,17 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
+#if (XSD_INT_VERSION >= 3020000L)
+   int tz_year;
+   unsigned short tz_month, tz_day, tz_hour, tz_min;
+   double tz_second;
+   short tz_offset_hour, tz_offset_min;
+   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
+   
+   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
+#else /* XSD_INT_VERSION */
    Record2Type::Date_type date(TimeStamp());
+#endif /* XSD_INT_VERSION */
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1325,7 +1506,20 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
+#if (XSD_INT_VERSION >= 3020000L)
+   // "2007-04-30T13:58:02.6+02:00"
+   Record2Type::CalibrationDate_type calibrationDate(
+      2007,
+      4,
+      30,
+      13,
+      58,
+      2,
+      2,
+      0);
+#else /* XSD_INT_VERSION */
    Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+#endif /* XSD_INT_VERSION */
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -1500,10 +1694,13 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
   std::wstring path = argv[1];
   std::wstring tmp;
 
-  tmp = path; tmp += _T("ISO5436-sample1.x3p");
+  tmp = path; tmp += _T("ISO5436-sample1b.x3p");
   readonlyExample(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
+  readonlyExample2(tmp);
+
+  tmp = path; tmp += _T("ISO5436-sample1.x3p");
   readonlyExample2(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample3.x3p");
