@@ -66,7 +66,6 @@ BinaryMSBPointVectorWriterContext::BinaryMSBPointVectorWriterContext(zipFile han
 
 BinaryMSBPointVectorWriterContext::~BinaryMSBPointVectorWriterContext()
 {
-   Environment::Reset();
 }
 
 void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...)

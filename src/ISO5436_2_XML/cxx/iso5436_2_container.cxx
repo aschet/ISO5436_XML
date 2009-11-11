@@ -105,8 +105,6 @@ ISO5436_2Container::ISO5436_2Container(
 ISO5436_2Container::~ISO5436_2Container()
 {
    _OPENGPS_DELETE(m_Document);
-
-   Environment::Reset();
 }
 
 void ISO5436_2Container::Open(const OGPS_Boolean readOnly) throw(...)

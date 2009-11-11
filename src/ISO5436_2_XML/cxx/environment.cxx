@@ -36,23 +36,6 @@
 #define _OGPS_FLOAT_SIZE 4
 #define _OGPS_DOUBLE_SIZE 8
 
-Environment* Environment::m_Instance = NULL;
-
-const Environment* const Environment::GetInstance()
-{
-   if(!m_Instance)
-   {
-      m_Instance = CreateInstance();
-   }
-
-   return m_Instance;
-}
-
-void Environment::Reset()
-{
-   _OPENGPS_DELETE(m_Instance);
-}
-
 Environment::Environment()
 {
 }

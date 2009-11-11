@@ -66,7 +66,6 @@ BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const OpenG
 
 BinaryMSBPointVectorReaderContext::~BinaryMSBPointVectorReaderContext()
 {
-   Environment::Reset();
 }
 
 void BinaryMSBPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)

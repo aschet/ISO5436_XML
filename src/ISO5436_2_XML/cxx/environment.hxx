@@ -53,23 +53,10 @@ namespace OpenGPS
    {
    public:
       /*!
-       * Creates a new instance of the environment if needed.
-       *
-       * @remarks You must call Environment::Reset somewhere within the scope
-       * this method has been accessed, e.g. the end of object lifetime within a class scope
-       * or at least once for all on termination of the program.
-       * Otherwise resources obtained will not get released correctly.
+       * Gets an instance of the environment.
        */
       static const Environment* const GetInstance();
 
-      /*!
-       * Frees resources obtained through Environment::GetInstance.
-       *
-       * @remarks This must be called at least once at the end of some scope in your program
-       * when Environment::GetInstance has been called.
-       * @see Environment::GetInstance
-       */
-      static void Reset();
 
       /*!
        * E.g. gets the backslash on Microsoft Windows systems.
@@ -332,13 +319,6 @@ namespace OpenGPS
 
       /*! Destroys this instance. */
       virtual ~Environment();
-
-      /*! Creates the appropriate instance for the current system. */
-      static Environment* CreateInstance();
-
-   private:
-      /*! Pointer to the environment. */
-      static Environment* m_Instance;
    };
 }
 
