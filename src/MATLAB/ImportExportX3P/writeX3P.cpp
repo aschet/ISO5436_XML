@@ -252,7 +252,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
      _T("  Additional key-value-pairs can be specified after the last argument:\n")
      _T("    'rotation' - a 3x3 real matrix R containing a rotation matrix that is applied\n")
      _T("                 to each 3D-data point P on readback. R1 = R*P+T\n")
-     _T("    'offset'   - a 3 element vector T containing a translation vector for the data\n")
+     _T("    'translation'- a 3 element vector T containing a translation vector for the data\n")
      _T("                 that is applied to each 3D-data point P on readback: R1 = R*P+T\n")
      _T("    'VendorSpecific' - a path of a file to be packet into x3p file as a vendor\n")
      _T("                 specific extension. The filename portion of the file is used as\n")
