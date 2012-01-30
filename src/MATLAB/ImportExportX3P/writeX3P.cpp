@@ -504,10 +504,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
         return;
       }
 
-      // Check for incremental axis
-      if (AxisIsIncremental(inMatrixX, xIncrement))
+      // Check the used axis for incremental type. The other axis is allways incremental.
+      if (1==dim[0])
         xIncremental = true;
-      if (AxisIsIncremental(inMatrixY, yIncrement))
+      else if (AxisIsIncremental(inMatrixX, xIncrement))
+        xIncremental = true;
+      if (1==dim[1])
+        yIncremental = true;
+      else if (AxisIsIncremental(inMatrixY, yIncrement))
         yIncremental = true;
       break;
     //********************** Surface Feature type
