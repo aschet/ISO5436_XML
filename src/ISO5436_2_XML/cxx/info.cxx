@@ -45,11 +45,11 @@ void Info::GetCopyright(OpenGPS::String* const text)
 {
    _ASSERT(text);
 
-   *text = 
+   *text =
       _T("Copyright by\n")
       _T("Johannes Herwig (Uni Duisburg-Essen) 2007\n")
       _T("Georg Wiora (NanoFocus AG) 2007\n")
-      _T("Jörg Seewig (Uni Hannover) 2007\n")
+      _T("Joerg Seewig (Uni Hannover) 2007\n")
       _T("Andreas Walther (NanoFocus AG) 2007\n")
       _T("Mark A. Weber (NanoFocus AG) 2007\n")
       _T("\n")
@@ -127,7 +127,7 @@ void Info::GetLicense(OpenGPS::String* const text)
       _T("  The Apache Software Foundation (http://www.apache.org/).\n")
       _T("  Portions of this software were originally based on the following:\n")
       _T("    - software copyright (c) 1999, IBM Corporation., http://www.ibm.com.\n");
-      
+
       ;
 }
 

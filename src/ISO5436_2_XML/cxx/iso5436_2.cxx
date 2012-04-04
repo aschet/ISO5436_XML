@@ -75,7 +75,7 @@ ISO5436_2::~ISO5436_2()
    }
 }
 
-void ISO5436_2::Open(const OGPS_Boolean readOnly) throw(...)
+void ISO5436_2::Open(const OGPS_Boolean readOnly)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -87,7 +87,7 @@ void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
             const Schemas::ISO5436_2::Record2Type* record2,
             const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-            const OGPS_Boolean useBinaryData) throw(...)
+            const OGPS_Boolean useBinaryData)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -99,21 +99,21 @@ void ISO5436_2::Create(
             const Schemas::ISO5436_2::Record1Type& record1,
             const Schemas::ISO5436_2::Record2Type* record2,
             const OGPS_ULong listDimension,
-            const OGPS_Boolean useBinaryData) throw(...)
+            const OGPS_Boolean useBinaryData)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    m_Instance->Create(record1, record2, listDimension, useBinaryData);
 }
 
-PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator() throw(...)
+PointIteratorAutoPtr ISO5436_2::CreateNextPointIterator()
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->CreateNextPointIterator();
 }
 
-PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator() throw(...)
+PointIteratorAutoPtr ISO5436_2::CreatePrevPointIterator()
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -124,7 +124,7 @@ void ISO5436_2::SetMatrixPoint(
                                  const OGPS_ULong u,
                                  const OGPS_ULong v,
                                  const OGPS_ULong w,
-                                 const PointVector* const vector) throw(...)
+                                 const PointVector* const vector)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -135,7 +135,7 @@ void ISO5436_2::GetMatrixPoint(
                                  const OGPS_ULong u,
                                  const OGPS_ULong v,
                                  const OGPS_ULong w,
-                                 PointVector& vector) throw(...)
+                                 PointVector& vector)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -144,7 +144,7 @@ void ISO5436_2::GetMatrixPoint(
 
 void ISO5436_2::SetListPoint(
                                const OGPS_ULong index,
-                               const PointVector& vector) throw(...)
+                               const PointVector& vector)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -153,7 +153,7 @@ void ISO5436_2::SetListPoint(
 
 void ISO5436_2::GetListPoint(
                                const OGPS_ULong index,
-                               PointVector& vector) throw(...)
+                               PointVector& vector)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -166,7 +166,7 @@ void ISO5436_2::GetMatrixCoord(
                                  const OGPS_ULong w,
                                  OGPS_Double* const x,
                                  OGPS_Double* const y,
-                                 OGPS_Double* const z) throw(...)
+                                 OGPS_Double* const z)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -176,7 +176,7 @@ void ISO5436_2::GetMatrixCoord(
 OGPS_Boolean ISO5436_2::IsMatrixCoordValid(
        OGPS_ULong u,
        OGPS_ULong v,
-       OGPS_ULong w) throw(...)
+       OGPS_ULong w)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -187,7 +187,7 @@ void ISO5436_2::GetListCoord(
                                const OGPS_ULong index,
                                OGPS_Double* const x,
                                OGPS_Double* const y,
-                               OGPS_Double* const z) throw(...)
+                               OGPS_Double* const z)
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -201,7 +201,7 @@ OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ISO5436_2::GetDocument()
    return m_Instance->GetDocument();
 }
 
-OGPS_Boolean ISO5436_2::IsMatrix() const throw(...)
+OGPS_Boolean ISO5436_2::IsMatrix() const
 {
    _ASSERT(m_Instance && m_Instance != this);
 
@@ -211,21 +211,21 @@ OGPS_Boolean ISO5436_2::IsMatrix() const throw(...)
 void ISO5436_2::GetMatrixDimensions(
          OGPS_ULong * const size_u,
          OGPS_ULong * const size_v,
-         OGPS_ULong * const size_w) const throw(...)
+         OGPS_ULong * const size_w) const
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    m_Instance->GetMatrixDimensions(size_u, size_v, size_w);
 }
 
-OGPS_ULong ISO5436_2::GetListDimension() const throw(...)
+OGPS_ULong ISO5436_2::GetListDimension() const
 {
    _ASSERT(m_Instance && m_Instance != this);
 
    return m_Instance->GetListDimension();
 }
 
-void ISO5436_2::Write(const int compressionLevel) throw(...)
+void ISO5436_2::Write(const int compressionLevel)
 {
    _ASSERT(m_Instance && m_Instance != this);
 

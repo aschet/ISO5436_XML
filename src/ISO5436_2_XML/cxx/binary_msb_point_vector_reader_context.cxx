@@ -66,64 +66,65 @@ BinaryMSBPointVectorReaderContext::BinaryMSBPointVectorReaderContext(const OpenG
 
 BinaryMSBPointVectorReaderContext::~BinaryMSBPointVectorReaderContext()
 {
+   Environment::Reset();
 }
 
-void BinaryMSBPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
+void BinaryMSBPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_INT16_SIZE];
+   OpenGPS::Byte buffer[_OPENGPS_BINFORMAT_INT16_SIZE];
    GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_INT16_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 
    _ASSERT(_OPENGPS_BINFORMAT_INT16_SIZE == 2); // 2 bytes
-   Environment::GetInstance()->ByteSwap16(&buffer[0], value);
+   Environment::GetInstance()->ByteSwap16((OpenGPS::UnsignedBytePtr)&buffer[0], value);
 }
 
-void BinaryMSBPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
+void BinaryMSBPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_INT32_SIZE];
+   OpenGPS::Byte buffer[_OPENGPS_BINFORMAT_INT32_SIZE];
    GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_INT32_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 
    _ASSERT(_OPENGPS_BINFORMAT_INT32_SIZE == 4); // 4 bytes
-   Environment::GetInstance()->ByteSwap32(&buffer[0], value);
+   Environment::GetInstance()->ByteSwap32((OpenGPS::UnsignedBytePtr)&buffer[0], value);
 }
 
-void BinaryMSBPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
+void BinaryMSBPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_FLOAT_SIZE];
+   OpenGPS::Byte buffer[_OPENGPS_BINFORMAT_FLOAT_SIZE];
    GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_FLOAT_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 
    _ASSERT(_OPENGPS_BINFORMAT_FLOAT_SIZE == 4); // 4 bytes
-   Environment::GetInstance()->ByteSwap32(&buffer[0], value);
+   Environment::GetInstance()->ByteSwap32((OpenGPS::UnsignedBytePtr)&buffer[0], value);
 }
 
-void BinaryMSBPointVectorReaderContext::Read(OGPS_Double* const value) throw(...)
+void BinaryMSBPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   OpenGPS::UnsignedByte buffer[_OPENGPS_BINFORMAT_DOUBLE_SIZE];
+   OpenGPS::Byte buffer[_OPENGPS_BINFORMAT_DOUBLE_SIZE];
    GetStream()->read(&buffer[0], _OPENGPS_BINFORMAT_DOUBLE_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 
    _ASSERT(_OPENGPS_BINFORMAT_DOUBLE_SIZE == 8); // 8 bytes
-   Environment::GetInstance()->ByteSwap64(&buffer[0], value);
+   Environment::GetInstance()->ByteSwap64((OpenGPS::UnsignedBytePtr)&buffer[0], value);
 }

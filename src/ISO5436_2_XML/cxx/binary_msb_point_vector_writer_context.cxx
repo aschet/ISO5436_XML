@@ -66,9 +66,10 @@ BinaryMSBPointVectorWriterContext::BinaryMSBPointVectorWriterContext(zipFile han
 
 BinaryMSBPointVectorWriterContext::~BinaryMSBPointVectorWriterContext()
 {
+   Environment::Reset();
 }
 
-void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...)
+void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -83,7 +84,7 @@ void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int16* const value) thr
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int32* const value) throw(...)
+void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -98,7 +99,7 @@ void BinaryMSBPointVectorWriterContext::Write(const OGPS_Int32* const value) thr
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryMSBPointVectorWriterContext::Write(const OGPS_Float* const value) throw(...)
+void BinaryMSBPointVectorWriterContext::Write(const OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -113,7 +114,7 @@ void BinaryMSBPointVectorWriterContext::Write(const OGPS_Float* const value) thr
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryMSBPointVectorWriterContext::Write(const OGPS_Double* const value) throw(...)
+void BinaryMSBPointVectorWriterContext::Write(const OGPS_Double* const value)
 {
    _ASSERT(value);
 

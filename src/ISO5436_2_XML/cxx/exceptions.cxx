@@ -36,8 +36,16 @@ Exception::Exception(const OGPS_ExceptionId id,
                      const OGPS_ExceptionChar *text,
                      const OGPS_ExceptionChar *details,
                      const OGPS_ExceptionChar *method)
+#if linux
+   : std::exception()
+#else
    : std::exception(text)
+#endif
 {
+#if linux
+   std::cerr << text << std::endl;
+#endif
+
    _ASSERT(text && details);
 
    m_Id = id;

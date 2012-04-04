@@ -69,14 +69,14 @@ namespace OpenGPS
        * Maps the bit buffer from a binary stream.
        * @param stream The bit array gets copied from here.
        */
-      virtual void Read(std::basic_istream<OpenGPS::UnsignedByte>& stream) throw(...);
-      
+      virtual void Read(std::basic_istream<OpenGPS::Byte>& stream);
+
       /*!
        * Maps the bit buffer to a binary stream.
        * @param stream The internal bit array gets written to the given stream.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual void Write(std::ostream& stream) throw(...);
+      virtual void Write(std::ostream& stream);
 
       /*!
        * Checks whether the current instance serves any point data that is marked as invalid.
@@ -84,8 +84,8 @@ namespace OpenGPS
        */
       virtual OGPS_Boolean HasInvalidMarks() const;
 
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const;
 
    protected:
       /*!
@@ -95,7 +95,7 @@ namespace OpenGPS
       ValidBuffer(PointBuffer* const value);
 
       /*! Allocates the internal bit array. Initially all point vectors are assumed to be valid. */
-      virtual void Allocate() throw(...);
+      virtual void Allocate();
 
       /*! Frees allocated resources. */
       virtual void Reset();
@@ -109,7 +109,7 @@ namespace OpenGPS
        * @param rawSize Amount of memory to be allocated in bytes.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual void AllocateRaw(const unsigned int rawSize) throw(...);
+      virtual void AllocateRaw(const unsigned int rawSize);
 
       /*! Pointer to the internal bit array. */
       OpenGPS::UnsignedBytePtr m_ValidityBuffer;
@@ -133,7 +133,7 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~Int16ValidBuffer();
 
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value);
    };
 
    /*!
@@ -151,7 +151,7 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~Int32ValidBuffer();
 
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value);
    };
 }
 

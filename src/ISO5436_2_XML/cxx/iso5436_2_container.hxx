@@ -105,42 +105,42 @@ namespace OpenGPS
 
       /* Implements public ISO5436_2 interface. */
 
-      virtual void Open(const OGPS_Boolean readOnly = TRUE) throw(...);
+      virtual void Open(const OGPS_Boolean readOnly = TRUE);
 
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-         const OGPS_Boolean useBinaryData = TRUE) throw(...);
+         const OGPS_Boolean useBinaryData = TRUE);
 
       virtual void Create(
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
          const OGPS_ULong listDimension,
-         const OGPS_Boolean useBinaryData = TRUE) throw(...);
+         const OGPS_Boolean useBinaryData = TRUE);
 
-      virtual PointIteratorAutoPtr CreateNextPointIterator() throw(...);
-      virtual PointIteratorAutoPtr CreatePrevPointIterator() throw(...);
+      virtual PointIteratorAutoPtr CreateNextPointIterator();
+      virtual PointIteratorAutoPtr CreatePrevPointIterator();
 
       virtual void SetMatrixPoint(
          const OGPS_ULong u,
          const OGPS_ULong v,
          const OGPS_ULong w,
-         const PointVector* const vector) throw(...);
+         const PointVector* const vector);
 
       virtual void GetMatrixPoint(
          const OGPS_ULong u,
          const OGPS_ULong v,
          const OGPS_ULong w,
-         PointVector& vector) throw(...);
+         PointVector& vector);
 
       virtual void SetListPoint(
          const OGPS_ULong index,
-         const PointVector& vector) throw(...);
+         const PointVector& vector);
 
       virtual void GetListPoint(
          const OGPS_ULong index,
-         PointVector& vector) throw(...);
+         PointVector& vector);
 
       virtual void GetMatrixCoord(
          const OGPS_ULong u,
@@ -148,31 +148,31 @@ namespace OpenGPS
          const OGPS_ULong w,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z) throw(...);
+         OGPS_Double* const z);
 
       virtual OGPS_Boolean IsMatrixCoordValid(
          OGPS_ULong u,
          OGPS_ULong v,
-         OGPS_ULong w) throw(...);
+         OGPS_ULong w);
 
       virtual void GetListCoord(
          const OGPS_ULong index,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z) throw(...);
+         OGPS_Double* const z);
 
       virtual OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const GetDocument();
 
-      virtual OGPS_Boolean IsMatrix() const throw(...);
+      virtual OGPS_Boolean IsMatrix() const;
 
       virtual void GetMatrixDimensions(
          OGPS_ULong * const size_u,
          OGPS_ULong * const size_v,
-         OGPS_ULong * const size_w) const throw(...);
+         OGPS_ULong * const size_w) const;
 
-      virtual OGPS_ULong GetListDimension() const throw(...);
+      virtual OGPS_ULong GetListDimension() const;
 
-      virtual void Write(const int compressionLevel = -1) throw(...);
+      virtual void Write(const int compressionLevel = -1);
 
       virtual void Close();
 
@@ -210,8 +210,8 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      OGPS_ULong GetMaxU() const throw(...);
-      
+      OGPS_ULong GetMaxU() const;
+
       /*!
        * Gets the maximum index value possible in Y direction.
        * For vector data in matrix topology this is the value of Y direction only.
@@ -221,8 +221,8 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      OGPS_ULong GetMaxV() const throw(...);
-      
+      OGPS_ULong GetMaxV() const;
+
       /*!
        * Gets the maximum index value possible in Z direction.
        * For vector data in matrix topology this is the value of Z direction only.
@@ -232,11 +232,11 @@ namespace OpenGPS
        * There is a fallback to the maximum amount of point vectors contained in
        * the point vector list in the non-matrix case.
        */
-      OGPS_ULong GetMaxW() const throw(...);
+      OGPS_ULong GetMaxW() const;
 
       /*! Gets the file path to the X3P archive the current instance is an interface for. */
       const OpenGPS::String& GetFilePath() const;
-      
+
       /*! Gets the absolute file path to the X3P archive the current instance is an interface for. */
       OpenGPS::String GetFullFilePath() const;
 
@@ -251,22 +251,22 @@ namespace OpenGPS
 
       /*! Gets the full path to the temporaryily decompressed main xml document file. */
       OpenGPS::String GetMainFileName() const;
-      
+
       /*! Gets the relative path of the binary point data file within the zip archive. */
       OpenGPS::String GetPointDataArchiveName() const;
-      
+
       /*! Gets the full path to the temporaryily decompressed binary point data file. */
       OpenGPS::String GetPointDataFileName();
-      
+
       /*! Gets the relative path of the binary point validity data file within the zip archive. */
       OpenGPS::String GetValidPointsArchiveName() const;
-      
+
       /*! Gets the full path to the temporaryily decompressed binary point validity data file. */
       OpenGPS::String GetValidPointsFileName();
 
       /*! Gets the relative path of the md5 checksum file within the zip archive. */
       OpenGPS::String GetChecksumArchiveName() const;
-      
+
       /*! Gets the full path to the temporaryily decompressed md5 checksum file. */
       OpenGPS::String GetChecksumFileName() const;
 
@@ -276,7 +276,7 @@ namespace OpenGPS
        * @remarks If this throws an exception there may exist incorrect and incomplete data.
        * Do call ISO5436_2Container::Reset to avoid an inconsistent state.
        */
-      void Decompress() throw(...);
+      void Decompress();
 
       /*!
        * Decompresses a single file within the zip archive.
@@ -288,34 +288,34 @@ namespace OpenGPS
        * @returns Returns FALSE if a file could not be found in the archive (see the discussion above),
        * TRUE in all other cases.
        */
-      OGPS_Boolean Decompress(const OpenGPS::String& src, const OpenGPS::String& dst, const OGPS_Boolean fileNotFoundAllowed = FALSE) const throw(...);
+      OGPS_Boolean Decompress(const OpenGPS::String& src, const OpenGPS::String& dst, const OGPS_Boolean fileNotFoundAllowed = FALSE) const;
 
       /*!
        * Decompresses the main xml document contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetMainArchiveName,
        * ISO5436_2Container::GetMainFileName
        */
-      void DecompressMain() const throw(...);
-      
+      void DecompressMain() const;
+
       /*!
        * Decompresses the md5 checksum file contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetChecksumArchiveName,
        * ISO5436_2Container::GetChecksumFileName
        */
-      void DecompressChecksum() throw(...);
-      
+      void DecompressChecksum();
+
       /*!
        * Decompresses the binary point data file contained within the X3P archive.
        * @see ISO5436_2Container::Decompress, ISO5436_2Container::GetPointDataArchiveName,
        * ISO5436_2Container::GetPointDataFileName
        */
-      void DecompressDataBin() throw(...);
+      void DecompressDataBin();
 
 
       /*!
        * (Over)writes the current X3P archive file with the actual content.
        */
-      void Compress() throw(...);
+      void Compress();
 
       /*!
        * Creates the internal XML document tree structure.
@@ -336,13 +336,13 @@ namespace OpenGPS
          const Schemas::ISO5436_2::Record2Type* const record2,
          const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
          const OGPS_ULong listDimension,
-         const OGPS_Boolean useBinaryData) throw(...);
+         const OGPS_Boolean useBinaryData);
 
       /*!
        * Creates an instance of the internal ISO5436-2 XML document tree.
        * An instance is created from the decompressed main xml document file.
        */
-      void ReadDocument() throw(...);
+      void ReadDocument();
 
       /*!
        * Assembles a new OpenGPS::PointVectorParser object using the OpenGPS::PointVectorParserBuilder.
@@ -380,15 +380,15 @@ namespace OpenGPS
        * Creates and allocates the internal vector buffer and fills in point data from either the
        * ISO5436-2 main xml document or from an external binary file.
        */
-      void CreatePointBuffer() throw(...);
-      
+      void CreatePointBuffer();
+
       /*!
        * Saves the current state of internal memory storage of point data either to the zip archive
        * as an external binary point file or directly into the actual tree structure of the internal
        * document handle of the main ISO5436-2 XML document depending on the current settings.
        * @param handle The handle to the zip archive where the data is to be stored.
        */
-      void SavePointBuffer(zipFile handle) throw(...);
+      void SavePointBuffer(zipFile handle);
 
       /*!
        * Removes the point list xml tag and its content from the xml document handle.
@@ -404,14 +404,14 @@ namespace OpenGPS
        * Saves the current state of internal memory storage of point validity data to the zip archive.
        * @param handle The handle to the zip archive where the data is to be stored.
        */
-      void SaveValidPointsLink(zipFile handle) throw(...);
+      void SaveValidPointsLink(zipFile handle);
 
       /*!
        * Saves the main md5 checksum to the zip archive.
        * @param handle The handle to the zip archive where the data is to be stored.
        * @param checksum The value of the calculated 128bit md5 checksum.
        */
-      void SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]) throw(...);
+      void SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]);
 
       /*!
        * Creates an instance of appropriate access methods to read point data depending on
@@ -420,7 +420,7 @@ namespace OpenGPS
        * The pointer returned must be released by the caller.
        */
       virtual PointVectorReaderContext* CreatePointVectorReaderContext();
-      
+
       /*!
        * Creates an instance of appropriate access methods to write point data depending on
        * the current configuration of the main ISO5436-2 XML document.
@@ -434,7 +434,7 @@ namespace OpenGPS
       /*!
        * Gets the amount of point data that is stored in the archive.
        */
-      OGPS_ULong GetPointCount() const throw(...);
+      OGPS_ULong GetPointCount() const;
 
       /*!
        * Releases any resources allocated to handle the xml document tree or internal storage of vectors in memory.
@@ -456,13 +456,13 @@ namespace OpenGPS
        * Reads the main ISO5436-2 XML document contained in an X3P archive to the internal
        * document handle as a tree structure.
        */
-      void ReadXmlDocument() throw(...);
+      void ReadXmlDocument();
 
       /*!
        * Writes the content of the internal document handle to the main XML document present in an X3P archive.
        * @param handle The handle of the X3P archive.
        */
-      void SaveXmlDocument(zipFile handle) throw(...);
+      void SaveXmlDocument(zipFile handle);
 
       /*!
        * Creates a new instance of a vector proxy context that is used to map point data saved distinctively
@@ -470,12 +470,12 @@ namespace OpenGPS
        * information necessary for that task.
        * @returns A new instance of a vector proxy context. The caller ist responsible of releasing this resource.
        */
-      virtual PointVectorProxyContext* CreatePointVectorProxyContext() const throw(...);
+      virtual PointVectorProxyContext* CreatePointVectorProxyContext() const;
 
       /*!
        * Checks for the current document instance and raises an excpetion if it is not instantiated.
        */
-      void CheckDocumentInstance() const throw(...);
+      void CheckDocumentInstance() const;
 
 
    private:
@@ -518,7 +518,7 @@ namespace OpenGPS
       PointVectorAutoPtr m_PointVector;
 
       /*! Creates a temporary directory in the file system and sets ISO5436_2Container::m_TempPath. */
-      void CreateTempDir() throw(...);
+      void CreateTempDir();
 
       /*! Returns TRUE if a unique temporary directory has been created or FALSE if not. */
       OGPS_Boolean HasTempDir() const;
@@ -555,7 +555,7 @@ namespace OpenGPS
       OGPS_Boolean WriteVendorSpecific(zipFile handle);
 
       /*!
-       * Sets a valid namespace mapping for writing the ISO5436-2 XML document. 
+       * Sets a valid namespace mapping for writing the ISO5436-2 XML document.
        * @param map Target for the valid namespace mapping.
        */
       void ConfigureNamespaceMap(xml_schema::namespace_infomap& map) const;
@@ -580,12 +580,12 @@ namespace OpenGPS
        * Verifies the checksum of the main document ISO5436-2 XML file.
        */
       void VerifyMainChecksum();
-      
+
       /*!
        * Verifies the checksum of the binary point data file.
        */
       void VerifyDataBinChecksum();
-      
+
       /*!
        * Verifies the checksum of the binary point validity data file.
        */
@@ -595,27 +595,27 @@ namespace OpenGPS
        * Check if all checksums were verified.
        * If any one of them could not be verified this throws an OpenGPS::Exception of type ::OGPS_ExWarning that may be ignored.
        */
-      void TestChecksums() throw(...);
+      void TestChecksums();
 
       /*!
        * Checks the document for some semantic errors.
        * If any semantic errors were found, this throws an OpenGPS::Exception of type ::OGPS_ExWarning that may be ignored.
        */
-      void ValidateDocument() throw(...);
+      void ValidateDocument();
 
       /*!
        * Checks whether the current document data is either for profiles or surfaces.
        * @remarks Throws an exception if the current feature type is undefined.
        * @returns True, if the document record specifies a profile, FALSE otherwise.
        */
-      OGPS_Boolean IsProfile() const  throw(...);
+      OGPS_Boolean IsProfile() const ;
 
       /*!
        * Checks whether the current document data is for point clouds.
        * @remarks Throws an exception if the current feature type is undefined.
        * @returns True, if the document record specifies a point cloud, FALSE otherwise.
        */
-      OGPS_Boolean IsPointCloud() const throw(...);
+      OGPS_Boolean IsPointCloud() const;
 
       /*!
        * Reads the first md5 checksum from a file that contains md5 checksums of files.
@@ -641,7 +641,7 @@ namespace OpenGPS
          const  PointVector& vector,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z) throw(...);
+         OGPS_Double* const z);
 
       /*! Returns TRUE if the axis has an incremental axis definition, FALSE otherwise. If TRUE point data of that axis is known implicitly. */
       OGPS_Boolean IsIncrementalAxis(Schemas::ISO5436_2::AxisType axis) const;
@@ -676,7 +676,7 @@ namespace OpenGPS
        * @param value The value to be converted.
        * @returns Returns the same value, but as a cast to a smaller data type.
        */
-      OGPS_ULong ConvertULongLongToULong(const unsigned long long value) const throw(...);
+      OGPS_ULong ConvertULongLongToULong(const unsigned long long value) const;
 
       /*!
        * Converts a value of unsigned long long into a shorter data type.
@@ -684,8 +684,8 @@ namespace OpenGPS
        * @param value The value to be converted.
        * @returns Returns the same value, but casted to a shorter data type.
        */
-      OGPS_Int32 ConvertULongToInt32(const unsigned long long value) const throw(...);
-      
+      OGPS_Int32 ConvertULongToInt32(const unsigned long long value) const;
+
       /*!
        * Multiplication of two values and conversion of the result to a shorter data type.
        * Throws an exception on overflow, so this conversion is safe.
@@ -693,7 +693,7 @@ namespace OpenGPS
        * @param value2 The second value of the operands.
        * @returns Returns the result of their multiplication, but casted to a shorter data type.
        */
-      OGPS_ULong SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...);
+      OGPS_ULong SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const;
 
       /*!
        * Converts any string to its URI conformant compangnon.
@@ -729,19 +729,19 @@ namespace OpenGPS
 
          /* Implements the public PointIterator interface. */
 
-         virtual OGPS_Boolean HasNext() const throw(...);
-         virtual OGPS_Boolean HasPrev() const throw(...);
+         virtual OGPS_Boolean HasNext() const;
+         virtual OGPS_Boolean HasPrev() const;
 
-         virtual OGPS_Boolean MoveNext() throw(...);
-         virtual OGPS_Boolean MovePrev() throw(...);
+         virtual OGPS_Boolean MoveNext();
+         virtual OGPS_Boolean MovePrev();
 
          virtual void ResetNext();
          virtual void ResetPrev();
 
-         virtual void GetCurrent(PointVector& vector) throw(...);
-         virtual void GetCurrentCoord(PointVector& vector) throw(...);
+         virtual void GetCurrent(PointVector& vector);
+         virtual void GetCurrentCoord(PointVector& vector);
 
-         virtual void SetCurrent(const PointVector* const vector) throw(...);
+         virtual void SetCurrent(const PointVector* const vector);
 
          virtual OGPS_Boolean GetPosition(OGPS_ULong * const index) const;
          virtual OGPS_Boolean GetPosition(

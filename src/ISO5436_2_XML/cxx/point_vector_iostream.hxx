@@ -39,7 +39,11 @@
 #  include <opengps/cxx/opengps.hxx>
 #endif
 
-#include <xlocale>
+#if linux
+    #include <xlocale.h>
+#else
+    #include <xlocale>
+#endif
 #include <sstream>
 #include <fstream>
 
@@ -140,10 +144,10 @@ namespace OpenGPS
    };
 
    /*! A binary stream class used for reading from binary files. */
-   class InputBinaryFileStream : public std::basic_ifstream<OpenGPS::UnsignedByte>
+   class InputBinaryFileStream : public std::basic_ifstream<OpenGPS::Byte>
    {
       /*! The type of the super class. */
-      typedef std::basic_ifstream<OpenGPS::UnsignedByte> BaseType;
+      typedef std::basic_ifstream<OpenGPS::Byte> BaseType;
 
    public:
       /*!
@@ -161,10 +165,10 @@ namespace OpenGPS
    };
 
    /*! A binary stream class used for writing to binary files. */
-   class OutputBinaryFileStream : public std::basic_ofstream<OpenGPS::UnsignedByte>
+   class OutputBinaryFileStream : public std::basic_ofstream<OpenGPS::Byte>
    {
       /*! The type of the super class. */
-      typedef std::basic_ofstream<OpenGPS::UnsignedByte> BaseType;
+      typedef std::basic_ofstream<OpenGPS::Byte> BaseType;
 
    public:
       /*!

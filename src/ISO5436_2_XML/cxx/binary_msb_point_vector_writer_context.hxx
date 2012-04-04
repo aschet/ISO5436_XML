@@ -61,10 +61,10 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~BinaryMSBPointVectorWriterContext();
 
-      virtual void Write(const OGPS_Int16* const value) throw(...);
-      virtual void Write(const OGPS_Int32* const value) throw(...);
-      virtual void Write(const OGPS_Float* const value) throw(...);
-      virtual void Write(const OGPS_Double* const value) throw(...);
+      virtual void Write(const OGPS_Int16* const value);
+      virtual void Write(const OGPS_Int32* const value);
+      virtual void Write(const OGPS_Float* const value);
+      virtual void Write(const OGPS_Double* const value);
    };
 }
 

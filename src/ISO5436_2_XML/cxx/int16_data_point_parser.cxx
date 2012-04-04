@@ -51,17 +51,17 @@ Int16DataPointParser::Int16DataPointParser() : DataPointParser()
 Int16DataPointParser::~Int16DataPointParser()
 {
 }
-    
-void Int16DataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
+
+void Int16DataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
    OGPS_Int16 v;
    context.Read(&v);
    value.Set(v);
 }
 
-void Int16DataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
+void Int16DataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
 {
    OGPS_Int16 v;
    value.Get(&v);
-   context.Write(&v);   
+   context.Write(&v);
 }

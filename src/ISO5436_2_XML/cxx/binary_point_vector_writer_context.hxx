@@ -64,8 +64,8 @@ namespace OpenGPS
        */
       virtual void Close();
 
-      virtual void Skip() throw(...);
-      virtual void MoveNext() throw(...);
+      virtual void Skip();
+      virtual void MoveNext();
 
       /*!
        * Gets the md5 checksum of all bytes written.

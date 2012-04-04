@@ -70,9 +70,9 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Read(OGPS_Int16* const value) throw(...) = 0;
+      virtual void Read(OGPS_Int16* const value) = 0;
 
-      /*!       
+      /*!
        * Reads the currently underlying data as ::OGPS_Int32.
        * Also moves the current reading position of the stream
        * to the next coordinate of the three-vector.
@@ -82,7 +82,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Read(OGPS_Int32* const value) throw(...) = 0;
+      virtual void Read(OGPS_Int32* const value) = 0;
 
       /*!
        * Reads the currently underlying data as ::OGPS_Float.
@@ -94,7 +94,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Read(OGPS_Float* const value) throw(...) = 0;
+      virtual void Read(OGPS_Float* const value) = 0;
 
       /*!
        * Reads the currently underlying data as ::OGPS_Double.
@@ -106,7 +106,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Read(OGPS_Double* const value) throw(...) = 0;
+      virtual void Read(OGPS_Double* const value) = 0;
 
       /*!
        * Skips reading of the currently underlying data.
@@ -122,7 +122,7 @@ namespace OpenGPS
        * the current coordinate no point data was saved
        * because the corresponding axis is of incremental type.
        */
-      virtual void Skip() throw(...) = 0;
+      virtual void Skip() = 0;
 
       /*!
        * Move the current reading position of the stream
@@ -139,7 +139,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE when there is more data to be parsed, FALSE otherwise.
        */
-      virtual OGPS_Boolean MoveNext() throw(...) = 0;
+      virtual OGPS_Boolean MoveNext() = 0;
 
       /*!
        * Asks if there is readable point vector stored
@@ -157,7 +157,7 @@ namespace OpenGPS
        * @returns Returns TRUE if the current point is readable,
        * FALSE otherwise.
        */
-      virtual OGPS_Boolean IsValid() const throw(...) = 0;
+      virtual OGPS_Boolean IsValid() const = 0;
 
    protected:
       /*! Creates a new instance. */

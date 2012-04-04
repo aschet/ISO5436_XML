@@ -32,6 +32,7 @@
 #include "stdafx.hxx"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <opengps/cxx/exceptions.hxx>
 
@@ -49,7 +50,7 @@ PointBuffer::~PointBuffer()
 {
 }
 
-void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int16 value) throw(...)
+void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int16 value)
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -58,7 +59,7 @@ void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int16 value) throw(...)
       _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int32 value) throw(...)
+void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int32 value)
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -67,7 +68,7 @@ void PointBuffer::Set(const OGPS_ULong index, const OGPS_Int32 value) throw(...)
       _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-void PointBuffer::Set(const OGPS_ULong index, const OGPS_Float value) throw(...)
+void PointBuffer::Set(const OGPS_ULong index, const OGPS_Float value)
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -76,7 +77,7 @@ void PointBuffer::Set(const OGPS_ULong index, const OGPS_Float value) throw(...)
       _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-void PointBuffer::Set(const OGPS_ULong index, const OGPS_Double value) throw(...)
+void PointBuffer::Set(const OGPS_ULong index, const OGPS_Double value)
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -85,7 +86,7 @@ void PointBuffer::Set(const OGPS_ULong index, const OGPS_Double value) throw(...
       _EX_T("OpenGPS::PointBuffer::Set"));
 }
 
-void PointBuffer::Get(const OGPS_ULong index, OGPS_Int16& value) const throw(...)
+void PointBuffer::Get(const OGPS_ULong index, OGPS_Int16& value) const
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -94,7 +95,7 @@ void PointBuffer::Get(const OGPS_ULong index, OGPS_Int16& value) const throw(...
       _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-void PointBuffer::Get(const OGPS_ULong index, OGPS_Int32& value) const throw(...)
+void PointBuffer::Get(const OGPS_ULong index, OGPS_Int32& value) const
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -103,7 +104,7 @@ void PointBuffer::Get(const OGPS_ULong index, OGPS_Int32& value) const throw(...
       _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-void PointBuffer::Get(const OGPS_ULong index, OGPS_Float& value) const throw(...)
+void PointBuffer::Get(const OGPS_ULong index, OGPS_Float& value) const
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -112,7 +113,7 @@ void PointBuffer::Get(const OGPS_ULong index, OGPS_Float& value) const throw(...
       _EX_T("OpenGPS::PointBuffer::Get"));
 }
 
-void PointBuffer::Get(const OGPS_ULong index, OGPS_Double& value) const throw(...)
+void PointBuffer::Get(const OGPS_ULong index, OGPS_Double& value) const
 {
    throw OpenGPS::Exception(
       OGPS_ExInvalidOperation,
@@ -126,12 +127,12 @@ OGPS_ULong PointBuffer::GetSize() const
    return m_Size;
 }
 
-OpenGPS::UnsignedBytePtr PointBuffer::Allocate(const OGPS_ULong size, const size_t typeSize) throw(...)
+OpenGPS::UnsignedBytePtr PointBuffer::Allocate(const OGPS_ULong size, const size_t typeSize)
 {
    _ASSERT(m_Size == 0);
 
    OpenGPS::UnsignedBytePtr buffer = (OpenGPS::UnsignedBytePtr)malloc(size * typeSize);
-      
+
    if(!buffer)
    {
       throw OpenGPS::Exception(
@@ -153,7 +154,7 @@ void PointBuffer::Free(OpenGPS::UnsignedBytePtr* value)
    _OPENGPS_FREE(*value);
 }
 
-void PointBuffer::Allocate(const OGPS_ULong size) throw(...)
+void PointBuffer::Allocate(const OGPS_ULong size)
 {
    throw OpenGPS::Exception(
       OGPS_ExNotImplemented,

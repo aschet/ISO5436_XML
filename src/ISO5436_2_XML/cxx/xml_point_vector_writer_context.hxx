@@ -67,14 +67,14 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~XmlPointVectorWriterContext();
 
-      virtual void Write(const OGPS_Int16* const value) throw(...);
-      virtual void Write(const OGPS_Int32* const value) throw(...);
-      virtual void Write(const OGPS_Float* const value) throw(...);
-      virtual void Write(const OGPS_Double* const value) throw(...);
+      virtual void Write(const OGPS_Int16* const value);
+      virtual void Write(const OGPS_Int32* const value);
+      virtual void Write(const OGPS_Float* const value);
+      virtual void Write(const OGPS_Double* const value);
 
-      virtual void Skip() throw(...);
+      virtual void Skip();
 
-      virtual void MoveNext() throw(...);
+      virtual void MoveNext();
 
    protected:
       /*!
@@ -98,7 +98,7 @@ namespace OpenGPS
        * @param value Returns the content of the stream buffer.
        */
       void Get(OpenGPS::String* const value) const;
-      
+
       /*!
        * Resets/empties the inner stream buffer.
        */

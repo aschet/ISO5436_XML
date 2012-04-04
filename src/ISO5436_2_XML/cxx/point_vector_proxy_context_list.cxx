@@ -43,7 +43,7 @@ PointVectorProxyContextList::~PointVectorProxyContextList()
 {
 }
 
-void PointVectorProxyContextList::SetIndex(const OGPS_ULong index) throw(...)
+void PointVectorProxyContextList::SetIndex(const OGPS_ULong index)
 {
    if(index < m_MaxIndex)
    {

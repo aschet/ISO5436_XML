@@ -60,7 +60,7 @@ namespace OpenGPS
        */
       PointVectorProxyContextList(const OGPS_ULong maxIndex);
 
-      /*! Destroys this instance. */       
+      /*! Destroys this instance. */
       virtual ~PointVectorProxyContextList();
 
       /*!
@@ -68,7 +68,7 @@ namespace OpenGPS
        * @param index The new arbitrary index.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual void SetIndex(const OGPS_ULong index) throw(...);
+      virtual void SetIndex(const OGPS_ULong index);
 
       virtual OGPS_ULong GetIndex() const;
       virtual OGPS_Boolean CanIncrementIndex() const;

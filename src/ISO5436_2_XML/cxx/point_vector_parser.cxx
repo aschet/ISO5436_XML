@@ -81,7 +81,7 @@ void PointVectorParser::SetZ(DataPointParser* const value)
    m_Z = value;
 }
 
-void PointVectorParser::Read(PointVectorReaderContext& context, PointVectorBase& value) throw(...)
+void PointVectorParser::Read(PointVectorReaderContext& context, PointVectorBase& value)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
@@ -90,7 +90,7 @@ void PointVectorParser::Read(PointVectorReaderContext& context, PointVectorBase&
    m_Z->Read(context, *value.GetZ()); // parse z component
 }
 
-void PointVectorParser::Write(PointVectorWriterContext& context, const PointVectorBase& value) throw(...)
+void PointVectorParser::Write(PointVectorWriterContext& context, const PointVectorBase& value)
 {
    _ASSERT(m_X && m_Y && m_Z);
 

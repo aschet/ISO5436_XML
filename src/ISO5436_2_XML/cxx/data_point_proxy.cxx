@@ -77,7 +77,7 @@ PointVectorProxy::DataPointProxy::~DataPointProxy()
 {
 }
 
-OGPS_DataPointType PointVectorProxy::DataPointProxy::GetPointType() const throw(...)
+OGPS_DataPointType PointVectorProxy::DataPointProxy::GetPointType() const
 {
    if(m_Buffer)
    {
@@ -87,15 +87,7 @@ OGPS_DataPointType PointVectorProxy::DataPointProxy::GetPointType() const throw(
    return OGPS_MissingPointType;
 }
 
-void PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const throw(...)
-{
-   _ASSERT(m_Context && value);
-
-   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
-   m_Buffer->Get(m_Context->GetIndex(), *value);   
-}
-
-void PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const throw(...)
+void PointVectorProxy::DataPointProxy::Get(OGPS_Int16* const value) const
 {
    _ASSERT(m_Context && value);
 
@@ -103,7 +95,7 @@ void PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const throw(
    m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-void PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const throw(...)
+void PointVectorProxy::DataPointProxy::Get(OGPS_Int32* const value) const
 {
    _ASSERT(m_Context && value);
 
@@ -111,7 +103,7 @@ void PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const throw(
    m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-void PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const throw(...)
+void PointVectorProxy::DataPointProxy::Get(OGPS_Float* const value) const
 {
    _ASSERT(m_Context && value);
 
@@ -119,7 +111,15 @@ void PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const throw
    m_Buffer->Get(m_Context->GetIndex(), *value);
 }
 
-OGPS_Double PointVectorProxy::DataPointProxy::Get() const throw(...)
+void PointVectorProxy::DataPointProxy::Get(OGPS_Double* const value) const
+{
+   _ASSERT(m_Context && value);
+
+   _CHECK_BUFFER_AND_THROW_READ_EXCEPTION;
+   m_Buffer->Get(m_Context->GetIndex(), *value);
+}
+
+OGPS_Double PointVectorProxy::DataPointProxy::Get() const
 {
    throw OpenGPS::Exception(
       OGPS_ExNotImplemented,
@@ -128,12 +128,12 @@ OGPS_Double PointVectorProxy::DataPointProxy::Get() const throw(...)
       _EX_T("OpenGPS::PointVectorProxy::DataPointProxy::Get"));
 }
 
-OGPS_Boolean PointVectorProxy::DataPointProxy::IsValid() const throw(...)
+OGPS_Boolean PointVectorProxy::DataPointProxy::IsValid() const
 {
    return m_Buffer != NULL;
 }
 
-void PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value) throw(...)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value)
 {
    _ASSERT(m_Context);
 
@@ -141,7 +141,7 @@ void PointVectorProxy::DataPointProxy::Set(const OGPS_Int16 value) throw(...)
    m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-void PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value) throw(...)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value)
 {
    _ASSERT(m_Context);
 
@@ -149,7 +149,7 @@ void PointVectorProxy::DataPointProxy::Set(const OGPS_Int32 value) throw(...)
    m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-void PointVectorProxy::DataPointProxy::Set(const OGPS_Float value) throw(...)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Float value)
 {
    _ASSERT(m_Context);
 
@@ -157,15 +157,15 @@ void PointVectorProxy::DataPointProxy::Set(const OGPS_Float value) throw(...)
    m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-void PointVectorProxy::DataPointProxy::Set(const OGPS_Double value) throw(...)
+void PointVectorProxy::DataPointProxy::Set(const OGPS_Double value)
 {
    _ASSERT(m_Context);
 
    _CHECK_BUFFER_AND_THROW_WRITE_EXCEPTION;
-   m_Buffer->Set(m_Context->GetIndex(), value);   
+   m_Buffer->Set(m_Context->GetIndex(), value);
 }
 
-void PointVectorProxy::DataPointProxy::Reset() throw(...)
+void PointVectorProxy::DataPointProxy::Reset()
 {
    // Shouldn't have a buffer, because mainly for an instance of the current
    // data point proxy implementation a reset usually means that a value is skipped
@@ -183,7 +183,7 @@ void PointVectorProxy::DataPointProxy::Reset() throw(...)
    }
 }
 
-void PointVectorProxy::DataPointProxy::Set(const DataPoint& src) throw(...)
+void PointVectorProxy::DataPointProxy::Set(const DataPoint& src)
 {
    _ASSERT(m_Context);
 

@@ -35,6 +35,10 @@
 #ifndef _OPENGPS_POINT_BUFFER_HXX
 #define _OPENGPS_POINT_BUFFER_HXX
 
+#if linux
+#include <string>
+#endif
+
 #ifndef _OPENGPS_CXX_OPENGPS_HXX
 #  include <opengps/cxx/opengps.hxx>
 #endif
@@ -47,7 +51,7 @@ namespace OpenGPS
 {
    /*!
     * A static memory buffer that stores all point data belonging to a single axis.
-    * Internally point vectors are not stored as a sequence of values of their three 
+    * Internally point vectors are not stored as a sequence of values of their three
     * components (as one might have naturally thought). But rather there are three memory
     * blocks. One for each axis that stores all its data point values in a single array.
     * The three point buffer instances managing typesafe access to their memory blocks
@@ -77,7 +81,7 @@ namespace OpenGPS
        * @param index Where to set the new value.
        * @param value The new value to be set.
        */
-      virtual void Set(const OGPS_ULong index, const OGPS_Int16 value) throw(...);
+      virtual void Set(const OGPS_ULong index, const OGPS_Int16 value);
 
       /*!
        * Sets the value of the inernal memory at the given position.
@@ -88,7 +92,7 @@ namespace OpenGPS
        * @param index Where to set the new value.
        * @param value The new value to be set.
        */
-      virtual void Set(const OGPS_ULong index, const OGPS_Int32 value) throw(...);
+      virtual void Set(const OGPS_ULong index, const OGPS_Int32 value);
 
       /*!
        * Sets the value of the inernal memory at the given position.
@@ -99,7 +103,7 @@ namespace OpenGPS
        * @param index Where to set the new value.
        * @param value The new value to be set.
        */
-      virtual void Set(const OGPS_ULong index, const OGPS_Float value) throw(...);
+      virtual void Set(const OGPS_ULong index, const OGPS_Float value);
 
       /*!
        * Sets the value of the inernal memory at the given position.
@@ -110,7 +114,7 @@ namespace OpenGPS
        * @param index Where to set the new value.
        * @param value The new value to be set.
        */
-      virtual void Set(const OGPS_ULong index, const OGPS_Double value) throw(...);
+      virtual void Set(const OGPS_ULong index, const OGPS_Double value);
 
       /*!
        * Gets the value of the inernal memory at the given position.
@@ -121,7 +125,7 @@ namespace OpenGPS
        * @param index Get the value from this position.
        * @param value Stores the value.
        */
-      virtual void Get(const OGPS_ULong index, OGPS_Int16& value) const throw(...);
+      virtual void Get(const OGPS_ULong index, OGPS_Int16& value) const;
 
       /*!
        * Gets the value of the inernal memory at the given position.
@@ -132,7 +136,7 @@ namespace OpenGPS
        * @param index Get the value from this position.
        * @param value Stores the value.
        */
-      virtual void Get(const OGPS_ULong index, OGPS_Int32& value) const throw(...);
+      virtual void Get(const OGPS_ULong index, OGPS_Int32& value) const;
 
       /*!
        * Gets the value of the inernal memory at the given position.
@@ -143,7 +147,7 @@ namespace OpenGPS
        * @param index Get the value from this position.
        * @param value Stores the value.
        */
-      virtual void Get(const OGPS_ULong index, OGPS_Float& value) const throw(...);
+      virtual void Get(const OGPS_ULong index, OGPS_Float& value) const;
 
       /*!
        * Gets the value of the inernal memory at the given position.
@@ -154,7 +158,7 @@ namespace OpenGPS
        * @param index Get the value from this position.
        * @param value Stores the value.
        */
-      virtual void Get(const OGPS_ULong index, OGPS_Double& value) const throw(...);
+      virtual void Get(const OGPS_ULong index, OGPS_Double& value) const;
 
       /*!
        * Allocates internal memory.
@@ -163,7 +167,7 @@ namespace OpenGPS
        *
        * @param size Amount of point data to be stored.
        */
-      virtual void Allocate(const OGPS_ULong size) throw(...);
+      virtual void Allocate(const OGPS_ULong size);
 
       /*!
        * Gets the maximum amount of point data taht can be stored.
@@ -187,7 +191,7 @@ namespace OpenGPS
        * @param typeSize The size of the data type of the point data stored herein in bytes.
        * @returns Returns a pointer to allocated memory or NULL.
        */
-      OpenGPS::UnsignedBytePtr Allocate(const OGPS_ULong size, const size_t typeSize) throw(...);
+      OpenGPS::UnsignedBytePtr Allocate(const OGPS_ULong size, const size_t typeSize);
 
       /*!
        * Frees allocated memory.

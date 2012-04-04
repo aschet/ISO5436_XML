@@ -43,14 +43,14 @@ MissingDataPointParser::MissingDataPointParser() : DataPointParser()
 MissingDataPointParser::~MissingDataPointParser()
 {
 }
-    
-void MissingDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
+
+void MissingDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
    context.Skip();
-   value.Reset();   
+   value.Reset();
 }
 
-void MissingDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
+void MissingDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
 {
    if(!value.IsValid())
    {

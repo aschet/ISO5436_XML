@@ -67,7 +67,7 @@ void BinaryPointVectorReaderContext::Close()
    }
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::MoveNext() throw(...)
+OGPS_Boolean BinaryPointVectorReaderContext::MoveNext()
 {
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
@@ -75,7 +75,7 @@ OGPS_Boolean BinaryPointVectorReaderContext::MoveNext() throw(...)
    return !m_Stream->eof();
 }
 
-OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const throw(...)
+OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const
 {
    // If point data is read from a binary file, anytime - even if point data
    // at the current position is invalid - a value itself is still available.
@@ -85,10 +85,10 @@ OGPS_Boolean BinaryPointVectorReaderContext::IsValid() const throw(...)
    return TRUE;
 }
 
-void BinaryPointVectorReaderContext::Skip() throw(...)
+void BinaryPointVectorReaderContext::Skip()
 {
    _CHECK_STREAM_AND_THROW_EXCEPTION;
-   
+
    if(!IsGood())
    {
       throw OpenGPS::Exception(

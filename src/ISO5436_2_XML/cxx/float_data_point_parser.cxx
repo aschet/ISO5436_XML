@@ -43,17 +43,17 @@ FloatDataPointParser::FloatDataPointParser() : DataPointParser()
 FloatDataPointParser::~FloatDataPointParser()
 {
 }
-    
-void FloatDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
+
+void FloatDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
    OGPS_Float v;
    context.Read(&v);
    value.Set(v);
 }
 
-void FloatDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
+void FloatDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
 {
    OGPS_Float v;
    value.Get(&v);
-   context.Write(&v);   
+   context.Write(&v);
 }

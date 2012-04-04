@@ -95,7 +95,7 @@ DataPoint* PointVectorProxy::GetZ()
    return m_Z;
 }
 
-void PointVectorProxy::Set(const PointVectorBase& value) throw(...)
+void PointVectorProxy::Set(const PointVectorBase& value)
 {
    _ASSERT(m_X && m_Y && m_Z);
 
@@ -112,7 +112,7 @@ void PointVectorProxy::Set(const PointVectorBase& value) throw(...)
    m_Z->Set(*value.GetZ());
 }
 
-void PointVectorProxy::Get(PointVectorBase& value) const throw(...)
+void PointVectorProxy::Get(PointVectorBase& value) const
 {
    _ASSERT(m_X && m_Y && m_Z);
 

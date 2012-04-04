@@ -97,13 +97,13 @@ OGPS_Boolean BinaryPointVectorWriterContext::IsGood() const
    return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
 }
 
-void BinaryPointVectorWriterContext::Skip() throw(...)
+void BinaryPointVectorWriterContext::Skip()
 {
    _CHECK_STREAM_AND_THROW_EXCEPTION;
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryPointVectorWriterContext::MoveNext() throw(...)
+void BinaryPointVectorWriterContext::MoveNext()
 {
 }
 

@@ -41,21 +41,21 @@ FloatPointBuffer::~FloatPointBuffer()
       Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
 }
 
-void FloatPointBuffer::Allocate(const OGPS_ULong size) throw(...)
+void FloatPointBuffer::Allocate(const OGPS_ULong size)
 {
    _ASSERT(!m_Buffer);
 
    m_Buffer = (OGPS_Float*)PointBuffer::Allocate(size, sizeof(OGPS_Float));
 }
 
-void FloatPointBuffer::Set(const OGPS_ULong index, const OGPS_Float value) throw(...)
+void FloatPointBuffer::Set(const OGPS_ULong index, const OGPS_Float value)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
    m_Buffer[index] = value;
 }
 
-void FloatPointBuffer::Get(const OGPS_ULong index, OGPS_Float& value) const throw(...)
+void FloatPointBuffer::Get(const OGPS_ULong index, OGPS_Float& value) const
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

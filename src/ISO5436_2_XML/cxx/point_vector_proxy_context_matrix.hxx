@@ -77,7 +77,7 @@ namespace OpenGPS
       void SetIndex(
          const OGPS_ULong u,
          const OGPS_ULong v,
-         const OGPS_ULong w) throw(...);
+         const OGPS_ULong w);
 
       virtual OGPS_ULong GetIndex() const;
       virtual OGPS_Boolean CanIncrementIndex() const;
@@ -96,7 +96,7 @@ namespace OpenGPS
 
       /*! The maximum index possible in X direction. */
       OGPS_ULong m_MaxU;
-      
+
       /*! The maximum index possible in Y direction. */
       OGPS_ULong m_MaxV;
 

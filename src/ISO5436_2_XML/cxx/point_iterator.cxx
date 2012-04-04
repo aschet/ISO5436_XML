@@ -59,7 +59,7 @@ ISO5436_2Container::PointIteratorImpl::~PointIteratorImpl()
 {
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const throw(...)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -87,7 +87,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasNext() const throw(...)
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const throw(...)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -115,7 +115,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::HasPrev() const throw(...)
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext() throw(...)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext()
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -167,7 +167,7 @@ OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MoveNext() throw(...)
    return FALSE;
 }
 
-OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MovePrev() throw(...)
+OGPS_Boolean ISO5436_2Container::PointIteratorImpl::MovePrev()
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -257,7 +257,7 @@ void ISO5436_2Container::PointIteratorImpl::ResetPrev()
    m_IsForward = FALSE;
 }
 
-void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector) throw(...)
+void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
@@ -271,15 +271,15 @@ void ISO5436_2Container::PointIteratorImpl::GetCurrent(PointVector& vector) thro
    }
 }
 
-void ISO5436_2Container::PointIteratorImpl::GetCurrentCoord(PointVector& vector) throw(...)
+void ISO5436_2Container::PointIteratorImpl::GetCurrentCoord(PointVector& vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 
    OGPS_Double x, y, z;
-   
+
    if(m_IsMatrix)
    {
-      m_Handle->GetMatrixCoord(m_U, m_V, m_W, &x, &y, &z);      
+      m_Handle->GetMatrixCoord(m_U, m_V, m_W, &x, &y, &z);
    }
    else
    {
@@ -289,7 +289,7 @@ void ISO5436_2Container::PointIteratorImpl::GetCurrentCoord(PointVector& vector)
    vector.SetXYZ(x, y, z);
 }
 
-void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector) throw(...)
+void ISO5436_2Container::PointIteratorImpl::SetCurrent(const PointVector* const vector)
 {
    _ASSERT(m_Handle && m_Handle->IsMatrix() == m_IsMatrix);
 

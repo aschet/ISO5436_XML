@@ -108,7 +108,7 @@ void XmlPointVectorWriterContext::Reset()
    m_NeedsSeparator = FALSE;
 }
 
-void XmlPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...)
+void XmlPointVectorWriterContext::Write(const OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -120,7 +120,7 @@ void XmlPointVectorWriterContext::Write(const OGPS_Int16* const value) throw(...
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorWriterContext::Write(const OGPS_Int32* const value) throw(...)
+void XmlPointVectorWriterContext::Write(const OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -132,7 +132,7 @@ void XmlPointVectorWriterContext::Write(const OGPS_Int32* const value) throw(...
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorWriterContext::Write(const OGPS_Float* const value) throw(...)
+void XmlPointVectorWriterContext::Write(const OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -144,7 +144,7 @@ void XmlPointVectorWriterContext::Write(const OGPS_Float* const value) throw(...
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorWriterContext::Write(const OGPS_Double* const value) throw(...)
+void XmlPointVectorWriterContext::Write(const OGPS_Double* const value)
 {
    _ASSERT(value);
 
@@ -156,7 +156,7 @@ void XmlPointVectorWriterContext::Write(const OGPS_Double* const value) throw(..
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorWriterContext::Skip() throw(...)
+void XmlPointVectorWriterContext::Skip()
 {
    _CHECK_STREAM_AND_THROW_EXCEPTION;
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
@@ -182,7 +182,7 @@ void XmlPointVectorWriterContext::AppendSeparator()
    m_NeedsSeparator = TRUE;
 }
 
-void XmlPointVectorWriterContext::MoveNext() throw(...)
+void XmlPointVectorWriterContext::MoveNext()
 {
    _ASSERT(m_Stream && m_PointVectorList);
 

@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <iomanip>
+#include <string.h>
 
 #include "stdafx.hxx"
 
@@ -137,9 +138,17 @@ size_t String::CopyTo(OGPS_Character *const target, const size_t size) const
    if(len > 0)
    {
 #ifdef _UNICODE
-   wcscpy_s(target, size, c_str());
+    #if linux
+        wcsncpy(target, c_str(), size);
+    #else
+        wcscpy_s(target, size, c_str());
+    #endif
 #else
-   strcpy_s(target, size, c_str());
+    #if linux
+        strncpy(target, c_str(), size);
+    #else
+        strcpy_s(target, size, c_str());
+    #endif
 #endif
    }
    else
@@ -174,7 +183,7 @@ OGPS_Boolean String::ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const
    for(size_t k = 0; k < 16; ++k)
    {
       buffer >> std::hex >> md5n[k];
-   
+
       _ASSERT(md5n[k] >= 0 && md5n[k] < 256);
 
       md5[k] = (OpenGPS::UnsignedByte)md5n[k];

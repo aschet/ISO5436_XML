@@ -62,7 +62,7 @@ namespace OpenGPS
        * @param index The location of the point data the validity is updated.
        * @param value The value of the current validity of the point vector at the given position.
        */
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...) = 0;
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) = 0;
 
       /*!
        * Gets the validity of a point vector at a given location.
@@ -73,7 +73,7 @@ namespace OpenGPS
        * @param index The location of the point data the validity is checked.
        * @returns Returns TRUE if valid, FALSE otherwise.
        */
-      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...) = 0;
+      virtual OGPS_Boolean IsValid(const unsigned int index) const = 0;
 
    protected:
       /*!
@@ -87,7 +87,7 @@ namespace OpenGPS
 
       /*! Returns the point buffer of the Z axis. */
       const PointBuffer* GetPointBuffer() const;
-      
+
       /*! Returns the point buffer of the Z axis. */
       PointBuffer* GetPointBuffer();
 

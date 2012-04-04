@@ -35,7 +35,9 @@
 #ifndef _OPENGPS_STDAFX_HXX
 #define _OPENGPS_STDAFX_HXX
 
-#include <tchar.h>
+#ifndef linux
+    #include <tchar.h>
+#endif
 
 #include "version.h"
 

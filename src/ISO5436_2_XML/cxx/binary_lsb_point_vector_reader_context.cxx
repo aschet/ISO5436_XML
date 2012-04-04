@@ -66,50 +66,50 @@ BinaryLSBPointVectorReaderContext::~BinaryLSBPointVectorReaderContext()
 {
 }
 
-void BinaryLSBPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
    _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT16_SIZE);
-   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT16_SIZE);
-   
+   GetStream()->read((OpenGPS::BytePtr)value, _OPENGPS_BINFORMAT_INT16_SIZE);
+
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryLSBPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
-   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);  
-   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_INT32_SIZE);
-  
+   _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_INT32_SIZE);
+   GetStream()->read((OpenGPS::BytePtr)value, _OPENGPS_BINFORMAT_INT32_SIZE);
+
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryLSBPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
    _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_FLOAT_SIZE);
-   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
+   GetStream()->read((OpenGPS::BytePtr)value, _OPENGPS_BINFORMAT_FLOAT_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void BinaryLSBPointVectorReaderContext::Read(OGPS_Double* const value) throw(...)
+void BinaryLSBPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
 
    _ASSERT(sizeof(*value) >= _OPENGPS_BINFORMAT_DOUBLE_SIZE);
-   GetStream()->read((OpenGPS::UnsignedBytePtr)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
+   GetStream()->read((OpenGPS::BytePtr)value, _OPENGPS_BINFORMAT_DOUBLE_SIZE);
 
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }

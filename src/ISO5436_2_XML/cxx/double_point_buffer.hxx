@@ -54,10 +54,10 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~DoublePointBuffer();
 
-      virtual void Allocate(const OGPS_ULong size) throw(...);
+      virtual void Allocate(const OGPS_ULong size);
 
-      virtual void Set(const OGPS_ULong index, const OGPS_Double value) throw(...);
-      virtual void Get(const OGPS_ULong index, OGPS_Double& value) const throw(...);
+      virtual void Set(const OGPS_ULong index, const OGPS_Double value);
+      virtual void Get(const OGPS_ULong index, OGPS_Double& value) const;
 
       virtual OGPS_DataPointType GetPointType() const;
 

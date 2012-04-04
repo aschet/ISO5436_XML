@@ -45,7 +45,7 @@ FloatInlineValidity::~FloatInlineValidity()
 {
 }
 
-void FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
+void FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
 {
    _ASSERT(std::numeric_limits<OGPS_Float>::has_quiet_NaN);
 
@@ -64,7 +64,7 @@ void FloatInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean 
    }
 }
 
-OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const throw(...)
+OGPS_Boolean FloatInlineValidity::IsValid(const unsigned int index) const
 {
    _ASSERT(std::numeric_limits<OGPS_Float>::has_quiet_NaN);
 
@@ -93,7 +93,7 @@ DoubleInlineValidity::~DoubleInlineValidity()
 {
 }
 
-void DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value) throw(...)
+void DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean value)
 {
    _ASSERT(std::numeric_limits<OGPS_Double>::has_quiet_NaN);
 
@@ -112,7 +112,7 @@ void DoubleInlineValidity::SetValid(const unsigned int index, const OGPS_Boolean
    }
 }
 
-OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const throw(...)
+OGPS_Boolean DoubleInlineValidity::IsValid(const unsigned int index) const
 {
    _ASSERT(std::numeric_limits<OGPS_Double>::has_quiet_NaN);
 

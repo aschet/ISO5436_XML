@@ -79,8 +79,8 @@ namespace OpenGPS
       virtual DataPoint* GetY();
       virtual DataPoint* GetZ();
 
-      virtual void Set(const PointVectorBase& value) throw(...);
-      virtual void Get(PointVectorBase& value) const throw(...);
+      virtual void Set(const PointVectorBase& value);
+      virtual void Get(PointVectorBase& value) const;
 
    private:
       /*! Provides information which data row is currently proxied. */
@@ -91,7 +91,7 @@ namespace OpenGPS
 
       /*! Provides typesafe access to the point data of the current X component. */
       DataPoint* m_X;
-      
+
       /*! Provides typesafe access to the point data of the current Y component. */
       DataPoint* m_Y;
 
@@ -122,25 +122,25 @@ namespace OpenGPS
          /*! Destroys this instance. */
          virtual ~DataPointProxy();
 
-         virtual OGPS_DataPointType GetPointType() const throw(...);
+         virtual OGPS_DataPointType GetPointType() const;
 
-         virtual void Get(OGPS_Int16* const value) const throw(...);
-         virtual void Get(OGPS_Int32* const value) const throw(...);
-         virtual void Get(OGPS_Float* const value) const throw(...);
-         virtual void Get(OGPS_Double* const value) const throw(...);
+         virtual void Get(OGPS_Int16* const value) const;
+         virtual void Get(OGPS_Int32* const value) const;
+         virtual void Get(OGPS_Float* const value) const;
+         virtual void Get(OGPS_Double* const value) const;
 
-         virtual OGPS_Double Get() const throw(...);
+         virtual OGPS_Double Get() const;
 
-         virtual OGPS_Boolean IsValid() const throw(...);
+         virtual OGPS_Boolean IsValid() const;
 
-         virtual void Set(const OGPS_Int16 value) throw(...);
-         virtual void Set(const OGPS_Int32 value) throw(...);
-         virtual void Set(const OGPS_Float value) throw(...);
-         virtual void Set(const OGPS_Double value) throw(...);
+         virtual void Set(const OGPS_Int16 value);
+         virtual void Set(const OGPS_Int32 value);
+         virtual void Set(const OGPS_Float value);
+         virtual void Set(const OGPS_Double value);
 
-         virtual void Set(const DataPoint& src) throw(...);
+         virtual void Set(const DataPoint& src);
 
-         virtual void Reset() throw(...);
+         virtual void Reset();
 
       private:
          /*! Provides information which data row is currently proxied. */

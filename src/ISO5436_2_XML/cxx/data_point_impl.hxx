@@ -54,26 +54,26 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~DataPointImpl();
 
-      virtual OGPS_DataPointType GetPointType() const throw(...);
+      virtual OGPS_DataPointType GetPointType() const throw();
 
-      virtual void Get(OGPS_Int16* const value) const throw(...);
-      virtual void Get(OGPS_Int32* const value) const throw(...);
-      virtual void Get(OGPS_Float* const value) const throw(...);
-      virtual void Get(OGPS_Double* const value) const throw(...);
+      virtual void Get(OGPS_Int16* const value) const;
+      virtual void Get(OGPS_Int32* const value) const;
+      virtual void Get(OGPS_Float* const value) const;
+      virtual void Get(OGPS_Double* const value) const;
 
-      virtual OGPS_Double Get() const throw(...);
+      virtual OGPS_Double Get() const;
 
-      virtual OGPS_Boolean IsValid() const throw(...);
+      virtual OGPS_Boolean IsValid() const throw();
 
-      virtual void Set(const OGPS_Int16 value) throw(...);
-      virtual void Set(const OGPS_Int32 value) throw(...);
-      virtual void Set(const OGPS_Float value) throw(...);
-      virtual void Set(const OGPS_Double value) throw(...);
+      virtual void Set(const OGPS_Int16 value) throw();
+      virtual void Set(const OGPS_Int32 value) throw();
+      virtual void Set(const OGPS_Float value) throw();
+      virtual void Set(const OGPS_Double value) throw();
 
-      virtual void Set(const DataPoint& src) throw(...);
+      virtual void Set(const DataPoint& src);
 
    protected:
-      virtual void Reset() throw(...);
+      virtual void Reset() throw();
 
    private:
       /*! This tag defines which value type is currently valid within DataPointImpl::m_Value.

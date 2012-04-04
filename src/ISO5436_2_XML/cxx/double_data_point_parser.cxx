@@ -43,17 +43,17 @@ DoubleDataPointParser::DoubleDataPointParser() : DataPointParser()
 DoubleDataPointParser::~DoubleDataPointParser()
 {
 }
-    
-void DoubleDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value) throw(...)
+
+void DoubleDataPointParser::Read(PointVectorReaderContext& context, DataPoint& value)
 {
    OGPS_Double v;
    context.Read(&v);
    value.Set(v);
 }
 
-void DoubleDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value) throw(...)
+void DoubleDataPointParser::Write(PointVectorWriterContext& context, const DataPoint& value)
 {
    OGPS_Double v;
    value.Get(&v);
-   context.Write(&v);   
+   context.Write(&v);
 }

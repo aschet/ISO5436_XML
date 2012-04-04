@@ -72,7 +72,7 @@ XmlPointVectorReaderContext::XmlPointVectorReaderContext(const StringList* const
    _ASSERT(pointVectorList);
 
    m_Next = 0;
-   m_Stream = NULL;   
+   m_Stream = NULL;
 }
 
 XmlPointVectorReaderContext::~XmlPointVectorReaderContext()
@@ -95,7 +95,7 @@ void XmlPointVectorReaderContext::Reset()
    m_Next = 0;
 }
 
-void XmlPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
+void XmlPointVectorReaderContext::Read(OGPS_Int16* const value)
 {
    _ASSERT(value);
 
@@ -104,7 +104,7 @@ void XmlPointVectorReaderContext::Read(OGPS_Int16* const value) throw(...)
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
+void XmlPointVectorReaderContext::Read(OGPS_Int32* const value)
 {
    _ASSERT(value);
 
@@ -113,7 +113,7 @@ void XmlPointVectorReaderContext::Read(OGPS_Int32* const value) throw(...)
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
+void XmlPointVectorReaderContext::Read(OGPS_Float* const value)
 {
    _ASSERT(value);
 
@@ -122,16 +122,16 @@ void XmlPointVectorReaderContext::Read(OGPS_Float* const value) throw(...)
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorReaderContext::Read(OGPS_Double* const value) throw(...)
+void XmlPointVectorReaderContext::Read(OGPS_Double* const value)
 {
    _ASSERT(value);
 
    _CHECK_STREAM_AND_THROW_EXCEPTION;
-   *m_Stream >> *value;      
+   *m_Stream >> *value;
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
 }
 
-void XmlPointVectorReaderContext::Skip() throw(...)
+void XmlPointVectorReaderContext::Skip()
 {
    _CHECK_STREAM_AND_THROW_EXCEPTION;
    _CHECK_ISGOOD_AND_THROW_EXCEPTION;
@@ -145,7 +145,7 @@ OGPS_Boolean XmlPointVectorReaderContext::IsGood() const
    return (state == std::ios_base::goodbit || state == std::ios_base::eofbit);
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::MoveNext() throw(...)
+OGPS_Boolean XmlPointVectorReaderContext::MoveNext()
 {
    _ASSERT(m_PointVectorList);
 
@@ -174,7 +174,7 @@ OGPS_Boolean XmlPointVectorReaderContext::MoveNext() throw(...)
    return FALSE;
 }
 
-OGPS_Boolean XmlPointVectorReaderContext::IsValid() const throw(...)
+OGPS_Boolean XmlPointVectorReaderContext::IsValid() const
 {
    return (m_Stream && m_Stream->str().length() > 0);
 }

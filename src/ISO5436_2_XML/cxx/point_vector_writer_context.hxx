@@ -63,7 +63,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Write(const OGPS_Int16* const value) throw(...) = 0;
+      virtual void Write(const OGPS_Int16* const value) = 0;
 
       /*!
        * Writes a single point of type ::OGPS_Int32 to the underlying stream.
@@ -73,7 +73,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Write(const OGPS_Int32* const value) throw(...) = 0;
+      virtual void Write(const OGPS_Int32* const value) = 0;
 
       /*!
        * Writes a single point of type ::OGPS_Float to the underlying stream.
@@ -83,7 +83,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Write(const OGPS_Float* const value) throw(...) = 0;
+      virtual void Write(const OGPS_Float* const value) = 0;
 
       /*!
        * Writes a single point of type ::OGPS_Double to the underlying stream.
@@ -93,7 +93,7 @@ namespace OpenGPS
        *
        * @param value Contains the point value on success.
        */
-      virtual void Write(const OGPS_Double* const value) throw(...) = 0;
+      virtual void Write(const OGPS_Double* const value) = 0;
 
       /*!
        * There is no point data to be written to the underlying stream for
@@ -111,7 +111,7 @@ namespace OpenGPS
        * there is no point data to be stored
        * because the corresponding axis is of incremental type.
        */
-      virtual void Skip() throw(...) = 0;
+      virtual void Skip() = 0;
 
       /*!
        * Complete the transaction of the current point vector. One point
@@ -123,7 +123,7 @@ namespace OpenGPS
        * A specific implementation may throw an OpenGPS::Exception if this operation
        * is not permitted due to the current state of the object instance.
        */
-      virtual void MoveNext() throw(...) = 0;
+      virtual void MoveNext() = 0;
 
    protected:
       /*! Creates a new instance. */

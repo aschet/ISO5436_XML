@@ -54,7 +54,7 @@ PointVectorProxyContextMatrix::~PointVectorProxyContextMatrix()
 void PointVectorProxyContextMatrix::SetIndex(
          const OGPS_ULong u,
          const OGPS_ULong v,
-         const OGPS_ULong w) throw(...)
+         const OGPS_ULong w)
 {
    if(u < m_MaxU && v < m_MaxV && w < m_MaxW)
    {

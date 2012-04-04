@@ -68,15 +68,15 @@ namespace OpenGPS
       /*! Destroys this instance. */
       virtual ~XmlPointVectorReaderContext();
 
-      virtual void Read(OGPS_Int16* const value) throw(...);
-      virtual void Read(OGPS_Int32* const value) throw(...);
-      virtual void Read(OGPS_Float* const value) throw(...);
-      virtual void Read(OGPS_Double* const value) throw(...);
+      virtual void Read(OGPS_Int16* const value);
+      virtual void Read(OGPS_Int32* const value);
+      virtual void Read(OGPS_Float* const value);
+      virtual void Read(OGPS_Double* const value);
 
-      virtual void Skip() throw(...);
+      virtual void Skip();
 
-      virtual OGPS_Boolean MoveNext() throw(...);
-      virtual OGPS_Boolean IsValid() const throw(...);
+      virtual OGPS_Boolean MoveNext();
+      virtual OGPS_Boolean IsValid() const;
 
    protected:
       /*!
@@ -106,7 +106,7 @@ namespace OpenGPS
       OGPS_ULong m_Next;
 
       /*! The inner stream object which streams the current point vector. */
-      PointVectorInputStringStream* m_Stream;            
+      PointVectorInputStringStream* m_Stream;
    };
 }
 

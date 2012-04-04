@@ -51,9 +51,9 @@ namespace OpenGPS
    class BinaryPointVectorReaderContext : public PointVectorReaderContext
    {
    public:
-      virtual void Skip() throw(...);
-      virtual OGPS_Boolean MoveNext() throw(...);
-      virtual OGPS_Boolean IsValid() const throw(...);
+      virtual void Skip();
+      virtual OGPS_Boolean MoveNext();
+      virtual OGPS_Boolean IsValid() const;
 
    protected:
       /*!

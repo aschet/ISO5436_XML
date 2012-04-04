@@ -28,6 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
+#include <string.h>
 #include "zip_stream_buffer.hxx"
 #include "stdafx.hxx"
 

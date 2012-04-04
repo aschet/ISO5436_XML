@@ -67,8 +67,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~FloatInlineValidity();
 
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const;
 
    private:
       /*! Defines whether the point buffer is allowed to contain invalid points. */
@@ -101,8 +101,8 @@ namespace OpenGPS
       /*! Destroys this instance. */
       ~DoubleInlineValidity();
 
-      virtual void SetValid(const unsigned int index, const OGPS_Boolean value) throw(...);
-      virtual OGPS_Boolean IsValid(const unsigned int index) const throw(...);
+      virtual void SetValid(const unsigned int index, const OGPS_Boolean value);
+      virtual OGPS_Boolean IsValid(const unsigned int index) const;
 
    private:
       /*! Defines whether the point buffer is allowed to contain invalid points. */

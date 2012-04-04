@@ -72,7 +72,7 @@ namespace OpenGPS
        * @param context Provides read access to the media.
        * @param value Buffer where the point data read gets stored.
        */
-      virtual void Read(PointVectorReaderContext& context, DataPoint& value) throw(...) = 0;
+      virtual void Read(PointVectorReaderContext& context, DataPoint& value) = 0;
 
       /*!
        * Writes point data to a given context/media.
@@ -89,7 +89,7 @@ namespace OpenGPS
        * @param context Provides write access to the media.
        * @param value Buffer where the point data to be written is stored.
        */
-      virtual void Write(PointVectorWriterContext& context, const DataPoint& value) throw(...) = 0;
+      virtual void Write(PointVectorWriterContext& context, const DataPoint& value) = 0;
 
    protected:
       /*! Creates a new instance. */

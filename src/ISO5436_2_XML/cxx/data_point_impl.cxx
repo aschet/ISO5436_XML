@@ -44,12 +44,12 @@ DataPointImpl::~DataPointImpl()
 {
 }
 
-OGPS_DataPointType DataPointImpl::GetPointType() const throw(...)
+OGPS_DataPointType DataPointImpl::GetPointType() const throw()
 {
    return m_Type;
 }
 
-void DataPointImpl::Get(OGPS_Int16* const value) const throw(...)
+void DataPointImpl::Get(OGPS_Int16* const value) const
 {
    _ASSERT(value);
 
@@ -62,10 +62,10 @@ void DataPointImpl::Get(OGPS_Int16* const value) const throw(...)
          _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   *value = m_Value.int16Value;   
+   *value = m_Value.int16Value;
 }
 
-void DataPointImpl::Get(OGPS_Int32* const value) const throw(...)
+void DataPointImpl::Get(OGPS_Int32* const value) const
 {
    _ASSERT(value);
 
@@ -81,7 +81,7 @@ void DataPointImpl::Get(OGPS_Int32* const value) const throw(...)
    *value = m_Value.int32Value;
 }
 
-void DataPointImpl::Get(OGPS_Float* const value) const throw(...)
+void DataPointImpl::Get(OGPS_Float* const value) const
 {
    _ASSERT(value);
 
@@ -97,7 +97,7 @@ void DataPointImpl::Get(OGPS_Float* const value) const throw(...)
    *value = m_Value.floatValue;
 }
 
-void DataPointImpl::Get(OGPS_Double* const value) const throw(...)
+void DataPointImpl::Get(OGPS_Double* const value) const
 {
    _ASSERT(value);
 
@@ -110,10 +110,10 @@ void DataPointImpl::Get(OGPS_Double* const value) const throw(...)
          _EX_T("OpenGPS::DataPointImpl::Get"));
    }
 
-   *value = m_Value.doubleValue;   
+   *value = m_Value.doubleValue;
 }
 
-OGPS_Double DataPointImpl::Get() const throw(...)
+OGPS_Double DataPointImpl::Get() const
 {
    switch(m_Type)
    {
@@ -145,31 +145,31 @@ OGPS_Double DataPointImpl::Get() const throw(...)
    }
 }
 
-void DataPointImpl::Set(const OGPS_Int16 value) throw(...)
+void DataPointImpl::Set(const OGPS_Int16 value) throw()
 {
    m_Type = OGPS_Int16PointType;
    m_Value.int16Value = value;
 }
 
-void DataPointImpl::Set(const OGPS_Int32 value) throw(...)
+void DataPointImpl::Set(const OGPS_Int32 value) throw()
 {
    m_Type = OGPS_Int32PointType;
    m_Value.int32Value = value;
 }
 
-void DataPointImpl::Set(const OGPS_Float value) throw(...)
+void DataPointImpl::Set(const OGPS_Float value) throw()
 {
    m_Type = OGPS_FloatPointType;
    m_Value.floatValue = value;
 }
 
-void DataPointImpl::Set(const OGPS_Double value) throw(...)
+void DataPointImpl::Set(const OGPS_Double value) throw()
 {
    m_Type = OGPS_DoublePointType;
    m_Value.doubleValue = value;
 }
 
-OGPS_Boolean DataPointImpl::IsValid() const throw(...)
+OGPS_Boolean DataPointImpl::IsValid() const throw()
 {
   // Check for floating point vectors and test for NaN also
   if (m_Type == OGPS_MissingPointType)
@@ -202,7 +202,7 @@ OGPS_Boolean DataPointImpl::IsValid() const throw(...)
   return true;
 }
 
-void DataPointImpl::Set(const DataPoint& src) throw(...)
+void DataPointImpl::Set(const DataPoint& src)
 {
    /* I do not use memcpy or the like here, since possibly there are different memory models
    implemented by different combinations of compiler/architecture concerning the union data type,
@@ -248,7 +248,7 @@ void DataPointImpl::Set(const DataPoint& src) throw(...)
    }
 }
 
-void DataPointImpl::Reset() throw(...)
+void DataPointImpl::Reset() throw()
 {
    m_Type = OGPS_MissingPointType;
    m_Value.doubleValue = 0.0;

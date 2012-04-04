@@ -41,21 +41,21 @@ Int16PointBuffer::~Int16PointBuffer()
    Free((OpenGPS::UnsignedBytePtr*)(&m_Buffer));
 }
 
-void Int16PointBuffer::Allocate(const OGPS_ULong size) throw(...)
+void Int16PointBuffer::Allocate(const OGPS_ULong size)
 {
    _ASSERT(!m_Buffer);
 
    m_Buffer = (OGPS_Int16*)PointBuffer::Allocate(size, sizeof(OGPS_Int16));
 }
 
-void Int16PointBuffer::Set(const OGPS_ULong index, const OGPS_Int16 value) throw(...)
+void Int16PointBuffer::Set(const OGPS_ULong index, const OGPS_Int16 value)
 {
    _ASSERT(index < GetSize() && m_Buffer);
 
    m_Buffer[index] = value;
 }
 
-void Int16PointBuffer::Get(const OGPS_ULong index, OGPS_Int16& value) const throw(...)
+void Int16PointBuffer::Get(const OGPS_ULong index, OGPS_Int16& value) const
 {
    _ASSERT(index < GetSize() && m_Buffer);
 

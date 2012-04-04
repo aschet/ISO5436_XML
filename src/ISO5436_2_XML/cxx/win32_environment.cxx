@@ -57,15 +57,6 @@ namespace OpenGPS
 
 #endif /* _UNICODE */
 
-/// Global instance of the environment.
-Win32Environment EnvironmentInstance;
-
-/// Provides access to the environment.
-const Environment* const Environment::GetInstance()
-{
-   return &EnvironmentInstance;
-}
-
 Win32Environment::Win32Environment()
 : Environment()
 {
@@ -449,6 +440,11 @@ OpenGPS::String Win32Environment::GetLastErrorMessage() const
 void Win32Environment::ResetLastErrorCode() const
 {
    SetLastError(0);
+}
+
+Environment* Environment::CreateInstance()
+{
+   return new Win32Environment();
 }
 
 #endif /* _WIN32 */
