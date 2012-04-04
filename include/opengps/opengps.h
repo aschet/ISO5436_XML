@@ -40,6 +40,12 @@
 #ifndef _OPENGPS_H
 #define _OPENGPS_H
 
+#if _UNICODE
+#if linux
+    #include <wchar.h>
+#endif
+#endif
+
 #include "cxx/version.h"
 
 #ifdef _WIN32
@@ -127,9 +133,15 @@ typedef int OGPS_Boolean;
 
 #ifdef _UNICODE
 /*! The current type of characters. This is either unicode (wchar_t) or char. */
+#if linux
+    #define _T(xx) L ## xx
+#endif
 typedef wchar_t OGPS_Character;
 #else
 /*! The current type of characters. This is either unicode (wchar_t) or char. */
+#if linux
+    #define _T(xx) xx
+#endif
 typedef char OGPS_Character;
 #endif /* _UNICODE */
 
@@ -166,7 +178,7 @@ typedef unsigned long OGPS_ULong;
 /// Build a version string from version numbers
 // This macro is necessary to make a number to string conversion
 #ifdef _UNICODE
-#  define _OPENGPS_MSTR(x) L#x
+#  define _OPENGPS_MSTR(x) L ## #x
 #else
 #  define _OPENGPS_MSTR(x) #x
 #endif /* _UNICODE */
