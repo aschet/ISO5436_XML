@@ -12,7 +12,7 @@
  *   "licence_GPL-3.0.txt".                                                *
  *                                                                         *
  *   openGPS is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Lesser General Public License for more details.                   *
  *                                                                         *
@@ -54,7 +54,12 @@
 #include <ctime>
 #include <limits>
 
-#include <tchar.h>
+#if linux
+    #include "assert.h"
+    #include "math.h"
+#else
+    #include <tchar.h>
+#endif
 
 #include <time.h>
 
@@ -63,15 +68,19 @@ using namespace OpenGPS::Schemas::ISO5436_2;
 
 /*!
   @brief Prints list or matrix dimension of a given x3p handle to cout.
-  
+
   @param handle;
 
   @return TRUE on success, FALSE if handle is neither a list nor a matrix.
 */
-OGPS_Boolean 
+OGPS_Boolean
 PrintDimensions(const OGPS_ISO5436_2Handle handle)
 {
+#if linux
+    assert(handle);
+#else
   _ASSERT(handle);
+#endif
 
   // Check for Matrix or List
   bool ismatrix=ogps_IsMatrix(handle);
@@ -90,7 +99,7 @@ PrintDimensions(const OGPS_ISO5436_2Handle handle)
     cout << "Matrix dimensions are (x,y,z): " << sx << ", " << sy << ", " << sz << endl;
     return TRUE;
   }
-  else 
+  else
   {
     unsigned long sx = ogps_GetListDimension(handle);
     cout << "This is a list with " << sx << " elements." << endl;
@@ -101,86 +110,9 @@ PrintDimensions(const OGPS_ISO5436_2Handle handle)
 }
 
 
-#if (XSD_INT_VERSION >= 3020000L)
-
-/*!
-  @brief Helper function to return the current local time and UTC offsets.
-*/
-void TimeStamp(
-               int* tz_year,
-               unsigned short* tz_month,
-               unsigned short* tz_day,
-               unsigned short* tz_hour,
-               unsigned short* tz_min,
-               double* tz_second,
-               short* tz_offset_hour,
-               short* tz_offset_min)
-{
-   time_t ltime;
-   struct tm lt;
-   // Time zone offset
-   long tzoff;
-   // Set timezone
-   _tzset();
-   // Get time zone offset
-   _get_timezone(&tzoff);
-   // Offset ours and minutes
-   int tzoff_h,tzoff_m;
-   tzoff_h = -(int)floor(((double)tzoff)/3600.);
-   tzoff_m = -(int)floor(((double)tzoff)/60. + 0.5) - tzoff_h*60;
-
-   // Get current time
-   time( &ltime );
-   // get local time
-   localtime_s(&lt,&ltime);
-
-   // Correct tz offset by dst
-   if (lt.tm_isdst > 0)
-      tzoff_h++;
-
-   if(tz_year)
-   {
-      *tz_year = lt.tm_year + 1900;
-   }
-   if(tz_month)
-   {
-      _ASSERT(lt.tm_mon >= 0);
-      *tz_month = (unsigned short)lt.tm_mon;
-   }
-   if(tz_day)
-   {
-      _ASSERT(lt.tm_mday >= 0);
-      *tz_day = (unsigned short)lt.tm_mday;
-   }
-   if(tz_hour)
-   {
-      _ASSERT(lt.tm_hour >= 0);
-      *tz_hour = (unsigned short)lt.tm_hour;
-   }
-   if(tz_min)
-   {
-      _ASSERT(lt.tm_min >= 0);
-      *tz_min = (unsigned short)lt.tm_min;
-   }
-   if(tz_second)
-   {
-      *tz_second = lt.tm_sec;
-   }
-   if(tz_offset_hour)
-   {
-      *tz_offset_hour = (short)tzoff_h;
-   }
-   if(tz_offset_min)
-   {
-      *tz_offset_min = (short)tzoff_m;
-   }
-}
-
-#else /* XSD_INT_VERSION */
-
 /*!
   @brief Helper function to return the current time properly formated.
-  
+
   @return A string containing the time stamp from now.
 
   @note There is only a windows implementation yet. In other cases
@@ -206,7 +138,7 @@ OpenGPS::String TimeStamp(void)
   time( &ltime );
   // get local time
   localtime_s(&lt,&ltime);
-  
+
   // Correct tz offset by dst
   if (lt.tm_isdst > 0)
     tzoff_h++;
@@ -217,34 +149,43 @@ OpenGPS::String TimeStamp(void)
 
   // Create a string of pattern "2007-04-30T13:58:02.6+02:00"
   wostringstream sout;
-  sout << std::setfill(_T('0')) << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday 
-      << _T('T') << setw(2) << lt.tm_hour << _T(':') << setw(2) << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
+//  sout << std::setfill(_T('0')) << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday
+//      << _T('T') << lt.tm_hour << _T(':') << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
+//      << tzoffsign << setw(2) << tzoff_habs << _T(':') << setw(2) << tzoff_m << ends;
+
+  sout << setw(4) << (lt.tm_year+1900) << _T('-') << setw(2) << lt.tm_mon << _T('-') << setw(2) << lt.tm_mday
+      << _T('T') << lt.tm_hour << _T(':') << lt.tm_min << _T(':') << setw(2) << lt.tm_sec << _T(".0")
       << tzoffsign << setw(2) << tzoff_habs << _T(':') << setw(2) << tzoff_m << ends;
 
-  return sout.str();
+//  return sout.str();
+  return _T("2007-04-30T13:58:02.6+02:00");
 }
 #else
 // There is only a windows implementation yet.
 //In other cases return a dummy. That is enough for testing purposes.
-OGPS_String TimeStamp(void)
+OpenGPS::String TimeStamp(void)
 {
   return _T("2007-04-30T13:58:02.6+02:00");
 }
+
 #endif
 
-#endif /* XSD_INT_VERSION */
 
 /*!
   @brief Prints all meta data available in the current document.
-  
+
   @param Pointer to xml document tree
 
   @return TRUE on success, FALSE if no meta data available.
 */
-OGPS_Boolean 
+OGPS_Boolean
 PrintMetaData(const ISO5436_2Type* const document)
 {
-  _ASSERT(document);
+    #if linux
+        assert(document);
+    #else
+        _ASSERT(document);
+    #endif
 
   // Get a reference to optional record 2
   const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_optional &r2opt = document->Record2();
@@ -262,7 +203,13 @@ PrintMetaData(const ISO5436_2Type* const document)
   const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_type &r2 = r2opt.get();
 
   // Data set creation date
-  cout << "Data set creation date: " << r2.Date() << endl;
+//  cout << "Data set creation date: " << r2.Date() << endl;
+  cout << "Data set creation date: " << r2.Date().year() << "-"
+      << r2.Date().month() << "-"
+      << r2.Date().day() << "-"
+      << r2.Date().hours() << ":"
+      << r2.Date().minutes() << ":"
+      << r2.Date().seconds() << endl;
   // Check for data set creator
   if (r2.Creator().present())
   {
@@ -282,7 +229,14 @@ PrintMetaData(const ISO5436_2Type* const document)
     << "       Version: \"" << r2.Instrument().Version() << '"' << endl;
 
   // Calibration
-  cout << "Instrument was calibrated: \"" << r2.CalibrationDate() << '"' << endl;
+//  cout << "Instrument was calibrated: \"" << r2.CalibrationDate() << '"' << endl;
+    cout << "Instrument was calibrated: \"" << r2.CalibrationDate().year() << "-"
+      << r2.CalibrationDate().month() << "-"
+      << r2.CalibrationDate().day() << "-"
+      << r2.CalibrationDate().hours() << ":"
+      << r2.CalibrationDate().minutes() << ":"
+      << r2.CalibrationDate().seconds() << endl;
+
   // Probing system type
   cout << "Probing system type: \"" << r2.ProbingSystem().Type() << '"' << endl
     << "Probing system identification: \"" << r2.ProbingSystem().Identification() << '"' << endl;
@@ -303,19 +257,27 @@ PrintMetaData(const ISO5436_2Type* const document)
 
 /*!
   @brief Prints all meta data available in the current document.
-  
+
   @param handle to current X3P document
 
   @return TRUE on success, FALSE if no meta data available.
 */
-OGPS_Boolean 
+OGPS_Boolean
 PrintMetaData(const OGPS_ISO5436_2Handle handle)
 {
-  _ASSERT(handle);
+    #if linux
+        assert(handle);
+    #else
+        _ASSERT(handle);
+    #endif
 
-  // Get document 
+  // Get document
   const ISO5436_2Type* const document = ogps_GetDocument(handle);
-  _ASSERT(document);
+    #if linux
+        assert(document);
+    #else
+        _ASSERT(document);
+    #endif
 
   if (ogps_HasError())
   {
@@ -373,17 +335,8 @@ void simpleExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-#if (XSD_INT_VERSION >= 3020000L)
-   int tz_year;
-   unsigned short tz_month, tz_day, tz_hour, tz_min;
-   double tz_second;
-   short tz_offset_hour, tz_offset_min;
-   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
-   
-   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
-#else /* XSD_INT_VERSION */
-   Record2Type::Date_type date(TimeStamp());
-#endif /* XSD_INT_VERSION */
+//   Record2Type::Date_type date(TimeStamp());
+   Record2Type::Date_type date(TimeStamp(), 0);
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -391,20 +344,8 @@ void simpleExample(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
-#if (XSD_INT_VERSION >= 3020000L)
-   // "2007-04-30T13:58:02.6+02:00"
-   Record2Type::CalibrationDate_type calibrationDate(
-      2007,
-      4,
-      30,
-      13,
-      58,
-      2,
-      2,
-      0);
-#else /* XSD_INT_VERSION */
-   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
-#endif /* XSD_INT_VERSION */
+//   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"), 0);
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -524,17 +465,8 @@ void mediumComplexExample(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-#if (XSD_INT_VERSION >= 3020000L)
-   int tz_year;
-   unsigned short tz_month, tz_day, tz_hour, tz_min;
-   double tz_second;
-   short tz_offset_hour, tz_offset_min;
-   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
-   
-   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
-#else /* XSD_INT_VERSION */
-   Record2Type::Date_type date(TimeStamp());
-#endif /* XSD_INT_VERSION */
+//   Record2Type::Date_type date(TimeStamp());
+   Record2Type::Date_type date(TimeStamp(), 0);
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -542,20 +474,8 @@ void mediumComplexExample(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
-#if (XSD_INT_VERSION >= 3020000L)
-   // "2007-04-30T13:58:02.6+02:00"
-   Record2Type::CalibrationDate_type calibrationDate(
-      2007,
-      4,
-      30,
-      13,
-      58,
-      2,
-      2,
-      0);
-#else /* XSD_INT_VERSION */
-   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
-#endif /* XSD_INT_VERSION */
+//   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"), 0);
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -601,7 +521,7 @@ void mediumComplexExample(const OpenGPS::String fileName)
       /* Z has data type double */
       ogps_SetDoubleZ(vector, 4.8*cnt);
 
-      /* 3. Write into document */  
+      /* 3. Write into document */
       ogps_SetCurrentPoint(iterator, vector);
 
       // Increment counter
@@ -621,7 +541,7 @@ void mediumComplexExample(const OpenGPS::String fileName)
    * <DataList>
    * <Datum>4;2.5;4.8</Datum>
    * </DataList>
-   */  
+   */
 
    /* Free buffer */
    ogps_FreePointVector(&vector);
@@ -668,17 +588,8 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-#if (XSD_INT_VERSION >= 3020000L)
-   int tz_year;
-   unsigned short tz_month, tz_day, tz_hour, tz_min;
-   double tz_second;
-   short tz_offset_hour, tz_offset_min;
-   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
-   
-   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
-#else /* XSD_INT_VERSION */
-   Record2Type::Date_type date(TimeStamp());
-#endif /* XSD_INT_VERSION */
+//   Record2Type::Date_type date(TimeStamp());
+   Record2Type::Date_type date(TimeStamp(), 0);
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -686,20 +597,8 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
-#if (XSD_INT_VERSION >= 3020000L)
-   // "2007-04-30T13:58:02.6+02:00"
-   Record2Type::CalibrationDate_type calibrationDate(
-      2007,
-      4,
-      30,
-      13,
-      58,
-      2,
-      2,
-      0);
-#else /* XSD_INT_VERSION */
-   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
-#endif /* XSD_INT_VERSION */
+//   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"), 0);
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -743,12 +642,12 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
       /* automatic type conversion occurs for double */
       ogps_SetFloatY(vector, 2.5F*(cnt % 4));
 
-      // 
+      //
       /* Z has data type 16 bit int */
       //ogps_SetDoubleZ(vector, 4.8*cnt);
       ogps_SetInt16Z(vector, (OGPS_Int16)floor(4.8*cnt));
 
-      /* 3. Write into document */  
+      /* 3. Write into document */
       // Generate a missing point
       if (cnt != 8)
         ogps_SetCurrentPoint(iterator, vector);
@@ -772,7 +671,7 @@ void mediumComplexExampleWInvalid(const OpenGPS::String fileName)
    * <DataList>
    * <Datum>4;2.5;4.8</Datum>
    * </DataList>
-   */  
+   */
 
    /* Free buffer */
    ogps_FreePointVector(&vector);
@@ -838,7 +737,7 @@ void readonlyExample(const OpenGPS::String fileName)
 
          // Write point to console
          std::cout << ("X: ") << x << ("; Y: ") << y << ("; Z: ") << z <<std::endl;
-      }    
+      }
       else
       {
          std::cout << ("Invalid point") <<std::endl;
@@ -919,7 +818,7 @@ void readonlyExampleMatrix(const OpenGPS::String fileName)
 
          // Write point to console
          std::cout << ("U: ") << u << ("; V: ") << v << ("; W: ") << w << ("X: ") << x << ("; Y: ") << y << ("; Z: ") << z <<std::endl;
-      }    
+      }
       else
       {
          std::cout << ("U: ") << u << ("; V: ") << v << ("; W: ") << w << (": Invalid point") <<std::endl;
@@ -966,7 +865,11 @@ void readonlyExample2(const OpenGPS::String fileName)
    ISO5436_2Type * const document = ogps_GetDocument(handle);
 
    /* Z axis data type must be present (even if it is an incremental axis). */
-   _ASSERT(document->Record1().Axes().CZ().DataType().present());
+    #if linux
+        assert(document->Record1().Axes().CZ().DataType().present());
+    #else
+        _ASSERT(document->Record1().Axes().CZ().DataType().present());
+    #endif
 
    /* Print meta data */
    PrintMetaData(handle);
@@ -992,7 +895,7 @@ void readonlyExample2(const OpenGPS::String fileName)
       {
          break;
       }
-      
+
       /* Valid data point (not missing)?  */
       if(ogps_IsValidPoint(vector))
       {
@@ -1062,14 +965,12 @@ void readonlyExample2(const OpenGPS::String fileName)
            double zd = ogps_GetDoubleZ(vector);
            std::cout << zd;
                                     } break;
-         } 
+         }
 
          std::cout << std::endl;
       }
       else
       {
-         OGPS_Double xx, yy, zz;
-         ogps_GetXYZ(vector, &xx, &yy, &zz);
          std::cout << "X; Y; Z = MISSING" << std::endl;
       }
    }
@@ -1267,7 +1168,7 @@ void readonlyExample4(const OpenGPS::String fileName)
                << err << endl;
      return;
    }
-   
+
    if(!ogps_HasError())
    {
       /* Obtain handle to xml document. */
@@ -1280,7 +1181,11 @@ void readonlyExample4(const OpenGPS::String fileName)
         /* Is data list? / Is matrix? */
         if(document->Record3().ListDimension().present())
         {
-            _ASSERT(!document->Record3().MatrixDimension().present());
+            #if linux
+                assert(document->Record3().ListDimension().present());
+            #else
+                _ASSERT(document->Record3().ListDimension().present());
+            #endif
 
             OpenGPS::PointVector vector;
 
@@ -1360,17 +1265,8 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-#if (XSD_INT_VERSION >= 3020000L)
-   int tz_year;
-   unsigned short tz_month, tz_day, tz_hour, tz_min;
-   double tz_second;
-   short tz_offset_hour, tz_offset_min;
-   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
-   
-   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
-#else /* XSD_INT_VERSION */
-   Record2Type::Date_type date(TimeStamp());
-#endif /* XSD_INT_VERSION */
+//   Record2Type::Date_type date(TimeStamp());
+   Record2Type::Date_type date(TimeStamp(), 0);
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1378,20 +1274,8 @@ void performanceInt16(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Boole
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
-#if (XSD_INT_VERSION >= 3020000L)
-   // "2007-04-30T13:58:02.6+02:00"
-   Record2Type::CalibrationDate_type calibrationDate(
-      2007,
-      4,
-      30,
-      13,
-      58,
-      2,
-      2,
-      0);
-#else /* XSD_INT_VERSION */
-   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
-#endif /* XSD_INT_VERSION */
+//   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"), 0);
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -1488,17 +1372,8 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record1Type record1(revision, featureType, axis);
 
    /* Create RECORD2 */
-#if (XSD_INT_VERSION >= 3020000L)
-   int tz_year;
-   unsigned short tz_month, tz_day, tz_hour, tz_min;
-   double tz_second;
-   short tz_offset_hour, tz_offset_min;
-   TimeStamp(&tz_year, &tz_month, &tz_day, &tz_hour, &tz_min, &tz_second, &tz_offset_hour, &tz_offset_min);
-   
-   Record2Type::Date_type date(tz_year, tz_month, tz_day, tz_hour, tz_min, tz_second, tz_offset_hour, tz_offset_min);
-#else /* XSD_INT_VERSION */
-   Record2Type::Date_type date(TimeStamp());
-#endif /* XSD_INT_VERSION */
+//   Record2Type::Date_type date(TimeStamp());
+   Record2Type::Date_type date(TimeStamp(), 0);
 
    Record2Type::Instrument_type::Manufacturer_type manufacturer(_T("NanoFocus AG"));
    Record2Type::Instrument_type::Model_type model(_T("ISO5436_2_XML_Demo Software"));
@@ -1506,20 +1381,8 @@ void performanceDouble(OpenGPS::String fileName, OGPS_ULong dimension, OGPS_Bool
    Record2Type::Instrument_type::Version_type version(_OPENGPS_VERSIONSTRING);
    Record2Type::Instrument_type instrument(manufacturer, model, serial, version);
 
-#if (XSD_INT_VERSION >= 3020000L)
-   // "2007-04-30T13:58:02.6+02:00"
-   Record2Type::CalibrationDate_type calibrationDate(
-      2007,
-      4,
-      30,
-      13,
-      58,
-      2,
-      2,
-      0);
-#else /* XSD_INT_VERSION */
-   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
-#endif /* XSD_INT_VERSION */
+//   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"));
+   Record2Type::CalibrationDate_type calibrationDate(_T("2007-04-30T13:58:02.6+02:00"), 0);
 
    Record2Type::ProbingSystem_type::Type_type type(Record2Type::ProbingSystem_type::Type_type::Software);
    Record2Type::ProbingSystem_type::Identification_type id(_T("Random number generator"));
@@ -1662,7 +1525,11 @@ void convertFormat(OpenGPS::String srcFileName, OpenGPS::String dstFileName, con
    }
 }
 
-int _cdecl _tmain(int argc, _TCHAR* argv[])
+#if linux
+    int main(int argc, char* argv[])
+#else
+    int _cdecl _tmain(int argc, _TCHAR* argv[])
+#endif
 {
   // Number of points to generate for performance counter
   const unsigned int performanceCounter=1000;
@@ -1684,23 +1551,26 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
   OpenGPS::Info::GetVersion(&LibVersion);
   OpenGPS::Info::GetAbout(&LibAbout);
 
-  std::cout << "This programm uses the Library \"" << LibName 
+  std::cout << "This programm uses the Library \"" << LibName
             << "\" Version " << LibVersion << endl
             << LibAbout << endl;
   OpenGPS::Info::PrintVersion();
   OpenGPS::Info::PrintCopyright();
   OpenGPS::Info::PrintLicense();
 
+#if linux
+  OpenGPS::String wpath;
+  wpath.FromChar(argv[1]);
+  std::wstring path = wpath;
+#else
   std::wstring path = argv[1];
+#endif
   std::wstring tmp;
 
-  tmp = path; tmp += _T("ISO5436-sample1b.x3p");
+  tmp = path; tmp += _T("ISO5436-sample1.x3p");
   readonlyExample(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample4_bin.x3p");
-  readonlyExample2(tmp);
-
-  tmp = path; tmp += _T("ISO5436-sample1.x3p");
   readonlyExample2(tmp);
 
   tmp = path; tmp += _T("ISO5436-sample3.x3p");
@@ -1723,16 +1593,16 @@ int _cdecl _tmain(int argc, _TCHAR* argv[])
 
   std::cout << std::endl << "Starting performance tests..." << std::endl;
 
-  tmp = path; tmp += _T("performance_int16_bin.x3p"); 
+  tmp = path; tmp += _T("performance_int16_bin.x3p");
   performanceInt16(tmp, performanceCounter, TRUE);
 
-  tmp = path; tmp += _T("performance_int16.x3p"); 
+  tmp = path; tmp += _T("performance_int16.x3p");
   performanceInt16(tmp, performanceCounter, FALSE);
 
-  tmp = path; tmp += _T("performance_double_bin.x3p"); 
+  tmp = path; tmp += _T("performance_double_bin.x3p");
   performanceDouble(tmp, performanceCounter, TRUE);
 
-  tmp = path; tmp += _T("performance_double.x3p"); 
+  tmp = path; tmp += _T("performance_double.x3p");
   performanceDouble(tmp, performanceCounter, FALSE);
 
   return 0;
