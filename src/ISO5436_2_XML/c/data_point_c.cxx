@@ -36,7 +36,7 @@
 #include "../cxx/data_point_impl.hxx"
 #include "../cxx/stdafx.hxx"
 
-OGPS_DataPointType ogps_GetPointType(const OGPS_DataPointPtr dataPoint) throw()
+OGPS_DataPointType ogps_GetPointType(const OGPS_DataPointPtr dataPoint)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -45,7 +45,7 @@ OGPS_DataPointType ogps_GetPointType(const OGPS_DataPointPtr dataPoint) throw()
    return retval;
 }
 
-short ogps_GetInt16(const OGPS_DataPointPtr dataPoint) throw()
+short ogps_GetInt16(const OGPS_DataPointPtr dataPoint)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -54,7 +54,7 @@ short ogps_GetInt16(const OGPS_DataPointPtr dataPoint) throw()
    return v;
 }
 
-int ogps_GetInt32(const OGPS_DataPointPtr dataPoint) throw()
+int ogps_GetInt32(const OGPS_DataPointPtr dataPoint)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -63,7 +63,7 @@ int ogps_GetInt32(const OGPS_DataPointPtr dataPoint) throw()
    return v;
 }
 
-float ogps_GetFloat(const OGPS_DataPointPtr dataPoint) throw()
+float ogps_GetFloat(const OGPS_DataPointPtr dataPoint)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -72,7 +72,7 @@ float ogps_GetFloat(const OGPS_DataPointPtr dataPoint) throw()
    return v;
 }
 
-double ogps_GetDouble(const OGPS_DataPointPtr dataPoint) throw()
+double ogps_GetDouble(const OGPS_DataPointPtr dataPoint)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -82,8 +82,8 @@ double ogps_GetDouble(const OGPS_DataPointPtr dataPoint) throw()
 }
 
 void ogps_SetInt16(
-	OGPS_DataPointPtr const dataPoint,
-	const short value) throw()
+    OGPS_DataPointPtr const dataPoint,
+    const short value)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -91,8 +91,8 @@ void ogps_SetInt16(
 }
 
 void ogps_SetInt32(
-	OGPS_DataPointPtr const dataPoint,
-	const int value) throw()
+    OGPS_DataPointPtr const dataPoint,
+    const int value)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -100,8 +100,8 @@ void ogps_SetInt32(
 }
 
 void ogps_SetFloat(
-	OGPS_DataPointPtr const dataPoint,
-	const float value) throw()
+    OGPS_DataPointPtr const dataPoint,
+    const float value)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 
@@ -109,8 +109,8 @@ void ogps_SetFloat(
 }
 
 void ogps_SetDouble(
-	OGPS_DataPointPtr const dataPoint,
-	const double value) throw()
+    OGPS_DataPointPtr const dataPoint,
+    const double value)
 {
    _ASSERT(dataPoint && dataPoint->instance);
 

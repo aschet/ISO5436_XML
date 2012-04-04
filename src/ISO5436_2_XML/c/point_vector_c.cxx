@@ -38,18 +38,18 @@
 
 #include "../cxx/stdafx.hxx"
 
-OGPS_PointVectorPtr ogps_CreatePointVector(void) throw()
+OGPS_PointVectorPtr ogps_CreatePointVector(void)
 {
    OGPS_PointVectorPtr v = new OGPS_PointVector;
 
    v->x = NULL;
    v->y = NULL;
    v->z = NULL;
-   
+
    return v;
 }
 
-void ogps_FreePointVector(OGPS_PointVectorPtr * vector) throw()
+void ogps_FreePointVector(OGPS_PointVectorPtr * vector)
 {
    if(*vector)
    {
@@ -63,8 +63,8 @@ void ogps_FreePointVector(OGPS_PointVectorPtr * vector) throw()
 }
 
 void ogps_SetInt16X(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int16 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -72,8 +72,8 @@ void ogps_SetInt16X(
 }
 
 void ogps_SetInt32X(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int32 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -81,8 +81,8 @@ void ogps_SetInt32X(
 }
 
 void ogps_SetFloatX(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Float value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -90,8 +90,8 @@ void ogps_SetFloatX(
 }
 
 void ogps_SetDoubleX(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Double value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -100,8 +100,8 @@ void ogps_SetDoubleX(
 
 
 void ogps_SetInt16Y(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int16 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -109,8 +109,8 @@ void ogps_SetInt16Y(
 }
 
 void ogps_SetInt32Y(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int32 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -118,8 +118,8 @@ void ogps_SetInt32Y(
 }
 
 void ogps_SetFloatY(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Float value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -127,8 +127,8 @@ void ogps_SetFloatY(
 }
 
 void ogps_SetDoubleY(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Double value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -137,8 +137,8 @@ void ogps_SetDoubleY(
 
 
 void ogps_SetInt16Z(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int16 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int16 value)
 {
    _ASSERT(vector);
 
@@ -146,8 +146,8 @@ void ogps_SetInt16Z(
 }
 
 void ogps_SetInt32Z(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Int32 value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Int32 value)
 {
    _ASSERT(vector);
 
@@ -155,8 +155,8 @@ void ogps_SetInt32Z(
 }
 
 void ogps_SetFloatZ(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Float value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Float value)
 {
    _ASSERT(vector);
 
@@ -164,8 +164,8 @@ void ogps_SetFloatZ(
 }
 
 void ogps_SetDoubleZ(
-	OGPS_PointVectorPtr const vector,
-	const OGPS_Double value) throw()
+    OGPS_PointVectorPtr const vector,
+    const OGPS_Double value)
 {
    _ASSERT(vector);
 
@@ -177,7 +177,7 @@ void ogps_GetXYZ(
         const OGPS_PointVectorPtr vector,
         OGPS_Double* const x,
         OGPS_Double* const y,
-        OGPS_Double* const z) throw()
+        OGPS_Double* const z)
 {
    _ASSERT(vector);
 
@@ -188,14 +188,14 @@ void ogps_SetXYZ(
         OGPS_PointVectorPtr vector,
         const OGPS_Double x,
         const OGPS_Double  y,
-        const OGPS_Double z) throw()
+        const OGPS_Double z)
 {
    _ASSERT(vector);
 
    _OPENGPS_GENERIC_EXCEPTION_HANDLER(vector->instance.SetXYZ(x, y, z));
 }
 
-OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector) throw()
+OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector)
 {
    _ASSERT(vector);
 
@@ -213,7 +213,7 @@ OGPS_DataPointPtr const ogps_GetX(OGPS_PointVectorPtr const vector) throw()
    return vector->x;
 }
 
-OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector) throw()
+OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector)
 {
    _ASSERT(vector);
 
@@ -231,7 +231,7 @@ OGPS_DataPointPtr const ogps_GetY(OGPS_PointVectorPtr const vector) throw()
    return vector->y;
 }
 
-OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector) throw()
+OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector)
 {
    _ASSERT(vector);
 
@@ -249,8 +249,8 @@ OGPS_DataPointPtr const ogps_GetZ(OGPS_PointVectorPtr const vector) throw()
    return vector->z;
 }
 
-OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector) throw()
-  
+OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector)
+
 {
    _ASSERT(vector);
 
@@ -259,7 +259,7 @@ OGPS_Boolean ogps_IsValidPoint(const OGPS_PointVectorPtr vector) throw()
    return retval;
 }
 
-OGPS_DataPointType ogps_GetPointTypeX(const OGPS_PointVectorPtr vector) throw()
+OGPS_DataPointType ogps_GetPointTypeX(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -268,7 +268,7 @@ OGPS_DataPointType ogps_GetPointTypeX(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -277,7 +277,7 @@ OGPS_Int16 ogps_GetInt16X(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -286,7 +286,7 @@ OGPS_Int32 ogps_GetInt32X(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector) throw()
+OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -295,7 +295,7 @@ OGPS_Float ogps_GetFloatX(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector) throw()
+OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -304,7 +304,7 @@ OGPS_Double ogps_GetDoubleX(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_DataPointType ogps_GetPointTypeY(const OGPS_PointVectorPtr vector) throw()
+OGPS_DataPointType ogps_GetPointTypeY(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -313,7 +313,7 @@ OGPS_DataPointType ogps_GetPointTypeY(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -322,7 +322,7 @@ OGPS_Int16 ogps_GetInt16Y(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -331,7 +331,7 @@ OGPS_Int32 ogps_GetInt32Y(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector) throw()
+OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -340,7 +340,7 @@ OGPS_Float ogps_GetFloatY(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector) throw()
+OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -349,7 +349,7 @@ OGPS_Double ogps_GetDoubleY(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_DataPointType ogps_GetPointTypeZ(const OGPS_PointVectorPtr vector) throw()
+OGPS_DataPointType ogps_GetPointTypeZ(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -358,7 +358,7 @@ OGPS_DataPointType ogps_GetPointTypeZ(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -367,7 +367,7 @@ OGPS_Int16 ogps_GetInt16Z(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector) throw()
+OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -376,7 +376,7 @@ OGPS_Int32 ogps_GetInt32Z(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector) throw()
+OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
@@ -385,7 +385,7 @@ OGPS_Float ogps_GetFloatZ(const OGPS_PointVectorPtr vector) throw()
    return value;
 }
 
-OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector) throw()
+OGPS_Double ogps_GetDoubleZ(const OGPS_PointVectorPtr vector)
 {
    _ASSERT(vector);
 
