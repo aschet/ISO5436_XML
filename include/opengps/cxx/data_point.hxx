@@ -73,7 +73,7 @@ namespace OpenGPS
       *
       * @returns Returns ::OGPS_MissingPointType if this instance does not store any value at all.
       */
-      virtual OGPS_DataPointType GetPointType() const throw(...) = 0;
+      virtual OGPS_DataPointType GetPointType() const = 0;
 
       /*!
       * Gets the stored value.
@@ -86,7 +86,7 @@ namespace OpenGPS
       *
       * @param value Destination for the currently stored value.
       */
-      virtual void Get(OGPS_Int16* const value) const throw(...) = 0;
+      virtual void Get(OGPS_Int16* const value) const = 0;
 
       /*!
       * Gets the stored value.
@@ -99,7 +99,7 @@ namespace OpenGPS
       *
       * @param value Destination for the currently stored value.
       */
-      virtual void Get(OGPS_Int32* const value) const throw(...) = 0;
+      virtual void Get(OGPS_Int32* const value) const = 0;
 
       /*!
       * Gets the stored value.
@@ -112,7 +112,7 @@ namespace OpenGPS
       *
       * @param value Destination for the currently stored value.
       */
-      virtual void Get(OGPS_Float* const value) const throw(...) = 0;
+      virtual void Get(OGPS_Float* const value) const = 0;
 
       /*!
       * Gets the stored value.
@@ -125,7 +125,7 @@ namespace OpenGPS
       *
       * @param value Destination for the currently stored value.
       */
-      virtual void Get(OGPS_Double* const value) const throw(...) = 0;
+      virtual void Get(OGPS_Double* const value) const = 0;
 
       /*!
       * Gets the stored value.
@@ -135,7 +135,7 @@ namespace OpenGPS
       *
       * @returns Returns the stored value or 0.0 if this data point is empty (DataPoint::GetPointType returns ::OGPS_MissingPointType in this case).
       */
-      virtual OGPS_Double Get() const throw(...) = 0;
+      virtual OGPS_Double Get() const = 0;
 
       /*!
       * Asks whether there is a valid point value stored within this instance currently.
@@ -149,7 +149,7 @@ namespace OpenGPS
       *
       * @returns Returns TRUE if a value is stored, FALSE otherwise.
       */
-      virtual OGPS_Boolean IsValid() const throw(...) = 0;
+      virtual OGPS_Boolean IsValid() const = 0;
 
       /*!
       * Stores a new value.
@@ -161,7 +161,7 @@ namespace OpenGPS
       *
       * @param value The new value to be stored.
       */
-      virtual void Set(const OGPS_Int16 value) throw(...) = 0;
+      virtual void Set(const OGPS_Int16 value) = 0;
 
       /*!
       * Stores a new value.
@@ -173,7 +173,7 @@ namespace OpenGPS
       *
       * @param value The new value to be stored.
       */
-      virtual void Set(const OGPS_Int32 value) throw(...) = 0;
+      virtual void Set(const OGPS_Int32 value) = 0;
 
       /*!
       * Stores a new value.
@@ -185,7 +185,7 @@ namespace OpenGPS
       *
       * @param value The new value to be stored.
       */
-      virtual void Set(const OGPS_Float value) throw(...) = 0;
+      virtual void Set(const OGPS_Float value) = 0;
 
       /*!
       * Stores a new value.
@@ -197,7 +197,7 @@ namespace OpenGPS
       *
       * @param value The new value to be stored.
       */
-      virtual void Set(const OGPS_Double value) throw(...) = 0;
+      virtual void Set(const OGPS_Double value) = 0;
 
       /*!
       * Stores a new value. Copies its new entry from another ::DataPoint instance.
@@ -207,7 +207,7 @@ namespace OpenGPS
       *
       * @param src Object to copy from.
       */
-      virtual void Set(const DataPoint& src) throw(...) = 0;
+      virtual void Set(const DataPoint& src) = 0;
 
       /*!
       * Resets this instance to its initial state.
@@ -215,7 +215,7 @@ namespace OpenGPS
       * A specific implementation may throw an OpenGPS::Exception if this operation
       * is not permitted due to the current state of the object instance.
       */
-      virtual void Reset() throw(...) = 0;
+      virtual void Reset() = 0;
 
    private:
       /*! The copy-ctor is not implemented. This prevents its usage. */

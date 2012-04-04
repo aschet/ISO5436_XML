@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/*! @addtogroup Cpp 
+/*! @addtogroup Cpp
    @{ */
 
 /*! @file
@@ -85,7 +85,7 @@ namespace OpenGPS
 
    /*! std::auto_ptr for usage with OpenGPS::VectorBufferBuilder type. */
    typedef std::auto_ptr<VectorBufferBuilder> VectorBufferBuilderAutoPtr;
-   
+
    /*! std::auto_ptr for usage with OpenGPS::PointVectorParserBuilder type. */
    typedef std::auto_ptr<PointVectorParserBuilder> PointVectorParserBuilderAutoPtr;
 }
@@ -152,7 +152,7 @@ namespace OpenGPS
       *
       * @param readOnly If set to TRUE subsequend operations on the current object assume that you will access any obtained data as read-only and won't make any changes. This may speed up some operations. If unsure set this parameter to FALSE.
       */
-      virtual void Open(const OGPS_Boolean readOnly = FALSE) throw(...);
+      virtual void Open(const OGPS_Boolean readOnly = FALSE);
 
       /*!
        * Creates a new ISO5436-2 XML X3P file.
@@ -170,7 +170,7 @@ namespace OpenGPS
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
          const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-         const OGPS_Boolean useBinaryData = TRUE) throw(...);
+         const OGPS_Boolean useBinaryData = TRUE);
 
       /*!
        * Creates a new ISO5436-2 XML X3P file.
@@ -188,7 +188,7 @@ namespace OpenGPS
          const Schemas::ISO5436_2::Record1Type& record1,
          const Schemas::ISO5436_2::Record2Type* record2,
          const OGPS_ULong listDimension,
-         const OGPS_Boolean useBinaryData = TRUE) throw(...);
+         const OGPS_Boolean useBinaryData = TRUE);
 
       /*! Destructs this object. */
       virtual ~ISO5436_2();
@@ -200,7 +200,7 @@ namespace OpenGPS
        *
        * @returns Returns an iterator handle on success.
        */
-      virtual PointIteratorAutoPtr CreateNextPointIterator() throw(...);
+      virtual PointIteratorAutoPtr CreateNextPointIterator();
 
       /*!
        * Creates an iterator to access point data contained in an ISO5436-2 X3P file.
@@ -209,7 +209,7 @@ namespace OpenGPS
        *
        * @returns Returns an iterator handle on success.
        */
-      virtual PointIteratorAutoPtr CreatePrevPointIterator() throw(...);
+      virtual PointIteratorAutoPtr CreatePrevPointIterator();
 
       /*!
       * Sets the value of a three-dimensional data point vector at a given surface position.
@@ -229,7 +229,7 @@ namespace OpenGPS
       * obtained through ISO5436_2::GetDocument.
       *
       * @see ISO5436_2::SetListPoint
-      *      
+      *
       * @param u The u-direction of the surface position.
       * @param v The v-direction of the surface position.
       * @param w The w-direction of the surface position.
@@ -241,7 +241,7 @@ namespace OpenGPS
          const OGPS_ULong u,
          const OGPS_ULong v,
          const OGPS_ULong w,
-         const PointVector* const vector) throw(...);
+         const PointVector* const vector);
 
       /*!
        * Gets the raw value of a data point vector at a given surface position.
@@ -267,7 +267,7 @@ namespace OpenGPS
          const OGPS_ULong u,
          const OGPS_ULong v,
          const OGPS_ULong w,
-         PointVector& vector) throw(...);
+         PointVector& vector);
 
       /*!
        * Sets the value of a three-dimensional data point vector at a given index position.
@@ -293,7 +293,7 @@ namespace OpenGPS
        */
       virtual void SetListPoint(
          const OGPS_ULong index,
-         const PointVector& vector) throw(...);
+         const PointVector& vector);
 
       /*!
        * Gets the raw value of a data point vector at a given index position.
@@ -316,7 +316,7 @@ namespace OpenGPS
        */
       virtual void GetListPoint(
          const OGPS_ULong index,
-         PointVector& vector) throw(...);
+         PointVector& vector);
 
       /*!
        * Gets the fully transformed value of a data point vector at a given surface position.
@@ -350,7 +350,7 @@ namespace OpenGPS
          const OGPS_ULong w,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z) throw(...);
+         OGPS_Double* const z);
 
       /*!
        * Asks if there is point vector data stored at the given matrix position.
@@ -371,7 +371,7 @@ namespace OpenGPS
       virtual OGPS_Boolean IsMatrixCoordValid(
          OGPS_ULong u,
          OGPS_ULong v,
-         OGPS_ULong w) throw(...);
+         OGPS_ULong w);
 
       /*!
        * Gets the fully transformed value of a data point vector at a given index position.
@@ -401,7 +401,7 @@ namespace OpenGPS
          const OGPS_ULong index,
          OGPS_Double* const x,
          OGPS_Double* const y,
-         OGPS_Double* const z) throw(...);
+         OGPS_Double* const z);
 
       /*!
        * Gets access to the ISO5436_2 XML document.
@@ -415,7 +415,7 @@ namespace OpenGPS
        * matrix structure preserving topology information, or FALSE
        * when point vectors are stored sequentially within a simple list.
        */
-      virtual OGPS_Boolean IsMatrix() const throw(...);
+      virtual OGPS_Boolean IsMatrix() const;
 
       /*!
       * Gets information on the matrix dimensions of the current data structure
@@ -429,7 +429,7 @@ namespace OpenGPS
       virtual void GetMatrixDimensions(
          OGPS_ULong * const size_u,
          OGPS_ULong * const size_v,
-         OGPS_ULong * const size_w) const throw(...);
+         OGPS_ULong * const size_w) const;
 
       /*!
       * Gets information on the list dimensions of the current data structure.
@@ -437,7 +437,7 @@ namespace OpenGPS
       * @param handle Operate on this handle object.
       * @returns The dimension of the current list structure.
       */
-      virtual OGPS_ULong GetListDimension() const throw(...);
+      virtual OGPS_ULong GetListDimension() const;
 
       /*!
        * Writes any changes back to the X3P file.
@@ -450,7 +450,7 @@ namespace OpenGPS
        *
        * @param compressionLevel Optionally specifies the compression level used when writing the X3P file which is nothing else than a simple zip file container. The default value for this parameter is (-1) which enables standard compression level as a good trade-off between processing time and compression ratio. Values between 0 and 9 are possible. A value of 0 means "no compression" and a value of 9 enables the highest level compression rate at the cost of highest computation time.
        */
-      virtual void Write(const int compressionLevel = -1) throw(...);
+      virtual void Write(const int compressionLevel = -1);
 
       /*!
        * Closes an open file handle and frees its resources.

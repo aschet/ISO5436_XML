@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/*! @addtogroup Cpp 
+/*! @addtogroup Cpp
    @{ */
 
 /*! @file
@@ -97,7 +97,7 @@ namespace OpenGPS
        *
        * @param value OpenGPS::PointVectorBase object to copy from.
        */
-      virtual void Set(const PointVectorBase& value) throw(...) = 0;
+      virtual void Set(const PointVectorBase& value) = 0;
 
       /*!
        * Copies values to another OpenGPS::PointVectorBase instance.
@@ -107,7 +107,7 @@ namespace OpenGPS
        *
        * @param value Retrieves values from the current instance as a copy.
        */
-      virtual void Get(PointVectorBase& value) const throw(...) = 0;
+      virtual void Get(PointVectorBase& value) const = 0;
 
    protected:
       /*! Creates a new instance. */

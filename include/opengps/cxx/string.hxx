@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 /*! @defgroup Cpp C++ Interface for X3P-library
-   @addtogroup Cpp 
+   @addtogroup Cpp
    @{ */
 
 
@@ -44,11 +44,14 @@
 # include <opengps/cxx/opengps.hxx>
 #endif
 
+#if linux
+   #include <iostream>
+#endif
 #include <string>
 
 #if defined(SHARED_OPENGPS_LIBRARY) || defined(BUILD_ISO5436_2_XML_DLL)
 /* Wiora: Removed this part and changed to DLL-Runtime libs. This produces no errors.
-          The method used here created a linker error in release mode, I could not resolve. 
+          The method used here created a linker error in release mode, I could not resolve.
 // Export std::wstring for use with Visual Studio VC8 compiler
 #  if _MSC_VER >= 1400
       class _OPENGPS_EXPORT std::_String_base;
@@ -92,14 +95,14 @@ namespace OpenGPS
    public:
       /*! Creates a new instance. */
       String();
-      
+
       /*!
        * Creates a new instance.
        *
        * @param s Initialize the newly created object with the given character sequence.
        */
       String(const BaseType& s);
-      
+
       /*!
        * Creates a new instance.
        *
@@ -115,7 +118,7 @@ namespace OpenGPS
        * @returns An ANSI char pointer or NULL.
        */
       const char* ToChar();
-      
+
       /*!
        * Stores an ANSI char squence.
        * @param s An ANSI char squence to store as unicode internally.
@@ -145,7 +148,7 @@ namespace OpenGPS
        * @returns Returns TRUE on success, FALSE otherwise.
        */
       OGPS_Boolean ConvertToMd5(OpenGPS::UnsignedByte md5[16]) const;
-      
+
       /*!
        * Copies the current character sequence to an external buffer.
        *
@@ -164,7 +167,7 @@ namespace OpenGPS
        * @param new_str The string inserted for a match.
        * @returns This instance.
        */
-      String& String::ReplaceAll(const String& old_str, const String& new_str);
+      String& ReplaceAll(const String& old_str, const String& new_str);
 
 #ifdef _UNICODE
    private:
@@ -184,8 +187,8 @@ namespace OpenGPS
  */
 inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const std::basic_string<wchar_t>& text)
 {
-   OpenGPS::String buffer(text);
-   return os << buffer.ToChar();
+    OpenGPS::String buffer(text);
+    return os << buffer.ToChar();
 }
 
 /*!
@@ -195,8 +198,8 @@ inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const 
  */
 inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const OpenGPS::String& text)
 {
-   OpenGPS::String buffer(text);
-   return os << buffer.ToChar();
+    OpenGPS::String buffer(text);
+    return os << buffer.ToChar();
 }
 
 /*!
@@ -206,7 +209,7 @@ inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const 
  */
 inline std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, OpenGPS::String& text)
 {
-   return os << text.ToChar();
+    return os << text.ToChar();
 }
 
 /*!

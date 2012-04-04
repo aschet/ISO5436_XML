@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/*! @addtogroup Cpp 
+/*! @addtogroup Cpp
    @{ */
 
 /*! @file
@@ -55,7 +55,7 @@ namespace OpenGPS
     */
    namespace Schemas
    {
-   };
+   }
 
    /*! Data type of the size of one (possibly signed) byte. */
    typedef char Byte;

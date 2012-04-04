@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/*! @addtogroup Cpp 
+/*! @addtogroup Cpp
    @{ */
 
 /*! @defgroup C Ansi-C Interface for X3P library
@@ -94,13 +94,13 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
    const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
    const OpenGPS::Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-   const OGPS_Boolean useBinaryData = TRUE) throw();
+   const OGPS_Boolean useBinaryData = TRUE);
 
 /*!
  * Creates a new ISO5436-2 XML X3P file.
  *
  * The Record3 object defined in the ISO5436_2 XML specification will be created automatically.
- * 
+ *
  * @remarks You must release the returned handle object with ::gps_CloseISO5436_2 when done with it.
  *
  * @param file Full path to the ISO5436-2 XML X3P to be created.
@@ -117,7 +117,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
    const OpenGPS::Schemas::ISO5436_2::Record1Type& record1,
    const OpenGPS::Schemas::ISO5436_2::Record2Type* record2,
    const OGPS_ULong listDimension,
-   const OGPS_Boolean useBinaryData = TRUE) throw();
+   const OGPS_Boolean useBinaryData = TRUE);
 
 /*!
  * Provides access to the ISO5436_2 XML document.
@@ -125,7 +125,7 @@ _OPENGPS_EXPORT OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
  * @param handle Handle object to operate on.
  * @returns Returns ISO5436_2 XML document handle or NULL on failure.
   */
-_OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ogps_GetDocument(const OGPS_ISO5436_2Handle handle) throw();
+_OPENGPS_EXPORT OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ogps_GetDocument(const OGPS_ISO5436_2Handle handle);
 
 #endif /* _OPENGPS_CXX_ISO5436_2_HANDLE_HXX */
 /*! @} */

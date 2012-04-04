@@ -28,7 +28,7 @@
  *   http://www.opengps.eu/                                                *
  ***************************************************************************/
 
-/*! @addtogroup Cpp 
+/*! @addtogroup Cpp
    @{ */
 
 /*! @file
@@ -80,8 +80,8 @@ namespace OpenGPS
        *
        * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
        */
-      virtual OGPS_Boolean HasNext() const throw(...) = 0;
-      
+      virtual OGPS_Boolean HasNext() const = 0;
+
       /*!
        * Asks if there is another point available to iterate.
        *
@@ -91,7 +91,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE if there is at least one more point available to iterate, FALSE otherwise.
        */
-      virtual OGPS_Boolean HasPrev() const throw(...) = 0;
+      virtual OGPS_Boolean HasPrev() const = 0;
 
       /*!
        * Moves the iterator forward.
@@ -103,8 +103,8 @@ namespace OpenGPS
        *
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean MoveNext() throw(...) = 0;
-      
+      virtual OGPS_Boolean MoveNext() = 0;
+
       /*!
        * Moves the iterator backward.
        *
@@ -115,7 +115,7 @@ namespace OpenGPS
        *
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual OGPS_Boolean MovePrev() throw(...) = 0;
+      virtual OGPS_Boolean MovePrev() = 0;
 
       /*!
        * Resets the iterator to the beginning and turns this iterator instance into a forward iterator.
@@ -138,7 +138,7 @@ namespace OpenGPS
        *
        * @param vector Gets a copy of the vector at the current iterator position.
        */
-      virtual void GetCurrent(PointVector& vector) throw(...) = 0;
+      virtual void GetCurrent(PointVector& vector) = 0;
 
       /*!
        * Gets the value of the current coordinate vector.
@@ -151,7 +151,7 @@ namespace OpenGPS
        *
        * @param vector Gets a copy of the coordinate at the current iterator position.
        */
-      virtual void GetCurrentCoord(PointVector& vector) throw(...) = 0;
+      virtual void GetCurrentCoord(PointVector& vector) = 0;
 
       /*!
        * Sets the value of the current point vector.
@@ -163,7 +163,7 @@ namespace OpenGPS
        * @param vector New value of the current point vector. May be NULL to indicate an invalid point.
        * @returns Returns TRUE on success, FALSE otherwise.
        */
-      virtual void SetCurrent(const PointVector* const vector) throw(...) = 0;
+      virtual void SetCurrent(const PointVector* const vector) = 0;
 
       /*!
        * Gets the current position of the iterator in topology coordinates.
@@ -178,7 +178,7 @@ namespace OpenGPS
       virtual OGPS_Boolean GetPosition(
          OGPS_ULong * const u,
          OGPS_ULong * const v,
-         OGPS_ULong * const w) const = 0;    
+         OGPS_ULong * const w) const = 0;
 
       /*!
        * Gets the current position of the iterator.
