@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright by                                                          *
  *   Georg Wiora (NanoFocus AG) 2007                                       *
- *   Jörg Seewig (Uni Hannover),                                           *
+ *   Joerg Seewig (Uni Hannover),                                           *
  *   Andreas Walther (NanoFocus AG),                                       *
  *   Mark A. Weber (NanoFocus AG) 2007                                     *
  *   Johannes Herwig (Uni Duisburg-Essen) 2007                             *
@@ -33,4 +33,3 @@
  ***************************************************************************/
 
 #include <opengps/opengps.h>
-#include <opengps/cxx/iso5436_2_xsd_utils.hxx>
