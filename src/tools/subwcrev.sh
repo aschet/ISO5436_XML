@@ -72,11 +72,21 @@ grep -i "URL:" |
 cut '-d ' -f "2-" |
 sed -e 's/\\//\\\\\\//g'`
 
-echo "Creating files \"${SCRIPT_OUTPUT_FILE_1}\""
+if [ -f "$SCRIPT_INPUT_FILE_0" ]
+then
+ echo -n ""
+else
+  echo "Error: Source file \"$SCRIPT_INPUT_FILE_0\" does not exist!"
+  exit 1
+fi
+
+
+echo "Creating file \"${SCRIPT_OUTPUT_FILE_1}\""
 echo "Version: $ver"
 echo "Date: $lastchangedate"
 echo "Clean Revision Flag: $mixed (==0 for mixed revisions)"
 echo "Clean Build Flag: $mod (==0 for local modifications)"
+
 
 cat "$SCRIPT_INPUT_FILE_0" |
 sed -e "s/\\\$WCRANGE\\\$/${ver}/g" |
