@@ -43,7 +43,7 @@
 /// Major program version. This is increased manually in the release process
 #define _OPENGPS_VERSION 0
 /// Minor program revision. This is increased manually in the release process
-#define _OPENGPS_MINVERSION 2
+#define _OPENGPS_MINVERSION 3
 /// Build number is automatically incremented after each succesfull release build.
 #define _OPENGPS_BUILD     41
 /// Version or Version range, automatically extracted from SVN repository
