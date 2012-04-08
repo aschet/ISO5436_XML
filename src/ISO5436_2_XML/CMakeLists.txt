@@ -35,9 +35,46 @@ INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/../../include"
 	  "${PROJECT_SOURCE_DIR}/../zlib/contrib/minizip"
 )
 
+# Generate the version include file from the .in file
+if (WIN)
+# subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
+                    PRE_BUILD
+                    COMMAND subwcrev
+                    ARGS ${PROJECT_SOURCE_DIR}
+                         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
+                    MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    COMMENT generating cxx/version.h )
+endif (WIN)
+if (UNIX)
+# on max and linux we need the included replacement script
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
+                    PRE_BUILD
+                    COMMAND ${PROJECT_SOURCE_DIR}/../tools/subwcrev.sh
+                    ARGS ${PROJECT_SOURCE_DIR}
+                         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
+                    MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    COMMENT generating cxx/version.h )
+endif (UNIX)
+
+# Now publish the version file to public include dir
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/version.h 
+                    PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy
+                    ARGS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
+                         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/
+                    MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
+                    COMMENT publishing cxx/version.h )
+
+
 set(libSrcs 
-	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.hxx 
+#	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2.h
+#        ${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_handle_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/messages_c.hxx 
@@ -77,6 +114,7 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/point_vector_writer_context.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/stdafx.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/valid_buffer.hxx 
+        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/vector_buffer.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/vector_buffer_builder.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/win32_environment.hxx 
@@ -97,14 +135,13 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/info.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_handle.hxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.hxx 
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/opengps.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector_base.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/string.hxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/version.h 
         ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.h
-	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.cxx 
+#	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_c.cxx 
