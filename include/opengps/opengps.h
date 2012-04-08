@@ -41,9 +41,9 @@
 #define _OPENGPS_H
 
 #if _UNICODE
-#if linux
+#  if linux | __APPLE__
     #include <wchar.h>
-#endif
+#  endif
 #endif
 
 #include "cxx/version.h"
@@ -133,13 +133,13 @@ typedef int OGPS_Boolean;
 
 #ifdef _UNICODE
 /*! The current type of characters. This is either unicode (wchar_t) or char. */
-#if linux
+#if linux | __APPLE__
     #define _T(xx) L ## xx
 #endif
 typedef wchar_t OGPS_Character;
 #else
 /*! The current type of characters. This is either unicode (wchar_t) or char. */
-#if linux
+#if linux | __APPLE__
     #define _T(xx) xx
 #endif
 typedef char OGPS_Character;
