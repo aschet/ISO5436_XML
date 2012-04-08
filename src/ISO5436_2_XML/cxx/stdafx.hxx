@@ -35,7 +35,8 @@
 #ifndef _OPENGPS_STDAFX_HXX
 #define _OPENGPS_STDAFX_HXX
 
-#ifndef linux
+#ifndef linux | __APPLE__
+#ifndef
     #include <tchar.h>
 #endif
 
