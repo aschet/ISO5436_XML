@@ -45,7 +45,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
-                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}
                     COMMENT generating cxx/version.h )
 endif (WIN)
 if (UNIX)
@@ -57,7 +57,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
-                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
+                    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}
                     COMMENT generating cxx/version.h )
 endif (UNIX)
 
