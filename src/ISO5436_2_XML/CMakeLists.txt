@@ -2,7 +2,8 @@ project(ISO5436_2)
 
 cmake_minimum_required(VERSION 2.8)
 
-OPTION(BUILD_SHARED "Build shared library." ON)
+OPTION(BUILD_SHARED "Build shared library." OFF)
+OPTION(BUILD_TARGET64 "Build for 64 bit target if set to ON or 32 bit if set to OFF." OFF)
 
 IF(BUILD_SHARED)
   SET(LIBRARY_TYPE SHARED)
@@ -17,6 +18,12 @@ find_package(XSD REQUIRED)
 XSD_SCHEMA(OUTPATH ${PROJECT_SOURCE_DIR}/iso5436_2.xsd  --prologue-file ${PROJECT_SOURCE_DIR}/xsd_Licence_Header.c --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix \"_xsd.cxx\" --hxx-suffix \"_xsd.hxx\" --output-dir ${PROJECT_SOURCE_DIR})
 
 find_package(Xerces REQUIRED)
+
+# Subversion is needed to generate version.h from version.in
+FIND_PACKAGE(Subversion REQUIRED)
+# Find native ZLIB package
+# FIND_PACKAGE(ZLIB REQUIRED)
+
 
 add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY)
 
@@ -49,7 +56,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                     COMMENT generating cxx/version.h )
 endif (WIN)
 if (UNIX)
-# on max and linux we need the included replacement script
+# on mac and linux we need the included replacement script
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
                     PRE_BUILD
                     COMMAND ${PROJECT_SOURCE_DIR}/../tools/subwcrev.sh
@@ -73,8 +80,6 @@ ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/
 
 
 set(libSrcs 
-#	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2.h
-#        ${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_handle_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/messages_c.hxx 
@@ -135,14 +140,12 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/info.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_handle.hxx 
-#        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/opengps.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector_base.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/string.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.h
-#	${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2_xsd.cxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
+	${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/messages_c.cxx 
