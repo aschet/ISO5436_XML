@@ -37,7 +37,7 @@ ver=`svnversion -n "${based}"`
 mod=$(( 1 - `echo $ver | grep -c -i "M"` ))
 
 # create string if modified
-if [ $mod -gt 0 ]
+if [ $mod -eq 0 ]
 then
   modstr="\"Warning! Contains locally modified code!\""
 else
@@ -49,7 +49,7 @@ fi
 mixed=$(( 1 - `echo $ver | grep -c ":"` ))
 
 # create string if mixed versions
-if [ $mixed -gt 0 ]
+if [ $mixed -eq 0 ]
 then
   mixstr="\"Warning! Contains mixed revisions!\""
 else
