@@ -24,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="iso5436_2_xsd.hxx">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="c\data_point_c.hxx">
       <Filter>src\c</Filter>
     </ClInclude>
@@ -231,9 +228,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="iso5436_2_xsd.cxx">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="c\data_point_c.cxx">
       <Filter>src\c</Filter>
     </ClCompile>
@@ -383,6 +377,9 @@
     </ClCompile>
     <ClCompile Include="xyssl\md5.c">
       <Filter>src\xyssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\opengps\cxx\iso5436_2_xsd.cxx">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -81,16 +81,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(X3PN_XSDDIR)\lib\vc-10.0;$(LibraryPath)</LibraryPath>
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(X3PN_XSDDIR)\lib64\vc-10.0;$(LibraryPath)</LibraryPath>
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <ExecutablePath>$(X3PN_XSDDIR)\bin;$(ExecutablePath)</ExecutablePath>
     <IncludePath>$(X3PN_XSDDIR)\include;..\..\include;..\zlib;..\zlib\contrib\minizip;$(IncludePath)</IncludePath>
     <LibraryPath>$(X3PN_XSDDIR)\lib\vc-10.0;$(LibraryPath)</LibraryPath>
@@ -98,7 +98,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <ExecutablePath>$(X3PN_XSDDIR)\bin;$(X3PN_XSDDIR)\bin64;$(ExecutablePath)</ExecutablePath>
     <IncludePath>$(X3PN_XSDDIR)\include;..\..\include;..\zlib;..\zlib\contrib\minizip;$(IncludePath)</IncludePath>
     <LibraryPath>$(X3PN_XSDDIR)\lib64\vc-10.0;$(LibraryPath)</LibraryPath>
@@ -127,7 +127,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/Version.in $(ProjectDir)/cxx/Version.h</Command>
+      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/version.in $(ProjectDir)/cxx/version.h
+copy /Y $(ProjectDir)cxx\version.h "../../include/opengps/cxx/"</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Updating Version.h</Message>
@@ -157,7 +158,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/Version.in $(ProjectDir)/cxx/Version.h</Command>
+      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/version.in $(ProjectDir)/cxx/version.h
+copy /Y $(ProjectDir)cxx\version.h "../../include/opengps/cxx/"</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Updating Version.h</Message>
@@ -178,7 +180,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/Version.in $(ProjectDir)/cxx/Version.h</Command>
+      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/version.in $(ProjectDir)/cxx/version.h
+copy /Y $(ProjectDir)cxx\version.h "../../include/opengps/cxx/"</Command>
       <Message>Updating Version.h</Message>
     </PreBuildEvent>
     <Lib>
@@ -201,7 +204,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/Version.in $(ProjectDir)/cxx/Version.h</Command>
+      <Command>subwcrev $(ProjectDir) $(ProjectDir)/cxx/version.in $(ProjectDir)/cxx/version.h
+copy /Y $(ProjectDir)cxx\version.h "../../include/opengps/cxx/"</Command>
       <Message>Updating Version.h</Message>
     </PreBuildEvent>
     <Lib>
@@ -279,30 +283,30 @@
     <ClInclude Include="iso5436_2.h">
       <DependentUpon>iso5436_2.xsd</DependentUpon>
     </ClInclude>
-    <ClInclude Include="iso5436_2_xsd.hxx" />
     <ClInclude Include="xyssl\md5.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="iso5436_2.xsd">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)." "%(Filename)%(Extension)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)." "%(Filename)%(Extension)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)..\..\include\opengps\cxx\." "%(Filename)%(Extension)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)..\..\include\opengps\cxx\." "%(Filename)%(Extension)"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate tree parser from XSD</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate tree parser from XSD</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)_xsd.cxx %(Filename)_xsd.hxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_xsd.cxx %(Filename)_xsd.hxx;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xsd_Licence_Header.c;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">xsd_Licence_Header.c;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)." "%(Filename)%(Extension)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)..\..\include\opengps\cxx\." "%(Filename)%(Extension)"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate tree parser from XSD</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)_xsd.cxx %(Filename)_xsd.hxx;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xsd_Licence_Header.c;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">xsd_Licence_Header.c;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename)_xsd.cxx %(Filename)_xsd.hxx;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate tree parser from XSD</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)." "%(Filename)%(Extension)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">xsd.exe cxx-tree --prologue-file "$(ProjectDir)xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix "_xsd.cxx" --hxx-suffix "_xsd.hxx" --output-dir "%(RootDir)%(Directory)..\..\include\opengps\cxx\." "%(Filename)%(Extension)"</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\opengps\cxx\iso5436_2_xsd.cxx" />
     <ClCompile Include="cxx\binary_lsb_point_vector_reader_context.cxx" />
     <ClCompile Include="cxx\binary_lsb_point_vector_writer_context.cxx" />
     <ClCompile Include="cxx\binary_msb_point_vector_reader_context.cxx" />
@@ -352,7 +356,6 @@
     <ClCompile Include="c\messages_c.cxx" />
     <ClCompile Include="c\point_iterator_c.cxx" />
     <ClCompile Include="c\point_vector_c.cxx" />
-    <ClCompile Include="iso5436_2_xsd.cxx" />
     <ClCompile Include="xyssl\md5.c" />
   </ItemGroup>
   <ItemGroup>
