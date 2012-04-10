@@ -20,7 +20,13 @@ XSD_SCHEMA(OUTPATH ${PROJECT_SOURCE_DIR}/iso5436_2.xsd  --prologue-file ${PROJEC
 find_package(Xerces REQUIRED)
 
 # Subversion is needed to generate version.h from version.in
-FIND_PACKAGE(Subversion REQUIRED)
+FIND_PACKAGE(Subversion)
+IF (NOT SUBVERSION_FOUND)
+   FIND_PACKAGE(TortoiseSVN REQUIRED)
+   MESSAGE(STATUS "Using TortoiseSVN from:")
+   MESSAGE(STATUS "   "${TortoiseSVN_EXECUTABLE})
+   SET(Subversion_SVN_EXECUTABLE ${TortoiseSVN_EXECUTABLE})
+ENDIF(NOT SUBVERSION_FOUND)
 # Find native ZLIB package
 # FIND_PACKAGE(ZLIB REQUIRED)
 
@@ -47,7 +53,7 @@ if (WIN)
 # subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
                     PRE_BUILD
-                    COMMAND subwcrev
+                    COMMAND ${Subversion_SVN_EXECUTABLE}
                     ARGS ${PROJECT_SOURCE_DIR}
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
                          ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
