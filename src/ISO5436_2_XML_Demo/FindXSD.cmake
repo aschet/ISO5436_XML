@@ -15,23 +15,30 @@ endif (WIN32)
 if (UNIX)
   set (XSD_EXE_NAME xsdcxx)
 endif (UNIX)
+if (APPLE)
+  set (XSD_EXE_NAME xsd)
+endif (APPLE)
 
 FIND_PATH(XSD_INCLUDE_DIR xsd/cxx/parser/elements.hxx
   PATHS "[HKEY_CURRENT_USER\\software\\xsd\\include]"
   "[HKEY_CURRENT_USER]\\xsd\\include]"
-  $ENV{XSDDIR}/include
+  "$ENV{XSDDIR}/include"
+  "$ENV{XSDDIR}/libxsd"
   /usr/local/include
   /usr/include
-  "C:/Program Files/CodeSynthesis XSD 3.3/include"
-  "D:/Program Files/CodeSynthesis XSD 3.3/include"
+  "$ENV{ProgramFiles}/CodeSynthesis XSD 3.3/include"
+  "$ENV{ProgramFiles(x86)}/CodeSynthesis XSD 3.3/include"
+  "$ENV{ProgramW6432}/CodeSynthesis XSD 3.3/include"
   ${CMAKE_SOURCE_DIR}/../xsd/libxsd
 )
 
 FIND_PROGRAM(XSD_EXECUTABLE 
   NAMES xsdcxx xsd
   PATHS "[HKEY_CURRENT_USER\\xsd\\bin]" $ENV{XSDDIR}/bin
-  "C:/Program Files/CodeSynthesis XSD 3.3/bin"
-  "D:/Program Files/CodeSynthesis XSD 3.3/bin"
+  "$ENV{ProgramFiles}/CodeSynthesis XSD 3.3/bin"
+  "$ENV{ProgramFiles(x86)}/CodeSynthesis XSD 3.3/bin"
+  "$ENV{ProgramW6432}/CodeSynthesis XSD 3.3/bin"
+  "$ENV{PATH}"
 )
 
 IF (NOT XSD_INCLUDE_DIR)

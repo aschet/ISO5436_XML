@@ -24,16 +24,29 @@ FIND_PATH(ISO5436_2_PATH iso5436_2_xsd.cxx
   ../x3p
 )
 
-FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.so
-  PATHS $ENV{OPENGPS_DIR}
-  ./ISO5436_2_XML
-  ./x3p
-  ../ISO5436_2_XML
-  ../x3p
-  ../../build
-  ../../build/ISO5436_2_XML
-  ../../build/x3p
-)
+IF(BUILD_SHARED)
+  FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.so
+    PATHS $ENV{OPENGPS_DIR}
+    ./ISO5436_2_XML
+    ./x3p
+    ../ISO5436_2_XML
+    ../x3p
+    ../../build
+    ../../build/ISO5436_2_XML
+    ../../build/x3p
+  )
+ELSE(BUILD_SHARED)
+  FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.a
+    PATHS $ENV{OPENGPS_DIR}
+    ./ISO5436_2_XML
+    ./x3p
+    ../ISO5436_2_XML
+    ../x3p
+    ../../build
+    ../../build/ISO5436_2_XML
+    ../../build/x3p
+  )
+ENDIF(BUILD_SHARED)
 
 INCLUDE_DIRECTORIES( "../../include"
 	  "../../include/opengps/cxx"
@@ -56,15 +69,17 @@ set(CMAKE_SHARED_LINKER_FLAGS "-Wl,-R./:./lib")
 set(CMAKE_MODULE_LINKER_FLAGS "-Wl,-R./:./lib")
 set(CMAKE_EXE_LINKER_FLAGS "-Wl,-R./:./lib")
 
-ADD_CUSTOM_TARGET( copyzlib ALL)
-ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
-		      COMMAND /bin/mkdir
-		      ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/lib/
-		      COMMAND /bin/cp
-		      ARGS -u ${ISO5436_2_PATH}/../zlib/contrib/minizip/.libs/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
-		      COMMAND /bin/cp 
-		      ARGS -u ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
-		      DEPENDS ISO5436-2-demo)
+IF(BUILD_SHARED)
+  ADD_CUSTOM_TARGET( copyzlib ALL)
+  ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
+			COMMAND /bin/mkdir
+			ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/lib/
+			COMMAND /bin/cp
+			ARGS -u ${ISO5436_2_PATH}/../zlib/contrib/minizip/.libs/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+			COMMAND /bin/cp 
+			ARGS -u ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+			DEPENDS ISO5436-2-demo)
+ENDIF(BUILD_SHARED)
 
 target_link_libraries(iso5436-2-xml-demo 
 	    -L${XERCESC_LIBRARY} -lxerces-c-3.1
