@@ -146,7 +146,7 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector_base.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/string.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.h
-	${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
+        ${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/messages_c.cxx 
