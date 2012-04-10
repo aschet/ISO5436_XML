@@ -234,7 +234,7 @@ copy /Y match686.obj "../../masmx86/"
 copy /Y inffas32.obj "../../masmx86/"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Win32'">
@@ -285,7 +285,7 @@ copy /Y inffas32.obj "../../masmx86/"</Command>
       <ImportLibrary>$(OutDir)zlibwapi.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -343,7 +343,7 @@ copy /Y match686.obj "../../masmx86/"
 copy /Y inffas32.obj "../../masmx86/"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -396,7 +396,7 @@ copy /Y gvmat64.obj "../../masmx64/"
 copy /Y inffasx64.obj "../../masmx64/"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
@@ -487,7 +487,7 @@ copy /Y inffasx64.obj "../../masmx64/"</Command>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseWithoutAsm|Itanium'">
@@ -587,7 +587,7 @@ copy /Y gvmat64.obj "../../masmx64/"
 copy /Y inffasx64.obj "../../masmx64/"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)</Command>
+      <Command>copy /Y $(ProjectDir)$(OutDir)*.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">
