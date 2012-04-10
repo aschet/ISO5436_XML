@@ -15,7 +15,7 @@ SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
 
 find_package(XSD REQUIRED)
 
-XSD_SCHEMA(OUTPATH ${PROJECT_SOURCE_DIR}/iso5436_2.xsd  --prologue-file ${PROJECT_SOURCE_DIR}/xsd_Licence_Header.c --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix \"_xsd.cxx\" --hxx-suffix \"_xsd.hxx\" --output-dir ${PROJECT_SOURCE_DIR})
+XSD_SCHEMA(OUTPATH ${PROJECT_SOURCE_DIR}/iso5436_2.xsd  --prologue-file ${PROJECT_SOURCE_DIR}/xsd_Licence_Header.c --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix \"_xsd.cxx\" --hxx-suffix \"_xsd.hxx\" --output-dir ${PROJECT_SOURCE_DIR}/../../include/opengps/cxx/)
 
 find_package(Xerces REQUIRED)
 
@@ -105,7 +105,7 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/int32_data_point_parser.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/int32_point_buffer.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/iso5436_2_container.hxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/missing_data_point_parser.hxx 
+        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/missing_data_point_parser.hxx
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/point_buffer.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/point_validity_provider.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/point_vector_iostream.hxx 
@@ -140,6 +140,7 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/info.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_handle.hxx 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.hxx
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/opengps.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector_base.hxx 
@@ -194,7 +195,8 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/linux_environment.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/xml_point_vector_reader_context.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/xml_point_vector_writer_context.cxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/zip_stream_buffer.cxx 
+        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/zip_stream_buffer.cxx
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.cxx
         ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.c
 )
 
