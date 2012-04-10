@@ -3,21 +3,21 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerEnvironment>Path=$(Path);$(X3PN_XSDDIR)\bin;$(X3PN_XSDDIR)\bin64</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>../../ISO5436_2_XML_Demo/samplefiles/</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>$(ProjectDir)samplefiles\</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerEnvironment>Path=$(Path);$(X3PN_XSDDIR)\bin;$(X3PN_XSDDIR)\bin64</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>../../ISO5436_2_XML_Demo/samplefiles/</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>$(ProjectDir)samplefiles\</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerEnvironment>Path=$(Path);$(X3PN_XSDDIR)\bin</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>../../ISO5436_2_XML_Demo/samplefiles/</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>$(ProjectDir)samplefiles\</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerEnvironment>Path=$(Path);$(X3PN_XSDDIR)\bin</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>../../ISO5436_2_XML_Demo/samplefiles/</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>$(ProjectDir)samplefiles\</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
