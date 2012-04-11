@@ -41,9 +41,7 @@
 #define _OPENGPS_H
 
 #if _UNICODE
-#  if linux | __APPLE__
-    #include <wchar.h>
-#  endif
+   #include <wchar.h>
 #endif
 
 #include "cxx/version.h"
