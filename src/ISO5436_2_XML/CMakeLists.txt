@@ -46,6 +46,7 @@ INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/../../include"
 	  "${PROJECT_SOURCE_DIR}/../../../../include/opengps/cxx"
 	  "${PROJECT_SOURCE_DIR}/../zlib"
 	  "${PROJECT_SOURCE_DIR}/../zlib/contrib/minizip"
+	  "${XSD_INCLUDE_DIR}"
 )
 
 # Generate the version include file from the .in file
