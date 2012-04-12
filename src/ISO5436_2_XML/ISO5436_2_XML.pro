@@ -9,6 +9,20 @@ QT       -= core gui
 TARGET = iso5436_2
 TEMPLATE = lib
 
+versiontarget.target = version.h
+versiontarget.commands = $$PWD/../tools/subwcrev.sh $$PWD $$PWD/cxx/version.in $$PWD/../../include/opengps/cxx/version.h
+versiontarget.depends = FORCE
+
+PRE_TARGETDEPS += version.h
+QMAKE_EXTRA_TARGETS += versiontarget
+
+schematarget.target = iso5436_2_xsd.cxx
+schematarget.commands = xsdcxx cxx-tree --prologue-file $$PWD/xsd_Licence_Header.c --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix \"_xsd.cxx\" --hxx-suffix \"_xsd.hxx\" --output-dir $$PWD/../../include/opengps/cxx/ $$PWD/iso5436_2.xsd
+schematarget.depends = FORCE
+
+PRE_TARGETDEPS += iso5436_2_xsd.cxx
+QMAKE_EXTRA_TARGETS += schematarget
+
 DEFINES += ISO5436_2_LIBRARY \
         UNICODE \
         _UNICODE
@@ -17,8 +31,6 @@ INCLUDEPATH +=  . \
                 ./.. \
                 /usr/include \
                 ../../include \
-                ../../include/opengps \
-                ../../include/opengps/cxx \
                 ../zlib \
                 ../zlib/contrib/minizip
 
@@ -26,14 +38,11 @@ QMAKE_LFLAGS += -Wl,-R./ -municode
 QMAKE_CFLAGS += -fopenmp -fexceptions
 QMAKE_CXXFLAGS += -fopenmp -fexceptions
 
-HEADERS += ./iso5436_2.h \
-        ./iso5436_2_xsd.hxx \
-        ./c/data_point_c.hxx \
+HEADERS += ./c/data_point_c.hxx \
         ./c/iso5436_2_handle_c.hxx \
         ./c/messages_c.hxx \
         ./c/point_iterator_c.hxx \
         ./c/point_vector_c.hxx \
-        ./cxx/version.h \
         ./cxx/binary_lsb_point_vector_reader_context.hxx \
         ./cxx/binary_lsb_point_vector_writer_context.hxx \
         ./cxx/binary_msb_point_vector_reader_context.hxx \
@@ -95,8 +104,7 @@ HEADERS += ./iso5436_2.h \
         ../../include/opengps/cxx/version.h \
         ./xyssl/md5.h
 
-SOURCES +=  ./iso5436_2_xsd.cxx \
-        ./xsd_Licence_Header.c \
+SOURCES +=  ./xsd_Licence_Header.c \
         ./c/data_point_c.cxx \
         ./c/iso5436_2_c.cxx \
         ./c/messages_c.cxx \
@@ -146,6 +154,7 @@ SOURCES +=  ./iso5436_2_xsd.cxx \
         ./cxx/xml_point_vector_reader_context.cxx \
         ./cxx/xml_point_vector_writer_context.cxx \
         ./cxx/zip_stream_buffer.cxx \
+        ../../include/opengps/cxx/iso5436_2_xsd.cxx \
         ./xyssl/md5.c
 
 OTHER_FILES += \
