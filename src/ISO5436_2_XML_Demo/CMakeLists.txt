@@ -52,6 +52,7 @@ ENDIF(BUILD_SHARED)
 
 INCLUDE_DIRECTORIES( "../../include"
 	  "../../include/opengps/cxx"
+     "${XSD_INCLUDE_DIR}"
 )
 
 add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY)
@@ -72,15 +73,29 @@ set(CMAKE_MODULE_LINKER_FLAGS "-Wl,-R./:./lib")
 set(CMAKE_EXE_LINKER_FLAGS "-Wl,-R./:./lib")
 
 IF(BUILD_SHARED)
-  ADD_CUSTOM_TARGET( copyzlib ALL)
-  ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
-			COMMAND /bin/mkdir
-			ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/lib/
-			COMMAND /bin/cp
-			ARGS -u ${ISO5436_2_PATH}/../zlib/contrib/minizip/.libs/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
-			COMMAND /bin/cp 
-			ARGS -u ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
-			DEPENDS ISO5436-2-demo)
+
+   IF(WIN)
+      ADD_CUSTOM_TARGET( copyzlib ALL)
+      ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
+            COMMAND mkdir
+            ARGS ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            COMMAND copy
+            ARGS  /Y ${ISO5436_2_PATH}/../zlib/contrib/minizip/.libs/*.dll ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            COMMAND copy 
+            ARGS /Y ${ISO5436_2_LIB_PATH}/*.dll ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            DEPENDS ISO5436-2-demo)
+   ENDIF(WIN)
+   IF(UNIX)
+      ADD_CUSTOM_TARGET( copyzlib ALL)
+      ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
+            COMMAND /bin/mkdir
+            ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            COMMAND /bin/cp
+            ARGS -u ${ISO5436_2_PATH}/../zlib/contrib/minizip/.libs/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            COMMAND /bin/cp 
+            ARGS -u ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            DEPENDS ISO5436-2-demo)
+   ENDIF(UNIX)
 ENDIF(BUILD_SHARED)
 
 target_link_libraries(iso5436-2-xml-demo 
