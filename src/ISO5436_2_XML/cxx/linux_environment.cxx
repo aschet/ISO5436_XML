@@ -64,6 +64,55 @@ namespace OpenGPS
 
 using namespace OpenGPS;
 
+
+int copyFile(const char *src, const char *dst)
+{
+    FILE *in_fd = NULL, *out_fd = NULL;
+    int n_chars;
+    const int BUFSIZE = 4096;
+    char buf[BUFSIZE];
+
+
+    // open files
+    if( (in_fd = fopen(src, "r")) == NULL )
+    {
+        return -1;
+    }
+
+
+    if( (out_fd = fopen(dst, "w")) == NULL )
+    {
+        return -1;
+    }
+
+    // copy files
+    while( (n_chars = fread(buf, 1, BUFSIZE, in_fd)) > 0 )
+    {
+        if( fwrite(buf, 1, n_chars, out_fd) != n_chars )
+        {
+            // write error
+            return -1;
+        }
+
+
+        if( n_chars == -1 )
+        {
+            // read error
+            return -1;
+        }
+    }
+
+
+    // close files
+    if( fclose(in_fd) == -1 || fclose(out_fd) == -1 )
+    {
+        // error closing file
+        return -1;
+    }
+
+    return 0;
+}
+
 LinuxEnvironment::LinuxEnvironment()
 : Environment()
 {
@@ -394,10 +443,15 @@ OpenGPS::String LinuxEnvironment::GetTempDir() const
 OGPS_Boolean LinuxEnvironment::RenameFile(const OpenGPS::String& src, const OpenGPS::String& dst) const
 {
    ResetLastErrorCode();
+   int ret;
 
    OpenGPS::String tempSrc(src.c_str());
    OpenGPS::String tempDst(dst.c_str());
-   return rename(tempSrc.ToChar(), tempDst.ToChar());
+//   ret = copy(tempSrc.ToChar(), tempDst.ToChar());
+   ret = copyFile(tempSrc.ToChar(), tempDst.ToChar());
+   ret += unlink(tempSrc.ToChar());
+
+   return !ret;
 //   return (MoveFileEx(src.c_str(), dst.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) != 0);
 }
 
