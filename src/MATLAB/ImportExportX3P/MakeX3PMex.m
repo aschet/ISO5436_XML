@@ -43,14 +43,16 @@ d = [fileparts(mexpath),filesep];
 
 % Debug flag
 % debug='-g '
-debug=''
+debug='-v -g '
 
 %% Build path names
 
 % Installation path of x3p lib
-InstallX3P = [cd(cd([d,up,up,up,up,'install'])),fs]
+% InstallX3P = [cd(cd([d,up,up,up,up,'install'])),fs]
+InstallX3P = [d,fs,'install',fs]
 % Include directory for x3p
-IDirX3P = ['-I"',InstallX3P,'include',fs,'" ']
+IDirX3P = ['-I"',InstallX3P,'include',fs,'" ','-I"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include" ']
+% IDirX3P = ['-I"',InstallX3P,'include',fs,'" ']
 % Library directory for x3p
 LDirX3P = ['-L"',InstallX3P,'lib',fs,'" ',...
            '-L"',InstallX3P,'bin',fs,'" ']
