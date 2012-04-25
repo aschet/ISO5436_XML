@@ -31,7 +31,10 @@ ENDIF(NOT SUBVERSION_FOUND)
 # FIND_PACKAGE(ZLIB REQUIRED)
 
 
-add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY)
+add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY -DBUILD_ISO5436_2_XML -D_LIB -DXSD_FP_ALL_DIGITS)
+if (WIN32)
+   add_definitions(-DZLIB_WINAPI)
+endif()
 
 # default build types are None, Debug, Release, RelWithDebInfo and MinRelSize
 IF (DEFINED CMAKE_BUILD_TYPE)
@@ -50,7 +53,7 @@ INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/../../include"
 )
 
 # Generate the version include file from the .in file
-if (WIN)
+if (WIN32)
 # subwcrev $(ProjectDir) $(InputDir)/cxx/Version.in $(InputDir)/cxx/Version.h
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
                     PRE_BUILD
@@ -61,7 +64,7 @@ ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h
                     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.in
                     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}
                     COMMENT generating cxx/version.h )
-endif (WIN)
+endif (WIN32)
 if (UNIX)
 # on mac and linux we need the included replacement script
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cxx/version.h 
@@ -208,3 +211,9 @@ set(libSrcs
 )
 
 add_library(iso5436-2-xml ${LIBRARY_TYPE} ${libSrcs})
+
+target_link_libraries(iso5436-2-xml ${XERCESC_LIBRARY})
+
+if (DEFINED MSVC_VERSION)
+  set_target_properties(iso5436-2-xml PROPERTIES COMPILE_FLAGS "/Zc:wchar_t")
+endif ()
