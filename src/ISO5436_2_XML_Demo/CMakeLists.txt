@@ -25,7 +25,7 @@ find_package(XSD REQUIRED)
 
 find_package(Xerces REQUIRED)
 
-find_package(MINIZIP REQUIRED)
+find_package(Minizip REQUIRED)
 
 FIND_PATH(ISO5436_2_PATH iso5436_2.xsd
   PATHS $ENV{OPENGPS_DIR}
@@ -86,7 +86,7 @@ if (WIN32)
 else()
    if(BUILD_SHARED)
       MESSAGE(STATUS "Build shared")
-      if (CMAKE_BUILD_TYPE MATCHES Debug)
+      if (CMAKE_BUILD_TYPE STREQUAL Debug)
          FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.so
             PATHS ${SearchPathDebugISO5436}
          )
@@ -97,7 +97,7 @@ else()
       endif ()
    else()
       MESSAGE(STATUS "Build static")
-      if (CMAKE_BUILD_TYPE MATCHES Debug)
+      if (CMAKE_BUILD_TYPE STREQUAL Debug)
          FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.a
             PATHS ${SearchPathDebugISO5436}
          )
@@ -141,9 +141,9 @@ IF(BUILD_SHARED)
             COMMAND /bin/mkdir
             ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/lib/
             COMMAND /bin/cp
-            ARGS -u ${MINIZIP_LIB}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            ARGS -uf ${MINIZIP_LIB}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
             COMMAND /bin/cp 
-            ARGS -u ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
+            ARGS -uf ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
             DEPENDS ISO5436-2-demo)
    ENDIF(UNIX)
 ENDIF(BUILD_SHARED)
@@ -160,15 +160,21 @@ if (WIN32)
       target_link_libraries(iso5436-2-xml-demo ${XERCESC_LIBRARY})      
     endif ()
 else ()
-   if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-      target_link_libraries(iso5436-2-xml-demo ${XERCESC_LIBRARY}
-          ${MINIZIP_LIB_DEBUG}/libzlibwapi.a
-          ${ISO5436_2_LIB_PATH}/iso5436-2-xml.a)
+   if (BUILD_SHARED)
+      set (LIB_EXT so)
    else ()
-      target_link_libraries(iso5436-2-xml-demo 
-          ${XERCESC_LIBRARY}
-          ${MINIZIP_LIB}/libzlibwapi.a
-          ${ISO5436_2_LIB_PATH}/libiso5436-2-xml.a) 
+      set (LIB_EXT a)
+   endif ()
+   if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+      target_link_libraries(iso5436-2-xml-demo ${XERCESC_LIBRARY})
+      target_link_libraries(iso5436-2-xml-demo ${MINIZIP_LIB_DEBUG}/libzlibwapi.${LIB_EXT})
+      target_link_libraries(iso5436-2-xml-demo ${ISO5436_2_LIB_PATH}/libiso5436-2-xml.${LIB_EXT})
+      target_link_libraries(iso5436-2-xml-demo libz.${LIB_EXT})
+   else ()
+      target_link_libraries(iso5436-2-xml-demo ${XERCESC_LIBRARY})
+      target_link_libraries(iso5436-2-xml-demo libz.${LIB_EXT})
+      target_link_libraries(iso5436-2-xml-demo ${MINIZIP_LIB}/libzlibwapi.${LIB_EXT})
+      target_link_libraries(iso5436-2-xml-demo ${ISO5436_2_LIB_PATH}/libiso5436-2-xml.${LIB_EXT})
    endif () 
  endif ()
  

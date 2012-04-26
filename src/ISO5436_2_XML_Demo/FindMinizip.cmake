@@ -53,19 +53,19 @@ if (WIN32)
    FIND_PATH(MINIZIP_LIB_DEBUG zlibwapi.lib
       PATHS ${SearchPathDebugMinizip}
    )
-else() 
+else()
    FIND_PATH(MINIZIP_LIB_DEBUG libzlibwapi.a
-     PATHS ${SerachPathDebugMinizip}
+     PATHS ${SearchPathDebugMinizip}
    )   
 endif ()
 
 if (WIN32)
    FIND_PATH(MINIZIP_LIB zlibwapi.lib
-     PATHS ${SerachPathReleaseMinizip}
+     PATHS ${SearchPathReleaseMinizip}
    )
-  else()
+else()
    FIND_PATH(MINIZIP_LIB libzlibwapi.a
-     PATHS ${SerachPathReleaseMinizip}
+     PATHS ${SearchPathReleaseMinizip}
    )
 endif ()
 
