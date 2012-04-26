@@ -23,9 +23,7 @@ endif()
 IF (DEFINED CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
 ELSE(CMAKE_BUILD_TYPE)
-  SET (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build,
-options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release
-RelWithDebInfo MinSizeRel.")
+  SET (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
 ENDIF (DEFINED CMAKE_BUILD_TYPE)
 
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}"
@@ -38,6 +36,15 @@ INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}"
 #set_property ( SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/../masmx86/match686.asm PROPERTY LANGUAGE ASM )
 
 set(libSrcs 
+        ${CMAKE_CURRENT_SOURCE_DIR}/ioapi.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/unzip.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/zip.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/mztools.c
+)
+
+if (WIN32)
+  set(libSrcs
+	${libSrcs}
         ${CMAKE_CURRENT_SOURCE_DIR}/../../adler32.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../compress.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../crc32.c
@@ -50,14 +57,19 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../inffast.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../inflate.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../inftrees.c
+	${CMAKE_CURRENT_SOURCE_DIR}/../../minigzip.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../trees.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../uncompr.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../zutil.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/ioapi.c
         ${CMAKE_CURRENT_SOURCE_DIR}/iowin32.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/unzip.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/zip.c
-)
+  )
+else()
+#  set(libSrcs
+#	${libSrcs}
+#	${CMAKE_CURRENT_SOURCE_DIR}/minizip.c
+#	${CMAKE_CURRENT_SOURCE_DIR}/miniunz.c
+#  )
+endif()
 
 #if (WIN32)
 #   MESSAGE(STATUS "using win32asm")
