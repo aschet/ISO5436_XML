@@ -1466,7 +1466,7 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
 
 void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
 {  
-  if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer()))
+  if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer() && GetVectorBuffer()->GetValidityBuffer()->IsAllocated() && GetVectorBuffer()->GetValidityBuffer()->HasInvalidMarks()))
   {
     _ASSERT(IsBinary());
 
