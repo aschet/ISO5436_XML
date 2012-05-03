@@ -908,7 +908,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
 
                         if(bytesCopied == size)
                         {
-                           binaryTarget.write((OpenGPS::UnsignedBytePtr)buffer, bytesCopied);
+                           binaryTarget.write((OpenGPS::BytePtr)buffer, bytesCopied);
                         }
 
                         _OPENGPS_FREE(buffer);
