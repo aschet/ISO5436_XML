@@ -29,6 +29,7 @@
  ***************************************************************************/
 
 #ifdef linux
+#include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
