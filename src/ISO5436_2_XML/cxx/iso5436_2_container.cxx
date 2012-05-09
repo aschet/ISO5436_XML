@@ -63,6 +63,7 @@
 #include <memory>
 #include <iomanip>
 #include <sstream>
+#include <math.h>
 
 /* zlib/minizip header files */
 #include <unzip.h>
@@ -80,6 +81,10 @@
 
 #ifdef max
 #  undef max
+#endif
+
+#ifndef min
+    #define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
 typedef std::auto_ptr<PointVectorReaderContext> PointVectorReaderContextAutoPtr;
@@ -107,7 +112,7 @@ ISO5436_2Container::~ISO5436_2Container()
    _OPENGPS_DELETE(m_Document);
 }
 
-void ISO5436_2Container::Open(const OGPS_Boolean readOnly) throw(...)
+void ISO5436_2Container::Open(const OGPS_Boolean readOnly)
 {
    if(HasDocument())
    {
@@ -149,7 +154,7 @@ void ISO5436_2Container::Open(const OGPS_Boolean readOnly) throw(...)
    TestChecksums();   
 }
 
-void ISO5436_2Container::Decompress() throw(...)
+void ISO5436_2Container::Decompress()
 {
    _ASSERT(HasTempDir());
    
@@ -245,7 +250,12 @@ void ISO5436_2Container::VerifyValidBinChecksum()
 OGPS_Boolean ISO5436_2Container::ReadMd5FromFile(const OpenGPS::String& fileName, OpenGPS::UnsignedByte checksum[16]) const
 {
 #ifdef _UNICODE
-   std::wifstream file(fileName.c_str());
+    #if linux
+        OpenGPS::String tempFileName(fileName);
+        std::wifstream file(tempFileName.ToChar());
+    #else
+        std::wifstream file(fileName.c_str());
+    #endif
 #else
    std::ifstream file(fileName.c_str());
 #endif /* _UNICODE */
@@ -261,7 +271,7 @@ void ISO5436_2Container::Create(
                                         const Schemas::ISO5436_2::Record1Type& record1,
                                         const Schemas::ISO5436_2::Record2Type* record2,
                                         const Schemas::ISO5436_2::MatrixDimensionType& matrixDimension,
-                                        const OGPS_Boolean useBinaryData) throw(...)
+                                        const OGPS_Boolean useBinaryData)
 {
    if(HasDocument())
    {
@@ -279,7 +289,7 @@ void ISO5436_2Container::Create(
                                         const Schemas::ISO5436_2::Record1Type& record1,
                                         const Schemas::ISO5436_2::Record2Type* record2,
                                         const OGPS_ULong listDimension,
-                                        const OGPS_Boolean useBinaryData) throw(...)
+                                        const OGPS_Boolean useBinaryData)
 {
    if(HasDocument())
    {
@@ -293,13 +303,13 @@ void ISO5436_2Container::Create(
    CreateDocument(&record1, record2, NULL, listDimension, useBinaryData);
 }
 
-PointIteratorAutoPtr ISO5436_2Container::CreateNextPointIterator() throw(...)
+PointIteratorAutoPtr ISO5436_2Container::CreateNextPointIterator()
 {
    CheckDocumentInstance();
    return PointIteratorAutoPtr(new PointIteratorImpl(this, TRUE, IsMatrix()));
 }
 
-PointIteratorAutoPtr ISO5436_2Container::CreatePrevPointIterator() throw(...)
+PointIteratorAutoPtr ISO5436_2Container::CreatePrevPointIterator()
 {
    CheckDocumentInstance();
    return PointIteratorAutoPtr(new PointIteratorImpl(this, FALSE, IsMatrix()));
@@ -309,7 +319,7 @@ void ISO5436_2Container::SetMatrixPoint(
    const OGPS_ULong u,
    const OGPS_ULong v,
    const OGPS_ULong w,
-   const PointVector* const vector) throw(...)
+   const PointVector* const vector)
 {
    CheckDocumentInstance();
 
@@ -357,7 +367,7 @@ void ISO5436_2Container::GetMatrixPoint(
    const OGPS_ULong u,
    const OGPS_ULong v,
    const OGPS_ULong w,
-   PointVector& vector) throw(...)
+   PointVector& vector)
 {
    CheckDocumentInstance();
 
@@ -404,8 +414,8 @@ void ISO5436_2Container::GetMatrixPoint(
 
 void ISO5436_2Container::SetListPoint(
    const OGPS_ULong index,
-   const PointVector& vector) throw(...)
-{   
+   const PointVector& vector)
+{
    CheckDocumentInstance();
 
    _ASSERT(!IsMatrix());
@@ -432,7 +442,7 @@ void ISO5436_2Container::SetListPoint(
 
 void ISO5436_2Container::GetListPoint(
    const OGPS_ULong index,
-   PointVector& vector) throw(...)
+   PointVector& vector)
 {
    CheckDocumentInstance();
 
@@ -474,7 +484,7 @@ void ISO5436_2Container::GetMatrixCoord(
    const OGPS_ULong w,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z) throw(...)
+   OGPS_Double* const z)
 {
    _ASSERT(HasDocument());
    _ASSERT(IsMatrix());
@@ -487,7 +497,7 @@ void ISO5436_2Container::GetMatrixCoord(
 OGPS_Boolean ISO5436_2Container::IsMatrixCoordValid(
    OGPS_ULong u,
    OGPS_ULong v,
-   OGPS_ULong w) throw(...)
+   OGPS_ULong w)
 {
    CheckDocumentInstance();
 
@@ -511,7 +521,7 @@ void ISO5436_2Container::GetListCoord(
    const OGPS_ULong index,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z) throw(...)
+   OGPS_Double* const z)
 {
    _ASSERT(HasDocument());
    _ASSERT(!IsMatrix());
@@ -525,7 +535,7 @@ void ISO5436_2Container::ConvertPointToCoord(
    const  PointVector& vector,
    OGPS_Double* const x,
    OGPS_Double* const y,
-   OGPS_Double* const z) throw(...)
+   OGPS_Double* const z)
 {
    OGPS_Double *myx, *myy, *myz;
 
@@ -579,7 +589,7 @@ OpenGPS::Schemas::ISO5436_2::ISO5436_2Type* const ISO5436_2Container::GetDocumen
    return m_Document;
 }
 
-void ISO5436_2Container::Write(const int compressionLevel) throw(...)
+void ISO5436_2Container::Write(const int compressionLevel)
 {
    _ASSERT(compressionLevel >= -1 && compressionLevel <= 9);
 
@@ -598,7 +608,7 @@ void ISO5436_2Container::Close()
    RemoveTempDir();
 }
 
-OGPS_Boolean ISO5436_2Container::IsMatrix() const throw(...)
+OGPS_Boolean ISO5436_2Container::IsMatrix() const
 {
    CheckDocumentInstance();
 
@@ -677,7 +687,7 @@ OGPS_Boolean ISO5436_2Container::IsPointCloud() const
 void ISO5436_2Container::GetMatrixDimensions(
          OGPS_ULong * const size_u,
          OGPS_ULong * const size_v,
-         OGPS_ULong * const size_w) const throw(...)
+         OGPS_ULong * const size_w) const
 {
    CheckDocumentInstance();
 
@@ -705,7 +715,7 @@ void ISO5436_2Container::GetMatrixDimensions(
    }
 }
 
-OGPS_ULong ISO5436_2Container::GetListDimension() const throw(...)
+OGPS_ULong ISO5436_2Container::GetListDimension() const
 {
    CheckDocumentInstance();
 
@@ -805,7 +815,7 @@ String ISO5436_2Container::GetChecksumFileName() const
    return Environment::GetInstance()->ConcatPathes(GetTempDir(), GetChecksumArchiveName());
 }
 
-void ISO5436_2Container::DecompressMain() const throw(...)
+void ISO5436_2Container::DecompressMain() const
 {
    const OpenGPS::String src = GetMainArchiveName();
    const OpenGPS::String dst = GetMainFileName();
@@ -813,7 +823,7 @@ void ISO5436_2Container::DecompressMain() const throw(...)
    _VERIFY(Decompress(src, dst), TRUE);
 }
 
-void ISO5436_2Container::DecompressChecksum() throw(...)
+void ISO5436_2Container::DecompressChecksum()
 {
    _ASSERT(HasDocument());
 
@@ -824,7 +834,7 @@ void ISO5436_2Container::DecompressChecksum() throw(...)
    VerifyMainChecksum();
 }
 
-void ISO5436_2Container::DecompressDataBin() throw(...)
+void ISO5436_2Container::DecompressDataBin()
 {
    if(IsBinary())
    {
@@ -839,7 +849,7 @@ void ISO5436_2Container::DecompressDataBin() throw(...)
    }
 }
 
-OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const OpenGPS::String& dst, const OGPS_Boolean fileNotFoundAllowed) const throw(...)
+OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const OpenGPS::String& dst, const OGPS_Boolean fileNotFoundAllowed) const
 {
    // Gets absolute path to X3P file.
    OpenGPS::String filePath = GetFullFilePath();
@@ -888,7 +898,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
                   // might get out of memory...
                   while(written < length)
                   {
-                     int size = min(length - written, _OPENGPS_ZIP_CHUNK_MAX);                  
+                     int size = min(length - written, static_cast<unsigned long>(_OPENGPS_ZIP_CHUNK_MAX));
 
                      _ASSERT(size > 0);
 
@@ -908,7 +918,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
 
                         if(bytesCopied == size)
                         {
-                           binaryTarget.write((OpenGPS::BytePtr)buffer, bytesCopied);
+                            binaryTarget.write((OpenGPS::BytePtr)buffer, bytesCopied);
                         }
 
                         _OPENGPS_FREE(buffer);
@@ -1006,7 +1016,7 @@ OGPS_Boolean ISO5436_2Container::Decompress(const OpenGPS::String& src, const Op
    return success;
 }
 
-void ISO5436_2Container::Compress() throw(...)
+void ISO5436_2Container::Compress()
 {
    OGPS_Boolean noHandleCreated = FALSE;
    OGPS_Boolean vendorfilesAdded = TRUE;
@@ -1093,7 +1103,7 @@ void ISO5436_2Container::CreateDocument(
    const Schemas::ISO5436_2::Record2Type* const record2,
    const Schemas::ISO5436_2::MatrixDimensionType* const matrixDimension,
    const OGPS_ULong listDimension,
-   const OGPS_Boolean useBinaryData) throw(...)
+   const OGPS_Boolean useBinaryData)
 {
    _ASSERT(!HasDocument());
    _ASSERT(record1);
@@ -1122,8 +1132,7 @@ void ISO5436_2Container::CreateDocument(
 
       if(useBinaryData)
       {
-         const Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type md5;
-         Schemas::ISO5436_2::DataLinkType dataLink(_OPENGPS_XSD_ISO5436_DATALINK_PATH, md5);
+          Schemas::ISO5436_2::DataLinkType dataLink((Schemas::ISO5436_2::DataLinkType::PointDataLink_type)(_OPENGPS_XSD_ISO5436_DATALINK_PATH), (Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type)NULL); // compiler error guess using the constructor with DataLinkType and two default 0 is ok here
          m_Document->Record3().DataLink(dataLink);
       }
       else
@@ -1152,7 +1161,7 @@ void ISO5436_2Container::CreateDocument(
    m_IsCreating = TRUE;
 }
 
-void ISO5436_2Container::ReadDocument() throw(...)
+void ISO5436_2Container::ReadDocument()
 {
    _ASSERT(!HasDocument());
 
@@ -1161,7 +1170,7 @@ void ISO5436_2Container::ReadDocument() throw(...)
    _ASSERT(HasDocument());
 }
 
-void ISO5436_2Container::ReadXmlDocument() throw(...)
+void ISO5436_2Container::ReadXmlDocument()
 {
    xml_schema::properties props;
    if(!ConfigureNamespaceMap(props))
@@ -1199,7 +1208,7 @@ void ISO5436_2Container::ReadXmlDocument() throw(...)
    }
 }
 
-void ISO5436_2Container::CreatePointBuffer() throw(...)
+void ISO5436_2Container::CreatePointBuffer()
 {
    _ASSERT(!HasVectorBuffer());
    _ASSERT(HasDocument());
@@ -1298,7 +1307,7 @@ void ISO5436_2Container::ResetValidPointsLink()
    }
 }
 
-void ISO5436_2Container::SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16]) throw(...)
+void ISO5436_2Container::SaveChecksumFile(zipFile handle, const OpenGPS::UnsignedByte checksum[16])
 {
    _ASSERT(handle);
 
@@ -1351,7 +1360,7 @@ void ISO5436_2Container::SaveChecksumFile(zipFile handle, const OpenGPS::Unsigne
    }
 }
 
-void ISO5436_2Container::SaveXmlDocument(zipFile handle) throw(...)
+void ISO5436_2Container::SaveXmlDocument(zipFile handle)
 {
    _ASSERT(handle);
 
@@ -1464,7 +1473,7 @@ OGPS_Boolean ISO5436_2Container::ConfigureNamespaceMap(xml_schema::properties& p
    return FALSE;
 }
 
-void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
+void ISO5436_2Container::SaveValidPointsLink(zipFile handle)
 {  
   if(HasValidPointsLink() || (HasVectorBuffer() && GetVectorBuffer()->HasValidityBuffer() && GetVectorBuffer()->GetValidityBuffer()->IsAllocated() && GetVectorBuffer()->GetValidityBuffer()->HasInvalidMarks()))
   {
@@ -1519,7 +1528,7 @@ void ISO5436_2Container::SaveValidPointsLink(zipFile handle) throw(...)
   }
 }
 
-void ISO5436_2Container::SavePointBuffer(zipFile handle) throw(...)
+void ISO5436_2Container::SavePointBuffer(zipFile handle)
 {
    _ASSERT(handle);
 
@@ -1757,7 +1766,7 @@ OGPS_DataPointType ISO5436_2Container::GetAxisDataType(const Schemas::ISO5436_2:
    return OGPS_MissingPointType;
 }
 
-OGPS_ULong ISO5436_2Container::GetPointCount() const throw(...)
+OGPS_ULong ISO5436_2Container::GetPointCount() const
 {
    _ASSERT(HasDocument());
 
@@ -1777,7 +1786,7 @@ OGPS_ULong ISO5436_2Container::GetPointCount() const throw(...)
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-OGPS_ULong ISO5436_2Container::GetMaxU() const throw(...)
+OGPS_ULong ISO5436_2Container::GetMaxU() const
 {
    // Check because this is used from outside by the point iterator.
    CheckDocumentInstance();
@@ -1790,7 +1799,7 @@ OGPS_ULong ISO5436_2Container::GetMaxU() const throw(...)
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-OGPS_ULong ISO5436_2Container::GetMaxV() const throw(...)
+OGPS_ULong ISO5436_2Container::GetMaxV() const
 {
    // Check because this is used from outside by the point iterator.
    CheckDocumentInstance();
@@ -1803,7 +1812,7 @@ OGPS_ULong ISO5436_2Container::GetMaxV() const throw(...)
    return ConvertULongLongToULong(m_Document->Record3().ListDimension().get());
 }
 
-OGPS_ULong ISO5436_2Container::GetMaxW() const throw(...)
+OGPS_ULong ISO5436_2Container::GetMaxW() const
 {
    // Check because this is used from outside by the point iterator.
    CheckDocumentInstance();
@@ -1863,7 +1872,7 @@ OGPS_Boolean ISO5436_2Container::HasVectorBuffer() const
    return retval;
 }
 
-void ISO5436_2Container::CreateTempDir() throw(...)
+void ISO5436_2Container::CreateTempDir()
 {
    _ASSERT(!HasTempDir());
 
@@ -2033,7 +2042,7 @@ double ISO5436_2Container::GetOffsetZ() const
    return (0.0);
 }
 
-PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() const throw(...)
+PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() const
 {
    _ASSERT(HasDocument());
 
@@ -2055,7 +2064,7 @@ PointVectorProxyContext* ISO5436_2Container::CreatePointVectorProxyContext() con
    return new PointVectorProxyContextList(ConvertULongLongToULong(m_Document->Record3().ListDimension().get()));
 }
 
-OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long long value) const throw(...)
+OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long long value) const
 {
    if((unsigned long long)std::numeric_limits<OGPS_Int32>::max() < value)
    {
@@ -2068,7 +2077,7 @@ OGPS_Int32 ISO5436_2Container::ConvertULongToInt32(const unsigned long long valu
    return (OGPS_Int32)value;
 }
 
-OGPS_ULong ISO5436_2Container::ConvertULongLongToULong(const unsigned long long value) const throw(...)
+OGPS_ULong ISO5436_2Container::ConvertULongLongToULong(const unsigned long long value) const
 {
    if((unsigned long long)std::numeric_limits<OGPS_ULong>::max() < value)
    {
@@ -2081,7 +2090,7 @@ OGPS_ULong ISO5436_2Container::ConvertULongLongToULong(const unsigned long long 
    return (OGPS_ULong)value;
 }
 
-OGPS_ULong ISO5436_2Container::SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const throw(...)
+OGPS_ULong ISO5436_2Container::SafeMultipilcation(const unsigned long long value1, const unsigned long long value2) const
 {
    if(value1 > (std::numeric_limits<OGPS_ULong>::max() / value2))
    {
@@ -2094,7 +2103,7 @@ OGPS_ULong ISO5436_2Container::SafeMultipilcation(const unsigned long long value
    return ((OGPS_ULong)(value1 * value2));
 }
 
-void ISO5436_2Container::ValidateDocument() throw(...)
+void ISO5436_2Container::ValidateDocument()
 {
    if(HasDocument())
    {
@@ -2194,7 +2203,7 @@ void ISO5436_2Container::ValidateDocument() throw(...)
    }
 }
 
-void ISO5436_2Container::TestChecksums() throw(...)
+void ISO5436_2Container::TestChecksums()
 {
    if(!m_MainChecksum)
    {
@@ -2433,7 +2442,7 @@ OGPS_Boolean ISO5436_2Container::WriteVendorSpecific(zipFile handle)
    return success;
 }
 
-void ISO5436_2Container::CheckDocumentInstance() const throw(...)
+void ISO5436_2Container::CheckDocumentInstance() const
 {
    if(!m_Document)
    {
