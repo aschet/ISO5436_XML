@@ -2,16 +2,27 @@ project(ISO5436_2)
 
 cmake_minimum_required(VERSION 2.8)
 
-OPTION(BUILD_SHARED "Build shared library." OFF)
-OPTION(BUILD_TARGET64 "Build for 64 bit target if set to ON or 32 bit if set to OFF." OFF)
+if(NOT DEFINED BUILD_SHARED_LIBS)
+	OPTION(BUILD_SHARED_LIBS "Build shared library." OFF)
+endif(NOT DEFINED BUILD_SHARED_LIBS)
 
-IF(BUILD_SHARED)
+
+IF(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE SHARED)
-ELSE(BUILD_SHARED)
+  add_definitions(-DZLIB_DLL -D_DLL -DBUILD_ISO5436_2_XML_DLL)
+ELSE(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE STATIC)
-ENDIF(BUILD_SHARED)
+  add_definitions(-D_LIB) 
+  SET(iso54362LIBSUFFIX S)
+ENDIF(BUILD_SHARED_LIBS)
 
+if(CMAKE_CL_64)
+	SET(iso54362LIBSUFFIX ${iso54362LIBSUFFIX}64)
+endif(CMAKE_CL_64)
 SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
+
+SET(iso54362xmlNAME iso5436-2-xml${iso54362LIBSUFFIX})
+
 
 find_package(XSD REQUIRED)
 
@@ -31,8 +42,8 @@ ENDIF(NOT SUBVERSION_FOUND)
 # FIND_PACKAGE(ZLIB REQUIRED)
 
 
-add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY -DBUILD_ISO5436_2_XML -D_LIB -DXSD_FP_ALL_DIGITS)
-if (WIN32)
+add_definitions(-DUNICODE -D_UNICODE -DISO5436_2_LIBRARY -DBUILD_ISO5436_2_XML  -DXSD_FP_ALL_DIGITS)
+if (WIN32 AND NOT BUILD_SHARED_LIBS)
    add_definitions(-DZLIB_WINAPI)
 endif()
 
@@ -50,6 +61,7 @@ INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/../../include"
 	  "${PROJECT_SOURCE_DIR}/../zlib"
 	  "${PROJECT_SOURCE_DIR}/../zlib/contrib/minizip"
 	  "${XSD_INCLUDE_DIR}"
+	  "${XERCESC_INCLUDE}"
 )
 
 # Generate the version include file from the .in file
@@ -93,7 +105,7 @@ ADD_CUSTOM_COMMAND(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx
                     COMMENT publishing cxx/version.h )
 
 
-set(libSrcs 
+set(iso54362xml_HEADER
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_handle_c.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/messages_c.hxx 
@@ -140,7 +152,10 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/linux_environment.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/xml_point_vector_reader_context.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/cxx/xml_point_vector_writer_context.hxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/zip_stream_buffer.hxx 
+        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/zip_stream_buffer.hxx
+		${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.h		
+		)
+SET(opengps_HDRS
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/data_point.h 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/data_point_type.h 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/info.h 
@@ -149,6 +164,8 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/opengps.h 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/point_iterator.h 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/point_vector.h 
+	)
+SET(opengps_CXXHDRS
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/data_point.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/exceptions.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/info.hxx 
@@ -156,10 +173,13 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_handle.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/iso5436_2_xsd.hxx
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/opengps.hxx 
+		 ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_iterator.hxx
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/point_vector_base.hxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/string.hxx 
-        ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../include/opengps/cxx/version.h
+		)
+SET(iso54362xml_SRCS
         ${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/data_point_c.cxx 
         ${CMAKE_CURRENT_SOURCE_DIR}/c/iso5436_2_c.cxx 
@@ -214,10 +234,39 @@ set(libSrcs
         ${CMAKE_CURRENT_SOURCE_DIR}/xyssl/md5.c
 )
 
-add_library(iso5436-2-xml ${LIBRARY_TYPE} ${libSrcs})
+add_library( ${iso54362xmlNAME} ${LIBRARY_TYPE} ${iso54362xml_SRCS} ${iso54362xml_HEADER} ${opengps_HDRS} ${opengps_CXXHDRS})
 
-target_link_libraries(iso5436-2-xml ${XERCESC_LIBRARY})
+target_link_libraries(${iso54362xmlNAME} zlibwapi ${XERCESC_LIBRARY})
+
+install(TARGETS  ${iso54362xmlNAME} 
+       RUNTIME DESTINATION bin
+	   ARCHIVE DESTINATION iso5436-2-xml/lib
+	)
+install(FILES ${opengps_HDRS} DESTINATION iso5436-2-xml/include/opengps)	
+install(FILES ${opengps_CXXHDRS} DESTINATION iso5436-2-xml/include/opengps/cxx)	
 
 if (DEFINED MSVC_VERSION)
-  set_target_properties(iso5436-2-xml PROPERTIES COMPILE_FLAGS "/Zc:wchar_t")
+  set_target_properties(${iso54362xmlNAME}  PROPERTIES COMPILE_FLAGS "/Zc:wchar_t")
 endif ()
+
+
+
+
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "iso5436-2-xml")
+SET(CPACK_PACKAGE_VENDOR "opengps")
+
+
+SET(CPACK_PACKAGE_VERSION_MAJOR "1")
+SET(CPACK_PACKAGE_VERSION_MINOR "0")
+SET(CPACK_PACKAGE_VERSION_PATCH "0")
+
+
+IF(WIN32 AND NOT UNIX)
+SET(CPACK_GENERATOR ZIP)
+ELSE(WIN32 AND NOT UNIX)
+
+ENDIF(WIN32 AND NOT UNIX)
+
+
+INCLUDE(CPack)
+

@@ -2,13 +2,13 @@ project(ISO5436_2-demo)
 
 cmake_minimum_required(VERSION 2.8)
 
-OPTION(BUILD_SHARED "Build shared library." ON)
+OPTION(BUILD_SHARED_LIBS "Build shared library." ON)
 
-IF(BUILD_SHARED)
+IF(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE SHARED)
-ELSE(BUILD_SHARED)
+ELSE(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE STATIC)
-ENDIF(BUILD_SHARED)
+ENDIF(BUILD_SHARED_LIBS)
 
 SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
 
@@ -60,7 +60,7 @@ set (SearchPathDebugISO5436
 )
 
 if (WIN32)
-   if(BUILD_SHARED)
+   if(BUILD_SHARED_LIBS)
       MESSAGE(STATUS "Build shared win debug")
       if (${CMAKE_BUILD_TYPE} STREQUAL Debug)
          FIND_PATH(ISO5436_2_LIB_PATH iso5436-2-xml.dll
@@ -84,7 +84,7 @@ if (WIN32)
       endif ()
    endif()
 else()
-   if(BUILD_SHARED)
+   if(BUILD_SHARED_LIBS)
       MESSAGE(STATUS "Build shared")
       if (CMAKE_BUILD_TYPE STREQUAL Debug)
          FIND_PATH(ISO5436_2_LIB_PATH libiso5436-2-xml.so
@@ -125,7 +125,7 @@ else()
    set(CMAKE_EXE_LINKER_FLAGS "-Wl,-R./:./lib")
 endif ()
    
-IF(BUILD_SHARED)
+IF(BUILD_SHARED_LIBS)
    IF(WIN32)
       ADD_CUSTOM_TARGET( copyzlib ALL)
       ADD_CUSTOM_COMMAND( TARGET copyzlib POST_BUILD
@@ -146,7 +146,7 @@ IF(BUILD_SHARED)
             ARGS -uf ${ISO5436_2_LIB_PATH}/*.so* ${CMAKE_CURRENT_BINARY_DIR}/lib/
             DEPENDS ISO5436-2-demo)
    ENDIF(UNIX)
-ENDIF(BUILD_SHARED)
+ENDIF(BUILD_SHARED_LIBS)
 
 if (WIN32)
    if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -160,7 +160,7 @@ if (WIN32)
       target_link_libraries(iso5436-2-xml-demo ${XERCESC_LIBRARY})      
     endif ()
 else ()
-   if (BUILD_SHARED)
+   if (BUILD_SHARED_LIBS)
       set (LIB_EXT so)
    else ()
       set (LIB_EXT a)

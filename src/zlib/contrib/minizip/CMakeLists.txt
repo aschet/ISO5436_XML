@@ -2,20 +2,24 @@ project(zlibwapi)
 
 cmake_minimum_required(VERSION 2.8)
 
-OPTION(BUILD_SHARED "Build shared library." OFF)
-OPTION(BUILD_TARGET64 "Build for 64 bit target if set to ON or 32 bit if set to OFF." OFF)
 
-IF(BUILD_SHARED)
+if(NOT DEFINED BUILD_SHARED_LIBS)
+	OPTION(BUILD_SHARED_LIBS "Build shared library." OFF)
+endif(NOT DEFINED BUILD_SHARED_LIBS)
+
+IF(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE SHARED)
-ELSE(BUILD_SHARED)
+  add_definitions(-DZLIB_DLL )
+ELSE(BUILD_SHARED_LIBS)
   SET(LIBRARY_TYPE STATIC)
-ENDIF(BUILD_SHARED)
+  
+ENDIF(BUILD_SHARED_LIBS)
 
 SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
 
 add_definitions(-DUNICODE -D_UNICODE)
 if (WIN32)
-   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_WARNINGS -DZLIB_WINAPI)
+   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_WARNINGS )
 endif()
 #add_definitions(-DASMV -DASMINF)
 
@@ -62,6 +66,7 @@ if (WIN32)
         ${CMAKE_CURRENT_SOURCE_DIR}/../../uncompr.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../../zutil.c
         ${CMAKE_CURRENT_SOURCE_DIR}/iowin32.c
+		${CMAKE_CURRENT_SOURCE_DIR}/../vstudio/vc10/zlibvc.def
   )
 else()
 #  set(libSrcs
@@ -92,3 +97,9 @@ add_library(zlibwapi ${LIBRARY_TYPE} ${libSrcs})
 if (DEFINED MSVC_VERSION)
   set_target_properties(zlibwapi PROPERTIES COMPILE_FLAGS "/Zc:wchar_t")
 endif ()
+
+
+install(TARGETS  zlibwapi 
+       RUNTIME DESTINATION bin
+	   ARCHIVE DESTINATION iso5436-2-xml/lib
+	)

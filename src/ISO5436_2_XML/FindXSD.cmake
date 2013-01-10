@@ -9,6 +9,26 @@ IF (XSD_INCLUDE_DIR AND XSD_EXECUTABLE)
 SET(XSD_FIND_QUIETLY TRUE)
 ENDIF (XSD_INCLUDE_DIR AND XSD_EXECUTABLE)
 
+SET (XSD_POSSIBLE_ROOT_DIRS
+  "$ENV{XSDDIR}"
+  "$ENV{XSDDIR}"
+  /usr/local
+  /usr
+  "$ENV{ProgramFiles}/CodeSynthesis XSD 3.3"
+  "$ENV{ProgramFiles(x86)}/CodeSynthesis XSD 3.3"
+  "$ENV{ProgramW6432}/CodeSynthesis XSD 3.3"
+  ${CMAKE_SOURCE_DIR}/../xsd/libxsd
+ "$ENV{PATH}"
+  )
+
+ FIND_PATH(XSD_ROOT_DIR 
+  NAMES 
+  include/xsd/cxx/parser/elements.hxx     
+  PATHS ${XSD_POSSIBLE_ROOT_DIRS}
+  )
+
+
+
 if (WIN32)
   set (XSD_EXE_NAME xsd)
 endif (WIN32)
@@ -30,6 +50,9 @@ FIND_PATH(XSD_INCLUDE_DIR xsd/cxx/parser/elements.hxx
   "$ENV{ProgramFiles(x86)}/CodeSynthesis XSD 3.3/include"
   "$ENV{ProgramW6432}/CodeSynthesis XSD 3.3/include"
   ${CMAKE_SOURCE_DIR}/../xsd/libxsd
+  "${XSD_ROOT_DIR}/include"
+  "${XSD_ROOT_DIR}/libxsd"
+  "${XSD_ROOT_DIR}"
 )
 
 FIND_PROGRAM(XSD_EXECUTABLE 
@@ -39,6 +62,8 @@ FIND_PROGRAM(XSD_EXECUTABLE
   "$ENV{ProgramFiles(x86)}/CodeSynthesis XSD 3.3/bin"
   "$ENV{ProgramW6432}/CodeSynthesis XSD 3.3/bin"
   "$ENV{PATH}"
+  "${XSD_ROOT_DIR}"
+  "${XSD_ROOT_DIR}/bin"
 )
 
 IF (NOT XSD_INCLUDE_DIR)
