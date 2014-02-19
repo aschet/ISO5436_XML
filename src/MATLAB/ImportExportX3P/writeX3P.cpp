@@ -660,11 +660,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
               "data set creation date\n");
     }
     // Use current date as creation date
-    date = new Record2Type::Date_type(TimeStamp());
+    date = TimeStampCS();
   }
   else
-    // Use the given date
-    date = new Record2Type::Date_type(ConvertMtoWStr(mxGetField(meta, 0,"Date")));
+    // TODO: Use the given date
+    // date = new Record2Type::Date_type(ConvertMtoWStr(mxGetField(meta, 0,"Date")));
+    date = TimeStampCS();
     
   
   // Instrument manufacturer
@@ -698,7 +699,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
   
   // Calibration date
   Record2Type::CalibrationDate_type 
-          calibrationDate(ConvertMtoWStr(mxGetField(meta, 0,"CalibrationDate")));
+          calibrationDate = *date;
+          // TODO: conversion of (ConvertMtoWStr(mxGetField(meta, 0,"CalibrationDate")));
 
   // Type of probing system: Contacting, non Contacting, Software 
   Record2Type::ProbingSystem_type::Type_type type(GetProbingSystemTypeEnum(meta));
@@ -749,7 +751,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   }
 
   /* Create MATRIX */
-  unsigned long mdims[3];
+  size_t mdims[3];
   mdims[0] = dim[0];
   if (ndimz > 1)
     mdims[1] = dim[1];
@@ -772,6 +774,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
   if (ft == FT_pointcloud)
   {
     // This is a list data type
+    // BUG: This is not save for 64 bit!
     handle =
       ogps_CreateListISO5436_2(FileNameL.c_str(), NULL, record1, &record2, mdims[0]*mdims[1]*mdims[2], useBinary);
   }

@@ -44,6 +44,9 @@
 #include <opengps/cxx/iso5436_2_handle.hxx>
 #include <opengps/cxx/iso5436_2_xsd.hxx>
 
+//using namespace std;
+//using namespace OpenGPS::Schemas::ISO5436_2;
+
 #define OGPS_LICENSETEXT _T("openX3P is part of the openGPS project (see <a href=\"http://www.opengps.eu/\">www.opengps.eu</a> for more info)\n")
 
 // Uri for vendor specific extension
@@ -59,5 +62,6 @@ mxArray *GetPointInfoStructure(OGPS_ISO5436_2Handle handle);
 std::wstring GetX3P_Dll_ID(void);
 // Get a properly formated timestamp for the current date
 OpenGPS::String TimeStamp(void);
-
+// Get a timestamp as data srtucture
+OpenGPS::Schemas::ISO5436_2::Record2Type::Date_type *TimeStampCS(void);
 #endif

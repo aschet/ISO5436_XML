@@ -202,9 +202,64 @@ OpenGPS::String TimeStamp(void)
 #else
 // There is only a windows implementation yet.
 //In other cases return a dummy. That is enough for testing purposes.
-OGPS_String TimeStamp(void)
+OpenGPS::String TimeStamp(void)
 {
   return _T("2000-01-01T00:00:00.0+00:00");
+}
+
+#endif
+
+/*!
+  @brief Helper function to return the current time properly formated.
+  
+  @return A date_time structure containing the time from now.
+
+  @note There is only a windows implementation yet. In other cases
+  return a dummy. That is enough for testing purposes.
+*/
+#ifdef _WIN32
+Record2Type::Date_type *TimeStampCS(void)
+{
+  Record2Type::Date_type *date=NULL;
+
+  time_t ltime;
+  struct tm lt;
+  // Time zone offset
+  long tzoff;
+  // Set timezone
+  _tzset();
+  // Get time zone offset
+  _get_timezone(&tzoff);
+  // Offset ours and minutes
+  int tzoff_h,tzoff_m;
+  tzoff_h = -(int)floor(((double)tzoff)/3600.);
+  tzoff_m = -(int)floor(((double)tzoff)/60. + 0.5) - tzoff_h*60;
+
+  // Get current time
+  time( &ltime );
+  // get local time
+  localtime_s(&lt,&ltime);
+  
+  // Correct tz offset by dst
+  if (lt.tm_isdst > 0)
+    tzoff_h++;
+
+  // Use current date to fill structure
+  date = new Record2Type::Date_type(lt.tm_year+1900, lt.tm_mon, lt.tm_mday,
+           lt.tm_hour, lt.tm_min, lt.tm_sec,
+           tzoff_h, tzoff_m);
+
+  return date;
+}
+#else
+// There is only a windows implementation yet.
+//In other cases return a dummy. That is enough for testing purposes.
+Record2Type::Date_type *TimeStampCS(void)
+{
+  Record2Type::Date_type *date=NULL;
+
+  //return _T("2000-01-01T00:00:00.0+00:00");
+  date = new Record2Type::Date_type(2000, 1, 1, 0, 0, 0, 0, 0);
 }
 
 #endif

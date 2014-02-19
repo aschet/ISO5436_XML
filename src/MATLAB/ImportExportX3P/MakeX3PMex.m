@@ -49,20 +49,20 @@ debug='-v -g '
 
 % Installation path of x3p lib
 % InstallX3P = [cd(cd([d,up,up,up,up,'install'])),fs]
-InstallX3P = [d,fs,'install',fs]
+InstallX3P = [d,up,up,up]
 % Include directory for x3p
-IDirX3P = ['-I"',InstallX3P,'include',fs,'" ','-I"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include" ']
+IDirX3P = ['-I"',InstallX3P,'include',fs,'" ','-I"C:\Program Files (x86)\Microsoft Visual Studio 8\VC\include" ']
 % IDirX3P = ['-I"',InstallX3P,'include',fs,'" ']
 % Library directory for x3p
-LDirX3P = ['-L"',InstallX3P,'lib',fs,'" ',...
-           '-L"',InstallX3P,'bin',fs,'" ']
+LDirX3P = ['-L"',InstallX3P,'build',fs,'ISO5436_2_XML',fs,'relwithdebinfo',fs,'" ']
 % Set library name of x3P DLL
-LibX3P= '-lISO5436_2_XML_S '
+LibX3P= '-liso5436-2-xml64 '
 
 % Path of x3p dll
-LibX3PPath = [InstallX3P,'bin',fs,'ISO5436_2_XML.dll']
+%build\ISO5436_2_XML\RelWithDebInfo\iso5436-2-xml64.lib
+LibX3PPath = [InstallX3P,'build',fs,'ISO5436_2_XML',fs,'relwithdebinfo',fs,'iso5436-2-xml64.dll']
 % Path of Sample files
-X3PSamplePath = [InstallX3P,'SampleFiles',fs,'*.x3p']
+X3PSamplePath = [d,up,'SampleFiles',fs,'*.x3p']
            
 %%
 
@@ -79,7 +79,12 @@ if ispc()
     IDirCS='Please specify path to include files here';
     LDirCS='Please specify path to library directory here';
   else
-    spk = spk(1);
+    % Search the bin64 path
+    spbin64 = strfind(lower(sp), 'bin64');
+    % Select bin64 path from all found
+    spk = fliplr(spk);
+    spk = spk(find(spk < spbin64,1,'first'));
+
     % Find separator before location
     st=1;
     for i=spk:-1:1
@@ -97,7 +102,7 @@ if ispc()
       end
     end
     % grep the bin path of codesynthesys
-    DirCS = [sp(st:en),fs];
+    DirCS = sp(st:en);
     % Set include and library path
     IDirCS=['-I"',cd(cd([DirCS,up,'include'])),fs,'" ']
     % ToDo: We stick to vc8 here, this may have to be changed
@@ -105,7 +110,7 @@ if ispc()
     LDirCS=['-L"',cd(cd([DirCS,up,'lib',fs,'vc-8.0'])),fs,'" ',...
             '-L"',DirCS,'" ']
     % Path to xerces DLL
-    LibXercesPath = [DirCS,'xerces-c_2_7_vc80.dll']
+    LibXercesPath = [DirCS,'xerces-c_3_1_vc80.dll']
   end
 else
   error('Please specifiy the include and library path of codesynthesys Xerces library and remove this error message!');
@@ -114,7 +119,7 @@ else
 end
 
 %% Create compile commands
-cmex=['mex ',debug,IDirX3P,LDirX3P,LibX3P,IDirCS,LDirCS,'COMPFLAGS="$COMPFLAGS /Zc:wchar_t" '];
+cmex=['mex -largeArrayDims ',debug,IDirX3P,LDirX3P,LibX3P,IDirCS,LDirCS,'COMPFLAGS="$COMPFLAGS /Zc:wchar_t" '];
 cmexopenX3P=[cmex,'openX3P.cpp ','X3PUtilities.cpp'];
 cmexwriteX3P=[cmex,'writeX3P.cpp ','X3PUtilities.cpp'];
 

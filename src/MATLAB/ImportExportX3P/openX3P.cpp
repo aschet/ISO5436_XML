@@ -48,6 +48,7 @@
 #include "mex.h"
 #include <strstream>
 #include <limits>
+#include <iomanip>
 #include <opengps/cxx/opengps.hxx>
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>
@@ -440,8 +441,24 @@ void mexFunction( int nlhs, mxArray *plhs[],
     // Get the Record2
     const OpenGPS::Schemas::ISO5436_2::ISO5436_2Type::Record2_type &r2 = r2opt.get();
 
-    // Data set creation date
-    mxSetField(plhs[4], 0, "Date", ConvertWtoMStr(r2.Date()));
+    // Data set creation date "2007-04-30T13:58:02.6+02:00"
+    wostringstream datestr;
+    //datestr << setfill(_T("0"));
+    datestr << setiosflags(ios::fixed | ios::internal)
+            << setw(4) << r2.Date().year() << "-"
+            << setw(2) << r2.Date().month() << "-"
+            << setw(2) << r2.Date().day() << "T"
+            << r2.Date().hours() << ":" 
+            << r2.Date().minutes() << ":"
+            << setprecision(1) << setw(4)
+            << r2.Date().seconds()
+            << setiosflags(ios::fixed | ios::internal | ios::showpos )
+            << setprecision(0) << setw(2)
+            << r2.Date().zone_hours() << ":"
+            << resetiosflags(ios::showpos)
+            << r2.Date().zone_minutes()
+            << ends;
+    mxSetField(plhs[4], 0, "Date", ConvertWtoMStr(datestr.str()));
 
     // Check for data set creator
     if (r2.Creator().present())
@@ -467,8 +484,23 @@ void mexFunction( int nlhs, mxArray *plhs[],
     mxSetField(plhs[4], 0, "Instrument_Serial", ConvertWtoMStr(r2.Instrument().Serial()));    
     mxSetField(plhs[4], 0, "Instrument_Version", ConvertWtoMStr(r2.Instrument().Version()));    
 
-    // Calibration
-    mxSetField(plhs[4], 0, "CalibrationDate", ConvertWtoMStr(r2.CalibrationDate()));    
+    // Calibration date
+    datestr.clear();
+    datestr << setiosflags(ios::fixed | ios::internal)
+            << setw(4) << r2.CalibrationDate().year() << "-"
+            << setw(2) << r2.CalibrationDate().month() << "-"
+            << setw(2) << r2.CalibrationDate().day() << "T"
+            << r2.CalibrationDate().hours() << ":" 
+            << r2.CalibrationDate().minutes() << ":"
+            << setprecision(1) << setw(4)
+            << r2.CalibrationDate().seconds()
+            << setiosflags(ios::fixed | ios::internal | ios::showpos )
+            << setprecision(0) << setw(2)
+            << r2.CalibrationDate().zone_hours() << ":"
+            << resetiosflags(ios::showpos)
+            << r2.CalibrationDate().zone_minutes()
+            << ends;
+    mxSetField(plhs[4], 0, "CalibrationDate", ConvertWtoMStr(datestr.str()));
 
     // Probing system type
     mxSetField(plhs[4], 0, "ProbingSystem_Type", ConvertWtoMStr( r2.ProbingSystem().Type()));    

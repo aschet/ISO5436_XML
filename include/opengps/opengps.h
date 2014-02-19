@@ -40,7 +40,7 @@
 #ifndef _OPENGPS_H
 #define _OPENGPS_H
 
-#if _UNICODE
+#ifdef _UNICODE
    #include <wchar.h>
 #endif
 
