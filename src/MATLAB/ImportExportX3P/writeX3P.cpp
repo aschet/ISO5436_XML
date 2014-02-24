@@ -238,13 +238,14 @@ void mexFunction( int nlhs, mxArray *plhs[],
      _T("    z     - 1,2 or 3d array of z coordinates in meter\n")
      _T("    meta  - Meta data structure of the file with the following elements:\n")
      _T("     .Date    - Data set creation date of the form '2007-04-30T13:58:02.6+02:00'.\n")
-     _T("                Set to empty string to use current time.\n")
+     _T("                Set to empty string to use current time. Alternatively specify a\n")
+     _T("                6 element time vector as in datevec().\n")
      _T("     .Creator - optional name of the creator or empty array.\n")
      _T("     .Instrument_Manufacturer - String with name of the manufacturer\n")
      _T("     .Instrument_Model - String with instrument model or software name\n")
      _T("     .Instrument_Serial - String with serial number of instrument or 'not available'.\n")
      _T("     .Instrument_Version - Hardware and software version string of Instrument\n")
-     _T("     .CalibrationDate - Date of last calibration of the form '2007-04-30T13:58:02.6+02:00'\n")
+     _T("     .CalibrationDate - Date of last calibration. Same format as .Date element.\n")
      _T("     .ProbingSystem_Type - one of  'Software','Contacting' or 'NonContacting'\n")
      _T("     .ProbingSystem_Identification - String identifying lens, probe tip, etc.\n")
      _T("     .Comment    - 'A user comment specific to this dataset'\n")          
@@ -648,24 +649,16 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // Check for a date with correct length given in meta data field
   // TODO: We should at least do some format cecking
   mwSize dlen = mxGetNumberOfElements(mxGetField(meta, 0,"Date"));
-  if (dlen != 27)
+  date = VectorTimeToX3PTime(mxGetField(meta,0,"Date"));
+  if (date == NULL)
   {
-    // If length is less than 2 we assume it has been left blank intentionally
-    if (dlen > 1)
-    {
-      // Issue a warning
-      mexWarnMsgIdAndTxt("openGPS:writeX3P:CreationDate",
-              "The creation date must have a length of 27 characters and a format\n"
-              "similar to '2007-04-30T13:58:02.6+02:00'. Using the current date as\n"
-              "data set creation date\n");
-    }
+    // Todo: parse the string to date structure
+    mexWarnMsgIdAndTxt("openGPS:writeX3P:CreationDate",
+            "Parsing the date format failed.\n"
+            "Now using the current date as data set creation date.\n");
     // Use current date as creation date
     date = TimeStampCS();
   }
-  else
-    // TODO: Use the given date
-    // date = new Record2Type::Date_type(ConvertMtoWStr(mxGetField(meta, 0,"Date")));
-    date = TimeStampCS();
     
   
   // Instrument manufacturer
@@ -696,11 +689,19 @@ void mexFunction( int nlhs, mxArray *plhs[],
   // Delete serial element
   delete serial;
   serial=NULL;
-  
+
   // Calibration date
-  Record2Type::CalibrationDate_type 
-          calibrationDate = *date;
-          // TODO: conversion of (ConvertMtoWStr(mxGetField(meta, 0,"CalibrationDate")));
+  Record2Type::CalibrationDate_type *calibrationDate = NULL;
+  calibrationDate = VectorTimeToX3PTime(mxGetField(meta,0,"CalibrationDate"));
+  if (calibrationDate == NULL)
+  {
+    // Todo: parse the string to date structure
+    mexWarnMsgIdAndTxt("openGPS:writeX3P:CalibrationDate",
+            "Parsing the CalibrationDate format failed.\n"
+            "Now using the current date as calibration date.\n");
+    // Use current date as calibration date
+    calibrationDate = TimeStampCS();
+  }
 
   // Type of probing system: Contacting, non Contacting, Software 
   Record2Type::ProbingSystem_type::Type_type type(GetProbingSystemTypeEnum(meta));
@@ -711,11 +712,13 @@ void mexFunction( int nlhs, mxArray *plhs[],
   Record2Type::ProbingSystem_type probingSystem(type, id);
 
   // Create Record2 from collected data
-  Record2Type record2(*date, instrument, calibrationDate, probingSystem);
+  Record2Type record2(*date, instrument, *calibrationDate, probingSystem);
   
-  // Delete date record
+  // Delete date records
   if (date)
     delete date;
+  if (calibrationDate)
+    delete calibrationDate;
 
   // Look out for comment field
   mxArray *cfield = mxGetField(meta, 0,"Comment");

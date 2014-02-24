@@ -27,7 +27,7 @@
 
 %  Copyright 2008, by Dr. Georg Wiora, NanoFocus AG
 
-
+% TODO: Copy zlibwapi.dll to directory to avoid disambiguities.
 
 %% Unload all libraries
 clear all libraries
@@ -60,7 +60,7 @@ LibX3P= '-liso5436-2-xml64 '
 
 % Path of x3p dll
 %build\ISO5436_2_XML\RelWithDebInfo\iso5436-2-xml64.lib
-LibX3PPath = [InstallX3P,'build',fs,'ISO5436_2_XML',fs,'relwithdebinfo',fs,'iso5436-2-xml64.dll']
+LibX3PPath = [InstallX3P,'build',fs,'ISO5436_2_XML',fs,'relwithdebinfo',fs,'iso5436-2-xml64.lib']
 % Path of Sample files
 X3PSamplePath = [d,up,'SampleFiles',fs,'*.x3p']
            
@@ -110,7 +110,7 @@ if ispc()
     LDirCS=['-L"',cd(cd([DirCS,up,'lib',fs,'vc-8.0'])),fs,'" ',...
             '-L"',DirCS,'" ']
     % Path to xerces DLL
-    LibXercesPath = [DirCS,'xerces-c_3_1_vc80.dll']
+    LibXercesPath = [DirCS,'xerces-c_3_1_vc80.lib']
   end
 else
   error('Please specifiy the include and library path of codesynthesys Xerces library and remove this error message!');
@@ -172,8 +172,8 @@ else
 end
 
 %% Copy the dlls to the same directory as the mex files
-copyfile(LibX3PPath,'.')
-copyfile(LibXercesPath,'.')
+% copyfile(LibX3PPath,'.')
+% copyfile(LibXercesPath,'.')
 
 %% Copy sample files
 % Clear all x3p files from current dir

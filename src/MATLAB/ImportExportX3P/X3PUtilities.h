@@ -64,4 +64,9 @@ std::wstring GetX3P_Dll_ID(void);
 OpenGPS::String TimeStamp(void);
 // Get a timestamp as data srtucture
 OpenGPS::Schemas::ISO5436_2::Record2Type::Date_type *TimeStampCS(void);
+// Convert Matlab vector time format to time data type
+OpenGPS::Schemas::ISO5436_2::Record2Type::Date_type *VectorTimeToX3PTime(const mxArray *vecTime);
+// Convert time data type to Matlab vector time format
+mxArray* X3PTimeToVectorTime(const OpenGPS::Schemas::ISO5436_2::Record2Type::Date_type &datetime);
+
 #endif

@@ -263,3 +263,128 @@ Record2Type::Date_type *TimeStampCS(void)
 }
 
 #endif
+
+
+/*!
+  @brief Helper function to convert a matlab vector timestamp to the X3P Date_time type.
+
+  @argument vecTime is a matlab array either as string with 27 elements or as datevec().
+
+  @return A date_time structure containing the time.
+
+  @note There is only a windows implementation yet. In other cases
+  return a dummy. That is enough for testing purposes.
+*/
+Record2Type::Date_type *VectorTimeToX3PTime(const mxArray *vecTime)
+{
+  // Resulting date structure
+  Record2Type::Date_type *date=NULL;
+
+  // No Input, no output
+  if (vecTime == NULL)
+    return NULL;
+
+  // Get number of elements in datevector
+  mwSize nElem = mxGetNumberOfElements(vecTime);
+
+  // Check input type
+  if( ((nElem==6) || (nElem==8)) && mxIsNumeric(vecTime) && mxIsDouble(vecTime))
+  {
+    // Get a pointer to the date array vector
+    double *vec = mxGetPr(vecTime);
+    // read array elements and write to data structure
+    if (nElem == 6)
+    {
+      // Ignore time zone offset since this is unknown to matlab
+      date = new Record2Type::Date_type((unsigned short)floor(vec[0]), (unsigned short)floor(vec[1]),
+                                        (unsigned short)floor(vec[2]), (unsigned short)floor(vec[3]),
+                                        (unsigned short)floor(vec[4]), vec[5]);
+    }
+    else
+    {
+      // Use timezone information
+      date = new Record2Type::Date_type((unsigned short)floor(vec[0]), (unsigned short)floor(vec[1]),
+                                        (unsigned short)floor(vec[2]), (unsigned short)floor(vec[3]),
+                                        (unsigned short)floor(vec[4]), vec[5],
+                                        (short)floor(vec[6]),(short)floor(vec[7])); // Timezone
+    }
+    // Return result
+    return date;
+  }
+  else if ((nElem==27) && mxIsChar(vecTime))
+  {
+    // Parse text date in the format '2007-04-30T13:58:02.6+02:00'
+    // Create a stringstream from MatlabString
+    wistringstream dstr(ConvertMtoWStr(vecTime));
+    int year,month,day,hours,minutes;
+    double seconds;
+    int tzhours,tzmins;
+    wchar_t c; // Dummy character to eat separation chars
+    // Parse the string
+    dstr >> year >> c >> month >> c >> day
+         >> c >> hours >> c >> minutes >> c >> seconds >> tzhours >> c >> tzmins;
+    // Convert timezone to UTC
+    hours -= tzhours;
+    minutes -= tzmins;
+    // Create date structure
+    date = new Record2Type::Date_type(year, month, day, hours, minutes, seconds);
+    return date;
+  }
+  else if (nElem>1)
+  {
+    // if less than 2 elements we assume that the field has intentionally been left blank
+    // Not a valid date format
+      mexWarnMsgIdAndTxt("openGPS:X3PUtilitites:Date",
+              "Dates must have a length of 27 characters and a format\n"
+              "similar to '2007-04-30T13:58:02.6+02:00' or must be a date vector as\n"
+              "returned by datevec() function. Now using the current date as\n"
+              "data set creation date.\n");
+  }
+  // return a NULL pointer
+  return NULL;
+}
+
+
+/*!
+  @brief Helper function to convert the X3P Date_time type to a matlab datevec().
+
+  @argument vecTime is a matlab datevec array with 6 or 8 elements. In the 8 element case the hours and minutes of the time zone offset are appended at the end.
+
+  @return A matlab datevec() array plus time zone offsets.
+*/
+mxArray *X3PTimeToVectorTime(const Record2Type::Date_type &x3pTime)
+{
+  // No Input, no output
+  //if (x3pTime == NULL)
+  //  return NULL;
+
+  // Create a matrix with 8 elements
+  mxArray *vectime = mxCreateDoubleMatrix(1,8,mxREAL);
+  if (vectime == NULL)
+  {
+      mexWarnMsgIdAndTxt("openGPS:X3PUtilitites:X3PTimeToVectorTime",
+              "Could not allocate 8 element vector for datevec().\n");
+      return NULL;
+  }
+
+  // Set the elements of datevec
+  double *ptr = mxGetPr(vectime);
+  // Set year of datevec
+  *(ptr++) = x3pTime.year();
+  // Set month of datevec
+  *(ptr++) = x3pTime.month();
+  // Set day of datevec
+  *(ptr++) = x3pTime.day();
+  // Set hours of datevec
+  *(ptr++) = x3pTime.hours();
+  // Set minutes of datevec
+  *(ptr++) = x3pTime.minutes();
+  // Set seconds of datevec
+  *(ptr++) = x3pTime.seconds();
+  // Set time zone offset hours
+  *(ptr++) = x3pTime.zone_hours();
+  // Set time zone offset minutes
+  *(ptr++) = x3pTime.zone_minutes();
+
+  return vectime;
+}
