@@ -45,7 +45,7 @@ std::basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const xml_sch
    if(datetime.zone_present())
    {
       int offset_h = datetime.zone_hours();
-      OpenGPS::String tzoffsign;
+      String tzoffsign;
       if(offset_h < 0)
       {
          offset_h *= -1;
@@ -76,7 +76,7 @@ std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& os, const x
    char_stream << datetime;
 
    // Convert to wchar_t and write to wchar_t-stream
-   OpenGPS::String buffer;
+   String buffer;
    buffer.FromChar(char_stream.str().c_str());
    os << buffer;
 
