@@ -45,7 +45,7 @@ inline void BinaryMSBPointVectorWriterContext::WriteT(T value)
 	CheckStreamAndThrowException();
 
 	static_assert(sizeof(value) == TSize, "value has incorrect byte size");
-	UnsignedByte buffer[TSize];
+	UnsignedByte buffer[TSize] = {};
 	GetStream()->write(reinterpret_cast<const char*>(Environment::ByteSwap(value, buffer)), TSize);
 
 	CheckIsGoodAndThrowException();

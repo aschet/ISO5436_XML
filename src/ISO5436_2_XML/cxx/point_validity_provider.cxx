@@ -33,7 +33,7 @@
 #include "stdafx.hxx"
 
 PointValidityProvider::PointValidityProvider(std::shared_ptr<PointBuffer> value)
-	:m_PointBuffer(value)
+	:m_PointBuffer{ value }
 {
 	assert(value);
 }

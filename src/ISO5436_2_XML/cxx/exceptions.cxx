@@ -46,7 +46,7 @@ Exception::Exception(OGPS_ExceptionId id,
 }
 
 Exception::Exception(const Exception& rhs)
-	:std::runtime_error(rhs),
+	:std::runtime_error{ rhs },
 	m_Id{ rhs.m_Id },
 	m_Details{ rhs.m_Details },
 	m_Method{ rhs.m_Method }

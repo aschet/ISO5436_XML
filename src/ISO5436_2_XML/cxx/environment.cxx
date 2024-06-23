@@ -56,7 +56,7 @@ bool Environment::IsLittleEndian()
 {
 	UnsignedByte test[2] = { 0, 1 };
 
-	OGPS_Int16 value;
+	OGPS_Int16 value{};
 	ByteSwap(test, value);
 
 	assert(value == 1 || value == 256);
@@ -95,46 +95,46 @@ inline static void ByteSwap64(UnsignedBytePtr src, UnsignedBytePtr dst)
 
 UnsignedBytePtr Environment::ByteSwap(OGPS_Int16 value, UnsignedBytePtr dst)
 {
-	auto src = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap16(src, dst);
 	return dst;
 }
 
 void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Int16& value)
 {
-	auto dst = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap16(src, dst);
 }
 
 UnsignedBytePtr Environment::ByteSwap(OGPS_Int32 value, UnsignedBytePtr dst)
 {
-	auto src = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap32(src, dst);
 	return dst;
 }
 
 void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Int32& value)
 {
-	auto dst = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap32(src, dst);
 }
 
 UnsignedBytePtr Environment::ByteSwap(OGPS_Float value, UnsignedBytePtr dst)
 {
-	auto src = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap32(src, dst);
 	return dst;
 }
 
 void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Float& value)
 {
-	auto dst = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap32(src, dst);
 }
 
 UnsignedBytePtr Environment::ByteSwap(OGPS_Double value, UnsignedBytePtr dst)
 {
-	auto src = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap64(src, dst);
 	return dst;
 }
@@ -142,6 +142,6 @@ UnsignedBytePtr Environment::ByteSwap(OGPS_Double value, UnsignedBytePtr dst)
 void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Double& value)
 {
 	assert(src && value);
-	auto dst = reinterpret_cast<UnsignedBytePtr>(&value);
+	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
 	ByteSwap64(src, dst);
 }

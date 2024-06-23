@@ -181,25 +181,33 @@ void PointVectorProxy::DataPointProxy::Set(const DataPoint& src)
 	switch (srcType)
 	{
 	case OGPS_Int16PointType:
-		OGPS_Int16 vs;
+	{
+		OGPS_Int16 vs{};
 		src.Get(&vs);
 		Set(vs);
 		break;
+	}
 	case OGPS_Int32PointType:
-		OGPS_Int32 vl;
+	{
+		OGPS_Int32 vl{};
 		src.Get(&vl);
 		Set(vl);
 		break;
+	}
 	case OGPS_FloatPointType:
-		OGPS_Float vf;
+	{
+		OGPS_Float vf{};
 		src.Get(&vf);
 		Set(vf);
 		break;
+	}
 	case OGPS_DoublePointType:
-		OGPS_Double vd;
+	{
+		OGPS_Double vd{};
 		src.Get(&vd);
 		Set(vd);
 		break;
+	}
 	case OGPS_MissingPointType:
 		// Nothing to be copied in this case.
 		break;

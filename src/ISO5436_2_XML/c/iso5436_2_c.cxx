@@ -48,9 +48,9 @@ OGPS_ISO5436_2Handle ogps_OpenISO5436_2(
 	assert(file);
 
 	return HandleExceptionRetval(nullptr, [&]() {
-		auto instance = std::make_unique<ISO5436_2>(file, temp ? temp : _T(""));
+		auto instance{ std::make_unique<ISO5436_2>(file, temp ? temp : _T("")) };
 		instance->Open();
-		OGPS_ISO5436_2Handle h = new OGPS_ISO5436_2;
+		OGPS_ISO5436_2Handle h{ new OGPS_ISO5436_2 };
 		h->instance = std::move(instance);
 		return h;
 	});
@@ -67,10 +67,10 @@ OGPS_ISO5436_2Handle ogps_CreateMatrixISO5436_2(
 	assert(file);
 
 	return HandleExceptionRetval(nullptr, [&]() {
-		auto instance = std::make_unique<ISO5436_2>(file, temp ? temp : _T(""));
+		auto instance{ std::make_unique<ISO5436_2>(file, temp ? temp : _T("")) };
 		instance->Create(record1, record2, matrixDimension, useBinaryData);
 
-		OGPS_ISO5436_2Handle h = new OGPS_ISO5436_2;
+		OGPS_ISO5436_2Handle h{ new OGPS_ISO5436_2 };
 		h->instance = std::move(instance);
 		return h;
 	});
@@ -87,10 +87,10 @@ OGPS_ISO5436_2Handle ogps_CreateListISO5436_2(
 	assert(file);
 
 	return HandleExceptionRetval(nullptr, [&]() {
-		auto instance = std::make_unique<ISO5436_2>(file, temp ? temp : _T(""));
+		auto instance{ std::make_unique<ISO5436_2>(file, temp ? temp : _T("")) };
 		instance->Create(record1, record2, listDimension, useBinaryData);
 
-		OGPS_ISO5436_2Handle h = new OGPS_ISO5436_2;
+		OGPS_ISO5436_2Handle h{ new OGPS_ISO5436_2 };
 		h->instance = std::move(instance);
 		return h;
 	});
@@ -130,9 +130,9 @@ OGPS_PointIteratorPtr ogps_CreateNextPointIterator(const OGPS_ISO5436_2Handle ha
 	assert(handle && handle->instance);
 
 	return HandleExceptionRetval(nullptr, [&]() {
-		auto instance = handle->instance->CreateNextPointIterator();
+		auto instance{ handle->instance->CreateNextPointIterator() };
 
-		OGPS_PointIteratorPtr iter = new OGPS_PointIterator();
+		OGPS_PointIteratorPtr iter{ new OGPS_PointIterator() };
 		iter->instance = std::move(instance);
 		return iter;
 	});
@@ -143,9 +143,9 @@ OGPS_PointIteratorPtr ogps_CreatePrevPointIterator(const OGPS_ISO5436_2Handle ha
 	assert(handle && handle->instance);
 
 	return HandleExceptionRetval(nullptr, [&]() {
-		auto instance = handle->instance->CreatePrevPointIterator();
+		auto instance{ handle->instance->CreatePrevPointIterator() };
 
-		OGPS_PointIteratorPtr iter = new OGPS_PointIterator();
+		OGPS_PointIteratorPtr iter{ new OGPS_PointIterator() };
 		iter->instance = std::move(instance);
 		return iter;
 	});

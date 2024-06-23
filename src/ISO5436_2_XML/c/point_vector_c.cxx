@@ -208,7 +208,7 @@ OGPS_DataPointPtr ogps_GetX(OGPS_PointVectorPtr vector)
 	if (!vector->x)
 	{
 		HandleException([&]() {
-			auto p = vector->instance.GetX();
+			auto p{ vector->instance.GetX() };
 			vector->x = new OGPS_DataPoint;
 			vector->x->instance = p;
 		});
@@ -224,7 +224,7 @@ OGPS_DataPointPtr ogps_GetY(OGPS_PointVectorPtr  vector)
 	if (!vector->y)
 	{
 		HandleException([&]() {
-			auto p = vector->instance.GetY();
+			auto p{ vector->instance.GetY() };
 			vector->y = new OGPS_DataPoint;
 			vector->y->instance = p;
 		});
@@ -240,7 +240,7 @@ OGPS_DataPointPtr ogps_GetZ(OGPS_PointVectorPtr vector)
 	if (!vector->z)
 	{
 		HandleException([&]() {
-			auto p = vector->instance.GetZ();
+			auto p{ vector->instance.GetZ() };
 			vector->z = new OGPS_DataPoint;
 			vector->z->instance = p;
 		});

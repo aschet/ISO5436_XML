@@ -43,17 +43,17 @@ String::String()
 }
 
 String::String(const BaseType& s)
-	:BaseType(s)
+	:BaseType{ s }
 {
 }
 
 String::String(const OGPS_Character* s)
-	:BaseType(s)
+	:BaseType{ s }
 {
 }
 
 String::String(const String& s)
-	:BaseType(s)
+	:BaseType{ s }
 {
 }
 
@@ -199,7 +199,7 @@ bool String::ConvertFromMd5(const std::array<UnsignedByte, 16>& md5)
 
 String& String::ReplaceAll(const String& old_str, const String& new_str)
 {
-	size_t pos = 0;
+	size_t pos{};
 	do
 	{
 		pos = find(old_str, pos);

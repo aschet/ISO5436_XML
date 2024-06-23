@@ -38,7 +38,7 @@
 #include <opengps/cxx/exceptions.hxx>
 
 ValidBuffer::ValidBuffer(std::shared_ptr<PointBuffer> value)
-	:PointValidityProvider(value)
+	:PointValidityProvider{ value }
 {
 }
 

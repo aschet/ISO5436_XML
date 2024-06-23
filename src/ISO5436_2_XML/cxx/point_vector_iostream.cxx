@@ -44,25 +44,25 @@ bool PointVectorWhitespaceFacet::do_is(mask msk, OGPS_Character ch) const
 }
 
 PointVectorInvariantLocale::PointVectorInvariantLocale()
-	:std::locale(std::locale::classic(), new PointVectorWhitespaceFacet())
+	:std::locale{ std::locale::classic(), new PointVectorWhitespaceFacet() }
 {
 }
 
 PointVectorInputStringStream::PointVectorInputStringStream()
-	:BaseType(std::ios_base::in)
+	:BaseType{ std::ios_base::in }
 {
 	imbue(m_Locale);
 }
 
 PointVectorInputStringStream::PointVectorInputStringStream(const String& s)
-	:BaseType(std::ios_base::in)
+	:BaseType{ std::ios_base::in }
 {
 	imbue(m_Locale);
 	str(s);
 }
 
 PointVectorOutputStringStream::PointVectorOutputStringStream()
-	: BaseType(std::ios_base::out)
+	: BaseType{ std::ios_base::out }
 {
 	imbue(m_Locale);
 }
