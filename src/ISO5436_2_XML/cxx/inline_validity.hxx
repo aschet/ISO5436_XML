@@ -86,7 +86,7 @@ namespace OpenGPS
 	template<typename T, OGPS_DataPointType TPoint>
 	inline void InlineValidityT<T, TPoint>::SetValid(size_t index, bool value)
 	{
-		assert(std::numeric_limits<T>::has_quiet_NaN);
+		static_assert(std::numeric_limits<T>::has_quiet_NaN);
 
 		if (!value)
 		{
@@ -106,7 +106,7 @@ namespace OpenGPS
 	template<typename T, OGPS_DataPointType TPoint>
 	inline bool InlineValidityT<T, TPoint>::IsValid(size_t index) const
 	{
-		assert(std::numeric_limits<T>::has_quiet_NaN);
+		static_assert(std::numeric_limits<T>::has_quiet_NaN);
 
 		T value{};
 		GetPointBuffer()->Get(index, value);
