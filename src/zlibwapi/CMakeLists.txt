@@ -24,7 +24,7 @@ set(source_files
 )
 
 add_library(${PROJECT_NAME} STATIC)
-target_link_libraries(${PROJECT_NAME} PRIVATE zlibstatic)
+target_link_libraries(${PROJECT_NAME} PUBLIC zlibstatic)
 target_include_directories(${PROJECT_NAME} PUBLIC "${minizip_source_dir}")
 target_sources(${PROJECT_NAME} PRIVATE ${source_files} PUBLIC ${header_files})
 if(WIN32)
