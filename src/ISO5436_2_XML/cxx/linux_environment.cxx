@@ -47,8 +47,6 @@
 
 #ifdef _UNICODE
 
-extern int errno;
-
 namespace OpenGPS
 {
 	typedef std::wostringstream OutStringStream;
@@ -69,8 +67,8 @@ using namespace OpenGPS;
 int copyFile(const char* src, const char* dst)
 {
 	FILE* in_fd = nullptr, * out_fd = nullptr;
-	int n_chars;
-	const int BUFSIZE = 4096;
+	size_t n_chars;
+	const size_t BUFSIZE = 4096;
 	char buf[BUFSIZE];
 
 
@@ -92,13 +90,6 @@ int copyFile(const char* src, const char* dst)
 		if (fwrite(buf, 1, n_chars, out_fd) != n_chars)
 		{
 			// write error
-			return -1;
-		}
-
-
-		if (n_chars == -1)
-		{
-			// read error
 			return -1;
 		}
 	}
@@ -156,7 +147,7 @@ bool LinuxEnvironment::GetPathName(const String& path, String& clean_path) const
 	bool hasDroppedChars = false;
 	bool hasPathSeparator = false;
 
-	/* Use any character in the current code page for a name, including Unicode characters, except characters in the range of zero (0) through 31, or any character that the file system does not allow. A name can contain characters in the extended character set (128–255). However, it cannot contain the following reserved characters: < > : " / \ | ? *
+	/* Use any character in the current code page for a name, including Unicode characters, except characters in the range of zero (0) through 31, or any character that the file system does not allow. A name can contain characters in the extended character set (128ï¿½255). However, it cannot contain the following reserved characters: < > : " / \ | ? *
 	*/
 	for (size_t index = 0; index < length; ++index)
 	{
