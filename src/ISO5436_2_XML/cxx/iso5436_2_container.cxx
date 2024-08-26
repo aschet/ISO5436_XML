@@ -260,7 +260,7 @@ void ISO5436_2Container::VerifyDataBinChecksum()
 	if (m_Document->Record3().DataLink().present())
 	{
 		const auto& md5{ m_Document->Record3().DataLink()->MD5ChecksumPointData() };
-		m_DataBinChecksum = VerifyChecksum(file, (const unsigned char*)md5.data(), md5.size());
+		m_DataBinChecksum = VerifyChecksum(file, reinterpret_cast<const unsigned char*>(md5.data()), md5.size());
 		return;
 	}
 
@@ -278,7 +278,7 @@ void ISO5436_2Container::VerifyValidBinChecksum()
 		const auto& md5{ m_Document->Record3().DataLink()->MD5ChecksumValidPoints() };
 		if (md5.present())
 		{
-			m_ValidBinChecksum = VerifyChecksum(file, (const unsigned char*)md5->data(), md5->size());
+			m_ValidBinChecksum = VerifyChecksum(file, reinterpret_cast<const unsigned char*>(md5->data()), md5->size());
 			return;
 		}
 	}
@@ -1121,7 +1121,7 @@ void ISO5436_2Container::CreateDocument(
 {
 	assert(!HasDocument());
 	assert(record1);
-	assert(matrixDimension != nullptr && listDimension == 0 || matrixDimension == nullptr && listDimension > 0);
+	assert((matrixDimension != nullptr && listDimension == 0) || (matrixDimension == nullptr && listDimension > 0));
 
 	try
 	{
