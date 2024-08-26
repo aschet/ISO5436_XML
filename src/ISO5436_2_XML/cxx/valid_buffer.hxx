@@ -62,7 +62,7 @@ namespace OpenGPS
 		 * Maps the bit buffer from a binary stream.
 		 * @param stream The bit array gets copied from here.
 		 */
-		void Read(std::basic_istream<Byte>& stream);
+		void Read(std::basic_istream<char>& stream);
 
 		/*!
 		 * Maps the bit buffer to a binary stream.
@@ -100,7 +100,7 @@ namespace OpenGPS
 		void AllocateRaw(size_t rawSize);
 
 		/*! Pointer to the internal bit array. */
-		std::unique_ptr<UnsignedByte[]> m_ValidityBuffer;
+		std::unique_ptr<unsigned char[]> m_ValidityBuffer;
 
 		/*! Size of the bit array in bytes. */
 		size_t m_RawSize{};

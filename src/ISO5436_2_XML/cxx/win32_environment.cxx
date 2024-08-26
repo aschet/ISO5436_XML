@@ -383,7 +383,7 @@ bool Win32Environment::GetVariable(const String& varName, String& value) const
 
 	/* This readonly->read/write cast should be safe here. GetEnvironmentVariable is not supposed
 	to vary buffer size nor its location. Only new content should be copied in. */
-	if (GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), bufferLength) != bufferLength - 1)
+	if (GetEnvironmentVariable(varName.c_str(), (LPTSTR)value.c_str(), static_cast<DWORD>(bufferLength)) != bufferLength - 1)
 	{
 		value.erase();
 		return false;
@@ -403,11 +403,10 @@ bool Win32Environment::GetVariable(const String& varName, String& value) const
 		}
 
 		value.resize(bufferLength2 - 1);
-		assert(value.size() == bufferLength2 - 1);
 
 		/* Wired cast should be safe here. Same as above. */
 		/* This assumes we use Unicode here. See API for ExpandEnvironmentStrings. */
-		if (ExpandEnvironmentStrings(unescaped.c_str(), (LPTSTR)value.c_str(), bufferLength2) != bufferLength2)
+		if (ExpandEnvironmentStrings(unescaped.c_str(), (LPTSTR)value.c_str(), static_cast<DWORD>(bufferLength2)) != bufferLength2)
 		{
 			value.erase();
 			return false;

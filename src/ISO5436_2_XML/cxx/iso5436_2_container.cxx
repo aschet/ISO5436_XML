@@ -201,7 +201,7 @@ void ISO5436_2Container::Decompress()
 	DecompressDataBin();
 }
 
-bool ISO5436_2Container::VerifyChecksum(const String& filePath, const UnsignedBytePtr checksum, size_t size) const
+bool ISO5436_2Container::VerifyChecksum(const String& filePath, const unsigned char* checksum, size_t size) const
 {
 	assert(filePath.size() > 0);
 
@@ -211,7 +211,7 @@ bool ISO5436_2Container::VerifyChecksum(const String& filePath, const UnsignedBy
 	}
 
 	String filePathBuffer(filePath);
-	std::array<UnsignedByte, 16> md5{};
+	std::array<unsigned char, 16> md5{};
 
 	if (!md5_file(filePathBuffer.ToChar(), md5.data()))
 	{
@@ -229,7 +229,7 @@ bool ISO5436_2Container::VerifyChecksum(const String& filePath, const UnsignedBy
 	return false;
 }
 
-bool ISO5436_2Container::VerifyChecksum(const String& filePath, std::array<UnsignedByte, 16>& checksum) const
+bool ISO5436_2Container::VerifyChecksum(const String& filePath, std::array<unsigned char, 16>& checksum) const
 {
 	return VerifyChecksum(filePath, checksum.data(), checksum.size());
 }
@@ -241,7 +241,7 @@ void ISO5436_2Container::VerifyMainChecksum()
 	const auto file{ GetMainFileName() };
 	const auto chksFileName{ GetChecksumFileName() };
 
-	std::array<UnsignedByte, 16> checksum{};
+	std::array<unsigned char, 16> checksum{};
 	if (ReadMd5FromFile(chksFileName, checksum))
 	{
 		m_MainChecksum = VerifyChecksum(file, checksum);
@@ -260,7 +260,7 @@ void ISO5436_2Container::VerifyDataBinChecksum()
 	if (m_Document->Record3().DataLink().present())
 	{
 		const auto& md5{ m_Document->Record3().DataLink()->MD5ChecksumPointData() };
-		m_DataBinChecksum = VerifyChecksum(file, (const UnsignedBytePtr)md5.data(), md5.size());
+		m_DataBinChecksum = VerifyChecksum(file, (const unsigned char*)md5.data(), md5.size());
 		return;
 	}
 
@@ -278,7 +278,7 @@ void ISO5436_2Container::VerifyValidBinChecksum()
 		const auto& md5{ m_Document->Record3().DataLink()->MD5ChecksumValidPoints() };
 		if (md5.present())
 		{
-			m_ValidBinChecksum = VerifyChecksum(file, (const UnsignedBytePtr)md5->data(), md5->size());
+			m_ValidBinChecksum = VerifyChecksum(file, (const unsigned char*)md5->data(), md5->size());
 			return;
 		}
 	}
@@ -286,7 +286,7 @@ void ISO5436_2Container::VerifyValidBinChecksum()
 	m_ValidBinChecksum = false;
 }
 
-bool ISO5436_2Container::ReadMd5FromFile(const String& fileName, std::array<UnsignedByte, 16>& checksum) const
+bool ISO5436_2Container::ReadMd5FromFile(const String& fileName, std::array<unsigned char, 16>& checksum) const
 {
 #ifdef _UNICODE
 #if !_WIN32
@@ -937,7 +937,7 @@ bool ISO5436_2Container::Decompress(const String& src, const String& dst, const 
 
 							assert(size > 0);
 
-							auto buffer = std::make_unique<Byte[]>(size);
+							auto buffer = std::make_unique<char[]>(size);
 							auto bytesCopied{ unzReadCurrentFile(handle, buffer.get(), size) };
 
 							if (bytesCopied == size)
@@ -1318,7 +1318,7 @@ void ISO5436_2Container::ResetValidPointsLink()
 	}
 }
 
-void ISO5436_2Container::SaveChecksumFile(zipFile handle, const std::array<UnsignedByte, 16>& checksum)
+void ISO5436_2Container::SaveChecksumFile(zipFile handle, const std::array<unsigned char, 16>& checksum)
 {
 	assert(handle);
 
@@ -1445,7 +1445,7 @@ void ISO5436_2Container::SaveXmlDocument(zipFile handle)
 		_VERIFY(zipCloseFileInZip(handle), ZIP_OK);
 	}
 
-	std::array<UnsignedByte, 16> md5{};
+	std::array<unsigned char, 16> md5{};
 	_VERIFY(buffer.GetMd5(md5), true);
 	SaveChecksumFile(handle, md5);
 }
@@ -1531,7 +1531,7 @@ void ISO5436_2Container::SaveValidPointsLink(zipFile handle)
 		_VERIFY(zipCloseFileInZip(handle), ZIP_OK);
 
 		// Add Checksum for valid.bin
-		std::array<UnsignedByte, 16> md5{};
+		std::array<unsigned char, 16> md5{};
 		_VERIFY(vbuffer.GetMd5(md5), true);
 
 		const Schemas::ISO5436_2::DataLinkType::MD5ChecksumValidPoints_type checksum(md5.data(), md5.size());
@@ -1609,7 +1609,7 @@ void ISO5436_2Container::SavePointBuffer(zipFile handle)
 
 		if (isBinary)
 		{
-			std::array<UnsignedByte, 16> md5{};
+			std::array<unsigned char, 16> md5{};
 			dynamic_cast<BinaryPointVectorWriterContext*>(context.get())->GetMd5(md5);
 			const Schemas::ISO5436_2::DataLinkType::MD5ChecksumPointData_type checksum(md5.data(), md5.size());
 			m_Document->Record3().DataLink()->MD5ChecksumPointData(checksum);
@@ -2335,7 +2335,7 @@ bool ISO5436_2Container::WriteVendorSpecific(zipFile handle)
 								{
 									try
 									{
-										src.read((BytePtr)buffer, chunk);
+										src.read((char*)buffer, chunk);
 
 										if (src.fail())
 										{

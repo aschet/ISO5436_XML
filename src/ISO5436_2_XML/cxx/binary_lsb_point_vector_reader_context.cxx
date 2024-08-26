@@ -41,7 +41,7 @@ inline void BinaryLSBPointVectorReaderContext::ReadT(T& value)
 	CheckStreamAndThrowException();
 
 	static_assert(sizeof(value) == TSize, "value has incorrect byte size");
-	GetStream()->read(reinterpret_cast<BytePtr>(&value), TSize);
+	GetStream()->read(reinterpret_cast<char*>(&value), TSize);
 
 	CheckIsGoodAndThrowException();
 }

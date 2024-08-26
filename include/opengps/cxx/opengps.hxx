@@ -55,19 +55,8 @@ namespace OpenGPS
 	{
 	}
 
-	/*! Data type of the size of one (possibly signed) byte. */
-	typedef char Byte;
-	/*! Pointer to a data type of the size of one (possibly signed) byte. */
-	typedef Byte* BytePtr;
-
-	/*! Data type of the size of one unsigned byte. */
-	typedef unsigned char UnsignedByte;
-	/*! Pointer to a data type of the size of one unsigned byte. */
-	typedef UnsignedByte* UnsignedBytePtr;
-
 	/*! Character type used to provide more information about an exception. */
 	typedef char OGPS_ExceptionChar;
-
 }
 
 #endif

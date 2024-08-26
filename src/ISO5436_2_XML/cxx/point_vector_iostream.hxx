@@ -126,7 +126,7 @@ namespace OpenGPS
 	};
 
 	/*! A binary stream class used for reading from binary files. */
-	class InputBinaryFileStream : public std::basic_ifstream<Byte>
+	class InputBinaryFileStream : public std::basic_ifstream<char>
 	{
 	public:
 		/*!
@@ -141,7 +141,7 @@ namespace OpenGPS
 	};
 
 	/*! A binary stream class used for writing to binary files. */
-	class OutputBinaryFileStream : public std::basic_ofstream<Byte>
+	class OutputBinaryFileStream : public std::basic_ofstream<char>
 	{
 	public:
 		/*!

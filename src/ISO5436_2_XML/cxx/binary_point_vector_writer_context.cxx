@@ -108,7 +108,7 @@ void BinaryPointVectorWriterContext::MoveNext()
 {
 }
 
-void BinaryPointVectorWriterContext::GetMd5(std::array<UnsignedByte, 16>& md5)
+void BinaryPointVectorWriterContext::GetMd5(std::array<unsigned char, 16>& md5)
 {
 	assert(HasStream());
 	m_Buffer->GetMd5(md5);

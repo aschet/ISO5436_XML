@@ -179,7 +179,7 @@ namespace OpenGPS
 		 * @param dst The array of bytes in swapped byte order.
 		 * @returns Pointer to the array of bytes in swapped byte order.
 		 */
-		static UnsignedBytePtr ByteSwap(OGPS_Int16 cvalue, UnsignedBytePtr dst);
+		static unsigned char* ByteSwap(OGPS_Int16 cvalue, unsigned char* dst);
 
 		/*!
 		 * Swaps endianness.
@@ -187,7 +187,7 @@ namespace OpenGPS
 		 * @param src The array of bytes to be swapped.
 		 * @param value The swapped bytes as typed data.
 		 */
-		static void ByteSwap(const UnsignedBytePtr src, OGPS_Int16& value);
+		static void ByteSwap(const unsigned char* src, OGPS_Int16& value);
 
 		/*!
 		 * Swaps endianness.
@@ -196,7 +196,7 @@ namespace OpenGPS
 		 * @param dst The array of bytes in swapped byte order.
 		 * @returns Pointer to the array of bytes in swapped byte order.
 		 */
-		static UnsignedBytePtr ByteSwap(OGPS_Int32 value, UnsignedBytePtr dst);
+		static unsigned char* ByteSwap(OGPS_Int32 value, unsigned char* dst);
 
 		/*!
 		 * Swaps endianness.
@@ -204,7 +204,7 @@ namespace OpenGPS
 		 * @param src The array of bytes to be swapped.
 		 * @param value The swapped bytes as typed data.
 		 */
-		static void ByteSwap(const UnsignedBytePtr src, OGPS_Int32& value);
+		static void ByteSwap(const unsigned char* src, OGPS_Int32& value);
 
 		/*!
 		 * Swaps endianness.
@@ -213,7 +213,7 @@ namespace OpenGPS
 		 * @param dst The array of bytes in swapped byte order.
 		 * @returns Pointer to the array of bytes in swapped byte order.
 		 */
-		static UnsignedBytePtr ByteSwap(OGPS_Float value, UnsignedBytePtr dst);
+		static unsigned char* ByteSwap(OGPS_Float value, unsigned char* dst);
 
 		/*!
 		 * Swaps endianness.
@@ -221,7 +221,7 @@ namespace OpenGPS
 		 * @param src The array of bytes to be swapped.
 		 * @param value The swapped bytes as typed data.
 		 */
-		static void ByteSwap(const UnsignedBytePtr src, OGPS_Float& value);
+		static void ByteSwap(const unsigned char* src, OGPS_Float& value);
 
 		/*!
 		 * Swaps endianness.
@@ -230,7 +230,7 @@ namespace OpenGPS
 		 * @param dst The array of bytes in swapped byte order.
 		 * @returns Pointer to the array of bytes in swapped byte order.
 		 */
-		static UnsignedBytePtr ByteSwap(OGPS_Double value, UnsignedBytePtr dst);
+		static unsigned char* ByteSwap(OGPS_Double value, unsigned char* dst);
 
 		/*!
 		 * Swaps endianness.
@@ -238,7 +238,7 @@ namespace OpenGPS
 		 * @param src The array of bytes to be swapped.
 		 * @param value The swapped bytes as typed data.
 		 */
-		static void ByteSwap(const UnsignedBytePtr src, OGPS_Double& value);
+		static void ByteSwap(const unsigned char* src, OGPS_Double& value);
 
 	protected:
 		/*! Creates a new instance. */

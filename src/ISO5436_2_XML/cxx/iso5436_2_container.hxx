@@ -390,7 +390,7 @@ namespace OpenGPS
 		 * @param handle The handle to the zip archive where the data is to be stored.
 		 * @param checksum The value of the calculated 128bit md5 checksum.
 		 */
-		void SaveChecksumFile(zipFile handle, const std::array<UnsignedByte, 16>& md5);
+		void SaveChecksumFile(zipFile handle, const std::array<unsigned char, 16>& md5);
 
 		/*!
 		 * Creates an instance of appropriate access methods to read point data depending on
@@ -550,7 +550,7 @@ namespace OpenGPS
 		 * @param size The size of the checksum buffer in bytes. This must be equal to 16 always as it is a 128bit md5 sum.
 		 * @returns Returns true when the checksum could be verified, false otherwise.
 		 */
-		bool VerifyChecksum(const String& filePath, const UnsignedBytePtr checksum, size_t size) const;
+		bool VerifyChecksum(const String& filePath, const unsigned char* checksum, size_t size) const;
 
 		/*!
 		 * Verifies an 128bit md5 checksum.
@@ -558,7 +558,7 @@ namespace OpenGPS
 		 * @param checksum The expected checksum to verify.
 		 * @returns Returns true when the checksum could be verified, false otherwise.
 		 */
-		bool VerifyChecksum(const String& filePath, std::array<UnsignedByte, 16>& checksum) const;
+		bool VerifyChecksum(const String& filePath, std::array<unsigned char, 16>& checksum) const;
 
 		/*!
 		 * Verifies the checksum of the main document ISO5436-2 XML file.
@@ -607,7 +607,7 @@ namespace OpenGPS
 		 * @param checksum Target of the extracted checksum.
 		 * @returns Returns true on success, false otherwise.
 		 */
-		bool ReadMd5FromFile(const String& fileName, std::array<UnsignedByte, 16>& checksum) const;
+		bool ReadMd5FromFile(const String& fileName, std::array<unsigned char, 16>& checksum) const;
 
 		/*!
 		 * Extracts the three components of a point vector.

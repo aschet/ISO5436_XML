@@ -71,7 +71,7 @@ namespace OpenGPS
 		 * When called this resets the currently computed md5 sum. Future
 		 * calls to this method will ignore older md5 data.
 		 */
-		void GetMd5(std::array<UnsignedByte, 16>& md5);
+		void GetMd5(std::array<unsigned char, 16>& md5);
 
 	protected:
 		/*!

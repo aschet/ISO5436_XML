@@ -125,7 +125,7 @@ namespace OpenGPS
 		 * @param md5 The 128-Bit MD5 value to be storedin hexadecimal format.
 		 * @returns Returns true on success, false otherwise.
 		 */
-		bool ConvertFromMd5(const std::array<UnsignedByte, 16>& md5);
+		bool ConvertFromMd5(const std::array<unsigned char, 16>& md5);
 
 		/*!
 		 * Converts the current character squence representing a 128-Bit MD5 sum
@@ -134,7 +134,7 @@ namespace OpenGPS
 		 * @param md5 Gets the converted MD5 binary values.
 		 * @returns Returns true on success, false otherwise.
 		 */
-		bool ConvertToMd5(std::array<UnsignedByte, 16>& md5) const;
+		bool ConvertToMd5(std::array<unsigned char, 16>& md5) const;
 
 		/*!
 		 * Copies the current character sequence to an external buffer.

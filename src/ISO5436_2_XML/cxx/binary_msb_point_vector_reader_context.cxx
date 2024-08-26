@@ -43,12 +43,12 @@ inline void BinaryMSBPointVectorReaderContext::ReadT(T& value)
 	CheckStreamAndThrowException();
 
 	static_assert(sizeof(value) == TSize, "value has incorrect byte size");
-	Byte buffer[TSize];
+	char buffer[TSize];
 	GetStream()->read(buffer, TSize);
 
 	CheckIsGoodAndThrowException();
 
-	Environment::ByteSwap(reinterpret_cast<UnsignedBytePtr>(buffer), value);
+	Environment::ByteSwap(reinterpret_cast<unsigned char*>(buffer), value);
 }
 
 void BinaryMSBPointVectorReaderContext::Read(OGPS_Int16& value)

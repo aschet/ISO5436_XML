@@ -140,7 +140,7 @@ size_t String::CopyTo(OGPS_Character* const target, const size_t size) const
 	return len;
 }
 
-bool String::ConvertToMd5(std::array<UnsignedByte, 16>& md5) const
+bool String::ConvertToMd5(std::array<unsigned char, 16>& md5) const
 {
 	if (size() != 32)
 	{
@@ -167,13 +167,13 @@ bool String::ConvertToMd5(std::array<UnsignedByte, 16>& md5) const
 
 		assert(md5n[k] >= 0 && md5n[k] < 256);
 
-		md5[k] = static_cast<UnsignedByte>(md5n[k]);
+		md5[k] = static_cast<unsigned char>(md5n[k]);
 	}
 
 	return buffer.eof() && !buffer.fail();
 }
 
-bool String::ConvertFromMd5(const std::array<UnsignedByte, 16>& md5)
+bool String::ConvertFromMd5(const std::array<unsigned char, 16>& md5)
 {
 #ifdef _UNICODE
 	std::wostringstream buffer;

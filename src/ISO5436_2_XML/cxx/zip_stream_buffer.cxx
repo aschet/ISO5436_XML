@@ -59,7 +59,7 @@ std::streamsize ZipStreamBuffer::xsputn(const char_type* s, std::streamsize coun
 	return 0;
 }
 
-bool ZipStreamBuffer::GetMd5(std::array<UnsignedByte, 16>& md5)
+bool ZipStreamBuffer::GetMd5(std::array<unsigned char, 16>& md5)
 {
 	if (m_Md5Context)
 	{

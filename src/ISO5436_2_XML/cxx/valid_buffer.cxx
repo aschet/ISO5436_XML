@@ -70,7 +70,7 @@ void ValidBuffer::AllocateRaw(size_t rawSize)
 {
 	assert(!m_ValidityBuffer);
 
-	m_ValidityBuffer = std::make_unique<UnsignedByte[]>(rawSize);
+	m_ValidityBuffer = std::make_unique<unsigned char[]>(rawSize);
 
 	if (!m_ValidityBuffer)
 	{
@@ -116,7 +116,7 @@ void ValidBuffer::SetValid(size_t index, bool value)
 		const size_t bytePosition{ index / 8 };
 		const size_t bitPosition{ index % 8 };
 
-		const auto bitValue{ static_cast<UnsignedByte>(static_cast<UnsignedByte>(1) << bitPosition) };
+		const auto bitValue{ static_cast<unsigned char>(static_cast<unsigned char>(1) << bitPosition) };
 
 		if (value)
 		{
@@ -141,14 +141,14 @@ bool ValidBuffer::IsValid(size_t index) const
 	const size_t bytePosition{ index / 8 };
 	const size_t bitPosition{ index % 8 };
 
-	const auto bitValue{ static_cast<UnsignedByte>(static_cast<UnsignedByte>(1) << bitPosition) };
+	const auto bitValue{ static_cast<unsigned char>(static_cast<unsigned char>(1) << bitPosition) };
 
 	const auto rawByte = &m_ValidityBuffer[bytePosition];
 
 	return ((*rawByte & bitValue) != 0);
 }
 
-void ValidBuffer::Read(std::basic_istream<Byte>& stream)
+void ValidBuffer::Read(std::basic_istream<char>& stream)
 {
 	bool success{};
 

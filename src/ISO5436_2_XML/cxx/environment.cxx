@@ -54,7 +54,7 @@ Environment::~Environment() = default;
 
 bool Environment::IsLittleEndian()
 {
-	UnsignedByte test[2] = { 0, 1 };
+	unsigned char test[2] = { 0, 1 };
 
 	OGPS_Int16 value{};
 	ByteSwap(test, value);
@@ -64,14 +64,14 @@ bool Environment::IsLittleEndian()
 	return (value == 1);
 }
 
-inline static void ByteSwap16(UnsignedBytePtr src, UnsignedBytePtr dst)
+inline static void ByteSwap16(const unsigned char* src, unsigned char* dst)
 {
 	assert(src && dst);
 	dst[0] = src[1];
 	dst[1] = src[0];
 }
 
-inline static void ByteSwap32(UnsignedBytePtr src, UnsignedBytePtr dst)
+inline static void ByteSwap32(const unsigned char* src, unsigned char* dst)
 {
 	assert(src && dst);
 	dst[0] = src[3];
@@ -80,7 +80,7 @@ inline static void ByteSwap32(UnsignedBytePtr src, UnsignedBytePtr dst)
 	dst[3] = src[0];
 }
 
-inline static void ByteSwap64(UnsignedBytePtr src, UnsignedBytePtr dst)
+inline static void ByteSwap64(const unsigned char* src, unsigned char* dst)
 {
 	assert(src && dst);
 	dst[0] = src[7];
@@ -93,55 +93,55 @@ inline static void ByteSwap64(UnsignedBytePtr src, UnsignedBytePtr dst)
 	dst[7] = src[0];
 }
 
-UnsignedBytePtr Environment::ByteSwap(OGPS_Int16 value, UnsignedBytePtr dst)
+unsigned char* Environment::ByteSwap(OGPS_Int16 value, unsigned char* dst)
 {
-	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto src{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap16(src, dst);
 	return dst;
 }
 
-void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Int16& value)
+void Environment::ByteSwap(const unsigned char* src, OGPS_Int16& value)
 {
-	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto dst{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap16(src, dst);
 }
 
-UnsignedBytePtr Environment::ByteSwap(OGPS_Int32 value, UnsignedBytePtr dst)
+unsigned char* Environment::ByteSwap(OGPS_Int32 value, unsigned char* dst)
 {
-	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto src{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap32(src, dst);
 	return dst;
 }
 
-void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Int32& value)
+void Environment::ByteSwap(const unsigned char* src, OGPS_Int32& value)
 {
-	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto dst{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap32(src, dst);
 }
 
-UnsignedBytePtr Environment::ByteSwap(OGPS_Float value, UnsignedBytePtr dst)
+unsigned char* Environment::ByteSwap(OGPS_Float value, unsigned char* dst)
 {
-	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto src{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap32(src, dst);
 	return dst;
 }
 
-void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Float& value)
+void Environment::ByteSwap(const unsigned char* src, OGPS_Float& value)
 {
-	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto dst{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap32(src, dst);
 }
 
-UnsignedBytePtr Environment::ByteSwap(OGPS_Double value, UnsignedBytePtr dst)
+unsigned char* Environment::ByteSwap(OGPS_Double value, unsigned char* dst)
 {
-	auto src{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto src{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap64(src, dst);
 	return dst;
 }
 
-void Environment::ByteSwap(const UnsignedBytePtr src, OGPS_Double& value)
+void Environment::ByteSwap(const unsigned char* src, OGPS_Double& value)
 {
 	assert(src && value);
-	auto dst{ reinterpret_cast<UnsignedBytePtr>(&value) };
+	auto dst{ reinterpret_cast<unsigned char*>(&value) };
 	ByteSwap64(src, dst);
 }

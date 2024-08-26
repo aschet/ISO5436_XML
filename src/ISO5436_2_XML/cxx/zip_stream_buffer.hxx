@@ -71,7 +71,7 @@ namespace OpenGPS
 		 * @param md5 Gets the 128-bit md5 data.
 		 * @returns Returns true on success, false otherwise.
 		 */
-		bool GetMd5(std::array<UnsignedByte, 16>& md5);
+		bool GetMd5(std::array<unsigned char, 16>& md5);
 
 	protected:
 		/*! Overrides the super class. */
