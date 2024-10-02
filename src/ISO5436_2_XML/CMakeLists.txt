@@ -139,6 +139,7 @@ if(WIN32 AND BUILD_SHARED_LIBS)
 endif()
 
 add_library(${PROJECT_NAME})
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION {PROJECT_VERSION_MAJOR})
 # WORKAROUND: set anything to private, even public headers, othewise it causes errors during export
 # even with BUILD_INTERFACE expressions

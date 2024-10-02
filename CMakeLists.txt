@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.21...3.28)
 project(openGPS VERSION 0.4.1)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 include(CTest)
 
 if(MSVC)
