@@ -28,6 +28,6 @@ You can use the following instructions to integrate this library into your own C
 find_package(iso5436_2_xml REQUIRED)
 target_link_libraries([target] PRIVATE OPENGPS::iso5436_2_xml)
 ```
-## Matlab X3PToolbox
+## MATLAB X3PToolbox
 
-You need to install Matlab and register the Visual Studio 2022 C++ compiler within Matlab by running `mex -setup` in the command window before building. During the CMake configuration, set the `BUILD_MATLAB_TOOLBOX` option to on. An additional package is created which contains the toolbox in the directory `X3PToolbox` together with some documentation and test scripts.
+During the CMake configuration, set the `BUILD_MATLAB_TOOLBOX` option to on to build the MATLAB wrapper. An additional package will be created which contains the toolbox in the directory `X3PToolbox` together with some documentation and test scripts. On Linux it might be required to set the `Matlab_ROOT` variable so that CMake is able to detect your MATLAB installation e.g. `Matlab_ROOT=/usr/local/MATLAB/R2024a`.

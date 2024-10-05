@@ -31,7 +31,6 @@
 
 #include "X3PUtilities.h"
 
-#include <tchar.h>
 #include "mex.h"
 #include <strstream>
 #include <limits>
@@ -45,6 +44,9 @@
 #include <opengps/cxx/data_point.hxx>
 #include <opengps/cxx/string.hxx>
 #include <opengps/cxx/info.hxx>
+#ifdef _WIN32
+#include <tchar.h>
+#endif
 
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;

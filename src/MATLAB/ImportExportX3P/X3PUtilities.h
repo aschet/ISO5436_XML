@@ -32,7 +32,6 @@
 #define _X3PUTILITIES_H
 
 #include <string>
-#include <tchar.h>
 #include "mex.h"
 #include <opengps/cxx/opengps.hxx>
 #include <opengps/iso5436_2.h>

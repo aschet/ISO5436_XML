@@ -30,9 +30,10 @@
  // Mex file to write X3P files to matlab
 
 #include "X3PUtilities.h"
-#include <tchar.h>
 #include "mex.h"
 #include "matrix.h"
+
+#include <cmath>
 #include <strstream>
 #include <limits>
 #include <iomanip>
@@ -48,6 +49,9 @@
 #include <opengps/cxx/info.hxx>
 #include <sstream>
 #include <xsd/cxx/tree/stream-extraction.hxx>
+#ifdef _WIN32
+#include <tchar.h>
+#endif
 
 template<class DateTime_t>
 #ifdef _UNICODE
@@ -66,7 +70,7 @@ DateTime_t* parseDateTime(const std::string& str)
 	short zone_minutes(0);
 #ifdef _UNICODE
 	wchar_t ch1, ch2, ch3, chz(0);
-	wistringstream ss(str);
+	std::wistringstream ss(str);
 #else
 	char ch1, ch2, ch3, chz(0);
 	istringstream ss(str);

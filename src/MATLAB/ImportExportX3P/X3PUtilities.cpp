@@ -33,7 +33,9 @@
 #include <iomanip>
 #include <ios>
 #include <opengps/cxx/info.hxx>
-
+#ifdef _WIN32
+#include <tchar.h>
+#endif
 #include <ctime>
 
 using namespace std;
@@ -163,7 +165,7 @@ OpenGPS::String TimeStamp()
 #else
 // There is only a windows implementation yet.
 //In other cases return a dummy. That is enough for testing purposes.
-OGPS_String TimeStamp()
+OpenGPS::String TimeStamp()
 {
 	return _T("2000-01-01T00:00:00.000000+00:00");
 }
