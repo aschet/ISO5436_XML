@@ -43,7 +43,7 @@ inline void BinaryMSBPointVectorReaderContext::ReadT(T& value)
 	CheckStreamAndThrowException();
 
 	static_assert(sizeof(value) == TSize, "value has incorrect byte size");
-	char buffer[TSize];
+	char buffer[TSize] = {};
 	GetStream()->read(buffer, TSize);
 
 	CheckIsGoodAndThrowException();

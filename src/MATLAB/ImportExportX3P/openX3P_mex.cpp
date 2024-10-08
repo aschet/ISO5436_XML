@@ -53,7 +53,7 @@ using namespace OpenGPS::Schemas::ISO5436_2;
 
 void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 {
-	wstring SyntaxHelp(
+	wstring SyntaxHelp{
 		_T("Call Syntax:\n")
 		_T("  [z,x,y,pinfo,meta] = openX3P(filename[,...])\n")
 		_T("    x     - Array of x coordinates in meter\n")
@@ -76,7 +76,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 		_T("            specify it here. The default extension for MATLAB written\n")
 		_T("            x3p-files is '") OGPS_VEXT_URI _T("'\n")
 
-		OGPS_LICENSETEXT);
+		OGPS_LICENSETEXT };
 	SyntaxHelp.append(GetX3P_Dll_ID());
 
 	mxArray* outMatrixX{};
@@ -111,15 +111,15 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 		hasPointInfo = true;
 
 	// Get filename
-	auto inFileName = prhs[0];
+	auto inFileName{ prhs[0] };
 
 	// make sure the filename argument is string
-	if (!mxIsChar(inFileName) ||
-		mxGetNumberOfElements(inFileName) < 1) {
+	if (!mxIsChar(inFileName) || mxGetNumberOfElements(inFileName) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:openX3P:notString", "Input must be a file name string");
 	}
 
-	std::wstring FileNameL(ConvertMtoWStr(inFileName));
+	std::wstring FileNameL{ ConvertMtoWStr(inFileName) };
 
 	// Flags for keyword existence
 	bool bHasVendorFilename{};
@@ -146,7 +146,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 		// Parse keys
 		for (size_t i = 0; i < inNKeywords; i++)
 		{
-			wstring key(ConvertMtoWStr(inKeywords[i]));
+			wstring key{ ConvertMtoWStr(inKeywords[i]) };
 			transform(key.begin(), key.end(), key.begin(), ::tolower);
 
 			// check Vendor specific filename
@@ -157,11 +157,11 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 					mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument", "'VendorSpecificFilename' keyword not followd by an argument");
 				}
 				inVendorFilename = inKeywords[++i];
-				if (!mxIsChar(inVendorFilename) ||
-					mxGetNumberOfElements(inVendorFilename) < 1) {
+				if (!mxIsChar(inVendorFilename) || mxGetNumberOfElements(inVendorFilename) < 1)
+				{
 					mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "'VendorSpecificFilename' argument must be a string");
 				}
-				strVFilename = std::wstring(ConvertMtoWStr(inVendorFilename));
+				strVFilename = std::wstring{ ConvertMtoWStr(inVendorFilename) };
 				bHasVendorFilename = true;
 			}
 			// check rotation matrix
@@ -172,11 +172,11 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 					mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument", "'VendorSpecificTargetFile' keyword not followd by an argument");
 				}
 				inVendorTarget = inKeywords[++i];
-				if (!mxIsChar(inVendorTarget) ||
-					mxGetNumberOfElements(inVendorTarget) < 1) {
+				if (!mxIsChar(inVendorTarget) || mxGetNumberOfElements(inVendorTarget) < 1)
+				{
 					mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "'VendorSpecificTargetFile' argument must be a string");
 				}
-				strVTarget = std::wstring(ConvertMtoWStr(inVendorTarget));
+				strVTarget = std::wstring{ ConvertMtoWStr(inVendorTarget) };
 				bHasVendorTarget = true;
 			}
 			else if (key == _T("vendorspecificuri"))
@@ -186,11 +186,11 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 					mexErrMsgIdAndTxt("openGPS:writeX3P:missingArgument", "'VendorSpecificURI' keyword not followd by an argument");
 				}
 				inVendorURI = inKeywords[++i];
-				if (!mxIsChar(inVendorURI) ||
-					mxGetNumberOfElements(inVendorURI) < 1) {
+				if (!mxIsChar(inVendorURI) || mxGetNumberOfElements(inVendorURI) < 1)
+				{
 					mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "'VendorSpecificURI' argument must be a string");
 				}
-				strVURI = std::wstring(ConvertMtoWStr(inVendorURI));
+				strVURI = std::wstring{ ConvertMtoWStr(inVendorURI) };
 				bHasVendorURI = true;
 			}
 			else
@@ -283,8 +283,8 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	auto ptrY{ mxGetDoubles(outMatrixY) };
 	auto ptrZ{ mxGetDoubles(outMatrixZ) };
 
-	auto vector = ogps_CreatePointVector();
-	auto iterator = ogps_CreateNextPointIterator(handle);
+	auto vector{ ogps_CreatePointVector() };
+	auto iterator{ ogps_CreateNextPointIterator(handle) };
 
 	for (size_t i = 0; i < npoints; ++i)
 	{
@@ -322,7 +322,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 
 	if (hasMeta)
 	{
-		const auto document = ogps_GetDocument(handle);
+		const auto document{ ogps_GetDocument(handle) };
 		if (ogps_HasError())
 		{
 			ostringstream msg;
@@ -331,7 +331,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 			mexErrMsgIdAndTxt("openGPS:openX3P:XMLDocument", msg.str().c_str());
 		}
 
-		const auto& r2opt = document->Record2();
+		const auto& r2opt{ document->Record2() };
 
 		// Check for presence of meta data
 		if (!r2opt.present())
@@ -349,7 +349,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 			"CalibrationDate","ProbingSystem_Type","ProbingSystem_Identification","Comment" };
 		plhs[4] = mxCreateStructMatrix(1, 1, nelem, &(fieldnames[0]));
 
-		const auto& r2 = r2opt.get();
+		const auto& r2{ r2opt.get() };
 
 		// Data set creation date
 		{

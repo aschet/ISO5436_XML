@@ -1,23 +1,19 @@
 project(iso5436_2_xml_demo)
 
 add_executable(${PROJECT_NAME} "ISO5436_2_XML_Demo.cxx")
+set_warning_levels(${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME} iso5436_2_xml)
-if (MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /wd4275 /wd4251)
-else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
-endif()
 
 if(WIN32)
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/samplefiles" "${CMAKE_CURRENT_BINARY_DIR}/samplefiles"
-      COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
-      COMMAND_EXPAND_LISTS
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/samplefiles" "${CMAKE_CURRENT_BINARY_DIR}/samplefiles"
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+    COMMAND_EXPAND_LISTS
   )
 else()
   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/samplefiles" "${CMAKE_CURRENT_BINARY_DIR}/samplefiles"
-      COMMAND_EXPAND_LISTS
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/samplefiles" "${CMAKE_CURRENT_BINARY_DIR}/samplefiles"
+    COMMAND_EXPAND_LISTS
   )
 endif()
 

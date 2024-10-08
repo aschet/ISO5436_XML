@@ -110,7 +110,7 @@ std::wstring GetX3P_Dll_ID()
 	OpenGPS::String Version;
 	OpenGPS::Info::GetVersion(&Version);
 
-	std::wstring msg(Name);
+	std::wstring msg{ Name };
 	msg.append(_T(" V"));
 	msg.append(Version);
 

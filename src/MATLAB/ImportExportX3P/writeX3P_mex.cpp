@@ -139,7 +139,7 @@ static bool AxisIsIncremental(const mxArray* x, double& increment, double& offse
 	offset = 0;
 
 	// Flag for coord vector
-	bool isVector = false;
+	bool isVector{};
 
 	// Check number of dimensions if only 1 or [1,v] or [u,1] it is a vector
 	if (ndims > 2)
@@ -220,7 +220,7 @@ static Record2Type::ProbingSystem_type::Type_type GetProbingSystemTypeEnum(const
 {
 	// Input array must be a string
 	// with one value of "Contacting", "NonContacting", "Software"
-	wstring winp(ConvertMtoWStr(mxGetField(inp, 0, "ProbingSystem_Type")));
+	wstring winp{ ConvertMtoWStr(mxGetField(inp, 0, "ProbingSystem_Type")) };
 
 	if (winp == _T("Contacting"))
 		return Record2Type::ProbingSystem_type::Type_type::Contacting;
@@ -240,7 +240,7 @@ static Record2Type::ProbingSystem_type::Type_type GetProbingSystemTypeEnum(const
 
 void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 {
-	wstring SyntaxHelp(
+	wstring SyntaxHelp{
 		_T("Call Syntax:\n")
 		_T("  pinfo = writeX3P(FileName,FeatureType,x,y,z,meta[,...])\n")
 		_T("    FileName - name of file to write\n")
@@ -270,7 +270,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 		_T("                 specific extension. The filename portion of the file is used as\n")
 		_T("                 the URI for this extension is '") OGPS_VEXT_URI _T("'\n")
 		_T("<a href=\"http://www.opengps.eu/\"www.opengps.eu</a>\n\n")
-		OGPS_LICENSETEXT);
+		OGPS_LICENSETEXT };
 	SyntaxHelp.append(GetX3P_Dll_ID());
 
 	// check for proper number of arguments
@@ -328,7 +328,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 		for (size_t i = 0; i < inNKeywords; i++)
 		{
 			// Convert string to C
-			wstring key(ConvertMtoWStr(inKeywords[i]));
+			wstring key{ ConvertMtoWStr(inKeywords[i]) };
 			// convert keyword name to lower case
 			transform(key.begin(), key.end(), key.begin(), ::tolower);
 
@@ -386,7 +386,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 					mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "'VendorSpecific' argument must be a string");
 				}
 				// get the filename
-				VendorFileNameL = std::wstring(ConvertMtoWStr(inVendorSpecific));
+				VendorFileNameL = std::wstring{ ConvertMtoWStr(inVendorSpecific) };
 				bHasExtension = true;
 			}
 			else
@@ -400,32 +400,32 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 
 	}
 
-	if (!mxIsChar(inFileName) ||
-		mxGetNumberOfElements(inFileName) < 1) {
+	if (!mxIsChar(inFileName) || mxGetNumberOfElements(inFileName) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "FileName argument must be a string");
 	}
-	std::wstring FileNameL(ConvertMtoWStr(inFileName));
+	std::wstring FileNameL{ ConvertMtoWStr(inFileName) };
 
-	if (!mxIsChar(inFeatureType) ||
-		mxGetNumberOfElements(inFeatureType) < 1) {
+	if (!mxIsChar(inFeatureType) || mxGetNumberOfElements(inFeatureType) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notString", "FeatureType argument must be a string");
 	}
 
-	if (!mxIsNumeric(inMatrixX) ||
-		mxGetNumberOfElements(inMatrixX) < 1) {
+	if (!mxIsNumeric(inMatrixX) || mxGetNumberOfElements(inMatrixX) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric", "X input argument must be numeric");
 	}
-	if (!mxIsNumeric(inMatrixY) ||
-		mxGetNumberOfElements(inMatrixY) < 1) {
+	if (!mxIsNumeric(inMatrixY) || mxGetNumberOfElements(inMatrixY) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric", "Y input argument must be numeric");
 	}
-	if (!mxIsNumeric(inMatrixZ) ||
-		mxGetNumberOfElements(inMatrixZ) < 1) {
+	if (!mxIsNumeric(inMatrixZ) || mxGetNumberOfElements(inMatrixZ) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric", "Z input argument must be numeric");
 	}
 
-	if (!mxIsStruct(meta) ||
-		mxGetNumberOfElements(meta) < 1) {
+	if (!mxIsStruct(meta) || mxGetNumberOfElements(meta) < 1)
+	{
 		mexErrMsgIdAndTxt("openGPS:writeX3P:notNumeric", "Meta data input argument must be a meta data structure");
 	}
 
@@ -580,7 +580,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 
 	// TODO: Data type is allways double
 	Record1Type::Axes_type::CY_type::DataType_type ydataType{ Record1Type::Axes_type::CY_type::DataType_type::D };
-	Record1Type::Axes_type::CY_type yaxis(*yaxisType);
+	Record1Type::Axes_type::CY_type yaxis{ *yaxisType };
 	yaxis.DataType(ydataType);
 	if (yIncrement == 0)
 		yaxis.Increment(1.0);
@@ -600,9 +600,9 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	yaxisType.reset();
 
 	// Setup z-axis, allways double absolute
-	Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A);
-	Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D);
-	Record1Type::Axes_type::CZ_type zaxis(zaxisType);
+	Record1Type::Axes_type::CZ_type::AxisType_type zaxisType{ Record1Type::Axes_type::CZ_type::AxisType_type::A };
+	Record1Type::Axes_type::CZ_type::DataType_type zdataType{ Record1Type::Axes_type::CZ_type::DataType_type::D };
+	Record1Type::Axes_type::CZ_type zaxis{ zaxisType };
 	zaxis.DataType(zdataType);
 	zaxis.Increment(1.0);
 	// TODO: Offset should be set to average of data min/max
@@ -612,7 +612,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	else
 		zaxis.Offset(0.0);
 
-	Record1Type::Axes_type axis(xaxis, yaxis, zaxis);
+	Record1Type::Axes_type axis{ xaxis, yaxis, zaxis };
 
 	if (bHasRotation)
 	{
@@ -626,7 +626,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	}
 
 	// Create Record1
-	Record1Type record1(revision, featureType, axis);
+	Record1Type record1{ revision, featureType, axis };
 
 	// Create RECORD2 with information from meta data structure
 	// Data set creation date
@@ -675,9 +675,9 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	}
 	// Instrument hard and software version
 	Record2Type::Instrument_type::Version_type
-		version(ConvertMtoWStr(mxGetField(meta, 0, "Instrument_Version")));
+		version{ ConvertMtoWStr(mxGetField(meta, 0, "Instrument_Version")) };
 	// Assemble instrument information
-	Record2Type::Instrument_type instrument(manufacturer, model, *serial, version);
+	Record2Type::Instrument_type instrument{ manufacturer, model, *serial, version };
 	serial.reset();
 
 	// Calibration date
@@ -685,22 +685,22 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	calibrationDate.reset(parseDateTime<Record2Type::CalibrationDate_type>(ConvertMtoWStr(mxGetField(meta, 0, "CalibrationDate"))));
 
 	// Type of probing system: Contacting, non Contacting, Software 
-	Record2Type::ProbingSystem_type::Type_type type(GetProbingSystemTypeEnum(meta));
+	Record2Type::ProbingSystem_type::Type_type type{ GetProbingSystemTypeEnum(meta) };
 
 	// Type of probing system
-	Record2Type::ProbingSystem_type::Identification_type id(ConvertMtoWStr(mxGetField(meta, 0, "ProbingSystem_Identification")));
+	Record2Type::ProbingSystem_type::Identification_type id{ ConvertMtoWStr(mxGetField(meta, 0, "ProbingSystem_Identification")) };
 	// Create the probing system type
-	Record2Type::ProbingSystem_type probingSystem(type, id);
+	Record2Type::ProbingSystem_type probingSystem{ type, id };
 
 	// Create Record2 from collected data
-	Record2Type record2(*date, instrument, *calibrationDate, probingSystem);
+	Record2Type record2{ *date, instrument, *calibrationDate, probingSystem };
 
 	// Delete date records
 	date.reset();
 	calibrationDate.reset();
 
 	// Look out for comment field
-	auto cfield = mxGetField(meta, 0, "Comment");
+	auto cfield{ mxGetField(meta, 0, "Comment") };
 	if (cfield != nullptr)
 	{
 		if (mxGetNumberOfElements(cfield) > 0)
@@ -719,7 +719,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	}
 
 	// Check for creator field
-	auto crfield = mxGetField(meta, 0, "Creator");
+	auto crfield{ mxGetField(meta, 0, "Creator") };
 	if (crfield != nullptr)
 	{
 		// Check for elements in comment string
@@ -731,7 +731,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	}
 
 	// Create MATRIX
-	size_t mdims[3];
+	size_t mdims[3] = {};
 	mdims[0] = dim[0];
 	if (ndimz > 1)
 		mdims[1] = dim[1];
@@ -760,7 +760,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	{
 		// all other are matrix data types
 		// Define dimensions
-		MatrixDimensionType dimMatrix(mdims[0], mdims[1], mdims[2]);
+		MatrixDimensionType dimMatrix{ mdims[0], mdims[1], mdims[2] };
 		// Create the container
 		handle =
 			ogps_CreateMatrixISO5436_2(FileNameL.c_str(), nullptr, record1, &record2, dimMatrix, useBinary);
@@ -780,7 +780,7 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
 	mxUint16* pshrtZ{}, * pshrtY{}, * pshrtX{};
 	mxUint32* plngZ{}, * plngY{}, * plngX{};
 	// Data type
-	unsigned int dtype = 0;
+	unsigned int dtype{};
 	if (mxIsDouble(inMatrixZ))
 		dtype = 1;
 	else if (mxIsSingle(inMatrixZ))

@@ -20,12 +20,17 @@ find_package(XSD REQUIRED)
 
 XSD_SCHEMA(iso5436_2_xsd "${CMAKE_CURRENT_SOURCE_DIR}/iso5436_2.xsd" --prologue-file "${CMAKE_CURRENT_SOURCE_DIR}/xsd_Licence_Header.c" --generate-doxygen --generate-ostream --generate-serialization --char-type wchar_t --generate-comparison --generate-from-base-ctor --namespace-map http://www.opengps.eu/2008/ISO5436_2=OpenGPS::Schemas::ISO5436_2 --export-symbol _OPENGPS_EXPORT --cxx-suffix _xsd.cxx --hxx-suffix _xsd.hxx --output-dir "${CMAKE_CURRENT_BINARY_DIR}/opengps/cxx")
 
-set(header_files
+set(c_header_files
   "c/data_point_c.hxx"
   "c/iso5436_2_handle_c.hxx"
   "c/messages_c.hxx"
   "c/point_iterator_c.hxx"
   "c/point_vector_c.hxx"
+)
+
+source_group("Header Files/c" FILES ${c_header_files})
+
+set(cxx_header_files
   "cxx/binary_lsb_point_vector_reader_context.hxx"
   "cxx/binary_lsb_point_vector_writer_context.hxx"
   "cxx/binary_msb_point_vector_reader_context.hxx"
@@ -61,8 +66,15 @@ set(header_files
   "cxx/xml_point_vector_reader_context.hxx"
   "cxx/xml_point_vector_writer_context.hxx"
   "cxx/zip_stream_buffer.hxx"
-  "xyssl/md5.h"		
 )
+
+source_group("Header Files/cxx" FILES ${cxx_header_files})
+
+set(xyssl_header_files
+  "xyssl/md5.h"
+)
+
+source_group("Header Files/xyssl" FILES ${xyssl_header_files})
 
 set(public_header_files
   "../../include/opengps/data_point.h"
@@ -74,6 +86,8 @@ set(public_header_files
   "../../include/opengps/point_iterator.h"
   "../../include/opengps/point_vector.h" 
 )
+
+source_group("Header Files/opengps" FILES ${public_header_files})
 
 set(public_cxx_header_files
   "../../include/opengps/cxx/data_point.hxx"
@@ -89,13 +103,20 @@ set(public_cxx_header_files
   "../../include/opengps/cxx/string.hxx" 
 )
 
-set(source_files
+source_group("Header Files/opengps/cxx" FILES ${public_cxx_header_files})
+
+set(c_source_files
   "c/data_point_c.cxx"
   "c/info_c.cxx"
   "c/iso5436_2_c.cxx"
   "c/messages_c.cxx"
   "c/point_iterator_c.cxx"
   "c/point_vector_c.cxx"
+)
+
+source_group("Source Files/c" FILES ${c_source_files})
+
+set(cxx_source_files
   "cxx/binary_lsb_point_vector_reader_context.cxx"
   "cxx/binary_lsb_point_vector_writer_context.cxx"
   "cxx/binary_msb_point_vector_reader_context.cxx"
@@ -109,6 +130,7 @@ set(source_files
   "cxx/info.cxx"
   "cxx/iso5436_2.cxx"
   "cxx/iso5436_2_container.cxx"
+  "cxx/iso5436_2_xsd_utils.cxx"
   "cxx/missing_data_point_parser.cxx"
   "cxx/point_buffer.cxx"
   "cxx/point_iterator.cxx"
@@ -130,35 +152,54 @@ set(source_files
   "cxx/xml_point_vector_reader_context.cxx"
   "cxx/xml_point_vector_writer_context.cxx"
   "cxx/zip_stream_buffer.cxx"
+)
+
+source_group("Source Files/cxx" FILES ${cxx_source_files})
+
+set(xyssl_source_files
   "xyssl/md5.c"
 )
 
-if(WIN32 AND BUILD_SHARED_LIBS)
-  list(APPEND header_files "iso5436_2.rc.in")
-  list(APPEND source_files "${CMAKE_CURRENT_BINARY_DIR}/iso5436_2.rc")
-endif()
+source_group("Source Files/xyssl" FILES ${xyssl_source_files})
 
 add_library(${PROJECT_NAME})
+set_warning_levels(${PROJECT_NAME})
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
+
 # WORKAROUND: set anything to private, even public headers, othewise it causes errors during export
 # even with BUILD_INTERFACE expressions
 target_sources(${PROJECT_NAME}
   PRIVATE
-  ${source_files}
+  "iso5436_2.xsd"
+  ${c_source_files}
+  ${cxx_source_files}
+  ${xyssl_source_files}
   ${iso5436_2_xsd_SOURCES}
-  ${header_files}
+  ${c_header_files}
+  ${cxx_header_files}
+  ${xyssl_header_files}
   ${public_cxx_header_files}
   ${iso5436_2_xsd_HEADERS}
   ${public_header_files}
 )
+if(WIN32 AND BUILD_SHARED_LIBS)
+  target_sources(${PROJECT_NAME}
+    PRIVATE
+    "iso5436_2.rc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/iso5436_2.rc"
+  )
+endif()
+
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
   iso5436_2::minizip
   PUBLIC
   XercesC::XercesC
 )
+
 target_include_directories(${PROJECT_NAME}
   PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/cxx"
@@ -170,21 +211,17 @@ target_include_directories(${PROJECT_NAME}
   "$<INSTALL_INTERFACE:include>"
 )
 if(PACK_XSD_RUNTIME)
-target_include_directories(${PROJECT_NAME}
-  PUBLIC
-  "$<INSTALL_INTERFACE:include/opengps>"
-)
+  target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    "$<INSTALL_INTERFACE:include/opengps>"
+  )
 endif()
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE XSD_CXX_TREE_FLOAT_PRECISION_MAX XSD_CXX_TREE_DOUBLE_PRECISION_MAX XSD_CXX_TREE_DECIMAL_PRECISION_MAX PUBLIC UNICODE _UNICODE)
 if(BUILD_SHARED_LIBS)
   target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_ISO5436_2_XML_DLL PUBLIC SHARED_OPENGPS_LIBRARY)
 else()
   target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_ISO5436_2_XML)
-endif()
-if (MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /wd4275 /wd4251)
-else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 endif()
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets COMPONENT ${PROJECT_NAME})
@@ -220,4 +257,3 @@ install(FILES
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   COMPONENT ${PROJECT_NAME}
 )
-

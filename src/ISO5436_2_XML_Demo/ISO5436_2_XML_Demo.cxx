@@ -42,6 +42,7 @@
 #include <opengps/cxx/data_point.hxx>
 #include <opengps/cxx/string.hxx>
 #include <opengps/cxx/info.hxx>
+#include <opengps/cxx/iso5436_2_xsd_utils.hxx>
 
 #include <string>
 #include <iostream>
@@ -220,12 +221,8 @@ static bool PrintMetaData(const ISO5436_2Type* document)
 	const auto& r2{ r2opt.get() };
 
 	// Data set creation date
-	wcout << "Data set creation date: " << r2.Date().year() << "-"
-		<< r2.Date().month() << "-"
-		<< r2.Date().day() << "-"
-		<< r2.Date().hours() << ":"
-		<< r2.Date().minutes() << ":"
-		<< r2.Date().seconds() << endl;
+	wcout << "Data set creation date: " << r2.Date() << endl;
+
 	// Check for data set creator
 	if (r2.Creator().present())
 	{
@@ -245,12 +242,7 @@ static bool PrintMetaData(const ISO5436_2Type* document)
 		<< "       Version: \"" << r2.Instrument().Version() << '"' << endl;
 
 	// Calibration
-	wcout << "Instrument was calibrated: \"" << r2.CalibrationDate().year() << "-"
-		<< r2.CalibrationDate().month() << "-"
-		<< r2.CalibrationDate().day() << "-"
-		<< r2.CalibrationDate().hours() << ":"
-		<< r2.CalibrationDate().minutes() << ":"
-		<< r2.CalibrationDate().seconds() << endl;
+	wcout << "Instrument was calibrated: \"" << r2.CalibrationDate() << endl;
 
 	// Probing system type
 	wcout << "Probing system type: \"" << r2.ProbingSystem().Type() << '"' << endl
@@ -309,7 +301,7 @@ static void simpleExample(const OpenGPS::String& fileName)
 
 	Record1Type::Axes_type::CX_type::AxisType_type xaxisType{ Record1Type::Axes_type::CX_type::AxisType_type::I }; // incremental
 	Record1Type::Axes_type::CX_type::DataType_type xdataType{ Record1Type::Axes_type::CX_type::DataType_type::D }; // double
-	Record1Type::Axes_type::CX_type xaxis(xaxisType);
+	Record1Type::Axes_type::CX_type xaxis{ xaxisType };
 	xaxis.DataType(xdataType);
 	xaxis.Increment(1.60123456789123456789E-0002);
 	xaxis.Offset(1.0123456789123456789e-1);
@@ -323,7 +315,7 @@ static void simpleExample(const OpenGPS::String& fileName)
 
 	Record1Type::Axes_type::CZ_type::AxisType_type zaxisType(Record1Type::Axes_type::CZ_type::AxisType_type::A); // absolute
 	Record1Type::Axes_type::CZ_type::DataType_type zdataType(Record1Type::Axes_type::CZ_type::DataType_type::D); // double
-	Record1Type::Axes_type::CZ_type zaxis(zaxisType);
+	Record1Type::Axes_type::CZ_type zaxis{ zaxisType };
 	zaxis.DataType(zdataType);
 	// Default value for absolute axis
 	zaxis.Increment(1);
@@ -401,7 +393,7 @@ static void simpleExample(const OpenGPS::String& fileName)
 	ogps_FreePointVector(&vector);
 
 	// Create vendorspecific data.
-	OpenGPS::String vname(fileName.substr(0, fileName.find_last_of(_T("/\\")) + 1));
+	OpenGPS::String vname{ fileName.substr(0, fileName.find_last_of(_T("/\\")) + 1) };
 	vname.append(_T("vendor.tmp"));
 	std::wofstream vendor_dat(vname.ToChar(), std::ios::trunc);
 	vendor_dat << _T("Vendorspecific data.") << std::endl;
@@ -449,7 +441,7 @@ static void mediumComplexExample(const OpenGPS::String& fileName)
 	Record1Type record1{ revision, featureType, axis };
 
 	// Create RECORD2
-	Record2Type::Date_type date(TimeStamp(), 0);
+	Record2Type::Date_type date{ TimeStamp(), 0 };
 
 	Record2Type::Instrument_type::Manufacturer_type manufacturer{ _T("NanoFocus AG") };
 	Record2Type::Instrument_type::Model_type model{ _T("ISO5436_2_XML_Demo Software") };
@@ -469,7 +461,7 @@ static void mediumComplexExample(const OpenGPS::String& fileName)
 	record2.Comment(comment);
 
 	// Create ISO5436_2 container
-	MatrixDimensionType matrix(4, 2, 2);
+	MatrixDimensionType matrix{ 4, 2, 2 };
 	auto handle{ ogps_CreateMatrixISO5436_2(fileName.c_str(), nullptr, record1, &record2, matrix, true) };
 
 	PrintDimensions(handle);
@@ -578,7 +570,7 @@ static void mediumComplexExampleWInvalid(const OpenGPS::String& fileName)
 	Record2Type record2{ date, instrument, calibrationDate, probingSystem };
 	record2.Comment(comment);
 
-	MatrixDimensionType matrix(4, 2, 2);
+	MatrixDimensionType matrix{ 4, 2, 2 };
 	auto handle{ ogps_CreateMatrixISO5436_2(fileName.c_str(), nullptr, record1, &record2, matrix, true) };
 
 	PrintDimensions(handle);
@@ -1139,7 +1131,7 @@ static void performanceInt16(const OpenGPS::String& fileName, size_t dimension, 
 	Record1Type record1{ revision, featureType, axis };
 
 	// Create RECORD2
-	Record2Type::Date_type date(TimeStamp(), 0);
+	Record2Type::Date_type date{ TimeStamp(), 0 };
 
 	Record2Type::Instrument_type::Manufacturer_type manufacturer{ _T("NanoFocus AG") };
 	Record2Type::Instrument_type::Model_type model{ _T("ISO5436_2_XML_Demo Software") };

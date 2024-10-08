@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.21...3.28)
 project(openGPS VERSION 0.4.1)
 
-include(CTest)
-
-if(MSVC)
-  add_compile_definitions(_CRT_NONSTDC_NO_DEPRECATE _CRT_SECURE_NO_DEPRECATE _CRT_NONSTDC_NO_WARNINGS)
-endif()
+macro(set_warning_levels target)
+  if (MSVC)
+    target_compile_options(${target} PRIVATE /W4 /wd4251 /wd4275)
+    target_compile_definitions(${target} PRIVATE _CRT_NONSTDC_NO_DEPRECATE _CRT_SECURE_NO_DEPRECATE _CRT_NONSTDC_NO_WARNINGS)
+  else()
+    target_compile_options(${target} PRIVATE -Wall -Wextra -pedantic)
+  endif()
+endmacro()
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(BUILD_DEMO "Build the demo application" OFF)
@@ -42,6 +45,7 @@ endif()
 
 add_subdirectory(src/ISO5436_2_XML)
 if(BUILD_DEMO)
+  include(CTest)
   add_subdirectory(src/ISO5436_2_XML_Demo)
 endif()
 
@@ -59,3 +63,9 @@ else()
 endif()
 
 include(CPack)
+
+if(BUILD_DEMO)
+  set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT iso5436_2_xml_demo)
+else()
+  set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT iso5436_2_xml)
+endif()
