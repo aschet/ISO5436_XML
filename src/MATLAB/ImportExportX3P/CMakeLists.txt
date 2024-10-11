@@ -11,6 +11,7 @@ set_warning_levels(writeX3P_mex)
 target_link_libraries(writeX3P_mex iso5436_2_xml)
 
 install(DIRECTORY "../X3PToolbox" DESTINATION "." CONFIGURATIONS Release RelWithDebInfo COMPONENT x3ptoolbox)
+install(FILES "../../ISO5436_2_XML/iso5436_2.xsd" DESTINATION "X3PToolbox/private" CONFIGURATIONS Release RelWithDebInfo COMPONENT x3ptoolbox)
 install(TARGETS openX3P_mex DESTINATION "X3PToolbox/private" CONFIGURATIONS Release RelWithDebInfo COMPONENT x3ptoolbox)
 install(TARGETS writeX3P_mex RUNTIME_DEPENDENCY_SET writeX3P_mex_deps DESTINATION "X3PToolbox/private" CONFIGURATIONS Release RelWithDebInfo COMPONENT x3ptoolbox)
 if(WIN32)
