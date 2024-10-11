@@ -30,13 +30,11 @@
  // Mex file to write X3P files to matlab
 
 #include "X3PUtilities.h"
-#include "mex.h"
-#include "matrix.h"
+#include <mex.h>
+#include <matrix.h>
 
 #include <cmath>
-#include <strstream>
 #include <limits>
-#include <iomanip>
 #include <opengps/cxx/opengps.hxx>
 #include <opengps/iso5436_2.h>
 #include <opengps/cxx/iso5436_2.hxx>

@@ -37,6 +37,7 @@
 #define _OPENGPS_C_POINT_VECTOR_HXX
 
 #include <opengps/cxx/point_vector.hxx>
+#include "data_point_c.hxx"
 
 /*!
  * Encapsulates the internal C++ structure of a point vector handle used within

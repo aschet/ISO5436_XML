@@ -36,7 +36,7 @@
 #ifndef _OPENGPS_CXX_EXCPTIONS_HXX
 #define _OPENGPS_CXX_EXCPTIONS_HXX
 
-#include <exception>
+#include <stdexcept>
 #include <opengps/cxx/opengps.hxx>
 #include <opengps/messages.h>
 #include <opengps/cxx/string.hxx>

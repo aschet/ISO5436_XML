@@ -42,7 +42,6 @@
 
 #include <opengps/cxx/opengps.hxx>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <array>
 #include <memory>

@@ -40,7 +40,6 @@
 #include "point_validity_provider.hxx"
 #include "point_buffer.hxx"
 #include <limits>
-#include "stdafx.hxx"
 
 namespace OpenGPS
 {

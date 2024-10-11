@@ -37,7 +37,6 @@
 
 #include <opengps/data_point_type.h>
 #include <opengps/cxx/point_vector_base.hxx>
-#include "auto_ptr_types.hxx"
 
 #include "valid_buffer.hxx"
 

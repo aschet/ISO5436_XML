@@ -36,8 +36,6 @@
 #ifndef _OPENGPS_C_DATA_POINT_HXX
 #define _OPENGPS_C_DATA_POINT_HXX
 
-#include <memory>
-
 namespace OpenGPS
 {
 	class DataPoint;

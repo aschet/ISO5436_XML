@@ -29,9 +29,7 @@
 
 #include "X3PUtilities.h"
 
-#include <strstream>
 #include <iomanip>
-#include <ios>
 #include <opengps/cxx/info.hxx>
 #ifdef _WIN32
 #include <tchar.h>

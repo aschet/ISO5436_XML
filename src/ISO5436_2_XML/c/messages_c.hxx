@@ -38,7 +38,6 @@
 #include <opengps/cxx/opengps.hxx>
 #include <opengps/cxx/exceptions.hxx>
 #include <opengps/cxx/string.hxx>
-#include <functional>
 
 namespace OpenGPS
 {

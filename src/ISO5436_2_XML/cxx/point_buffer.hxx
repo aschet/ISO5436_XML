@@ -39,7 +39,7 @@
 #include <opengps/data_point_type.h>
 #include <memory>
 #include <cstring>
-#include "stdafx.hxx"
+#include <cassert>
 
 namespace OpenGPS
 {
