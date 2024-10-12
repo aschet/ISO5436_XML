@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21...3.28)
-project(openGPS VERSION 0.4.1)
+project(openGPS VERSION 0.4.2)
 
 macro(set_warning_levels target)
   if (MSVC)
