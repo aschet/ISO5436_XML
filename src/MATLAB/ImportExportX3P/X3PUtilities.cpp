@@ -35,33 +35,26 @@
 #include <tchar.h>
 #endif
 #include <ctime>
+#include <locale>
+#include <codecvt>
 
 using namespace std;
 using namespace OpenGPS::Schemas::ISO5436_2;
 
 mxArray* ConvertWtoMStr(const std::wstring& inp)
 {
-	const auto len{ inp.length() };
-	size_t dims[2] = { 1, len };
-	auto dest{ mxCreateCharArray(2, dims) };
-
-	auto dptr{ static_cast<wchar_t*>(mxGetData(dest)) };
-	for (size_t i = 0; i < len; ++i)
-		*(dptr++) = inp[i];
-
-	return dest;
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	return mxCreateString(converter.to_bytes(inp).c_str());
 }
 
 std::wstring ConvertMtoWStr(const mxArray* inp)
 {
-	std::wstring dest;
-	const auto len{ mxGetNumberOfElements(inp) };
-	auto sptr{ static_cast<wchar_t*>(mxGetData(inp)) };
-
-	for (size_t i = 0; i < len; ++i)
-		dest.push_back(*(sptr++));
-
-	return dest;
+	if (auto str = mxArrayToUTF8String(inp))
+	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		return converter.from_bytes(str);
+	}
+	return std::wstring();
 }
 
 mxArray* GetPointInfoStructure(OGPS_ISO5436_2Handle handle)

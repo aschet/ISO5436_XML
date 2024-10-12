@@ -50,7 +50,8 @@ if(BUILD_DEMO)
 endif()
 
 if(BUILD_MATLAB_TOOLBOX)
-  find_package(Matlab REQUIRED COMPONENTS MX_LIBRARY)
+  # At least MATLAB 2020b is required for UTF-8 support
+  find_package(Matlab 9.9.0 REQUIRED COMPONENTS MX_LIBRARY)
   add_subdirectory(src/MATLAB)
 endif()
 
